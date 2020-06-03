@@ -31,6 +31,10 @@ class GLManager
 	jePreventClone(GLManager)
 
 	friend class Renderer;
+	friend class Sprite;
+	friend class Emitter;
+	friend class Model;
+	friend class Light;
 	friend class Application;
 	friend class SceneManager;
 	friend class GraphicSystem;

@@ -8,6 +8,7 @@ struct vec2
 {
 	// static members
 	static const vec2 zero;
+	static const vec2 one;
 
 	// public members
 	union

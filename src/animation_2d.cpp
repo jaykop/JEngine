@@ -1,5 +1,5 @@
 #include <animation_2d.hpp>
-#include <renderer.hpp>
+#include <sprite.hpp>
 #include <object.hpp>
 
 jeBegin
@@ -10,8 +10,8 @@ Animation2D::Animation2D(Object* owner)
 	: Component(owner), currentFrame_(0.f), animationSpeed_(0.f),
 	frames_(1), realSpeed_(0.f), realFrame_(1.f), activated_(false)
 {
-	if (owner->has_component<Renderer>())
-		owner->get_component<Renderer>()->animation_ = this;
+	if (owner->has_component<Sprite>())
+		owner->get_component<Sprite>()->animation_ = this;
 
 	else
 		jeDebugPrint("!Animation - This object has no renderer componnet: %s\n", owner->get_name());
@@ -20,8 +20,8 @@ Animation2D::Animation2D(Object* owner)
 Animation2D::~Animation2D() {
 
 	// Turn off the toggle
-	if (get_owner()->has_component<Renderer>())
-		get_owner()->get_component<Renderer>()->animation_ = nullptr;
+	if (get_owner()->has_component<Sprite>())
+		get_owner()->get_component<Sprite>()->animation_ = nullptr;
 }
 
 bool Animation2D::is_activated() const

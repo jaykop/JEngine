@@ -11,95 +11,30 @@
 #include <texture.hpp>
 #include <camera.hpp>
 #include <transform.hpp>
-#include <animation_2d.hpp>
 
 #include <math_util.hpp>
 
 jeBegin
 
-jeDefineComponentBuilder(Renderer);
-
 using namespace Math;
-
-const static int IS_FLIPPED = 0x100;
-const static int IS_BILBOARD = 0x010;
-const static int IS_INHERITED = 0x001;
 
 bool Renderer::renderObj_ = true;
 Renderer::RenderType Renderer::renderType_ = Renderer::RenderType::NONE;
 
-void Renderer::add_to_system() {
-	GraphicSystem::add_model(this);
-}
-
-void Renderer::remove_from_system() {
-	GraphicSystem::remove_model(this);
-}
-
-void Renderer::load(const rapidjson::Value& /*data*/) {
-
-}
 
 Renderer::Renderer(Object* owner)
-	: Component(owner), h_(false), is2d(true), renderBoundary_(false),
-	renderFaceNormals_(false), renderVertexNormals_(false),
+	: Component(owner),
 	status_(0x000), drawMode_(GL_TRIANGLES), prjType(ProjectType::PERSPECTIVE),
-	dfactor(GL_ONE_MINUS_SRC_ALPHA), sfactor(GL_SRC_ALPHA), animation_(nullptr),
-	transform_(nullptr)
+	dfactor(GL_ONE_MINUS_SRC_ALPHA), sfactor(GL_SRC_ALPHA),	transform_(nullptr)
 {
 	
 	// connect transform component
 	transform_ = owner->get_component<Transform>();
 }
 
-void Renderer::set_mesh(const std::string& name)
+void Renderer::start_draw(Camera* camera,
+	const mat4& perspective, const vec3& resScalar)
 {
-	// get new mesh
-	Mesh* newMesh = AssetManager::get_mesh(name.c_str());
-
-	// add to the mesh
-	meshes_.emplace_back(newMesh);
-
-	//if (pMesh_->key_ == std::string("bunny"))
-	//	h_ = true;
-	//else
-	//	h_ = false;
-}
-
-const Renderer::Meshes& Renderer::get_meshes(void) const
-{
-	return meshes_;
-}
-
-void Renderer::draw(Camera* camera, const mat4& perspective, const vec3& resScalar)
-{
-	//if (is_2d) {
-	//	
-	//	pShader->set_matrix("renderer", pTrans_->model_to_world());
-
-	//	glBindVertexArray(Mesh::quadVAO);
-	//	glBindTexture(GL_TEXTURE_2D, meshes_[0]->texture_->id);
-	//	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
-	//	glBindVertexArray(0);
-	//	glBindTexture(GL_TEXTURE_2D, 0);
-
-	//	// continue;
-	//}
-
-	//else {
-	//	for (const auto& m : meshes_) {
-
-	//		// Set uniform location 
-	//		pShader->set_matrix("renderer", pTrans_->model_to_world());
-
-	//		glBindVertexArray(m->vao_);
-	//		glBindTexture(GL_TEXTURE_2D, m->texture_->id);
-	//		glDrawElements(GL_TRIANGLES, m->get_indice_count(), GL_UNSIGNED_INT, nullptr);
-	//		glBindVertexArray(0);
-	//		glBindTexture(GL_TEXTURE_2D, 0);
-	//	}
-	//}
-
 	Shader* shader = GLManager::shader_[GLManager::Pipeline::NORMAL];
 	shader->use();
 
@@ -133,7 +68,6 @@ void Renderer::draw(Camera* camera, const mat4& perspective, const vec3& resScal
 	// Send camera info to shader
 	shader->set_matrix("m4_viewport", viewport);
 
-	run_animation();
 
 	//bool hasParent = (pModel->status_ & Model::IS_INHERITED) == Model::IS_INHERITED;
 	//glUniform1i(glGetUniformLocation(Shader::pCurrentShader_->programId_, "hasParent"), hasParent);
@@ -146,73 +80,12 @@ void Renderer::draw(Camera* camera, const mat4& perspective, const vec3& resScal
 	glEnable(GL_BLEND);
 	glEnable(GL_DEPTH_TEST);
 	glBlendFunc(sfactor, dfactor);
-
-	if (is2d)
-	{
-		glBindVertexArray(Mesh::quadVAO);
-		glBindTexture(GL_TEXTURE_2D, texture);
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
-		glBindVertexArray(0);
-		glBindTexture(GL_TEXTURE_2D, 0);
-	}
-
-	else {
-		// Update every mesh
-		for (auto mesh : meshes_)
-		{
-			glBindVertexArray(mesh->vao_);
-			glDrawElements(drawMode_, mesh->get_indice_count(), GL_UNSIGNED_INT, nullptr);
-			glBindVertexArray(0);
-		}
-	}
-
-	glDisable(GL_DEPTH_TEST);
-	glDisable(GL_BLEND);
 }
 
-void Renderer::run_animation()
+void Renderer::end_draw()
 {
-	for (auto m : meshes_) {
-
-		if (animation_) {
-
-			glBindTexture(GL_TEXTURE_2D, m->get_texture());
-
-			if (animation_->activated_) {
-
-				float realSpeed = animation_->realSpeed_;
-
-				if (realSpeed <= animation_->timer_.get_elapsed_time()) {
-
-					float nextFrame = animation_->currentFrame_;
-					float realFrame = animation_->realFrame_;
-
-					nextFrame = (status_ & IS_FLIPPED) == IS_FLIPPED ? nextFrame - realFrame : nextFrame + realFrame;
-
-					animation_->currentFrame_ = nextFrame >= 1.f ? 0.f : nextFrame;
-					animation_->timer_.start();
-				}
-
-				animation_->scale_.set(animation_->realFrame_, 1.f, 0.f);
-				animation_->translate_.set(animation_->currentFrame_, 0.f, 0.f);
-
-			}
-
-			else {
-				animation_->scale_.set(1, 1, 0);
-				animation_->translate_.set(0, 0, 0);
-			}
-
-			// Send color info to shader
-			Shader* shader = GLManager::shader_[GLManager::Pipeline::NORMAL];
-			shader->use();
-
-			shader->set_vec4("v4_color", color);
-			shader->set_bool("boolean_flip", (status_ & IS_FLIPPED) == IS_FLIPPED);
-			shader->set_matrix("m4_aniScale", mat4::scale(animation_->scale_));
-			shader->set_matrix("m4_aniTranslate", mat4::translate(animation_->translate_));
-		}
-	}
+	glDisable(GL_DEPTH_TEST);
+	glDisable(GL_BLEND);
 }
 
 void Renderer::draw_lighting_effect(Light* /*pLight*/)
@@ -250,95 +123,5 @@ void Renderer::draw_lighting_effect(Light* /*pLight*/)
 	//pShader->set_float(pLight->outerAngleStr_, pLight->outerAngle_ * deg_to_rad);
 
 }
-
-void Renderer::draw_normals()
-{
-	// Rendering normals
-	if (renderVertexNormals_
-		|| renderFaceNormals_) {
-
-		Shader * shader = GLManager::shader_[GLManager::Pipeline::NORMAL];
-		shader->use();
-
-		for (const auto& m : meshes_) {
-
-			// Set uniform location 
-			shader->set_matrix("model", transform_->model_to_world());
-			shader->set_bool("uniformColor", false);
-
-			if (renderVertexNormals_) {
-				glBindVertexArray(m->vnVao_);
-				glDrawArrays(GL_LINES, 0, GLsizei(m->vertexNormalsDraw.size()));
-			}
-
-			if (renderFaceNormals_) {
-				glBindVertexArray(m->fnVao_);
-				glDrawArrays(GL_LINES, 0, GLsizei(m->faceNormalsDraw.size()));
-			}
-
-			// Unbind the vao
-			glBindVertexArray(0);
-		}
-	}
-}
-
-void Renderer::draw_quad(Mesh* m)
-{
-
-}
-
-void Renderer::draw_debug_info()
-{
-	//pDDrawer_->render_lines(pShader, pTrans_->model_to_world());
-	//pDDrawer_->render_meshes(pShader);
-}
-
-void Renderer::set_texture(unsigned t) { texture = t; }
-
-unsigned Renderer::get_texture() const { return texture; }
-
-//
-//void Renderer::GenerateBV(void)
-//{
-//	auto points = pMesh_->GetPoints();
-//	pDDrawer_->clear();
-//
-//	switch (Mesh::bvType_)
-//	{
-//	case Mesh::BVType::BV_AABB:
-//		aabb_ = AABB::Generate(points);
-//		pDDrawer_->AddCube(aabb_, yellow);
-//		break;
-//	case Mesh::BVType::BV_SPHERE_CENTEROID:
-//		sphere_ = BoundingSphere::GenerateCentroid(points);
-//		pDDrawer_->AddSphere(sphere_.Transformed(*pTrans_), yellow);
-//		break;
-//	case Mesh::BVType::BV_SPHERE_RITTER:
-//		sphere_ = BoundingSphere::GenerateRitter(points);
-//		pDDrawer_->AddSphere(sphere_.Transformed(*pTrans_), yellow);
-//		break;
-//	case Mesh::BVType::BV_SPHERE_LARSSON:
-//		sphere_ = BoundingSphere::GenerateLarsson(points);
-//		pDDrawer_->AddSphere(sphere_.Transformed(*pTrans_), yellow);
-//		break;
-//	case Mesh::BVType::BV_SPHERE_PCA:
-//		sphere_ = BoundingSphere::GeneratePCA(points);
-//		pDDrawer_->AddSphere(sphere_.Transformed(*pTrans_), yellow);
-//		break;
-//	case Mesh::BVType::BV_ELLIPSOID_PCA:
-//		ellipse_ = BoundingEllipsoid::Generate(points);
-//		pDDrawer_->AddEllipse(ellipse_.Transformed(*pTrans_), h_, yellow);
-//		break;
-//	case Mesh::BVType::BV_OBB:
-//		obb_ = OBB::Generate(points);
-//		pDDrawer_->AddCube(obb_, yellow);
-//		break;
-//
-//	case Mesh::BVType::BV_NONE:
-//	default:
-//		break;
-//	}
-//}
-
 
 jeEnd

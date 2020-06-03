@@ -9,6 +9,7 @@ struct vec4
 {
 	// static members
 	static const vec4 zero;
+	static const vec4 one;
 
 	// public members
 	union

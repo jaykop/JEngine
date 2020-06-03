@@ -23,6 +23,7 @@ jeBegin
 class Shader {
 
 	friend class GLManager;
+	friend class GraphicSystem;
 	friend class AssetManager;
 
 	static std::vector<const char*> vsDirectory_;
@@ -44,10 +45,6 @@ public:
 private:
 
 	enum class Type { VERTEX, GEOMETRY, PIXEL };
-
-	friend class GLManager;
-	friend class GraphicSystem;
-	friend class AssetManager;
 
 	void create_shader(const char* file_path, Type type);
 	void combine_shaders();

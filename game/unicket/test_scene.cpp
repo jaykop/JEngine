@@ -5,8 +5,7 @@
 
 // components
 #include "camera.hpp"
-#include "renderer.hpp"
-#include "mesh.hpp"
+#include "sprite.hpp"
 #include "transform.hpp"
 
 jeBegin
@@ -27,8 +26,8 @@ void TestScene::initialize()
 
 	// testing 2d renderer 
 	Object* renderer_2d = ObjectManager::create_object("renderer_2d");
-	renderer_2d->add_component<Renderer>();
-	auto*  renderer = renderer_2d->get_component<Renderer>();
+	renderer_2d->add_component<Sprite>();
+	auto*  renderer = renderer_2d->get_component<Sprite>();
 	renderer->set_texture(AssetManager::get_texture("rect"));
 	auto* trans = renderer_2d->get_component<Transform>();
 	trans->scale.set(10, 10, 1.f);

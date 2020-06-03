@@ -5,6 +5,7 @@
 using namespace Math;
 
 const vec4 vec4::zero = vec4(0.0f, 0.0f, 0.0f, 0.0f);
+const vec4 vec4::one = vec4(1.0f, 1.0f, 1.0f, 1.0f);
 
 vec4::vec4(void)
 {

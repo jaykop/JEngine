@@ -5,6 +5,7 @@
 using namespace Math;
 
 const vec2 vec2::zero = vec2(0.0f, 0.0f);
+const vec2 vec2::one = vec2(1.0f, 1.0f);
 
 vec2::vec2(void)
 {

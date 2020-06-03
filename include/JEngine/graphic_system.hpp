@@ -29,7 +29,11 @@ class GraphicSystem {
 
 	friend class Scene;
 	friend class Camera;
-	friend class Renderer;
+	friend class Sprite;
+	friend class Model;
+	friend class Light;
+	friend class Text;
+	friend class Emitter;
 
 	using Renderers = std::vector<Renderer*>;
 	using Cameras = std::vector<Camera*>;
@@ -47,8 +51,8 @@ private:
 	static void update(float dt);
 	static void close();
 
-	static void add_model(Renderer* model);
-	static void remove_model(Renderer* model);
+	static void add_renderer(Renderer* model);
+	static void remove_renderer(Renderer* model);
 
 	static void add_camera(Camera* camera);
 	static void remove_camera(Camera* camera);

@@ -16,7 +16,6 @@ Contains the methods of asset_manager class
 #include <debug_tools.hpp>
 #include <gl_manager.hpp>
 #include <shader.hpp>
-#include <text.hpp>
 #include <thread>
 #include <lodepng.h>
 #include <mesh.hpp>
@@ -24,8 +23,10 @@ Contains the methods of asset_manager class
 // component list
 #include <component_manager.hpp>
 #include <transform.hpp>
-#include <Renderer.hpp>
-#include <Camera.hpp>
+#include <model.hpp>
+#include <sprite.hpp>
+#include <text.hpp>
+#include <camera.hpp>
 
 jeBegin
 
@@ -46,9 +47,11 @@ bool AssetManager::set_bulit_in_components()
 	jeRegisterComponent(Transform);
 
 	// Graphic components
-	//jeCheckComponentRegistration(jeRegisterComponent(Text));
-	jeRegisterComponent(Renderer);
+	// jeRegisterComponent(Renderer);
+	jeRegisterComponent(Model);
+	jeRegisterComponent(Sprite);
 	jeRegisterComponent(Camera);
+	//jeCheckComponentRegistration(jeRegisterComponent(Text));
 	//jeCheckComponentRegistration(jeRegisterComponent(Emitter));
 	//jeCheckComponentRegistration(jeRegisterComponent(Light));
 	//jeCheckComponentRegistration(jeRegisterComponent(Material));

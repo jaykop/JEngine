@@ -9,7 +9,7 @@ jeBegin
 class Animation2D : public Component
 {
     jeBaseFriends(Animation2D);
-    friend class Renderer;
+    friend class Sprite;
     friend class GraphicSystem;
 
 public:

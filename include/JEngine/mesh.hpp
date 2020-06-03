@@ -13,7 +13,8 @@ class HalfEdgeMesh;
 
 class Mesh
 {
-	friend class Renderer;
+	friend class Sprite;
+	friend class Model;
 	friend class AssetManager; 
 	friend class DebugDrawer;
 

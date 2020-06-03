@@ -41,6 +41,7 @@
     <ClCompile Include="..\..\src\mat4.cpp" />
     <ClCompile Include="..\..\src\mat4_transform.cpp" />
     <ClCompile Include="..\..\src\mesh.cpp" />
+    <ClCompile Include="..\..\src\model.cpp" />
     <ClCompile Include="..\..\src\obj_loader.cpp" />
     <ClCompile Include="..\..\src\quat.cpp" />
     <ClCompile Include="..\..\src\renderer.cpp" />
@@ -53,6 +54,7 @@
     <ClCompile Include="..\..\src\scene_manager.cpp" />
     <ClCompile Include="..\..\src\shader.cpp" />
     <ClCompile Include="..\..\src\sound_system.cpp" />
+    <ClCompile Include="..\..\src\sprite.cpp" />
     <ClCompile Include="..\..\src\text.cpp" />
     <ClCompile Include="..\..\src\timer.cpp" />
     <ClCompile Include="..\..\src\transform.cpp" />
@@ -89,6 +91,7 @@
     <ClInclude Include="..\..\include\JEngine\mat4.hpp" />
     <ClInclude Include="..\..\include\JEngine\math_util.hpp" />
     <ClInclude Include="..\..\include\JEngine\mesh.hpp" />
+    <ClInclude Include="..\..\include\JEngine\model.hpp" />
     <ClInclude Include="..\..\include\JEngine\quat.hpp" />
     <ClInclude Include="..\..\include\JEngine\renderer.hpp" />
     <ClInclude Include="..\..\include\JEngine\object.hpp" />
@@ -99,6 +102,7 @@
     <ClInclude Include="..\..\include\JEngine\scene_manager.hpp" />
     <ClInclude Include="..\..\include\JEngine\shader.hpp" />
     <ClInclude Include="..\..\include\JEngine\sound_system.hpp" />
+    <ClInclude Include="..\..\include\JEngine\sprite.hpp" />
     <ClInclude Include="..\..\include\JEngine\text.hpp" />
     <ClInclude Include="..\..\include\JEngine\texture.hpp" />
     <ClInclude Include="..\..\include\JEngine\timer.hpp" />

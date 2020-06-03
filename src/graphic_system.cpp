@@ -63,7 +63,9 @@ void GraphicSystem::update(float /*dt*/) {
 		mainCamera_->near_, mainCamera_->far_);
 
 	for (auto& r : renderers_) {
-		r->draw(mainCamera_, perspective_, resolutionScaler_);
+		r->start_draw(mainCamera_, perspective_, resolutionScaler_);
+		r->draw();
+		r->end_draw();
 	}
 
 }
@@ -80,7 +82,7 @@ void GraphicSystem::render()
 {
 }
 
-void GraphicSystem::add_model(Renderer* model) {
+void GraphicSystem::add_renderer(Renderer* model) {
 	renderers_.emplace_back(model);
 }
 
@@ -88,7 +90,7 @@ void GraphicSystem::add_camera(Camera* camera) {
 	cameras_.emplace_back(camera);
 }
 
-void GraphicSystem::remove_model(Renderer* model) {
+void GraphicSystem::remove_renderer(Renderer* model) {
 	renderers_.erase(std::remove(renderers_.begin(), renderers_.end(), model), renderers_.end());
 }
 
