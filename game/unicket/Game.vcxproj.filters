@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="game_logics">
+      <UniqueIdentifier>{4da742a1-5037-4741-b71f-f950a1dbc2f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="provided">
+      <UniqueIdentifier>{f0c96a1f-2208-4215-aafd-3ae77cdf2173}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="game_scene">
+      <UniqueIdentifier>{fc988d25-50f8-41da-8711-f0302ae131c4}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="JEngine.h">
+      <Filter>provided</Filter>
+    </ClInclude>
+    <ClInclude Include="game_logics.h">
+      <Filter>provided</Filter>
+    </ClInclude>
+    <ClInclude Include="test_scene.h">
+      <Filter>game_scene</Filter>
+    </ClInclude>
+    <ClInclude Include="game_scenes.h">
+      <Filter>provided</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>provided</Filter>
+    </ClInclude>
+    <ClInclude Include="scene_controller.h">
+      <Filter>game_logics</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>provided</Filter>
+    </ClCompile>
+    <ClCompile Include="JEngine.cpp">
+      <Filter>provided</Filter>
+    </ClCompile>
+    <ClCompile Include="test_scene.cpp">
+      <Filter>game_scene</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_controller.cpp">
+      <Filter>game_logics</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

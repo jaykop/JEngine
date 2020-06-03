@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\include\lodepng\lodepng.cpp" />
+    <ClCompile Include="..\..\include\lodepng\lodepng_util.cpp" />
+    <ClCompile Include="..\..\src\animation_2d.cpp" />
+    <ClCompile Include="..\..\src\application.cpp" />
+    <ClCompile Include="..\..\src\asset_manager.cpp" />
+    <ClCompile Include="..\..\src\behavior.cpp" />
+    <ClCompile Include="..\..\src\behavior_system.cpp" />
+    <ClCompile Include="..\..\src\camera.cpp" />
+    <ClCompile Include="..\..\src\component_manager.cpp" />
+    <ClCompile Include="..\..\src\debug_drawer.cpp" />
+    <ClCompile Include="..\..\src\debug_tools.cpp" />
+    <ClCompile Include="..\..\src\eigen.cpp" />
+    <ClCompile Include="..\..\src\emitter.cpp" />
+    <ClCompile Include="..\..\src\gl_manager.cpp" />
+    <ClCompile Include="..\..\src\graphic_pipeline.cpp" />
+    <ClCompile Include="..\..\src\graphic_system.cpp" />
+    <ClCompile Include="..\..\src\input_handler.cpp" />
+    <ClCompile Include="..\..\src\json_parser.cpp" />
+    <ClCompile Include="..\..\src\mat3.cpp" />
+    <ClCompile Include="..\..\src\mat4.cpp" />
+    <ClCompile Include="..\..\src\mat4_transform.cpp" />
+    <ClCompile Include="..\..\src\mesh.cpp" />
+    <ClCompile Include="..\..\src\obj_loader.cpp" />
+    <ClCompile Include="..\..\src\quat.cpp" />
+    <ClCompile Include="..\..\src\renderer.cpp" />
+    <ClCompile Include="..\..\src\object.cpp" />
+    <ClCompile Include="..\..\src\object_manager.cpp" />
+    <ClCompile Include="..\..\src\physics_system.cpp" />
+    <ClCompile Include="..\..\src\random.cpp" />
+    <ClCompile Include="..\..\src\scene.cpp" />
+    <ClCompile Include="..\..\src\scene_controller.cpp" />
+    <ClCompile Include="..\..\src\scene_manager.cpp" />
+    <ClCompile Include="..\..\src\shader.cpp" />
+    <ClCompile Include="..\..\src\sound_system.cpp" />
+    <ClCompile Include="..\..\src\text.cpp" />
+    <ClCompile Include="..\..\src\timer.cpp" />
+    <ClCompile Include="..\..\src\transform.cpp" />
+    <ClCompile Include="..\..\src\vec2.cpp" />
+    <ClCompile Include="..\..\src\vec3.cpp" />
+    <ClCompile Include="..\..\src\vec4.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\include\JEngine\animation_2d.hpp" />
+    <ClInclude Include="..\..\include\JEngine\application.hpp" />
+    <ClInclude Include="..\..\include\JEngine\asset_manager.hpp" />
+    <ClInclude Include="..\..\include\JEngine\behavior.hpp" />
+    <ClInclude Include="..\..\include\JEngine\behavior_system.hpp" />
+    <ClInclude Include="..\..\include\JEngine\camera.hpp" />
+    <ClInclude Include="..\..\include\JEngine\colors.hpp" />
+    <ClInclude Include="..\..\include\JEngine\component.hpp" />
+    <ClInclude Include="..\..\include\JEngine\component_builder.hpp" />
+    <ClInclude Include="..\..\include\JEngine\component_manager.hpp" />
+    <ClInclude Include="..\..\include\JEngine\debug_drawer.hpp" />
+    <ClInclude Include="..\..\include\JEngine\debug_tools.hpp" />
+    <ClInclude Include="..\..\include\JEngine\eigen.hpp" />
+    <ClInclude Include="..\..\include\JEngine\emitter.hpp" />
+    <ClInclude Include="..\..\include\JEngine\face.hpp" />
+    <ClInclude Include="..\..\include\JEngine\gl_manager.hpp" />
+    <ClInclude Include="..\..\include\JEngine\graphic_system.hpp" />
+    <ClInclude Include="..\..\include\JEngine\half_edge.hpp" />
+    <ClInclude Include="..\..\include\JEngine\half_edge_mesh.hpp" />
+    <ClInclude Include="..\..\include\JEngine\half_edge_vertex.hpp" />
+    <ClInclude Include="..\..\include\JEngine\input_handler.hpp" />
+    <ClInclude Include="..\..\include\JEngine\json_parser.hpp" />
+    <ClInclude Include="..\..\include\JEngine\key_map.hpp" />
+    <ClInclude Include="..\..\include\JEngine\macros.hpp" />
+    <ClInclude Include="..\..\include\JEngine\mat3.hpp" />
+    <ClInclude Include="..\..\include\JEngine\mat4.hpp" />
+    <ClInclude Include="..\..\include\JEngine\math_util.hpp" />
+    <ClInclude Include="..\..\include\JEngine\mesh.hpp" />
+    <ClInclude Include="..\..\include\JEngine\obj_loader.hpp" />
+    <ClInclude Include="..\..\include\JEngine\quat.hpp" />
+    <ClInclude Include="..\..\include\JEngine\renderer.hpp" />
+    <ClInclude Include="..\..\include\JEngine\object.hpp" />
+    <ClInclude Include="..\..\include\JEngine\object_manager.hpp" />
+    <ClInclude Include="..\..\include\JEngine\physics_system.hpp" />
+    <ClInclude Include="..\..\include\JEngine\random.hpp" />
+    <ClInclude Include="..\..\include\JEngine\scene.hpp" />
+    <ClInclude Include="..\..\include\JEngine\scene_manager.hpp" />
+    <ClInclude Include="..\..\include\JEngine\shader.hpp" />
+    <ClInclude Include="..\..\include\JEngine\sound_system.hpp" />
+    <ClInclude Include="..\..\include\JEngine\text.hpp" />
+    <ClInclude Include="..\..\include\JEngine\texture.hpp" />
+    <ClInclude Include="..\..\include\JEngine\timer.hpp" />
+    <ClInclude Include="..\..\include\JEngine\transform.hpp" />
+    <ClInclude Include="..\..\include\JEngine\vec2.hpp" />
+    <ClInclude Include="..\..\include\JEngine\vec3.hpp" />
+    <ClInclude Include="..\..\include\JEngine\vec4.hpp" />
+    <ClInclude Include="..\..\include\JEngine\vertex.hpp" />
+    <ClInclude Include="..\..\include\lodepng\lodepng.h" />
+    <ClInclude Include="..\..\include\lodepng\lodepng_util.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\JEngine\component_manager.inl" />
+    <None Include="..\..\include\JEngine\object.inl" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>15.0</VCProjectVersion>
+    <ProjectGuid>{51D36CA1-1DAA-44C3-896B-86690F8BC886}</ProjectGuid>
+    <RootNamespace>JEngine</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <TargetExt>.lib</TargetExt>
+    <TargetName>JEngine_d</TargetName>
+    <OutDir>$(SolutionDir)..\..\lib\$(ProjectName)\$(Configuration)\$(Platform)\</OutDir>
+    <IntDir>$(SolutionDir)..\..\temp\$(ProjectName)\$(Configuration)\$(Platform)\</IntDir>
+    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <TargetExt>.lib</TargetExt>
+    <TargetName>JEngine</TargetName>
+    <OutDir>$(SolutionDir)..\..\lib\$(ProjectName)\$(Configuration)\$(Platform)\</OutDir>
+    <IntDir>$(SolutionDir)..\..\temp\$(ProjectName)\$(Configuration)\$(Platform)\</IntDir>
+    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <TargetExt>.lib</TargetExt>
+    <TargetName>JEngine_d</TargetName>
+    <OutDir>$(SolutionDir)..\..\lib\$(ProjectName)\$(Configuration)\$(Platform)\</OutDir>
+    <IntDir>$(SolutionDir)..\..\temp\$(ProjectName)\$(Configuration)\$(Platform)\</IntDir>
+    <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <TargetExt>.lib</TargetExt>
+    <TargetName>JEngine</TargetName>
+    <OutDir>$(SolutionDir)..\..\lib\$(ProjectName)\$(Configuration)\$(Platform)\</OutDir>
+    <IntDir>$(SolutionDir)..\..\temp\$(ProjectName)\$(Configuration)\$(Platform)\</IntDir>
+    <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\include\JEngine;$(SolutionDir)..\..\include\GL;$(SolutionDir)..\..\include\rapidjson;$(SolutionDir)..\..\include\imgui;$(SolutionDir)..\..\include\SDL2;$(SolutionDir)..\..\include\lodePNG;$(SolutionDir)..\..\include\freetype2;$(SolutionDir)..\..\include\assimp;$(SolutionDir)..\..\include\stb_image;$(SolutionDir)..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\include\JEngine;$(SolutionDir)..\..\include\GL;$(SolutionDir)..\..\include\rapidjson;$(SolutionDir)..\..\include\imgui;$(SolutionDir)..\..\include\SDL2;$(SolutionDir)..\..\include\lodePNG;$(SolutionDir)..\..\include\freetype2;$(SolutionDir)..\..\include\assimp;$(SolutionDir)..\..\include\stb_image;$(SolutionDir)..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\include\JEngine;$(SolutionDir)..\..\include\GL;$(SolutionDir)..\..\include\rapidjson;$(SolutionDir)..\..\include\imgui;$(SolutionDir)..\..\include\SDL2;$(SolutionDir)..\..\include\lodePNG;$(SolutionDir)..\..\include\freetype2;$(SolutionDir)..\..\include\assimp;$(SolutionDir)..\..\include\stb_image;$(SolutionDir)..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\include\JEngine;$(SolutionDir)..\..\include\GL;$(SolutionDir)..\..\include\rapidjson;$(SolutionDir)..\..\include\imgui;$(SolutionDir)..\..\include\SDL2;$(SolutionDir)..\..\include\lodePNG;$(SolutionDir)..\..\include\freetype2;$(SolutionDir)..\..\include\assimp;$(SolutionDir)..\..\include\stb_image;$(SolutionDir)..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

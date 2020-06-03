@@ -1,0 +1,46 @@
+{
+	"Font" : [
+		{"Key" : "Default", 
+			"Directory" : "../resource/font/Default.ttf",
+			"Size" : 48, 									
+			"Additional": [[44032, 55215]]},				
+		
+		{"Key" : "JKDot", 
+			"Directory" : "../resource/font/JKDot.ttf",
+			"Size" : 48}
+	],
+	
+	"Texture" : [
+
+		{"Key" : "rect", 			"Directory" : "../resource/texture/rect.png"},
+		{"Key" : "circle", 			"Directory" : "../resource/texture/circle.png"},
+		{"Key" : "testTexture", 	"Directory" : "../resource/texture/images.png"},
+		{"Key" : "uvtemplate", 		"Directory" : "../resource/texture/uvtemplate.png"},
+		{"Key" : "fire", 			"Directory" : "../resource/texture/fire.png"},
+		{"Key" : "smoke", 			"Directory" : "../resource/texture/smoke.png"},
+		{"Key" : "particle", 		"Directory" : "../resource/texture/particle.png"},
+		{"Key" : "skybox", 			"Directory" : "../resource/texture/skybox.png"},
+		{"Key" : "testAnimation", 	"Directory" : "../resource/texture/testAnimation.png"},
+		{"Key" : "miner", 			"Directory" : "../resource/texture/Miner.png"},
+		{"Key" : "wife", 			"Directory" : "../resource/texture/Wife.png"},
+		{"Key" : "bully", 			"Directory" : "../resource/texture/Bully.png"},
+		{"Key" : "arrow", 			"Directory" : "../resource/texture/Arrow.png"},
+		{"Key" : "crosshair",		"Directory" : "../resource/texture/Crosshair.png"},
+		{"Key" : "circle_line",		"Directory" : "../resource/texture/circle_line.png"},
+		{"Key" : "box_line",		"Directory" : "../resource/texture/box_line.png"},
+		{"Key" : "ground",			"Directory" : "../resource/texture/ground.png"},
+		{"Key" : "whale",			"Directory" : "../resource/texture/Narwhal_BaseColor.png"},
+		{"Key" : "cyborg_diffuse",	"Directory" : "../resource/texture/cyborg_diffuse.png"},
+		{"Key" : "monkey",			"Directory" : "../resource/texture/monkey.png"},
+		{"Key" : "earth_ball",		"Directory" : "../resource/texture/earth_ball.png"},
+		{"Key" : "tetrahedron",		"Directory" : "../resource/texture/Tetrahedron.png"}
+		
+	]
+	
+	"Audio" : [
+
+		{"Key" : "soundEffect", 	"Directory" : "../resource/audio/se_sample.mp3"},
+		{"Key" : "backgorunMusic", 	"Directory" : "../resource/audio/bgm_sample.mp3"}
+	]
+	
+}

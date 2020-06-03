@@ -1,0 +1,120 @@
+{
+
+	"Background" : [ 0.5, 0.5, 0.5, 0.5 ],
+	"Screen" : [ 1.0, 1.0, 1.0, 1.0 ],
+	"Effect" : { "Type" : "None" },
+	"Object" : [
+		{
+			"Name" : "Camera",
+			"Component" : [
+				{
+					"Type": "Camera",
+					"Values": {"Position" : [0, 0, 100], "Target" : [0, 0, 0],
+						"Up" : [0, 1, 0]}
+				}
+			]
+		},	
+		{
+			"Name" : "Particle",
+			"Component" : [
+				{
+					"Type": "Transform",
+					"Values": {"Position" : [-25, 0, 0], "Scale" : [2.5, 2.5, 2.5]}
+				},
+				{
+					"Type": "Emitter",
+					"Values": {
+						"Mesh" : [
+							{	
+								"Shape" : "Rect",
+								"Texture" : [ "smoke" ]
+							}
+						],
+						"Projection" : "Perspective", "Life" : 1.0, "Velocity" : [15, 15, 0], 
+						"Quantity" : 100, "Direction" : [0, 0, 0], "StartColor" : [1, 1, 1], "EndColor" : [0, 0, 1]
+					}
+				}
+			]
+		},
+		{
+			"Name" : "PointParticle",
+			"Component" : [
+				{
+					"Type": "Transform",
+					"Values": {"Position" : [0, 0, 0], "Scale" : [2.5, 2.5, 2.5]}
+				},
+				{
+					"Type": "Emitter",
+					"Values": {
+						"Mesh" : [
+							{	
+								"Shape" : "Point",
+								"Texture" : [ "rect" ]
+							}
+						],
+
+						"Projection" : "Perspective", "Life" : 1.0, "Velocity" : [15, 15, 0], 
+						"Quantity" : 100, "Direction" : [0, 0, 0], "StartColor" : [1, 1, 1],
+						"EndColor" : [0, 0, 1], "Bilboard" : true, "DrawMode" : "Points", "PointSize" : 1
+					}
+				}
+			]
+		},
+		{
+			"Name" : "Rain",
+			"Component" : [
+				{
+					"Type": "Transform",
+					"Values": {"Position" : [0, 40, 0], "Scale" : [5, 5, 5]}
+				},
+				{
+					"Type": "Emitter",
+					"Values": {
+						"Mesh" : [
+							{	
+								"Shape" : "Rect",
+								"Texture" : [ "rect" ]
+							}
+						],
+
+						"Type" : "Wide", "Projection" : "Perspective", "Life" : 1, "Velocity" : [15, 15, 0], 
+						"Quantity" : 100, "Range" : [100, 10, 0], "StartColor" : [1, 1, 1], 
+						"EndColor" : [0, 0, 1], "RotationSpeed" : 1, "Bilboard" : true, "Direction" : [0, -1, 0]
+					}
+				}
+			]
+		},
+		{
+			"Name" : "Explosion",
+			"Component" : [
+				{
+					"Type": "Transform",
+					"Values": {"Position" : [25, 0, 0], "Scale" : [5, 5, 5]}
+				},
+				{
+					"Type": "Emitter",
+					"Values": {
+						"Mesh" : [
+							{	
+								"Shape" : "Rect",
+								"Texture" : [ "particle" ]
+							}
+						],
+
+						"Type" : "Explosion", "Projection" : "Perspective", "Life" : 0.25, 
+						"Velocity" : [60, 60, 0], "Quantity" : 100, "StartColor" : [1, 1, 1], "EndColor" : [0, 0, 1]
+					}
+				}
+			]
+		},
+		{
+			"Name" : "LevelController",
+			"Component" : [
+				{
+					"Type": "LevelController",
+					"Values": {}
+				}
+			]
+		}
+	]
+}

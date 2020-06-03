@@ -1,0 +1,9 @@
+{
+	"FirstScene" : "level1",
+	
+	"Scene" : [
+		{"Key" : "level1", 	"Directory" : "../resource/scene/level1.json"},
+		{"Key" : "level2", 	"Directory" : "../resource/scene/level2.json"},
+		{"Key" : "level3", 	"Directory" : "../resource/scene/level3.json"}
+	]
+}

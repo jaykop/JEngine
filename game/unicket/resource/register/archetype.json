@@ -1,0 +1,5 @@
+{
+	"Archetype" : [
+		{"Key" : "Cube", 	"Directory" : "../resource/archetype/cube.json"}
+	]
+}
