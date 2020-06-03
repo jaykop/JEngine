@@ -15,6 +15,7 @@ Contains the methods of GLManager class
 #include <debug_tools.hpp>
 #include <shader.hpp>
 #include <SDL_events.h>
+#include <mesh.hpp>
 
 jeBegin
 
@@ -59,6 +60,7 @@ void GLManager::initialize(float w, float h)
 	jeDebugPrint("*GLManager - Maximum number of vertex attributes supported: %d\n", attributes_);
 
 	initialize_shaders();
+	Mesh::initialize_quad();
 }
 
 void GLManager::update(SDL_Window* window, const SDL_Event& event)
@@ -81,6 +83,7 @@ void GLManager::close()
 		delete shader_[i];
 
 	shader_.clear();
+	Mesh::remove_quad();
 }
 
 void GLManager::initialize_shaders()

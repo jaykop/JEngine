@@ -2,9 +2,9 @@
 #include <stb_image.h>
 #include <renderer.hpp>
 #include <graphic_system.hpp>
-#include <obj_loader.hpp>
 #include <gl_manager.hpp>
 #include <object.hpp>
+#include <asset_manager.hpp>
 
 #include <shader.hpp>
 #include <mesh.hpp>
@@ -55,7 +55,7 @@ Renderer::Renderer(Object* owner)
 void Renderer::set_mesh(const std::string& name)
 {
 	// get new mesh
-	Mesh* newMesh = ObjLoader::get_mesh(name.c_str());
+	Mesh* newMesh = AssetManager::get_mesh(name.c_str());
 
 	// add to the mesh
 	meshes_.emplace_back(newMesh);
@@ -148,7 +148,13 @@ void Renderer::draw(Camera* camera, const mat4& perspective, const vec3& resScal
 	glBlendFunc(sfactor, dfactor);
 
 	if (is2d)
-		draw_quad(/*meshes_[0]*/nullptr);
+	{
+		glBindVertexArray(Mesh::quadVAO);
+		glBindTexture(GL_TEXTURE_2D, texture);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+		glBindVertexArray(0);
+		glBindTexture(GL_TEXTURE_2D, 0);
+	}
 
 	else {
 		// Update every mesh
@@ -170,7 +176,7 @@ void Renderer::run_animation()
 
 		if (animation_) {
 
-			glBindTexture(GL_TEXTURE_2D, m->texture_->id);
+			glBindTexture(GL_TEXTURE_2D, m->get_texture());
 
 			if (animation_->activated_) {
 
@@ -278,11 +284,7 @@ void Renderer::draw_normals()
 
 void Renderer::draw_quad(Mesh* m)
 {
-	glBindVertexArray(Mesh::quadVAO);
-	// glBindTexture(GL_TEXTURE_2D, m->texture_->id);
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
-	glBindVertexArray(0);
-	glBindTexture(GL_TEXTURE_2D, 0);
+
 }
 
 void Renderer::draw_debug_info()
@@ -290,6 +292,10 @@ void Renderer::draw_debug_info()
 	//pDDrawer_->render_lines(pShader, pTrans_->model_to_world());
 	//pDDrawer_->render_meshes(pShader);
 }
+
+void Renderer::set_texture(unsigned t) { texture = t; }
+
+unsigned Renderer::get_texture() const { return texture; }
 
 //
 //void Renderer::GenerateBV(void)

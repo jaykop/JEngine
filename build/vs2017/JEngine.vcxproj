@@ -89,7 +89,6 @@
     <ClInclude Include="..\..\include\JEngine\mat4.hpp" />
     <ClInclude Include="..\..\include\JEngine\math_util.hpp" />
     <ClInclude Include="..\..\include\JEngine\mesh.hpp" />
-    <ClInclude Include="..\..\include\JEngine\obj_loader.hpp" />
     <ClInclude Include="..\..\include\JEngine\quat.hpp" />
     <ClInclude Include="..\..\include\JEngine\renderer.hpp" />
     <ClInclude Include="..\..\include\JEngine\object.hpp" />

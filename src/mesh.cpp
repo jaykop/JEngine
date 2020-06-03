@@ -83,6 +83,10 @@ Mesh::~Mesh()
 	glDeleteBuffers(1, &fnVbo_);
 }
 
+void Mesh::set_texture(unsigned int texture_id) { texture_ = texture_id; }
+
+unsigned Mesh::get_texture() const {return texture_; }
+
 unsigned Mesh::get_point_count() const { return unsigned(points_.size()); }
 
 unsigned Mesh::get_indice_count() const { return unsigned(indices_.size()); }

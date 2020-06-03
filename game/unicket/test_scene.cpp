@@ -6,6 +6,7 @@
 // components
 #include "camera.hpp"
 #include "renderer.hpp"
+#include "mesh.hpp"
 #include "transform.hpp"
 
 jeBegin
@@ -15,8 +16,8 @@ void TestScene::initialize()
 	// add camera
 	Object* mainCamera = ObjectManager::create_object("main_camera");
 	mainCamera->add_component<Camera>();
-	mainCamera->get_component<Camera>()->target_ = vec3::zero + vec3(0.f, 0.f, -1.f);
-	mainCamera->get_component<Camera>()->position_ = vec3::zero;
+	mainCamera->get_component<Camera>()->target_ = vec3::zero + vec3(0.f, 0.f, 0.f);
+	mainCamera->get_component<Camera>()->position_ = vec3::zero + vec3(0.f, 0.f, 100.f);
 	register_object(mainCamera);
 
 	// scene controller
@@ -27,7 +28,10 @@ void TestScene::initialize()
 	// testing 2d renderer 
 	Object* renderer_2d = ObjectManager::create_object("renderer_2d");
 	renderer_2d->add_component<Renderer>();
-	renderer_2d->get_component<Renderer>();
+	auto*  renderer = renderer_2d->get_component<Renderer>();
+	renderer->set_texture(AssetManager::get_texture("rect"));
+	auto* trans = renderer_2d->get_component<Transform>();
+	trans->scale.set(10, 10, 1.f);
 	register_object(renderer_2d);
 
 	// set screen color

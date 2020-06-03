@@ -30,7 +30,6 @@ void JsonParser::read_file(const char* directory)
 #else
 	document_.ParseStream(toInputStream);
 #endif // DEBUG
-
 }
 
 const rapidjson::Document& JsonParser::get_document() { return document_; }

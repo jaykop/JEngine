@@ -13,8 +13,8 @@ class HalfEdgeMesh;
 
 class Mesh
 {
-	friend class ObjLoader;
 	friend class Renderer;
+	friend class AssetManager; 
 	friend class DebugDrawer;
 
 	typedef std::vector<Vertex> Vertices;
@@ -30,6 +30,12 @@ public:
 		BV_ELLIPSOID_PCA
 	};
 
+	static void points_along_direction(const vec3& dir, const std::vector<vec3>& vertices,
+		int& min_index, int& max_index);
+	void initialize(const Vertices& vertices, const Indices& indices);
+
+protected:
+
 	static BVType bvType_;
 	static unsigned quadVAO, quadVBO, quadEBO;
 	Transform* transform = nullptr;
@@ -43,12 +49,6 @@ public:
 	std::vector<Vertex> vertex, vertexNormalsDraw, faceNormalsDraw;
 	std::string key;
 
-	static void points_along_direction(const vec3& dir, const std::vector<vec3>& vertices,
-		int& min_index, int& max_index);
-	void initialize(const Vertices& vertices, const Indices& indices);
-
-protected:
-
 	unsigned vao_, vbo_, ebo_, 
 		vnVao_, vnVbo_, fnVao_, fnVbo_;
 
@@ -57,7 +57,7 @@ protected:
 		faceNormals_, vertexNormals_, 
 		centers_, vPoints_;
 
-	Texture* texture_;
+	unsigned texture_;
 
 public:
 
@@ -86,6 +86,8 @@ public:
 	unsigned get_indice(unsigned index) const;
 	unsigned get_indice_count() const;
 
+	void set_texture(unsigned int texture_id);
+	unsigned get_texture() const;
 };
 
 jeEnd

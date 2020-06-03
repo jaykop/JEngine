@@ -232,9 +232,6 @@
     <ClInclude Include="..\..\include\JEngine\mesh.hpp">
       <Filter>system\graphics</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\obj_loader.hpp">
-      <Filter>core\asset</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\JEngine\texture.hpp">
       <Filter>system\graphics</Filter>
     </ClInclude>

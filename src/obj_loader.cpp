@@ -1,4 +1,3 @@
-#include <obj_loader.hpp>
 #include <fstream>
 #include <sstream>
 #include <mesh.hpp>
@@ -16,15 +15,15 @@ static const unsigned max_unsinged = (std::numeric_limits<unsigned>::max)();
 //static const vec3 vnormColor = Color::red;
 //static const vec3 fnormColor = Color::blue;
 
-std::string ObjLoader::key;
-ObjLoader::MeshList ObjLoader::meshList;
-vec3 ObjLoader::maxPoint, ObjLoader::minPoint;
+std::string AssetManager::key;
+AssetManager::MeshMap AssetManager::meshMap_;
+vec3 AssetManager::maxPoint, AssetManager::minPoint;
 
-bool ObjLoader::load(const char* path)
+bool AssetManager::load_obj(const char* path)
 {
 	std::string parsed_key = parse_name(path);
 
-	if (meshList.find(parsed_key) == meshList.end()) {
+	if (meshMap_.find(parsed_key) == meshMap_.end()) {
 
 		std::ifstream obj(path, std::ios::in);
 		std::stringstream buffer;
@@ -46,23 +45,23 @@ bool ObjLoader::load(const char* path)
 		calculate_normals(&newMesh);
 		Mesh::describe_mesh_attribs(newMesh);
 
-		meshList.insert({ parsed_key, newMesh });
+		meshMap_.insert({ parsed_key, newMesh });
 	}
 
 	key = parsed_key;
 	return true;
 }
 
-Mesh* ObjLoader::get_mesh(const char* name)
+Mesh* AssetManager::get_mesh(const char* name)
 {
-	auto found = meshList.find(name);
-	if (found != meshList.end())
+	auto found = meshMap_.find(name);
+	if (found != meshMap_.end())
 		return found->second;
 
 	return nullptr;
 }
 
-std::string ObjLoader::parse_name(const char* name)
+std::string AssetManager::parse_name(const char* name)
 {
 	std::string res;
 
@@ -79,15 +78,15 @@ std::string ObjLoader::parse_name(const char* name)
 	return res;
 }
 
-void ObjLoader::clear()
+void AssetManager::clear_meshes()
 {
-	for (auto& m : meshList) {
+	for (auto& m : meshMap_) {
 		delete m.second;
 		m.second = nullptr;
 	}
 }
 
-void ObjLoader::update_max_min(const vec3& v)
+void AssetManager::update_max_min(const vec3& v)
 {
 	if (v.x < minPoint.x)
 		minPoint.x = v.x;
@@ -105,7 +104,7 @@ void ObjLoader::update_max_min(const vec3& v)
 		maxPoint.z = v.z;
 }
 
-void ObjLoader::convert_mesh(Mesh** mesh)
+void AssetManager::convert_mesh(Mesh** mesh)
 {
 	// Assign the min and max
 	(*mesh)->min = minPoint;
@@ -147,7 +146,7 @@ void ObjLoader::convert_mesh(Mesh** mesh)
 	}
 }
 
-void ObjLoader::parse_vertex(const std::string& data, Mesh** mesh)
+void AssetManager::parse_vertex(const std::string& data, Mesh** mesh)
 {
 	// skip any leading white space
 	unsigned it = unsigned(data.find_first_not_of("\n\r\0 "));
@@ -169,7 +168,7 @@ void ObjLoader::parse_vertex(const std::string& data, Mesh** mesh)
 	}
 }
 
-void ObjLoader::read_vertex(const std::string& file_data, unsigned pos,
+void AssetManager::read_vertex(const std::string& file_data, unsigned pos,
 	std::vector<vec3>& points)
 {
 	vec3 p;
@@ -191,7 +190,7 @@ void ObjLoader::read_vertex(const std::string& file_data, unsigned pos,
 	points.push_back(p);
 }
 
-void ObjLoader::read_face(const std::string& file_data, unsigned pos,
+void AssetManager::read_face(const std::string& file_data, unsigned pos,
 	std::vector<unsigned>& indice, unsigned vertice_size)
 {
 	const char* c_data = file_data.c_str();
@@ -207,7 +206,7 @@ void ObjLoader::read_face(const std::string& file_data, unsigned pos,
 	indice.push_back(read_index(c_data + pos, vertice_size));
 }
 
-unsigned ObjLoader::read_index(const char* data, unsigned vertice_size)
+unsigned AssetManager::read_index(const char* data, unsigned vertice_size)
 {
 	int index = atoi(data);
 
@@ -218,7 +217,7 @@ unsigned ObjLoader::read_index(const char* data, unsigned vertice_size)
 	return unsigned(index - 1);
 }
 
-unsigned ObjLoader::get_next_elements(const std::string& file_data, unsigned pos)
+unsigned AssetManager::get_next_elements(const std::string& file_data, unsigned pos)
 {
 	// skip past current element
 	pos = unsigned(file_data.find_first_of(" ", pos));
@@ -227,7 +226,7 @@ unsigned ObjLoader::get_next_elements(const std::string& file_data, unsigned pos
 	return unsigned(file_data.find_first_not_of(" ", pos));
 }
 
-void ObjLoader::calculate_normals(Mesh** mesh)
+void AssetManager::calculate_normals(Mesh** mesh)
 {
 	std::vector<Vertex>& vertices = (*mesh)->vertex;
 	std::vector<Vertex>& fNormals = (*mesh)->faceNormalsDraw;
@@ -299,7 +298,7 @@ void ObjLoader::calculate_normals(Mesh** mesh)
 	}
 }
 
-vec3 ObjLoader::get_converted_position(
+vec3 AssetManager::get_converted_position(
 	const vec3& position, const vec3& centerOffset, float absMax)
 {
 	return position / absMax - centerOffset;

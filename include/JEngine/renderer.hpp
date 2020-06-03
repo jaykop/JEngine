@@ -43,6 +43,9 @@ public:
 	void set_mesh(const std::string& name);
 	const Meshes& get_meshes(void) const;
 
+	void set_texture(unsigned t);
+	unsigned get_texture() const;
+
 	virtual void draw(Camera* camera, const mat4& perspective, const vec3& resScalar);
 	void draw_normals();
 	void run_animation();
@@ -65,7 +68,7 @@ public:
 
 	vec4 color;
 	ProjectType prjType;
-	unsigned sfactor, dfactor;
+	unsigned sfactor, dfactor, texture;
 
 	static RenderType renderType_;
 

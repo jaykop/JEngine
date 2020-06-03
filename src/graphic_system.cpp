@@ -63,7 +63,6 @@ void GraphicSystem::update(float /*dt*/) {
 		mainCamera_->near_, mainCamera_->far_);
 
 	for (auto& r : renderers_) {
-		
 		r->draw(mainCamera_, perspective_, resolutionScaler_);
 	}
 

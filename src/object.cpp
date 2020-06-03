@@ -11,7 +11,7 @@ Contains the methods of Object class
 /******************************************************************************/
 
 #include <object.hpp>
-#include <transform.hpp>
+#include <component.hpp>
 #include <debug_tools.hpp>
 #include <object_manager.hpp>
 #include <component_manager.hpp>
@@ -22,10 +22,6 @@ Object::Object(const char* name)
 	:name_(name), active_(true), parent_(nullptr)
 {
 	id_ = ObjectManager::assign_id();
-
-	// automatically add transform component
-	// todo: change this to const char later!
-	add_component<Transform>();
 }
 
 Object::~Object()
