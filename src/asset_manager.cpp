@@ -27,6 +27,7 @@ Contains the methods of asset_manager class
 #include <sprite.hpp>
 #include <text.hpp>
 #include <camera.hpp>
+#include <animation_2d.hpp>
 
 jeBegin
 
@@ -51,11 +52,11 @@ bool AssetManager::set_bulit_in_components()
 	jeRegisterComponent(Model);
 	jeRegisterComponent(Sprite);
 	jeRegisterComponent(Camera);
+	jeRegisterComponent(Animation2D);
 	//jeCheckComponentRegistration(jeRegisterComponent(Text));
 	//jeCheckComponentRegistration(jeRegisterComponent(Emitter));
 	//jeCheckComponentRegistration(jeRegisterComponent(Light));
 	//jeCheckComponentRegistration(jeRegisterComponent(Material));
-	//jeCheckComponentRegistration(jeRegisterComponent(Animation));
 
 	return false;
 }
@@ -112,7 +113,7 @@ void AssetManager::load_assets()
 
 	// Register images to gpu
 	for (auto it : images_)
-		register_image(it.second, it.first);
+		register_image(it.second, it.first.c_str());
 
 	// Load font
 	//for (rapidjson::SizeType i = 0; i < fontSize; ++i) {

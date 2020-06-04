@@ -12,9 +12,6 @@ Animation2D::Animation2D(Object* owner)
 {
 	if (owner->has_component<Sprite>())
 		owner->get_component<Sprite>()->animation_ = this;
-
-	else
-		jeDebugPrint("!Animation - This object has no renderer componnet: %s\n", owner->get_name());
 }
 
 Animation2D::~Animation2D() {
@@ -37,8 +34,7 @@ void Animation2D::activate(bool toggle)
 
 void Animation2D::fix_frame(int thFrame)
 {
-	animationSpeed_ = 0.f;
-	activated_ = false;
+	realSpeed_ = animationSpeed_ = 0.f;
 	currentFrame_ = float(thFrame) * realFrame_;
 }
 

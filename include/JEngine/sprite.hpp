@@ -24,6 +24,8 @@ public:
 	void run_animation();
 
 	void draw() override;
+
+	vec4 color;
 	
 protected:
 
@@ -34,7 +36,6 @@ protected:
 private:
 
 	Animation2D* animation_ = nullptr;
-	vec4 color_;
 	unsigned texture_;
 };
 

@@ -4,6 +4,7 @@
 #include <animation_2d.hpp>
 #include <graphic_system.hpp>
 #include <gl_manager.hpp>
+#include <object.hpp>
 
 jeBegin
 
@@ -11,8 +12,13 @@ jeDefineComponentBuilder(Sprite);
 
 Sprite::Sprite(Object* owner)
 	: Renderer(owner), animation_ (nullptr),
-	color_(vec4::one), texture_(0)
-{}
+	color(vec4::one), texture_(0)
+{
+	if (!owner->has_component<Animation2D>())
+		owner->add_component<Animation2D>();
+
+	animation_ = owner->get_component<Animation2D>();
+}
 
 void Sprite::add_to_system() {
 	GraphicSystem::add_renderer(this);
@@ -32,7 +38,7 @@ void Sprite::draw()
 
 	Shader* shader = GLManager::shader_[GLManager::Pipeline::NORMAL];
 	shader->use();
-	shader->set_vec4("v4_color", color_);
+	shader->set_vec4("v4_color", color);
 
 	glBindVertexArray(Mesh::quadVAO);
 	glBindTexture(GL_TEXTURE_2D, texture_);
@@ -55,7 +61,7 @@ void Sprite::run_animation()
 
 			float realSpeed = animation_->realSpeed_;
 
-			if (realSpeed <= animation_->timer_.get_elapsed_time()) {
+			if (realSpeed && realSpeed <= animation_->timer_.get_elapsed_time()) {
 
 				float nextFrame = animation_->currentFrame_;
 				float realFrame = animation_->realFrame_;
@@ -80,12 +86,10 @@ void Sprite::run_animation()
 		Shader* shader = GLManager::shader_[GLManager::Pipeline::NORMAL];
 		shader->use();
 
-		shader->set_vec4("v4_color", color_);
 		shader->set_bool("boolean_flip", (status_ & IS_FLIPPED) == IS_FLIPPED);
 		shader->set_matrix("m4_aniScale", mat4::scale(animation_->scale_));
 		shader->set_matrix("m4_aniTranslate", mat4::translate(animation_->translate_));
 	}
-	
 }
 
 jeEnd

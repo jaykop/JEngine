@@ -54,7 +54,6 @@ void main() {
 	Transforming(newPosition, model);
 	Mapping(newPosition, newTexCoord);
 	SendToFrag(newPosition, newTexCoord, model);
-
 }
 
 ////////////////////////////

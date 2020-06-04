@@ -30,6 +30,9 @@
     <ClInclude Include="scene_controller.h">
       <Filter>game_logics</Filter>
     </ClInclude>
+    <ClInclude Include="topdown_controller.h">
+      <Filter>game_logics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -42,6 +45,9 @@
       <Filter>game_scene</Filter>
     </ClCompile>
     <ClCompile Include="scene_controller.cpp">
+      <Filter>game_logics</Filter>
+    </ClCompile>
+    <ClCompile Include="topdown_controller.cpp">
       <Filter>game_logics</Filter>
     </ClCompile>
   </ItemGroup>

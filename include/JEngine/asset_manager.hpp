@@ -49,7 +49,7 @@ class AssetManager {
 		unsigned handle, width, height;
 	};
 
-	using Images = std::unordered_map<const char*, AssetManager::Image>;
+	using Images = std::unordered_map<std::string, AssetManager::Image>;
 
 public:
 
@@ -83,7 +83,7 @@ private:
 	static void unload_assets();
 
 	static unsigned char* pixel_chunk;
-	static std::unordered_map<const char*, Image> images_;
+	static Images images_;
 
 	static FontMap		fontMap_;
 	static AudioMap		audioMap_;

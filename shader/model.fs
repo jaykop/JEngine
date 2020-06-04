@@ -76,9 +76,9 @@ void main() {
 	
 	// Unless..
 	else
-		finalTexture = texture(Texture, v2_outTexCoord)* v4_color;
+		finalTexture = texture(Texture, v2_outTexCoord) * v4_color;
 	
-   if (finalTexture.a <= 0.0)
+	if (finalTexture.a <= 0.0)
 		discard;
 
 	v4_fragColor = finalTexture;
