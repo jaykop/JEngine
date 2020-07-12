@@ -29,15 +29,18 @@ void TestScene::initialize()
 	Object* renderer_2d = ObjectManager::create_object("renderer_2d");
 	renderer_2d->add_component<Sprite>();
 	renderer_2d->add_component<TopDownController>();
+
 	auto* renderer = renderer_2d->get_component<Sprite>();
 	// renderer->set_texture(AssetManager::get_texture("rect"));
 	renderer->set_texture(AssetManager::get_texture("testAnimation"));
-	renderer->color.set(1,1,1,1);
+	renderer->color.set(0,0,0,1); // black
+
 	auto* animation = renderer_2d->get_component<Animation2D>();
 	animation->activate(true);
 	animation->set_frame(8);
 	animation->set_speed(10.f);
 	// animation->fix_frame(0);
+
 	auto* trans = renderer_2d->get_component<Transform>();
 	trans->scale.set(25, 40, 0.f);
 	register_object(renderer_2d);

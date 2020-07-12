@@ -37,6 +37,7 @@ private:
 
 	Animation2D* animation_ = nullptr;
 	unsigned texture_;
+	// mesh here
 };
 
 jeDeclareComponentBuilder(Sprite);
