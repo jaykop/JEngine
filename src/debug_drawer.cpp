@@ -1,60 +1,51 @@
-//#include "math/math.h"
-//#include "math/quat.h"
-//#include "DebugDrawer.h"
-//#include "glad/glad.h"
-//#include "Shader.h"
-//#include "ObjLoader.h"
-//#include "math/Transform.h"
-//#include "Mesh.h"
-//#include "ColorList.h"
-//
-//#include "bounding_volumes/aabb.h"
-//#include "bounding_volumes/BoundingSphere.h"
-//#include "bounding_volumes/obb.h"
-//#include "bounding_volumes/BoundingEllipsoid.h"
-//
-//DebugDrawer::DebugDrawer(void)
-//{
-//	vertex_list_.clear();
-//	meshes_.clear();
-//
-//	glGenVertexArrays(1, &vao_);
-//	glGenBuffers(1, &vbo_);
-//	glBindVertexArray(vao_);
-//	glBindBuffer(GL_ARRAY_BUFFER, vbo_);
-//	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
-//		reinterpret_cast<void*>(offsetof(Vertex, Vertex::position)));
-//	glEnableVertexAttribArray(0);
-//	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
-//		reinterpret_cast<void*>(offsetof(Vertex, Vertex::normal)));
-//	glEnableVertexAttribArray(1);
-//	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
-//		reinterpret_cast<void*>(offsetof(Vertex, Vertex::color)));
-//	glEnableVertexAttribArray(2);
-//
-//	glBindVertexArray(0);
-//}
-//
-//DebugDrawer::~DebugDrawer(void)
-//{
-//	// destroy buffers
-//	glDeleteBuffers(1, &vao_);
-//	glDeleteBuffers(1, &vbo_);
-//}
-//
-//void DebugDrawer::add_line(const vec3& start, const vec3& end, const vec3& color)
-//{
-//	// add line vertices
-//	Vertex start_v, end_v;
-//	start_v.position = start;
-//	start_v.color = color;
-//	end_v.position = end;
-//	end_v.color = color;
-//
-//	vertex_list_.push_back(start_v);
-//	vertex_list_.push_back(end_v);
-//}
-//
+#include <glew.h>
+#include <debug_drawer.hpp>
+
+jeBegin
+
+DebugDrawer::DebugDrawer(Object* owner)	: Renderer(owner)
+{
+	vertices_.clear();
+	meshes_.clear();
+
+	glGenVertexArrays(1, &vao_);
+	glGenBuffers(1, &vbo_);
+	glBindVertexArray(vao_);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo_);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
+		reinterpret_cast<void*>(offsetof(Vertex, Vertex::position)));
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
+		reinterpret_cast<void*>(offsetof(Vertex, Vertex::normal)));
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
+		reinterpret_cast<void*>(offsetof(Vertex, Vertex::texCoords)));
+	glEnableVertexAttribArray(2);
+	// add color
+	glBindVertexArray(0);
+}
+
+DebugDrawer::~DebugDrawer(void)
+{
+	glDeleteBuffers(1, &vao_);
+	glDeleteBuffers(1, &vbo_);
+}
+
+void DebugDrawer::add_line(const vec3& start, const vec3& end, const vec3& color)
+{
+	//// add line vertices
+	//Vertex start_v, end_v;
+	//start_v.position = start;
+	//start_v.color = color;
+	//end_v.position = end;
+	//end_v.color = color;
+
+	//vertices_.push_back(start_v);
+	//vertices_.push_back(end_v);
+}
+
+jeEnd
+
 //void DebugDrawer::AddCube(const vec3& pos, const vec3& size, const vec3& color)
 //{
 //	// create 8 vertices

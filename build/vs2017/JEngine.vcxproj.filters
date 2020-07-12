@@ -112,9 +112,6 @@
     <ClCompile Include="..\..\src\emitter.cpp">
       <Filter>system\grahpics_components</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\mesh.cpp">
-      <Filter>system\grahpics_components</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\renderer.cpp">
       <Filter>system\grahpics_components</Filter>
     </ClCompile>
@@ -126,6 +123,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\sprite.cpp">
       <Filter>system\grahpics_components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\mesh.cpp">
+      <Filter>system\graphics_elements</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -235,28 +235,10 @@
     <ClInclude Include="..\..\include\JEngine\camera.hpp">
       <Filter>system\grahpics_components</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\colors.hpp">
-      <Filter>system\grahpics_components</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\JEngine\debug_drawer.hpp">
       <Filter>system\grahpics_components</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\JEngine\emitter.hpp">
-      <Filter>system\grahpics_components</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\face.hpp">
-      <Filter>system\grahpics_components</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\half_edge.hpp">
-      <Filter>system\grahpics_components</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\half_edge_mesh.hpp">
-      <Filter>system\grahpics_components</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\half_edge_vertex.hpp">
-      <Filter>system\grahpics_components</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\mesh.hpp">
       <Filter>system\grahpics_components</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\JEngine\renderer.hpp">
@@ -265,17 +247,35 @@
     <ClInclude Include="..\..\include\JEngine\text.hpp">
       <Filter>system\grahpics_components</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\texture.hpp">
-      <Filter>system\grahpics_components</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\vertex.hpp">
-      <Filter>system\grahpics_components</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\JEngine\sprite.hpp">
       <Filter>system\grahpics_components</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\JEngine\model.hpp">
       <Filter>system\grahpics_components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\vertex.hpp">
+      <Filter>system\graphics_elements</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\texture.hpp">
+      <Filter>system\graphics_elements</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\mesh.hpp">
+      <Filter>system\graphics_elements</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\half_edge_vertex.hpp">
+      <Filter>system\graphics_elements</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\half_edge_mesh.hpp">
+      <Filter>system\graphics_elements</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\half_edge.hpp">
+      <Filter>system\graphics_elements</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\face.hpp">
+      <Filter>system\graphics_elements</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\colors.hpp">
+      <Filter>system\graphics_elements</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -358,6 +358,9 @@
     </Filter>
     <Filter Include="system\behavior_components">
       <UniqueIdentifier>{4bee1a04-d52d-4487-af77-d3f1b348a89e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="system\graphics_elements">
+      <UniqueIdentifier>{21673132-dd6c-4029-a138-bcf37df341d0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

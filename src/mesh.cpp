@@ -11,8 +11,8 @@ int MAX_POINTS = -1;
 
 float Mesh::quadVertices_[] = {
 
-	// position       // normal		 // texture	
-	-.5f,  .5f, 0.0f, 0.f, 0.f, 1.f, 0.0f, 0.0f,
+	// position       // normal		 // texture	 // color
+	-.5f,  .5f, 0.0f, 0.f, 0.f, 1.f, 0.0f, 0.0f, 
 	-.5f, -.5f, 0.0f, 0.f, 0.f, 1.f, 0.0f, 1.0f,
 	 .5f, -.5f, 0.0f, 0.f, 0.f, 1.f, 1.0f, 1.0f,
 	 .5f,  .5f, 0.0f, 0.f, 0.f, 1.f, 1.0f, 0.0f,
