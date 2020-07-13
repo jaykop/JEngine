@@ -6,56 +6,7 @@ jeBegin
 
 using namespace Math;
 
-unsigned Mesh::quadVAO = 0, Mesh::quadVBO = 0, Mesh::quadEBO = 0;
 int MAX_POINTS = -1;
-
-float Mesh::quadVertices_[] = {
-
-	// position       // normal		 // texture	 // color
-	-.5f,  .5f, 0.0f, 0.f, 0.f, 1.f, 0.0f, 0.0f, 
-	-.5f, -.5f, 0.0f, 0.f, 0.f, 1.f, 0.0f, 1.0f,
-	 .5f, -.5f, 0.0f, 0.f, 0.f, 1.f, 1.0f, 1.0f,
-	 .5f,  .5f, 0.0f, 0.f, 0.f, 1.f, 1.0f, 0.0f,
-};
-
-unsigned Mesh::quadIndices_[] = {
-
-	2, 0, 1,
-	2, 3, 0
-};
-
-void Mesh::initialize_quad()
-{
-	// setup plane VAO
-	glGenVertexArrays(1, &quadVAO);
-	glBindVertexArray(quadVAO);
-
-	glGenBuffers(1, &quadVBO);
-	glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices_), &quadVertices_[0], GL_STATIC_DRAW);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
-		reinterpret_cast<void*>(offsetof(Vertex, Vertex::position)));
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
-		reinterpret_cast<void*>(offsetof(Vertex, Vertex::normal)));
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex),
-		reinterpret_cast<void*>(offsetof(Vertex, Vertex::texCoords)));
-	glEnableVertexAttribArray(2);
-
-	glGenBuffers(1, &quadEBO);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, quadEBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(quadIndices_), &quadIndices_[0], GL_STATIC_DRAW);
-	glBindVertexArray(0);
-}
-
-void Mesh::remove_quad()
-{
-	// Return the quad gpu memories
-	glDeleteVertexArrays(1, &quadVAO);
-	glDeleteBuffers(1, &quadVBO);
-	glDeleteBuffers(1, &quadEBO);
-}
 
 Mesh::BVType Mesh::bvType_ = Mesh::BVType::BV_NONE;
 
@@ -138,11 +89,11 @@ void Mesh::points_along_direction(const vec3& dir, const std::vector<vec3>& vert
 
 void Mesh::initialize(const Vertices& vertices, const Indices& indices)
 {
-	vertex = vertices;
+	vertices_ = vertices;
 	indices_ = indices;
 
 	// copy points
-	for (auto v : vertex)
+	for (const auto& v : vertices_)
 		vPoints_.push_back(v.position);
 
 	// generate vertex array
@@ -153,7 +104,7 @@ void Mesh::initialize(const Vertices& vertices, const Indices& indices)
 	glGenBuffers(1, &vbo_);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo_);
 	// set vertex data
-	glBufferData(GL_ARRAY_BUFFER, vertex.size() * sizeof(Vertex), &vertex[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, vertices_.size() * sizeof(Vertex), &vertices_[0], GL_STATIC_DRAW);
 
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
 		reinterpret_cast<void*>(offsetof(Vertex, Vertex::position)));
@@ -210,14 +161,14 @@ void Mesh::describe_mesh_attribs(Mesh* pMesh)
 		glBindBuffer(GL_ARRAY_BUFFER, pMesh->fnVbo_);
 	}
 
-	int size = int(pMesh->vertex.size());
+	int size = int(pMesh->vertices_.size());
 	if (MAX_POINTS < size)
 		MAX_POINTS = size;
 
 	// Decribe the format of vertex and indice
 	glBindVertexArray(pMesh->vao_);
 	glBindBuffer(GL_ARRAY_BUFFER, pMesh->vbo_);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * pMesh->vertex.size(), &pMesh->vertex[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * pMesh->vertices_.size(), &pMesh->vertices_[0], GL_STATIC_DRAW);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
 		reinterpret_cast<void*>(offsetof(Vertex, Vertex::position)));
 	glEnableVertexAttribArray(0);

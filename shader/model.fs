@@ -42,9 +42,10 @@ struct Light {
 ////////////////////////////
 // in variables
 ////////////////////////////
-in	vec2 v2_outTexCoord;
-in	vec3 v3_outNormal;
-in 	vec3 v3_outFragmentPosition;
+in vec2 v2_outTexCoord;
+in vec3 v3_outNormal;
+in vec3 v3_outFragmentPosition;
+in vec4 v4_outColor;
 
 ////////////////////////////
 // uniform variables
@@ -76,7 +77,7 @@ void main() {
 	
 	// Unless..
 	else
-		finalTexture = texture(Texture, v2_outTexCoord) * v4_color;
+		finalTexture = texture(Texture, v2_outTexCoord) * v4_outColor;
 	
 	if (finalTexture.a <= 0.0)
 		discard;

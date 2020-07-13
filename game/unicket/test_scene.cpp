@@ -33,7 +33,6 @@ void TestScene::initialize()
 	auto* renderer = renderer_2d->get_component<Sprite>();
 	// renderer->set_texture(AssetManager::get_texture("rect"));
 	renderer->set_texture(AssetManager::get_texture("testAnimation"));
-	renderer->color.set(0,0,0,1); // black
 
 	auto* animation = renderer_2d->get_component<Animation2D>();
 	animation->activate(true);

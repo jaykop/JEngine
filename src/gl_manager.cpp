@@ -60,7 +60,6 @@ void GLManager::initialize(float w, float h)
 	jeDebugPrint("*GLManager - Maximum number of vertex attributes supported: %d\n", attributes_);
 
 	initialize_shaders();
-	Mesh::initialize_quad();
 }
 
 void GLManager::update(SDL_Window* window, const SDL_Event& event)
@@ -83,7 +82,6 @@ void GLManager::close()
 		delete shader_[i];
 
 	shader_.clear();
-	Mesh::remove_quad();
 }
 
 void GLManager::initialize_shaders()

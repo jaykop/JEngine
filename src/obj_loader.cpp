@@ -41,7 +41,7 @@ bool AssetManager::load_obj(const char* path)
 
 		parse_vertex(buffer.str(), &newMesh);
 		convert_mesh(&newMesh);
-		newMesh->hEdgeMesh = new HalfEdgeMesh(newMesh->vertex, newMesh->indices_);
+		newMesh->hEdgeMesh = new HalfEdgeMesh(newMesh->vertices_, newMesh->indices_);
 		calculate_normals(&newMesh);
 		Mesh::describe_mesh_attribs(newMesh);
 
@@ -141,7 +141,7 @@ void AssetManager::convert_mesh(Mesh** mesh)
 			centerOffset, absMax);
 
 		// Normal vertexes
-		(*mesh)->vertex.push_back(Vertex{ convertedPos, vec3::zero , vec2::zero });
+		(*mesh)->vertices_.push_back(Vertex{ convertedPos, vec3::zero , vec2::zero, vec4::one });
 		(*mesh)->vPoints_.push_back(convertedPos);
 	}
 }
@@ -228,7 +228,7 @@ unsigned AssetManager::get_next_elements(const std::string& file_data, unsigned 
 
 void AssetManager::calculate_normals(Mesh** mesh)
 {
-	std::vector<Vertex>& vertices = (*mesh)->vertex;
+	std::vector<Vertex>& vertices = (*mesh)->vertices_;
 	std::vector<Vertex>& fNormals = (*mesh)->faceNormalsDraw;
 	std::vector<Vertex>& vNormals = (*mesh)->vertexNormalsDraw;
 	HalfEdgeMesh* h_mesh = (*mesh)->hEdgeMesh;

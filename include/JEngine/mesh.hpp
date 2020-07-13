@@ -38,7 +38,6 @@ public:
 protected:
 
 	static BVType bvType_;
-	static unsigned quadVAO, quadVBO, quadEBO;
 	Transform* transform = nullptr;
 
 	float rotation, absMax;
@@ -47,7 +46,7 @@ protected:
 
 	HalfEdgeMesh* hEdgeMesh;
 
-	std::vector<Vertex> vertex, vertexNormalsDraw, faceNormalsDraw;
+	std::vector<Vertex> vertices_, vertexNormalsDraw, faceNormalsDraw;
 	std::string key;
 
 	unsigned vao_, vbo_, ebo_, 
@@ -63,12 +62,6 @@ protected:
 public:
 
 	static void describe_mesh_attribs(Mesh* pMesh);
-
-	static unsigned quadIndices_[6];
-	static float quadVertices_[32];
-
-	static void initialize_quad();
-	static void remove_quad();
 
 	Mesh();
 	Mesh(const std::vector<Vertex>& vertices,

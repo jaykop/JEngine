@@ -4,6 +4,7 @@
 
 jeBegin
 
+class Mesh;
 class Object;
 class Animation2D;
 
@@ -16,16 +17,13 @@ class Sprite : public Renderer
 public:
 
 	Sprite(Object* owner);
-	virtual ~Sprite() {}
+	virtual ~Sprite();
 
 	void set_texture(unsigned texture);
 	unsigned get_texture() const;
 
 	void run_animation();
-
 	void draw() override;
-
-	vec4 color;
 	
 protected:
 
@@ -36,8 +34,7 @@ protected:
 private:
 
 	Animation2D* animation_ = nullptr;
-	unsigned texture_;
-	// mesh here
+	Mesh* mesh_;
 };
 
 jeDeclareComponentBuilder(Sprite);

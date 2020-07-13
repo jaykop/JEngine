@@ -3,6 +3,7 @@
 layout(location = 0) in vec3 position;
 layout(location = 1) in vec3 normal;
 layout(location = 2) in vec2 uvPosition;
+layout(location = 3) in vec4 color;
 
 ////////////////////////////
 // const variables
@@ -34,6 +35,7 @@ uniform mat4 m4_parentTranslate,
 out	vec2 v2_outTexCoord;
 out	vec3 v3_outNormal;
 out	vec3 v3_outFragmentPosition;
+out vec4 v4_outColor;
 
 ////////////////////////////
 // fucntion declarations
@@ -54,6 +56,8 @@ void main() {
 	Transforming(newPosition, model);
 	Mapping(newPosition, newTexCoord);
 	SendToFrag(newPosition, newTexCoord, model);
+	
+	v4_outColor = color;
 }
 
 ////////////////////////////
