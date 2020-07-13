@@ -29,33 +29,7 @@ Sprite::Sprite(Object* owner)
 	animation_ = owner->get_component<Animation2D>();
 
 	mesh_ = new Mesh;
-	mesh_->vertices_ = quadVertices;
-	mesh_->indices_ = quadIndices;
-
-	// setup plane VAO
-	glGenVertexArrays(1, &mesh_->vao_);
-	glBindVertexArray(mesh_->vao_);
-
-	glGenBuffers(1, &mesh_->vbo_);
-	glBindBuffer(GL_ARRAY_BUFFER, mesh_->vbo_);
-	glBufferData(GL_ARRAY_BUFFER, mesh_->vertices_.size() * sizeof(Vertex), &mesh_->vertices_[0], GL_STATIC_DRAW);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
-		reinterpret_cast<void*>(offsetof(Vertex, Vertex::position)));
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
-		reinterpret_cast<void*>(offsetof(Vertex, Vertex::normal)));
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex),
-		reinterpret_cast<void*>(offsetof(Vertex, Vertex::texCoords)));
-	glEnableVertexAttribArray(2);
-	glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex),
-		reinterpret_cast<void*>(offsetof(Vertex, Vertex::color)));
-	glEnableVertexAttribArray(3);
-
-	glGenBuffers(1, &mesh_->ebo_);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh_->ebo_);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, mesh_->indices_.size() * sizeof(unsigned), &mesh_->indices_[0], GL_STATIC_DRAW);
-	glBindVertexArray(0);
+	mesh_->initialize(quadVertices, quadIndices);
 }
 
 Sprite::~Sprite()

@@ -18,10 +18,6 @@ class Mesh
 	friend class AssetManager; 
 	friend class DebugDrawer;
 
-	typedef std::vector<Vertex> Vertices;
-	typedef std::vector<vec3> Points;
-	typedef std::vector<unsigned> Indices;
-
 public:
 
 	enum BVType {
@@ -33,7 +29,7 @@ public:
 
 	static void points_along_direction(const vec3& dir, const std::vector<vec3>& vertices,
 		int& min_index, int& max_index);
-	void initialize(const Vertices& vertices, const Indices& indices);
+	void initialize(const std::vector<Vertex>& vertices, const std::vector<unsigned>& indices);
 
 protected:
 

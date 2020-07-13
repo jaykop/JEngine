@@ -87,7 +87,8 @@ void Mesh::points_along_direction(const vec3& dir, const std::vector<vec3>& vert
 	}
 }
 
-void Mesh::initialize(const Vertices& vertices, const Indices& indices)
+void Mesh::initialize(const std::vector<Vertex>& vertices, 
+	const std::vector<unsigned>& indices)
 {
 	vertices_ = vertices;
 	indices_ = indices;
@@ -103,6 +104,7 @@ void Mesh::initialize(const Vertices& vertices, const Indices& indices)
 	// generate vertex buffer
 	glGenBuffers(1, &vbo_);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo_);
+
 	// set vertex data
 	glBufferData(GL_ARRAY_BUFFER, vertices_.size() * sizeof(Vertex), &vertices_[0], GL_STATIC_DRAW);
 
@@ -115,6 +117,9 @@ void Mesh::initialize(const Vertices& vertices, const Indices& indices)
 	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
 		reinterpret_cast<void*>(offsetof(Vertex, Vertex::texCoords)));
 	glEnableVertexAttribArray(2);
+	glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex),
+		reinterpret_cast<void*>(offsetof(Vertex, Vertex::color)));
+	glEnableVertexAttribArray(3);
 
 	// generate index buffer
 	glGenBuffers(1, &ebo_);
