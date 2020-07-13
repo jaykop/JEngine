@@ -1,22 +1,24 @@
 {
-	"vertex" : [
+	"vertex": [
 
-		{"Directory" : "../../shader/model.vs"},
-		{"Directory" : "../../shader/text.vs"},
-		{"Directory" : "../../shader/particle.vs"},
-		{"Directory" : "../../shader/lighting.vs"},
-		{"Directory" : "../../shader/screen.vs"}
-		
+		{ "Directory": "../../shader/forward.vs" },
+		{ "Directory": "../../shader/model.vs" },
+		{ "Directory": "../../shader/text.vs" },
+		{ "Directory": "../../shader/particle.vs" },
+		{ "Directory": "../../shader/lighting.vs" },
+		{ "Directory": "../../shader/screen.vs" }
+
 	],
-	
-	"fragment" : [
 
-		{"Directory" : "../../shader/model.fs"},
-		{"Directory" : "../../shader/text.fs"},
-		{"Directory" : "../../shader/particle.fs"},
-		{"Directory" : "../../shader/lighting.fs"},
-		{"Directory" : "../../shader/screen.fs"}
-		
+	"fragment": [
+
+		{ "Directory": "../../shader/forward.fs" },
+		{ "Directory": "../../shader/model.fs" },
+		{ "Directory": "../../shader/text.fs" },
+		{ "Directory": "../../shader/particle.fs" },
+		{ "Directory": "../../shader/lighting.fs" },
+		{ "Directory": "../../shader/screen.fs" }
+
 	]
 	
 }

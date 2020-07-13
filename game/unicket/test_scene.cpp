@@ -45,7 +45,7 @@ void TestScene::initialize()
 	register_object(renderer_2d);
 
 	// set screen color
-	background.set(0.5, 0.5, 0.5, 1);
+	background.set(0.1, 0.1, 0.1, 1);
 
 	// base init
 	Scene::initialize();

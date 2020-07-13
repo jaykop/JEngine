@@ -42,7 +42,7 @@ class GLManager
 	using Shaders = std::vector<Shader*>;
 
 	enum class Target { SCREEN, TEXT, END };
-	enum Pipeline { NORMAL, TEXT, LIGHT, PARTICLE, SCREEN, END };
+	enum Pipeline { FORWARD, NORMAL, TEXT, LIGHT, PARTICLE, SCREEN, END };
 
 public:
 

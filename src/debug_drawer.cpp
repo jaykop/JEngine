@@ -1,27 +1,30 @@
 #include <glew.h>
+#include <mesh.hpp>
 #include <debug_drawer.hpp>
 
 jeBegin
 
-DebugDrawer::DebugDrawer(Object* owner)	: Renderer(owner)
+DebugDrawer::DebugDrawer()
 {
-	vertices_.clear();
-	meshes_.clear();
-
 	glGenVertexArrays(1, &vao_);
-	glGenBuffers(1, &vbo_);
 	glBindVertexArray(vao_);
+
+	glGenBuffers(1, &vbo_);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo_);
+
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
 		reinterpret_cast<void*>(offsetof(Vertex, Vertex::position)));
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
 		reinterpret_cast<void*>(offsetof(Vertex, Vertex::normal)));
 	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex),
 		reinterpret_cast<void*>(offsetof(Vertex, Vertex::texCoords)));
 	glEnableVertexAttribArray(2);
-	// add color
+	glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex),
+		reinterpret_cast<void*>(offsetof(Vertex, Vertex::color)));
+	glEnableVertexAttribArray(3);
+
 	glBindVertexArray(0);
 }
 
@@ -31,17 +34,86 @@ DebugDrawer::~DebugDrawer(void)
 	glDeleteBuffers(1, &vbo_);
 }
 
+void DebugDrawer::draw_debugInfo()
+{
+	render_lines();
+	render_meshes();
+}
+
+void DebugDrawer::render_lines()
+{
+	if (!vertices_.empty()) {
+
+		glBindVertexArray(vao_);
+		glDrawArrays(GL_LINES, 0, GLsizei(vertices_.size()));
+		glBindVertexArray(0);
+	}
+}
+
+void DebugDrawer::render_meshes()
+{
+	if (!meshes_.empty()) {
+
+		// save polygon mode
+		GLint polygon_mode[2];
+		glGetIntegerv(GL_POLYGON_MODE, polygon_mode);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+		//pShader->SetBool("uniformColor", true);
+
+		for (auto& m : meshes_)
+		{
+			//pShader->SetVec3("color", m.color);
+			//pShader->SetMat4("model", m.model_to_world);
+
+			glBindVertexArray(m.mesh->vao_);
+			glDrawElements(GL_TRIANGLES, GLsizei(m.mesh->indices_.size()), GL_UNSIGNED_INT, nullptr);
+			glBindVertexArray(0);
+		}
+
+		glPolygonMode(GL_FRONT_AND_BACK, polygon_mode[0]);
+	}
+}
+
 void DebugDrawer::add_line(const vec3& start, const vec3& end, const vec3& color)
 {
-	//// add line vertices
-	//Vertex start_v, end_v;
-	//start_v.position = start;
-	//start_v.color = color;
-	//end_v.position = end;
-	//end_v.color = color;
+	// add line vertices
+	Vertex start_v, end_v;
+	start_v.position = start;
+	start_v.color = vec4(color, 1.f);
+	end_v.position = end;
+	end_v.color = vec4(color, 1.f);
 
-	//vertices_.push_back(start_v);
-	//vertices_.push_back(end_v);
+	vertices_.emplace_back(start_v);
+	vertices_.emplace_back(end_v);
+}
+
+void DebugDrawer::add_quad(const vec3& pos, const vec3& size, const vec3& color)
+{
+	float half_x = size.x * 0.5f;
+	float half_y = size.y * 0.5f;
+
+		// create 8 vertices
+	vec3 v1 = pos + vec3(-half_x, half_y, size.z);
+	vec3 v2 = pos + vec3(-half_x, -half_y, size.z);
+	vec3 v3 = pos + vec3(half_x, -half_y, size.z);
+	vec3 v4 = pos + vec3(half_x, half_y, size.z);
+
+	// add edges
+	add_line(v1, v2, color);
+	add_line(v2, v3, color);
+	add_line(v3, v4, color);
+	add_line(v4, v1, color);
+
+	glBindBuffer(GL_ARRAY_BUFFER, vbo_);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * vertices_.size(), &vertices_[0], GL_DYNAMIC_DRAW);
+	glBindVertexArray(0);
+}
+
+void DebugDrawer::clear()
+{
+	vertices_.clear();
+	meshes_.clear();
 }
 
 jeEnd

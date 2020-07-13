@@ -10,6 +10,7 @@ class Light;
 class Camera;
 class Shader;
 class Transform;
+class DebugDrawer;
 
 class Renderer : public Component {
 
@@ -22,7 +23,7 @@ public:
 	enum class RenderType { NONE, POSITION, NORMAL };
 
 	Renderer(Object* owner);
-	virtual ~Renderer() {}
+	virtual ~Renderer();
 
 	// public methods
 	void start_draw(Camera* camera, const mat4& perspective, const vec3& resScalar);
@@ -41,17 +42,21 @@ protected:
 	const static int IS_BILBOARD = 0x010;
 	const static int IS_INHERITED = 0x001;
 
+	void draw_debugInfo();
+
 	// private members
 	unsigned drawMode_;
-	unsigned sfactor, dfactor;
+	unsigned sfactor_, dfactor_;
 
 	Transform* transform_ = nullptr;
-	ProjectType prjType;
+	DebugDrawer* debugDrawer_ = nullptr;
 
+	ProjectType prjType_;
+	int status_;
+
+	// static members
 	static bool renderObj_;
 	static RenderType renderType_;
-
-	int status_;
 
 private:
 

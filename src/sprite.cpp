@@ -5,6 +5,7 @@
 #include <graphic_system.hpp>
 #include <gl_manager.hpp>
 #include <object.hpp>
+#include <debug_drawer.hpp>
 
 jeBegin
 
@@ -60,8 +61,8 @@ void Sprite::draw()
 	glBindVertexArray(mesh_->vao_);
 	glBindTexture(GL_TEXTURE_2D, mesh_->texture_);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
-	glBindVertexArray(0);
 	glBindTexture(GL_TEXTURE_2D, 0);
+	glBindVertexArray(0);
 }
 
 void Sprite::set_texture(unsigned t) { mesh_->texture_ = t; }

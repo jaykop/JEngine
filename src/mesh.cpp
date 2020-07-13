@@ -114,7 +114,7 @@ void Mesh::initialize(const std::vector<Vertex>& vertices,
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
 		reinterpret_cast<void*>(offsetof(Vertex, Vertex::normal)));
 	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex),
 		reinterpret_cast<void*>(offsetof(Vertex, Vertex::texCoords)));
 	glEnableVertexAttribArray(2);
 	glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex),
@@ -180,9 +180,12 @@ void Mesh::describe_mesh_attribs(Mesh* pMesh)
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
 		reinterpret_cast<void*>(offsetof(Vertex, Vertex::normal)));
 	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex),
 		reinterpret_cast<void*>(offsetof(Vertex, Vertex::texCoords)));
 	glEnableVertexAttribArray(2);
+	glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex),
+		reinterpret_cast<void*>(offsetof(Vertex, Vertex::color)));
+	glEnableVertexAttribArray(3);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, pMesh->ebo_);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(int) * pMesh->indices_.size(), &pMesh->indices_[0], GL_STATIC_DRAW);
@@ -199,9 +202,12 @@ void Mesh::describe_mesh_attribs(Mesh* pMesh)
 		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
 			reinterpret_cast<void*>(offsetof(Vertex, Vertex::normal)));
 		glEnableVertexAttribArray(1);
-		glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
+		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex),
 			reinterpret_cast<void*>(offsetof(Vertex, Vertex::texCoords)));
 		glEnableVertexAttribArray(2);
+		glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex),
+			reinterpret_cast<void*>(offsetof(Vertex, Vertex::color)));
+		glEnableVertexAttribArray(3);
 
 		// Bind face normal buffer object
 		glBindVertexArray(pMesh->fnVao_);
@@ -213,9 +219,12 @@ void Mesh::describe_mesh_attribs(Mesh* pMesh)
 		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
 			reinterpret_cast<void*>(offsetof(Vertex, Vertex::normal)));
 		glEnableVertexAttribArray(1);
-		glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
+		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex),
 			reinterpret_cast<void*>(offsetof(Vertex, Vertex::texCoords)));
 		glEnableVertexAttribArray(2);
+		glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex),
+			reinterpret_cast<void*>(offsetof(Vertex, Vertex::color)));
+		glEnableVertexAttribArray(3);
 	}
 
 	glBindVertexArray(0);

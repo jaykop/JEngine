@@ -11,7 +11,9 @@
 #include <texture.hpp>
 #include <camera.hpp>
 #include <transform.hpp>
+#include <debug_drawer.hpp>
 
+#include <colors.hpp>
 #include <math_util.hpp>
 
 jeBegin
@@ -24,12 +26,20 @@ Renderer::RenderType Renderer::renderType_ = Renderer::RenderType::NONE;
 
 Renderer::Renderer(Object* owner)
 	: Component(owner),
-	status_(0x000), drawMode_(GL_TRIANGLES), prjType(ProjectType::PERSPECTIVE),
-	dfactor(GL_ONE_MINUS_SRC_ALPHA), sfactor(GL_SRC_ALPHA),	transform_(nullptr)
+	status_(0x000), drawMode_(GL_TRIANGLES), prjType_(ProjectType::PERSPECTIVE),
+	dfactor_(GL_ONE_MINUS_SRC_ALPHA), sfactor_(GL_SRC_ALPHA)
 {
-	
 	// connect transform component
 	transform_ = owner->get_component<Transform>();
+
+	debugDrawer_ = new DebugDrawer;
+	debugDrawer_->add_quad(transform_->position, transform_->scale, Color::red);
+}
+
+Renderer::~Renderer()
+{
+	delete debugDrawer_;
+	debugDrawer_ = nullptr;
 }
 
 void Renderer::start_draw(Camera* camera,
@@ -46,7 +56,7 @@ void Renderer::start_draw(Camera* camera,
 
 	mat4 viewport;
 
-	if (prjType == ProjectType::PERSPECTIVE) {
+	if (prjType_ == ProjectType::PERSPECTIVE) {
 
 		shader->set_matrix("m4_projection", perspective);
 		viewport = mat4::look_at(camera->position_, camera->target_, camera->up_);
@@ -68,7 +78,6 @@ void Renderer::start_draw(Camera* camera,
 	// Send camera info to shader
 	shader->set_matrix("m4_viewport", viewport);
 
-
 	//bool hasParent = (pModel->status_ & Model::IS_INHERITED) == Model::IS_INHERITED;
 	//glUniform1i(glGetUniformLocation(Shader::pCurrentShader_->programId_, "hasParent"), hasParent);
 	//if (hasParent)
@@ -79,13 +88,22 @@ void Renderer::start_draw(Camera* camera,
 
 	glEnable(GL_BLEND);
 	glEnable(GL_DEPTH_TEST);
-	glBlendFunc(sfactor, dfactor);
+	glBlendFunc(sfactor_, dfactor_);
+
+	// draw debug info
+	debugDrawer_->draw_debugInfo();
 }
 
 void Renderer::end_draw()
 {
 	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_BLEND);
+}
+
+void Renderer::draw_debugInfo()
+{
+	// draw debug info
+	debugDrawer_->draw_debugInfo();
 }
 
 void Renderer::draw_lighting_effect(Light* /*pLight*/)
