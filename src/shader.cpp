@@ -10,7 +10,7 @@ Shader::Shader() : programId_(0), vertexId_(0),
 	fragmentId_(0), geometryId_(0),
 	infoLogLength_(0), result_(GL_FALSE) {}
 
-void Shader::create_shader(const char* file_path, Type type)
+void Shader::create_shader(const char* file_path, Type type, unsigned shaderNumber)
 {
 	// Create the shader
 	GLuint localShader = 0;
@@ -56,16 +56,16 @@ void Shader::create_shader(const char* file_path, Type type)
 	if (infoLogLength_ > 0) {
 		std::vector<char> ShaderErrorMessage(infoLogLength_ + int(1));
 		glGetShaderInfoLog(localShader, infoLogLength_, nullptr, &ShaderErrorMessage[0]);
-		jeDebugPrint("!Shader - %4s\n", &ShaderErrorMessage[0]);
+		jeDebugPrint("!Shader - %4s / %i\n", &ShaderErrorMessage[0], shaderNumber);
 	}
 }
 
-void Shader::combine_shaders()
+void Shader::combine_shaders(unsigned shaderNumber)
 {
 	programId_ = glCreateProgram();
 
 	if (programId_ == 0)
-		jeDebugPrint("!Shader - Shader couldn't get program id.\n");
+		jeDebugPrint("!Shader - Shader %i couldn't get program id.\n", shaderNumber);
 
 	else {
 
@@ -87,7 +87,7 @@ void Shader::combine_shaders()
 		if (infoLogLength_ > 0) {
 			std::vector<char> ProgramErrorMessage(infoLogLength_ + 1);
 			glGetShaderInfoLog(programId_, infoLogLength_, nullptr, &ProgramErrorMessage[0]);
-			jeDebugPrint("!Shader: %4s\n", &ProgramErrorMessage[0]);
+			jeDebugPrint("!Shader - %4s / %i\n", &ProgramErrorMessage[0], shaderNumber);
 
 		}	// if (infoLogLength > 0) {
 

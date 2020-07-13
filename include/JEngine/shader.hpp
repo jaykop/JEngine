@@ -46,8 +46,8 @@ private:
 
 	enum class Type { VERTEX, GEOMETRY, PIXEL };
 
-	void create_shader(const char* file_path, Type type);
-	void combine_shaders();
+	void create_shader(const char* file_path, Type type, unsigned shaderNumber);
+	void combine_shaders(unsigned shaderNumber);
 
 	GLuint  programId_, vertexId_, fragmentId_, geometryId_;
 	int	    infoLogLength_;

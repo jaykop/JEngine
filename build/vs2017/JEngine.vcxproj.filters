@@ -106,9 +106,6 @@
     <ClCompile Include="..\..\src\camera.cpp">
       <Filter>system\grahpics_components</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\debug_drawer.cpp">
-      <Filter>system\grahpics_components</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\emitter.cpp">
       <Filter>system\grahpics_components</Filter>
     </ClCompile>
@@ -126,6 +123,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\mesh.cpp">
       <Filter>system\graphics_elements</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\debug_renderer.cpp">
+      <Filter>system\grahpics_components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -235,9 +235,6 @@
     <ClInclude Include="..\..\include\JEngine\camera.hpp">
       <Filter>system\grahpics_components</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\debug_drawer.hpp">
-      <Filter>system\grahpics_components</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\JEngine\emitter.hpp">
       <Filter>system\grahpics_components</Filter>
     </ClInclude>
@@ -276,6 +273,9 @@
     </ClInclude>
     <ClInclude Include="..\..\include\JEngine\colors.hpp">
       <Filter>system\graphics_elements</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\debug_renderer.hpp">
+      <Filter>system\grahpics_components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

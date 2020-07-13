@@ -24,7 +24,7 @@ uniform vec4 v4_lightColor[MAX_ARRAY];
 uniform bool boolean_flip;
 uniform bool boolean_light;
 uniform bool boolean_bilboard;
-
+uniform bool boolean_debug;
 uniform bool hasParent;
 uniform mat4 m4_parentTranslate,
 	m4_parentScale, m4_parentRotate;
@@ -49,15 +49,22 @@ void SendToFrag(vec4 _position, vec4 _texCoord, mat4 _model);
 ////////////////////////////
 void main() {
 
-	vec4 newPosition = vec4(position, 1);
-	mat4 model = m4_scale * m4_rotate * m4_translate;
-	vec4 newTexCoord;
+	if (boolean_debug)
+	{
+		;
+	}	
+	else
+	{
+		vec4 newPosition = vec4(position, 1);
+		mat4 model = m4_scale * m4_rotate * m4_translate;
+		vec4 newTexCoord;
 
-	Transforming(newPosition, model);
-	Mapping(newPosition, newTexCoord);
-	SendToFrag(newPosition, newTexCoord, model);
-	
-	v4_outColor = color;
+		Transforming(newPosition, model);
+		Mapping(newPosition, newTexCoord);
+		SendToFrag(newPosition, newTexCoord, model);
+		
+		v4_outColor = color;
+	}
 }
 
 ////////////////////////////

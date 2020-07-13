@@ -35,6 +35,7 @@ class GLManager
 	friend class Emitter;
 	friend class Model;
 	friend class Light;
+	friend class DebugRenderer;
 	friend class Application;
 	friend class SceneManager;
 	friend class GraphicSystem;

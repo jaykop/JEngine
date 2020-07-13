@@ -5,7 +5,6 @@
 #include <graphic_system.hpp>
 #include <gl_manager.hpp>
 #include <object.hpp>
-#include <debug_drawer.hpp>
 
 jeBegin
 

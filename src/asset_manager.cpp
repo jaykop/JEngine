@@ -28,6 +28,7 @@ Contains the methods of asset_manager class
 #include <text.hpp>
 #include <camera.hpp>
 #include <animation_2d.hpp>
+#include <debug_renderer.hpp>
 
 jeBegin
 
@@ -53,6 +54,8 @@ bool AssetManager::set_bulit_in_components()
 	jeRegisterComponent(Sprite);
 	jeRegisterComponent(Camera);
 	jeRegisterComponent(Animation2D);
+	jeRegisterComponent(DebugRenderer);
+	
 	//jeCheckComponentRegistration(jeRegisterComponent(Text));
 	//jeCheckComponentRegistration(jeRegisterComponent(Emitter));
 	//jeCheckComponentRegistration(jeRegisterComponent(Light));

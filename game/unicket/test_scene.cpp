@@ -8,6 +8,7 @@
 #include "sprite.hpp"
 #include "transform.hpp"
 #include "animation_2d.hpp"
+#include "debug_renderer.hpp"
 
 jeBegin
 
@@ -28,6 +29,7 @@ void TestScene::initialize()
 	// testing 2d renderer 
 	Object* renderer_2d = ObjectManager::create_object("renderer_2d");
 	renderer_2d->add_component<Sprite>();
+	renderer_2d->add_component<DebugRenderer>();
 	renderer_2d->add_component<TopDownController>();
 
 	auto* renderer = renderer_2d->get_component<Sprite>();

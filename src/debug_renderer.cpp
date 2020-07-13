@@ -1,10 +1,20 @@
-#include <glew.h>
+#include <debug_renderer.hpp>
 #include <mesh.hpp>
-#include <debug_drawer.hpp>
+#include <shader.hpp>
+#include <transform.hpp>
+#include <gl_manager.hpp>
+#include <camera.hpp>
+#include <renderer.hpp>
+
+#include <colors.hpp>
+#include <graphic_system.hpp>
 
 jeBegin
 
-DebugDrawer::DebugDrawer()
+jeDefineComponentBuilder(DebugRenderer);
+
+DebugRenderer::DebugRenderer(Object* owner)
+	: Renderer(owner)
 {
 	glGenVertexArrays(1, &vao_);
 	glBindVertexArray(vao_);
@@ -26,32 +36,75 @@ DebugDrawer::DebugDrawer()
 	glEnableVertexAttribArray(3);
 
 	glBindVertexArray(0);
+
+	add_quad(transform_->position, transform_->scale, Color::red);
+
 }
 
-DebugDrawer::~DebugDrawer(void)
+DebugRenderer::~DebugRenderer(void)
 {
 	glDeleteBuffers(1, &vao_);
 	glDeleteBuffers(1, &vbo_);
 }
 
-void DebugDrawer::draw_debugInfo()
-{
-	render_lines();
-	render_meshes();
+void DebugRenderer::add_to_system() {
+	GraphicSystem::add_renderer(this);
 }
 
-void DebugDrawer::render_lines()
+void DebugRenderer::remove_from_system() {
+	GraphicSystem::remove_renderer(this);
+}
+
+void DebugRenderer::load(const rapidjson::Value& /*data*/) {
+
+}
+
+void DebugRenderer::start_draw(Camera* camera, const mat4& perspective, const vec3& resScalar)
+{
+	Shader* shader = GLManager::shader_[GLManager::Pipeline::FORWARD];
+	shader->use();
+
+	shader->set_matrix("m4_translate", mat4::translate(transform_->position));
+	shader->set_matrix("m4_scale", mat4::scale(transform_->scale));
+	shader->set_matrix("m4_rotate", transform_->orientation.to_mat4());
+
+	mat4 viewport;
+
+	if (prjType_ == ProjectType::PERSPECTIVE) {
+
+		shader->set_matrix("m4_projection", perspective);
+		viewport = mat4::look_at(camera->position_, camera->target_, camera->up_);
+	}
+
+	else {
+		float right_ = GLManager::get_width() * .5f;
+		float left_ = -right_;
+		float top_ = GLManager::get_height() * .5f;
+		float bottom_ = -top_;
+
+		mat4 orthogonal = mat4::orthogonal(left_, right_, bottom_, top_, camera->near_, camera->far_);
+
+		shader->set_matrix("m4_projection", orthogonal);
+
+		viewport = mat4::scale(resScalar);
+	}
+
+	// Send camera info to shader
+	shader->set_matrix("m4_viewport", viewport);
+}
+
+void DebugRenderer::draw()
 {
 	if (!vertices_.empty()) {
 
 		glBindVertexArray(vao_);
+		glBindBuffer(GL_ARRAY_BUFFER, vbo_);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * vertices_.size(), &vertices_[0], GL_DYNAMIC_DRAW);
 		glDrawArrays(GL_LINES, 0, GLsizei(vertices_.size()));
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindVertexArray(0);
 	}
-}
 
-void DebugDrawer::render_meshes()
-{
 	if (!meshes_.empty()) {
 
 		// save polygon mode
@@ -75,7 +128,11 @@ void DebugDrawer::render_meshes()
 	}
 }
 
-void DebugDrawer::add_line(const vec3& start, const vec3& end, const vec3& color)
+void DebugRenderer::end_draw()
+{
+}
+
+void DebugRenderer::add_line(const vec3& start, const vec3& end, const vec3& color)
 {
 	// add line vertices
 	Vertex start_v, end_v;
@@ -88,7 +145,7 @@ void DebugDrawer::add_line(const vec3& start, const vec3& end, const vec3& color
 	vertices_.emplace_back(end_v);
 }
 
-void DebugDrawer::add_quad(const vec3& pos, const vec3& size, const vec3& color)
+void DebugRenderer::add_quad(const vec3& pos, const vec3& size, const vec3& color)
 {
 	float half_x = size.x * 0.5f;
 	float half_y = size.y * 0.5f;
@@ -110,7 +167,7 @@ void DebugDrawer::add_quad(const vec3& pos, const vec3& size, const vec3& color)
 	glBindVertexArray(0);
 }
 
-void DebugDrawer::clear()
+void DebugRenderer::clear()
 {
 	vertices_.clear();
 	meshes_.clear();
@@ -118,7 +175,7 @@ void DebugDrawer::clear()
 
 jeEnd
 
-//void DebugDrawer::AddCube(const vec3& pos, const vec3& size, const vec3& color)
+//void DebugRenderer::AddCube(const vec3& pos, const vec3& size, const vec3& color)
 //{
 //	// create 8 vertices
 //	vec3 v1 = pos + vec3(-size.x, size.y, size.z);
@@ -147,7 +204,7 @@ jeEnd
 //	add_line(v4, v8, color);
 //}
 //
-//void DebugDrawer::AddCube(const AABB& bounding_box, const vec3& color)
+//void DebugRenderer::AddCube(const AABB& bounding_box, const vec3& color)
 //{
 //	// create 8 vertices
 //	vec3 v1 = bounding_box.min;
@@ -176,7 +233,7 @@ jeEnd
 //	add_line(v5, v7, color);
 //}
 //
-//void DebugDrawer::AddCube(const OBB& bounding_box, const vec3& color)
+//void DebugRenderer::AddCube(const OBB& bounding_box, const vec3& color)
 //{
 //	// create 8 vertices
 //	vec3 v1(-bounding_box.half_widths);
@@ -227,7 +284,7 @@ jeEnd
 //	add_line(v5, v7, color);
 //}
 //
-//void DebugDrawer::AddSphere(const vec3& center, float radius, const vec3& color)
+//void DebugRenderer::AddSphere(const vec3& center, float radius, const vec3& color)
 //{
 //	// prepare mesh
 //	DebugMesh m;
@@ -243,12 +300,12 @@ jeEnd
 //}
 //
 //
-//void DebugDrawer::AddSphere(const BoundingSphere& sphere, const vec3& color)
+//void DebugRenderer::AddSphere(const BoundingSphere& sphere, const vec3& color)
 //{
 //	AddSphere(sphere.center, sphere.radius, color);
 //}
 //
-//void DebugDrawer::AddEllipse(const BoundingEllipsoid& ellipse, bool h, const vec3& color)
+//void DebugRenderer::AddEllipse(const BoundingEllipsoid& ellipse, bool h, const vec3& color)
 //{
 //	// prepare mesh
 //	DebugMesh m;
@@ -283,7 +340,7 @@ jeEnd
 //	meshes_.push_back(m);
 //}
 //
-//void DebugDrawer::add_mesh(Mesh* m, const mat4& model_to_world, const vec3& color)
+//void DebugRenderer::add_mesh(Mesh* m, const mat4& model_to_world, const vec3& color)
 //{
 //	DebugMesh d_mesh;
 //	d_mesh.mesh = m;
@@ -293,7 +350,7 @@ jeEnd
 //	meshes_.push_back(d_mesh);
 //}
 //
-//void DebugDrawer::render_lines(Shader* pShader, const mat4& model)
+//void DebugRenderer::render_lines(Shader* pShader, const mat4& model)
 //{
 //	if (!vertex_list_.empty()) {
 //
@@ -316,7 +373,7 @@ jeEnd
 //	}
 //}
 //
-//void DebugDrawer::render_meshes(Shader* pShader)
+//void DebugRenderer::render_meshes(Shader* pShader)
 //{
 //	if (!meshes_.empty()) {
 //
@@ -344,7 +401,7 @@ jeEnd
 //	}
 //}
 //
-//void DebugDrawer::clear()
+//void DebugRenderer::clear()
 //{
 //	vertex_list_.clear();
 //	meshes_.clear();

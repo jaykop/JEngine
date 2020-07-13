@@ -16,7 +16,7 @@ class Mesh
 	friend class Sprite;
 	friend class Model;
 	friend class AssetManager; 
-	friend class DebugDrawer;
+	friend class DebugRenderer;
 
 public:
 

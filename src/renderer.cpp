@@ -11,7 +11,6 @@
 #include <texture.hpp>
 #include <camera.hpp>
 #include <transform.hpp>
-#include <debug_drawer.hpp>
 
 #include <colors.hpp>
 #include <math_util.hpp>
@@ -23,7 +22,6 @@ using namespace Math;
 bool Renderer::renderObj_ = true;
 Renderer::RenderType Renderer::renderType_ = Renderer::RenderType::NONE;
 
-
 Renderer::Renderer(Object* owner)
 	: Component(owner),
 	status_(0x000), drawMode_(GL_TRIANGLES), prjType_(ProjectType::PERSPECTIVE),
@@ -32,14 +30,10 @@ Renderer::Renderer(Object* owner)
 	// connect transform component
 	transform_ = owner->get_component<Transform>();
 
-	debugDrawer_ = new DebugDrawer;
-	debugDrawer_->add_quad(transform_->position, transform_->scale, Color::red);
 }
 
 Renderer::~Renderer()
 {
-	delete debugDrawer_;
-	debugDrawer_ = nullptr;
 }
 
 void Renderer::start_draw(Camera* camera,
@@ -89,21 +83,12 @@ void Renderer::start_draw(Camera* camera,
 	glEnable(GL_BLEND);
 	glEnable(GL_DEPTH_TEST);
 	glBlendFunc(sfactor_, dfactor_);
-
-	// draw debug info
-	debugDrawer_->draw_debugInfo();
 }
 
 void Renderer::end_draw()
 {
 	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_BLEND);
-}
-
-void Renderer::draw_debugInfo()
-{
-	// draw debug info
-	debugDrawer_->draw_debugInfo();
 }
 
 void Renderer::draw_lighting_effect(Light* /*pLight*/)

@@ -6,7 +6,7 @@ jeBegin
 
 class Mesh;
 class Object;
-class DebugDrawer;
+class DebugRenderer;
 
 class Model : public Renderer
 {
@@ -28,7 +28,7 @@ public:
 	void draw_debug_info();
 	// void on_gui(void) override;
 
-	DebugDrawer* ddrawer_ = nullptr;
+	DebugRenderer* ddrawer_ = nullptr;
 
 private:
 

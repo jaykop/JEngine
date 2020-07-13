@@ -34,6 +34,7 @@ class GraphicSystem {
 	friend class Light;
 	friend class Text;
 	friend class Emitter;
+	friend class DebugRenderer;
 
 	using Renderers = std::vector<Renderer*>;
 	using Cameras = std::vector<Camera*>;

@@ -10,7 +10,6 @@ class Light;
 class Camera;
 class Shader;
 class Transform;
-class DebugDrawer;
 
 class Renderer : public Component {
 
@@ -26,8 +25,9 @@ public:
 	virtual ~Renderer();
 
 	// public methods
-	void start_draw(Camera* camera, const mat4& perspective, const vec3& resScalar);
-	void end_draw();
+	virtual void start_draw(Camera* camera, const mat4& perspective, const vec3& resScalar);
+	virtual void end_draw();
+
 	virtual void draw() = 0;
 
 	static void draw_lighting_effect(Light* light);
@@ -42,14 +42,11 @@ protected:
 	const static int IS_BILBOARD = 0x010;
 	const static int IS_INHERITED = 0x001;
 
-	void draw_debugInfo();
-
 	// private members
 	unsigned drawMode_;
 	unsigned sfactor_, dfactor_;
 
 	Transform* transform_ = nullptr;
-	DebugDrawer* debugDrawer_ = nullptr;
 
 	ProjectType prjType_;
 	int status_;

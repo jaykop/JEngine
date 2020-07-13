@@ -28,7 +28,7 @@
     <ClCompile Include="..\..\src\behavior_system.cpp" />
     <ClCompile Include="..\..\src\camera.cpp" />
     <ClCompile Include="..\..\src\component_manager.cpp" />
-    <ClCompile Include="..\..\src\debug_drawer.cpp" />
+    <ClCompile Include="..\..\src\debug_renderer.cpp" />
     <ClCompile Include="..\..\src\debug_tools.cpp" />
     <ClCompile Include="..\..\src\eigen.cpp" />
     <ClCompile Include="..\..\src\emitter.cpp" />
@@ -73,7 +73,7 @@
     <ClInclude Include="..\..\include\JEngine\component.hpp" />
     <ClInclude Include="..\..\include\JEngine\component_builder.hpp" />
     <ClInclude Include="..\..\include\JEngine\component_manager.hpp" />
-    <ClInclude Include="..\..\include\JEngine\debug_drawer.hpp" />
+    <ClInclude Include="..\..\include\JEngine\debug_renderer.hpp" />
     <ClInclude Include="..\..\include\JEngine\debug_tools.hpp" />
     <ClInclude Include="..\..\include\JEngine\eigen.hpp" />
     <ClInclude Include="..\..\include\JEngine\emitter.hpp" />

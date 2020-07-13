@@ -90,14 +90,14 @@ void GLManager::initialize_shaders()
 	for (unsigned int i = 0; i < Pipeline::END; ++i) {
 
 		Shader* newShader = new Shader;
-		newShader->create_shader(Shader::vsDirectory_[i], Shader::Type::VERTEX);
+		newShader->create_shader(Shader::vsDirectory_[i], Shader::Type::VERTEX, i);
 
 		// TODO
 		// Work on geometry shader
 		//shader_[i]->CreateShader(Shader::m_geometryShader[i], Shader::JE_GEOMETRY);
 
-		newShader->create_shader(Shader::fsDirectory_[i], Shader::Type::PIXEL);
-		newShader->combine_shaders();
+		newShader->create_shader(Shader::fsDirectory_[i], Shader::Type::PIXEL, i);
+		newShader->combine_shaders(i);
 
 		shader_.push_back(newShader);
 	}
