@@ -2,9 +2,10 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
-#include <map>
+#include <string>
+#include <unordered_map>
 #include <vec2.hpp>
-#include <macros.hpp>
+#include <renderer.hpp>
 
 jeBegin
 
@@ -17,13 +18,52 @@ struct Character {
 
 struct Font {
 
-	using FontData = std::map<unsigned long, Character>;
+	using FontData = std::unordered_map<unsigned long, Character>;
 
-	FontData	data;
-	FT_Face		face;
-	FT_Library	lib;
-	unsigned	size;
-	float		newline;
+	FontData data;
+	FT_Face	face;
+	FT_Library lib;
+	unsigned size = 0;
+	float newline = 0.f;
 };
+
+class Text : public Renderer
+{
+	jeBaseFriends(Text);
+	friend class GraphicSystem;
+
+public:
+
+	Text(Object* owner);
+	virtual ~Text();
+
+	void start_draw(Camera* camera, const mat4& perspective, const vec3& resScalar) override;
+	void end_draw() override;
+	void draw() override;
+	void render_character(unsigned long key, float& newX, float intervalY);
+
+	void set_text(const wchar_t* pText, ...);
+	const std::wstring& get_text() const;
+
+	Font* get_font();
+	void set_font(); 
+
+protected:
+
+	virtual void add_to_system();
+	virtual void remove_from_system();
+	virtual void load(const rapidjson::Value& data);
+
+private:
+
+	unsigned vao_, vbo_, ebo_;
+	Font* font_ = nullptr;
+	wchar_t* buffer_ = nullptr;
+	std::wstring text_;
+	size_t size_ = 0;
+	
+};
+
+jeDeclareComponentBuilder(Text);
 
 jeEnd

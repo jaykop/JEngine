@@ -32,6 +32,7 @@ class GLManager
 
 	friend class Renderer;
 	friend class Sprite;
+	friend class Text;
 	friend class Emitter;
 	friend class Model;
 	friend class Light;
