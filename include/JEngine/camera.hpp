@@ -15,6 +15,7 @@ class Camera : public Component
 
 	friend class Text;
 	friend class Sprite;
+	friend class Emitter;
 	friend class DebugRenderer;
 	friend class GraphicSystem;
 

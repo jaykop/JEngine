@@ -155,9 +155,14 @@ vec3 vec3::operator-(void) const
 
 bool vec3::operator==(const vec3& rhs) const
 {
-	return (float_equal(x, rhs.x) &&
+	if (rhs.x != x || rhs.y != y || rhs.z != z)
+		return false;
+
+	return true;
+
+	/*return (float_equal(x, rhs.x) &&
 		float_equal(y, rhs.y) &&
-		float_equal(z, rhs.z));
+		float_equal(z, rhs.z));*/
 }
 
 bool vec3::operator!=(const vec3& rhs) const

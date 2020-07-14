@@ -13,8 +13,8 @@ Contains the definition of random class
 #pragma once
 #include <macros.hpp>
 #include <random>
-//#include <vec3.hpp>
-//#include <vec4.hpp>
+#include <vec3.hpp>
+#include <vec4.hpp>
 
 jeBegin
 
@@ -35,6 +35,13 @@ public:
 	static int get_rand_int(int min, int max);
 	static float get_rand_float(float min, float max);
 	static bool get_rand_bool(float probabilityOfTrue);
+
+	static vec3 get_rand_vec3(const vec3& min, const vec3& max);
+	static vec3 get_rand_vec3(float minX, float minY, float minZ, 
+		float maxX, float maxY, float maxZ);
+	static vec4 get_rand_vec4(const vec4& min, const vec4& max);
+	static vec4 get_rand_vec4(float minX, float minY, float minZ, float minW,
+		float maxX, float maxY, float maxZ, float maxW);
 
 private:
 

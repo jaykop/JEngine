@@ -78,7 +78,7 @@ void Text::start_draw(Camera* camera, const mat4& perspective, const vec3& resSc
 
 	mat4 viewport;
 
-	if (prjType_ == ProjectType::PERSPECTIVE) {
+	if (prjType == ProjectType::PERSPECTIVE) {
 
 		viewport = mat4::look_at(camera->position_, camera->target_, camera->up_);
 		shader->set_matrix("m4_projection", perspective);
@@ -103,7 +103,7 @@ void Text::start_draw(Camera* camera, const mat4& perspective, const vec3& resSc
 	glEnable(GL_DEPTH_TEST);
 }
 
-void Text::draw()
+void Text::draw(float /*dt*/)
 {
 	if (!text_.empty()) {
 

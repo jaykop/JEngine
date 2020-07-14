@@ -7,25 +7,13 @@ using namespace Math;
 const vec4 vec4::zero = vec4(0.0f, 0.0f, 0.0f, 0.0f);
 const vec4 vec4::one = vec4(1.0f, 1.0f, 1.0f, 1.0f);
 
-vec4::vec4(void)
-{
-}
+vec4::vec4(void){}
 
 vec4::vec4(float _x, float _y, float _z, float _w)
-	: x(_x)
-	, y(_y)
-	, z(_z)
-	, w(_w)
-{
-}
+	: x(_x)	, y(_y)	, z(_z)	, w(_w) {}
 
 vec4::vec4(const vec3& v, float _w)
-	: x(v.x)
-	, y(v.y)
-	, z(v.z)
-	, w(_w)
-{
-}
+	: x(v.x), y(v.y), z(v.z), w(_w) {}
 
 void vec4::set(float f1, float f2, float f3, float f4)
 {
@@ -38,6 +26,22 @@ void vec4::set(float f1, float f2, float f3, float f4)
 void vec4::set(float f)
 {
 	x = y = z = w = f;
+}
+
+void vec4::set(const vec4& v)
+{
+	x = v.x;
+	y = v.y;
+	z = v.z;
+	w = v.w;
+}
+
+void vec4::set(const vec3& v, float f)
+{
+	x = v.x;
+	y = v.y;
+	z = v.z;
+	w = f;
 }
 
 void vec4::set_zero(void)

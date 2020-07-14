@@ -41,6 +41,8 @@ struct vec4
 	// public methods
 	void set(float x, float y, float z, float w);
 	void set(float f);
+	void set(const vec4& v);
+	void set(const vec3& v, float f);
 	void set_zero(void);
 	void set_one(void);
 	float length(void) const;

@@ -50,8 +50,41 @@ bool Random::get_rand_bool(float probabilityOfTrue)
 float Random::get_rand_float(float min_f, float max_f)
 {
 	DEBUG_ASSERT(min_f < max_f, "Wrong min and max values");
-	std::uniform_real_distribution<float>	floatRand(min_f, max_f);
+	std::uniform_real_distribution<float> floatRand(min_f, max_f);
 	return floatRand(randObj_);
 }
+
+vec3 Random::get_rand_vec3(float minX, float minY, float minZ, 
+	float maxX, float maxY, float maxZ)
+{
+	return vec3(get_rand_float(minX, maxX),
+		get_rand_float(minY, maxY),
+		get_rand_float(minZ, maxZ));
+}
+
+vec3 Random::get_rand_vec3(const vec3& min, const vec3& max)
+{
+	return vec3(get_rand_float(min.x, max.x),
+		get_rand_float(min.y, max.y),
+		get_rand_float(min.z, max.z));
+}
+
+vec4 Random::get_rand_vec4(const vec4& min, const vec4& max)
+{
+	return vec4(get_rand_float(min.x, max.x),
+		get_rand_float(min.y, max.y),
+		get_rand_float(min.z, max.z),
+		get_rand_float(min.w, max.w));
+}
+
+vec4 Random::get_rand_vec4(float minX, float minY, float minZ, float minW, 
+	float maxX, float maxY, float maxZ, float maxW)
+{
+	return vec4(get_rand_float(minX, maxX),
+		get_rand_float(minY, maxY),
+		get_rand_float(minZ, maxZ),
+		get_rand_float(minW, maxW));
+}
+
 
 jeEnd

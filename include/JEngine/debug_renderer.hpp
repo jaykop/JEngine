@@ -28,10 +28,9 @@ public:
 	virtual ~DebugRenderer(void);
 
 	void start_draw(Camera* camera, const mat4& perspective, const vec3& resScalar) override;
+	void draw(float dt) override; 
 	void end_draw() override;
-
-	void draw() override;
-
+	
 	void add_line(const vec3& start, const vec3& end, const vec3& color);
 	void add_quad(const vec3& pos, const vec3& size, const vec3& color);
 	void add_mesh(Mesh* m, /*const mat4& model_to_world,*/ const vec3& color);

@@ -19,7 +19,7 @@ Renderer::RenderType Renderer::renderType_ = Renderer::RenderType::NONE;
 
 Renderer::Renderer(Object* owner)
 	: Component(owner),
-	status_(0x000), drawMode_(GL_TRIANGLES), prjType_(ProjectType::PERSPECTIVE),
+	status(0x000), drawMode_(GL_TRIANGLES), prjType(ProjectType::PERSPECTIVE),
 	dfactor_(GL_ONE_MINUS_SRC_ALPHA), sfactor_(GL_SRC_ALPHA)
 {
 	// connect transform component

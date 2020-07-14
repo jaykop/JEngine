@@ -1,11 +1,8 @@
 #pragma once
-#include <vec4.hpp>
 #include <renderer.hpp>
 
 jeBegin
 
-class Mesh;
-class Object;
 class Animation2D;
 
 class Sprite : public Renderer
@@ -24,7 +21,7 @@ public:
 
 	void run_animation();
 	void start_draw(Camera* camera, const mat4& perspective, const vec3& resScalar) override;
-	void draw() override;
+	void draw(float dt) override;
 	void end_draw() override;
 
 	vec4 color;

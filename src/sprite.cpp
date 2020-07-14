@@ -95,12 +95,12 @@ void Sprite::start_draw(Camera* camera,
 	shader->set_matrix("m4_scale", mat4::scale(transform_->scale));
 	shader->set_matrix("m4_rotate", transform_->orientation.to_mat4());
 	shader->set_vec3("v3_cameraPosition", camera->position_);
-	shader->set_bool("boolean_bilboard", (status_ & IS_BILBOARD) == IS_BILBOARD);
+	shader->set_bool("boolean_bilboard", (status & IS_BILBOARD) == IS_BILBOARD);
 	shader->set_vec4("v4_color", color);
 
 	mat4 viewport;
 
-	if (prjType_ == ProjectType::PERSPECTIVE) {
+	if (prjType == ProjectType::PERSPECTIVE) {
 
 		shader->set_matrix("m4_projection", perspective);
 		viewport = mat4::look_at(camera->position_, camera->target_, camera->up_);
@@ -113,9 +113,7 @@ void Sprite::start_draw(Camera* camera,
 		float bottom_ = -top_;
 
 		mat4 orthogonal = mat4::orthogonal(left_, right_, bottom_, top_, camera->near_, camera->far_);
-
 		shader->set_matrix("m4_projection", orthogonal);
-
 		viewport = mat4::scale(resScalar);
 	}
 
@@ -135,7 +133,7 @@ void Sprite::start_draw(Camera* camera,
 	glBlendFunc(sfactor_, dfactor_);
 }
 
-void Sprite::draw()
+void Sprite::draw(float /*dt*/)
 {
 	run_animation();
 
@@ -174,7 +172,7 @@ void Sprite::run_animation()
 				float nextFrame = animation_->currentFrame_;
 				float realFrame = animation_->realFrame_;
 
-				nextFrame = (status_ & IS_FLIPPED) == IS_FLIPPED ? nextFrame - realFrame : nextFrame + realFrame;
+				nextFrame = (status & IS_FLIPPED) == IS_FLIPPED ? nextFrame - realFrame : nextFrame + realFrame;
 
 				animation_->currentFrame_ = nextFrame >= 1.f ? 0.f : nextFrame;
 				animation_->timer_.start();
@@ -194,7 +192,7 @@ void Sprite::run_animation()
 		Shader* shader = GLManager::shader_[GLManager::Pipeline::NORMAL];
 		shader->use();
 
-		shader->set_bool("boolean_flip", (status_ & IS_FLIPPED) == IS_FLIPPED);
+		shader->set_bool("boolean_flip", (status & IS_FLIPPED) == IS_FLIPPED);
 		shader->set_matrix("m4_aniScale", mat4::scale(animation_->scale_));
 		shader->set_matrix("m4_aniTranslate", mat4::translate(animation_->translate_));
 	}

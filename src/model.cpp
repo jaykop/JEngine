@@ -111,7 +111,7 @@ void Model::start_draw(Camera* camera,
 	//glBlendFunc(sfactor_, dfactor_);
 }
 
-void Model::draw()
+void Model::draw(float /*dt*/)
 {
 	for (auto mesh : meshes_)
 	{

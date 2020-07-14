@@ -40,7 +40,7 @@ void GraphicSystem::initialize() {
 	//	model->initialize();
 }
 
-void GraphicSystem::update(float /*dt*/) {
+void GraphicSystem::update(float dt) {
 
 	// get current scene color
 	backgroundColor_ = SceneManager::get_current_scene()->background;
@@ -64,7 +64,7 @@ void GraphicSystem::update(float /*dt*/) {
 
 	for (auto& r : renderers_) {
 		r->start_draw(mainCamera_, perspective_, resolutionScaler_);
-		r->draw();
+		r->draw(dt);
 		r->end_draw();
 	}
 

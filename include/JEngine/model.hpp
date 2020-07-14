@@ -22,7 +22,7 @@ public:
 	const Meshes& get_meshes(void) const;
 
 	void start_draw(Camera* camera, const mat4& perspective, const vec3& resScalar) override;
-	void draw() override;
+	void draw(float dt) override;
 	void end_draw() override;
 
 	void draw_normals();

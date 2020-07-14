@@ -70,7 +70,7 @@ void DebugRenderer::start_draw(Camera* camera, const mat4& perspective, const ve
 
 	mat4 viewport;
 
-	if (prjType_ == ProjectType::PERSPECTIVE) {
+	if (prjType == ProjectType::PERSPECTIVE) {
 
 		shader->set_matrix("m4_projection", perspective);
 		viewport = mat4::look_at(camera->position_, camera->target_, camera->up_);
@@ -93,7 +93,7 @@ void DebugRenderer::start_draw(Camera* camera, const mat4& perspective, const ve
 	shader->set_matrix("m4_viewport", viewport);
 }
 
-void DebugRenderer::draw()
+void DebugRenderer::draw(float /*dt*/)
 {
 	if (!vertices_.empty()) {
 
