@@ -99,6 +99,8 @@ void Text::start_draw(Camera* camera, const mat4& perspective, const vec3& resSc
 
 	// Send camera info to shader
 	shader->set_matrix("m4_viewport", viewport);
+
+	glEnable(GL_DEPTH_TEST);
 }
 
 void Text::draw()
@@ -168,6 +170,7 @@ void Text::render_character(unsigned long key, float& newX, float intervalY)
 
 void Text::end_draw()
 {
+	glDisable(GL_DEPTH_TEST);
 }
 
 void Text::set_text(const wchar_t* text, ...)

@@ -42,6 +42,7 @@ void TestScene::initialize()
 	animation->set_speed(10.f);
 	// animation->fix_frame(0);
 	trans1->scale.set(25, 40, 0.f);
+	trans1->position.z = -10.f;
 	register_object(renderer_2d);
 
 	// testing text
