@@ -45,8 +45,10 @@ public:
 	void set_text(const wchar_t* pText, ...);
 	const std::wstring& get_text() const;
 
-	Font* get_font();
-	void set_font(); 
+	Font* get_font() const;
+	void set_font(Font* font); 
+
+	vec4 color;
 
 protected:
 

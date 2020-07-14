@@ -37,7 +37,7 @@ DebugRenderer::DebugRenderer(Object* owner)
 
 	glBindVertexArray(0);
 
-	add_quad(transform_->position, transform_->scale, Color::red);
+	add_quad(transform_->position, transform_->scale, Color::white);
 
 }
 

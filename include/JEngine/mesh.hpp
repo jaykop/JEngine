@@ -49,9 +49,7 @@ protected:
 		vnVao_, vnVbo_, fnVao_, fnVbo_;
 
 	std::vector<unsigned> indices_;
-	std::vector<vec3> points_, 
-		faceNormals_, vertexNormals_, 
-		centers_, vPoints_;
+	std::vector<vec3> points_, faceNormals_, vertexNormals_, centers_, vPoints_;
 
 	unsigned texture_;
 

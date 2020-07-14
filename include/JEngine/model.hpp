@@ -5,8 +5,6 @@
 jeBegin
 
 class Mesh;
-class Object;
-class DebugRenderer;
 
 class Model : public Renderer
 {
@@ -23,12 +21,12 @@ public:
 	void set_mesh(const std::string& name);
 	const Meshes& get_meshes(void) const;
 
+	void start_draw(Camera* camera, const mat4& perspective, const vec3& resScalar) override;
 	void draw() override;
+	void end_draw() override;
+
 	void draw_normals();
 	void draw_debug_info();
-	// void on_gui(void) override;
-
-	DebugRenderer* ddrawer_ = nullptr;
 
 private:
 

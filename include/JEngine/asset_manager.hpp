@@ -38,7 +38,7 @@ class AssetManager {
 	friend class Application;
 
 	using MeshMap = std::unordered_map<std::string, Mesh*>;
-	using FontMap =	std::unordered_map<const char*, Font*>;
+	using FontMap =	std::unordered_map<std::string, Font*>;
 	using AudioMap = std::unordered_map<const char*, Audio*>;
 	using SceneMap = std::unordered_map<const char*, Scene*>;
 	using TextureMap = std::unordered_map<std::string, unsigned>;

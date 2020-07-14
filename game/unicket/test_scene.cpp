@@ -4,6 +4,7 @@
 #include "pch.h"
 
 // components
+#include "text.hpp"
 #include "camera.hpp"
 #include "sprite.hpp"
 #include "transform.hpp"
@@ -31,20 +32,27 @@ void TestScene::initialize()
 	renderer_2d->add_component<Sprite>();
 	renderer_2d->add_component<DebugRenderer>();
 	renderer_2d->add_component<TopDownController>();
-
 	auto* renderer = renderer_2d->get_component<Sprite>();
+	auto* animation = renderer_2d->get_component<Animation2D>();
+	auto* trans1 = renderer_2d->get_component<Transform>();
 	// renderer->set_texture(AssetManager::get_texture("rect"));
 	renderer->set_texture(AssetManager::get_texture("testAnimation"));
-
-	auto* animation = renderer_2d->get_component<Animation2D>();
 	animation->activate(true);
 	animation->set_frame(8);
 	animation->set_speed(10.f);
 	// animation->fix_frame(0);
-
-	auto* trans = renderer_2d->get_component<Transform>();
-	trans->scale.set(25, 40, 0.f);
+	trans1->scale.set(25, 40, 0.f);
 	register_object(renderer_2d);
+
+	// testing text
+	Object* text = ObjectManager::create_object("text");
+	text->add_component<Text>();
+	auto* text_component = text->get_component<Text>();
+	auto* trans2 = text->get_component<Transform>();
+	//text_component->set_font();
+	text_component->set_text(L"JEngine에 오신 걸 환영합니다\n");
+	trans2->scale.set(.1f, .1f, 0.f);
+	register_object(text);
 
 	// set screen color
 	background.set(0.1, 0.1, 0.1, 1);

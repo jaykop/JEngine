@@ -10,8 +10,6 @@ uniform mat4 m4_scale;
 uniform mat4 m4_rotate;
 uniform mat4 m4_viewport;
 uniform mat4 m4_projection;
-uniform vec3 v4_color;
-uniform bool uniformColor;
 
 out vec4 outColor;
 
@@ -21,8 +19,5 @@ void main()
 	mat4 mvp = transpose(m4_projection) * transpose(m4_viewport)* transpose(model);
 	gl_Position = mvp * vec4(position, 1);
 
-	//if (uniformColor)
-	//	outColor = v4_color;
-	//else
-		outColor = color;
+	outColor = color;
 }

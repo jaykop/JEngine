@@ -1,7 +1,7 @@
 {
 	"vertex": [
 
-		{ "Directory": "../../shader/forward.vs" },
+		{ "Directory": "../../shader/debug.vs" },
 		{ "Directory": "../../shader/model.vs" },
 		{ "Directory": "../../shader/text.vs" },
 		{ "Directory": "../../shader/particle.vs" },
@@ -12,7 +12,7 @@
 
 	"fragment": [
 
-		{ "Directory": "../../shader/forward.fs" },
+		{ "Directory": "../../shader/debug.fs" },
 		{ "Directory": "../../shader/model.fs" },
 		{ "Directory": "../../shader/text.fs" },
 		{ "Directory": "../../shader/particle.fs" },

@@ -1,7 +1,7 @@
 #pragma once
 #include <component_builder.hpp>
 #include <component.hpp>
-#include <vec3.hpp>
+#include <vec4.hpp>
 #include <mat4.hpp>
 
 jeBegin
@@ -22,13 +22,12 @@ public:
 	enum class RenderType { NONE, POSITION, NORMAL };
 
 	Renderer(Object* owner);
-	virtual ~Renderer();
+	virtual ~Renderer() {};
 
 	// public methods
-	virtual void start_draw(Camera* camera, const mat4& perspective, const vec3& resScalar);
-	virtual void end_draw();
-
+	virtual void start_draw(Camera* camera, const mat4& perspective, const vec3& resScalar) = 0;
 	virtual void draw() = 0;
+	virtual void end_draw() = 0;
 
 	static void draw_lighting_effect(Light* light);
 

@@ -23,7 +23,11 @@ public:
 	unsigned get_texture() const;
 
 	void run_animation();
+	void start_draw(Camera* camera, const mat4& perspective, const vec3& resScalar) override;
 	void draw() override;
+	void end_draw() override;
+
+	vec4 color;
 	
 protected:
 
@@ -34,7 +38,7 @@ protected:
 private:
 
 	Animation2D* animation_ = nullptr;
-	Mesh* mesh_;
+	unsigned vao_, vbo_, ebo_, texture_;
 };
 
 jeDeclareComponentBuilder(Sprite);

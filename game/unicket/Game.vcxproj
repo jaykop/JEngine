@@ -102,7 +102,7 @@
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\include\JEngine;$(ProjectDir)..\..\include\SDL2;$(ProjectDir)..\..\include;$(SolutionDir)..\..\include\rapidjson</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\include\JEngine;$(ProjectDir)..\..\include\SDL2;$(ProjectDir)..\..\include;$(SolutionDir)..\..\include\rapidjson;$(SolutionDir)..\..\include\freetype2</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalDependencies>JEngine_d.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;freetype.lib;opengl32.lib;glew32.lib;assimp-vc142-mtd.lib</AdditionalDependencies>
@@ -122,7 +122,7 @@ xcopy /y /d "..\..\lib\assimp\$(Configuration)\$(Platform)\*.dll" "$(TargetDir)"
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\include\JEngine;$(ProjectDir)..\..\include\SDL2;$(ProjectDir)..\..\include;$(SolutionDir)..\..\include\rapidjson</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\include\JEngine;$(ProjectDir)..\..\include\SDL2;$(ProjectDir)..\..\include;$(SolutionDir)..\..\include\rapidjson;$(SolutionDir)..\..\include\freetype2</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalDependencies>JEngine_d.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;freetype.lib;opengl32.lib;glew32.lib;assimp-vc142-mtd.lib</AdditionalDependencies>
@@ -144,7 +144,7 @@ xcopy /y /d "..\..\lib\assimp\$(Configuration)\$(Platform)\*.dll" "$(TargetDir)"
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\include\JEngine;$(ProjectDir)..\..\include\SDL2;$(ProjectDir)..\..\include;$(SolutionDir)..\..\include\rapidjson</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\include\JEngine;$(ProjectDir)..\..\include\SDL2;$(ProjectDir)..\..\include;$(SolutionDir)..\..\include\rapidjson;$(SolutionDir)..\..\include\freetype2</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -168,7 +168,7 @@ xcopy /y /d "..\..\lib\assimp\$(Configuration)\$(Platform)\*.dll" "$(TargetDir)"
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\include\JEngine;$(ProjectDir)..\..\include\SDL2;$(ProjectDir)..\..\include;$(SolutionDir)..\..\include\rapidjson</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\include\JEngine;$(ProjectDir)..\..\include\SDL2;$(ProjectDir)..\..\include;$(SolutionDir)..\..\include\rapidjson;$(SolutionDir)..\..\include\freetype2</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>

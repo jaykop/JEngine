@@ -55,8 +55,8 @@ bool AssetManager::set_bulit_in_components()
 	jeRegisterComponent(Camera);
 	jeRegisterComponent(Animation2D);
 	jeRegisterComponent(DebugRenderer);
-	
-	//jeCheckComponentRegistration(jeRegisterComponent(Text));
+	jeRegisterComponent(Text);
+
 	//jeCheckComponentRegistration(jeRegisterComponent(Emitter));
 	//jeCheckComponentRegistration(jeRegisterComponent(Light));
 	//jeCheckComponentRegistration(jeRegisterComponent(Material));
@@ -89,13 +89,11 @@ void AssetManager::load_assets()
 	JsonParser::read_file(assetDirectory_.c_str());
 	const rapidjson::Value& textures = JsonParser::get_document()["Texture"];
 
-	//// Read font info
-	//const rapidjson::Value& fonts = JsonParser::get_document()["Font"];
+	// Read font info
+	const rapidjson::Value& fonts = JsonParser::get_document()["Font"];
 
 	// Get sizes of them
-	unsigned sceneSize = scenes.Size(),
-		textureSize = textures.Size();
-		//fontSize = fonts.Size();
+	unsigned sceneSize = scenes.Size(), textureSize = textures.Size(), fontSize = fonts.Size();
 
 	// Load scenes 
 	for (rapidjson::SizeType i = 0; i < sceneSize; ++i) {
@@ -119,24 +117,36 @@ void AssetManager::load_assets()
 		register_image(it.second, it.first.c_str());
 
 	// Load font
-	//for (rapidjson::SizeType i = 0; i < fontSize; ++i) {
+	for (rapidjson::SizeType i = 0; i < fontSize; ++i) {
 
-	//	// Load default ascii characters (0 - 128)
-	//	LoadFont(fonts[i]["Directory"].GetString(), fonts[i]["Key"].GetString(), fonts[i]["Size"].GetUint(),
-	//		0, 128);
+		// Load default ascii characters (0 - 128)
+		load_font(fonts[i]["Directory"].GetString(), 
+			fonts[i]["Key"].GetString(), 
+			fonts[i]["Size"].GetUint(),
+			0, 128);
 
-	//	// Load additional unicode set
-	//	for (unsigned j = 0; j < fonts[i]["Additional"].Size(); ++j) {
-	//		LoadFont(fonts[i]["Directory"].GetString(), fonts[i]["Key"].GetString(), fonts[i]["Size"].GetUint(),
-	//			static_cast<unsigned long>(fonts[i]["Additional"][j][0].GetUint64()),
-	//			static_cast<unsigned long>(fonts[i]["Additional"][j][1].GetUint64()));
-	//	}
-	//}
+		// Load additional unicode set
+		for (unsigned j = 0; j < fonts[i]["Additional"].Size(); ++j) {
+			load_font(fonts[i]["Directory"].GetString(), 
+				fonts[i]["Key"].GetString(), 
+				fonts[i]["Size"].GetUint(),
+				static_cast<unsigned long>(fonts[i]["Additional"][j][0].GetUint64()),
+				static_cast<unsigned long>(fonts[i]["Additional"][j][1].GetUint64()));
+		}
+	}
 }
 
 void AssetManager::unload_assets()
 {
 	ComponentManager::clear_builders();
+
+	// clear font map
+	for (auto& font : fontMap_)
+	{
+		delete font.second;
+		font.second = nullptr;
+	}
+	fontMap_.clear();
 }
 
 void AssetManager::load_font(const char* path, const char* key, unsigned size,
@@ -169,7 +179,7 @@ void AssetManager::load_font(const char* path, const char* key, unsigned size,
 			jeDebugPrint("!AssetManager - Could not init freetype library: %s\n", path);
 
 		// Check freetype face init
-		if (bool a = !FT_New_Face(newFont->lib, path, 0, &newFont->face))
+		if (!FT_New_Face(newFont->lib, path, 0, &newFont->face))
 			jeDebugPrint("*AssetManager - Loaded font: %s\n", path);
 		else {
 			jeDebugPrint("!AssetManager - Failed to load font: %s\n", path);

@@ -6,14 +6,9 @@
 #include <object.hpp>
 #include <asset_manager.hpp>
 
-#include <shader.hpp>
-#include <mesh.hpp>
-#include <texture.hpp>
-#include <camera.hpp>
-#include <transform.hpp>
-
 #include <colors.hpp>
 #include <math_util.hpp>
+#include <transform.hpp>
 
 jeBegin
 
@@ -30,65 +25,6 @@ Renderer::Renderer(Object* owner)
 	// connect transform component
 	transform_ = owner->get_component<Transform>();
 
-}
-
-Renderer::~Renderer()
-{
-}
-
-void Renderer::start_draw(Camera* camera,
-	const mat4& perspective, const vec3& resScalar)
-{
-	Shader* shader = GLManager::shader_[GLManager::Pipeline::NORMAL];
-	shader->use();
-
-	shader->set_matrix("m4_translate", mat4::translate(transform_->position));
-	shader->set_matrix("m4_scale", mat4::scale(transform_->scale));
-	shader->set_matrix("m4_rotate", transform_->orientation.to_mat4());
-	shader->set_vec3("v3_cameraPosition", camera->position_);
-	shader->set_bool("boolean_bilboard", (status_ & IS_BILBOARD) == IS_BILBOARD);
-
-	mat4 viewport;
-
-	if (prjType_ == ProjectType::PERSPECTIVE) {
-
-		shader->set_matrix("m4_projection", perspective);
-		viewport = mat4::look_at(camera->position_, camera->target_, camera->up_);
-	}
-
-	else {
-		float right_ = GLManager::get_width() * .5f;
-		float left_ = -right_;
-		float top_ = GLManager::get_height() * .5f;
-		float bottom_ = -top_;
-
-		mat4 orthogonal = mat4::orthogonal(left_, right_, bottom_, top_, camera->near_, camera->far_);
-
-		shader->set_matrix("m4_projection", orthogonal);
-
-		viewport = mat4::scale(resScalar);
-	}
-
-	// Send camera info to shader
-	shader->set_matrix("m4_viewport", viewport);
-
-	//bool hasParent = (pModel->status_ & Model::IS_INHERITED) == Model::IS_INHERITED;
-	//glUniform1i(glGetUniformLocation(Shader::pCurrentShader_->programId_, "hasParent"), hasParent);
-	//if (hasParent)
-	//	ParentPipeline(pModel->pInherited_);
-
-	//if (pModel->pMaterial_ && isLight_)
-	//	LightingEffectPipeline(pModel->pMaterial_);
-
-	glEnable(GL_BLEND);
-	glEnable(GL_DEPTH_TEST);
-	glBlendFunc(sfactor_, dfactor_);
-}
-
-void Renderer::end_draw()
-{
-	glDisable(GL_DEPTH_TEST);
-	glDisable(GL_BLEND);
 }
 
 void Renderer::draw_lighting_effect(Light* /*pLight*/)

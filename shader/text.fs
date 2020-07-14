@@ -18,9 +18,9 @@ uniform sampler2D 	Texture;
 ////////////////////////////
 void main() {
 
-			 vec4 finalTexture = texture(Texture, v2_outTexCoord).r * v4_color;
-			 if (finalTexture.a <= 0.0)
-				discard;
+	 vec4 finalTexture = texture(Texture, v2_outTexCoord).r *v4_color;
+	 if (finalTexture.a <= 0.0)
+		discard;
 
 	v4_fragColor = finalTexture;
 

@@ -14,8 +14,8 @@ class Camera : public Component
 	jeBaseFriends(Camera);
 
 	friend class Text;
+	friend class Sprite;
 	friend class DebugRenderer;
-	friend class Renderer;
 	friend class GraphicSystem;
 
 public:
