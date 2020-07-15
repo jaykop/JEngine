@@ -29,8 +29,8 @@ void SceneController::update(float /*dt*/)
 	if (InputHandler::key_pressed(KEY::ENTER))
 		std::cout << "ENTER\n";
 
-	//if (InputHandler::key_triggered(KEY::SPACE))
-	//	std::cout << "SPACE\n";
+	if (InputHandler::key_triggered(KEY::SPACE))
+		std::cout << "SPACE\n";
 
 	if (InputHandler::key_triggered(KEY::ESC))
 		Application::quit();

@@ -11,6 +11,7 @@ Contains the definition of InputHandler class
 /******************************************************************************/
 #pragma once
 
+#include <set>
 #include <key_map.hpp>
 #include <unordered_map>
 
@@ -20,6 +21,7 @@ struct SDL_Window;
 jeBegin
 
 using KeyMap = std::unordered_map<KEY, bool>;
+using LockedKeys = std::set<KEY>;
 
 class InputHandler {
 
@@ -44,8 +46,6 @@ public:
 	static bool key_triggered(KEY key);
 	static bool get_mouse_wheel_status(KEY key);
 
-	static float wheelSensitivity_;
-
 	// mouse position
 	
 private:
@@ -53,14 +53,17 @@ private:
 	static KEY key_translator(const SDL_Event& event);
 	static KEY mouse_translator(const SDL_Event& event);
 	static void mouse_refresh(SDL_Event& event);
+	static void lock_triggered_keys();
 
 	static void initialize();
 	static void update(const SDL_Event& event);
 	static void close();
 
-	static bool mouseDown, keyDown;
-	static KeyMap keyMap, triggerMap;
+	static float wheelSensitivity_;
+	static bool mouseDown_, keyDown_;
+	static KeyMap keyMap_, triggerMap_;
 	static MouseWheel mouseWheel_;
+	static LockedKeys triggerLock_;
 	
 };
 

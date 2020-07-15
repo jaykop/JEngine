@@ -81,6 +81,8 @@ void SceneManager::update(SDL_Event* event)
 			frames_ = 0;
 			timeStack = 0.f;
 		}
+
+		InputHandler::lock_triggered_keys();
 	}
 
 	switch (status_) {
