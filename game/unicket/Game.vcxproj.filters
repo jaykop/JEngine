@@ -33,6 +33,9 @@
     <ClInclude Include="topdown_controller.h">
       <Filter>game_logics</Filter>
     </ClInclude>
+    <ClInclude Include="particle_conrtoller.h">
+      <Filter>game_logics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -48,6 +51,9 @@
       <Filter>game_logics</Filter>
     </ClCompile>
     <ClCompile Include="topdown_controller.cpp">
+      <Filter>game_logics</Filter>
+    </ClCompile>
+    <ClCompile Include="particle_conrtoller.cpp">
       <Filter>game_logics</Filter>
     </ClCompile>
   </ItemGroup>

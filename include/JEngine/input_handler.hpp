@@ -34,7 +34,7 @@ class InputHandler {
 
 public:
 
-	enum MouseWheel { NONE, UP, DOWN } ;
+	enum class MouseWheel { NONE, UP, DOWN } ;
 
 	static bool any_key_down(); // check both mouse or key
 	static bool any_mouse_down();

@@ -12,6 +12,7 @@ void JEngine::register_builders()
 	// add game logic builders here
 	jeRegisterComponent(SceneController);
 	jeRegisterComponent(TopDownController);
+	jeRegisterComponent(ExplodingParticleController);
 }
 
 void JEngine::register_scenes()

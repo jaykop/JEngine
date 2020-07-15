@@ -110,6 +110,7 @@ void TestScene::init_emitters()
 
 	Object* emitter2 = ObjectManager::create_object("emitter2");
 	emitter2->add_component<Emitter>();
+	emitter2->add_component<ExplodingParticleController>();
 	auto* emi2 = emitter2->get_component<Emitter>();
 	auto* trans2 = emitter2->get_component<Transform>();
 	trans2->position.set(-50.f, 25.f, 0.f);

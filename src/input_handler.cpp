@@ -19,7 +19,7 @@ jeBegin
 
 float InputHandler::wheelSensitivity_ = 0.f;
 KeyMap InputHandler::keyMap, InputHandler::triggerMap;
-InputHandler::MouseWheel InputHandler::mouseWheel_ = NONE;
+InputHandler::MouseWheel InputHandler::mouseWheel_ = MouseWheel::NONE;
 bool InputHandler::mouseDown = false, InputHandler::keyDown = false;
 
 bool InputHandler::any_input_down()
@@ -330,10 +330,10 @@ void InputHandler::update(const SDL_Event& event)
 	case SDL_MOUSEWHEEL:
 	{
 		if (event.wheel.y > wheelSensitivity_)
-			mouseWheel_ = UP;
+			mouseWheel_ = MouseWheel::UP;
 
 		else if (event.wheel.y < -wheelSensitivity_)
-			mouseWheel_ = DOWN;
+			mouseWheel_ = MouseWheel::DOWN;
 
 		break;
 	}
@@ -348,14 +348,14 @@ void InputHandler::close()
 void InputHandler::mouse_refresh(SDL_Event& event)
 {
 	// set default wheel level
-	mouseWheel_ = NONE;
+	mouseWheel_ = MouseWheel::NONE;
 	event.wheel.y = 0.f;
 }
 
 bool InputHandler::get_mouse_wheel_status(KEY key)
 {
-	if ((key == KEY::MOUSE_WHEEL_UP && mouseWheel_ == UP)
-		|| (key == KEY::MOUSE_WHEEL_DOWN && mouseWheel_ == DOWN))
+	if ((key == KEY::MOUSE_WHEEL_UP && mouseWheel_ == MouseWheel::UP)
+		|| (key == KEY::MOUSE_WHEEL_DOWN && mouseWheel_ == MouseWheel::DOWN))
 		return true;
 	
 	return false;
