@@ -17,9 +17,11 @@ uniform mat4 m4_scale;
 uniform mat4 m4_rotate;
 uniform mat4 m4_viewport;
 uniform mat4 m4_projection;
+
 uniform mat4 m4_aniScale;
 uniform mat4 m4_aniTranslate;
 uniform vec4 v4_lightColor[MAX_ARRAY];
+
 uniform bool boolean_flip;
 uniform bool boolean_light;
 uniform bool boolean_bilboard;

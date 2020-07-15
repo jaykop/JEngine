@@ -4,6 +4,7 @@
 #include "pch.h"
 
 // components
+#include "emitter.hpp"
 #include "text.hpp"
 #include "camera.hpp"
 #include "sprite.hpp"
@@ -52,8 +53,25 @@ void TestScene::initialize()
 	auto* trans2 = text->get_component<Transform>();
 	//text_component->set_font();
 	text_component->set_text(L"JEngine에 오신 걸 환영합니다\n");
+	trans2->position.set(20.f, 0.f, 0.f);
 	trans2->scale.set(.1f, .1f, 0.f);
 	register_object(text);
+
+	// testing emitter
+	Object* emitter = ObjectManager::create_object("emitter");
+	emitter->add_component<Emitter>();
+	auto* emi = emitter->get_component<Emitter>();
+	auto* trans3 = emitter->get_component<Transform>();
+	emi->set_texture(AssetManager::get_texture("rect"));
+	emi->set_colors(vec3::one, vec3::zero);
+	emi->active = true;
+	emi->life = 1.f;
+	emi->velocity.set(15.f, 15.f, 0.f);
+	// emi->direction.set(0.f, 0.f, 0.f);
+	emi->set_size(100);
+	trans3->position.set(-50.f, 0.f, 0.f);
+	trans3->scale.set(1.f, 1.f, 0.f);
+	register_object(emitter);
 
 	// set screen color
 	background.set(0.1, 0.1, 0.1, 1);

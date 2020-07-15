@@ -31,6 +31,16 @@ GraphicSystem::Renderers GraphicSystem::renderers_;
 GraphicSystem::Cameras GraphicSystem::cameras_;
 vec4 GraphicSystem::backgroundColor_ = vec4::zero, GraphicSystem::screenColor_ = vec4::zero;
 
+void GraphicSystem::set_camera(Camera* camera)
+{
+	mainCamera_ = camera;
+}
+
+Camera* GraphicSystem::get_camera()
+{
+	return mainCamera_;
+}
+
 void GraphicSystem::initialize() {
 
 	if (!mainCamera_ && !(cameras_.empty()))
@@ -63,7 +73,7 @@ void GraphicSystem::update(float dt) {
 		mainCamera_->near_, mainCamera_->far_);
 
 	for (auto& r : renderers_) {
-		r->start_draw(mainCamera_, perspective_, resolutionScaler_);
+		r->start_draw(perspective_, resolutionScaler_);
 		r->draw(dt);
 		r->end_draw();
 	}

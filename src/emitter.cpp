@@ -13,6 +13,14 @@ jeBegin
 
 jeDefineComponentBuilder(Emitter);
 
+const std::vector<float> quadVertices =
+{
+	-.5f, .5f, 0.0f , 0.f, 0.f, 1.f,  0.0f, 0.0f ,
+	-.5f, -.5f, 0.0f , 0.f, 0.f, 1.f,  0.0f, 1.0f,
+	.5f, -.5f, 0.0f , 0.f, 0.f, 1.f,  1.0f, 1.0f,
+	.5f,  .5f, 0.0f , 0.f, 0.f, 1.f,  1.0f, 0.0f
+};
+
 const std::vector<unsigned> quadIndices = { 2, 0, 1, 2, 3, 0 };
 
 Emitter::Emitter(Object* owner)
@@ -27,6 +35,7 @@ Emitter::Emitter(Object* owner)
 
 	glBindVertexArray(vao_);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo_);
+	glBufferData(GL_ARRAY_BUFFER, quadVertices.size() * sizeof(float), &quadVertices[0], GL_STATIC_DRAW);
 
 	// vertex position
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
@@ -41,13 +50,20 @@ Emitter::Emitter(Object* owner)
 	glEnableVertexAttribArray(2);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo_);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned) * quadIndices.size(),
-		static_cast<const void*>(&quadIndices[0]), GL_DYNAMIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned) * quadIndices.size(), (&quadIndices[0]), GL_STATIC_DRAW);
 	glBindVertexArray(0);
 }
 
 Emitter::~Emitter()
 {
+	for (auto& p : particles_)
+	{
+		delete p;
+		p = nullptr;
+	}
+
+	particles_.clear();
+
 	glDeleteVertexArrays(1, &vao_);
 	glDeleteBuffers(1, &vbo_);
 	glDeleteBuffers(1, &ebo_);
@@ -64,8 +80,10 @@ void Emitter::load(const rapidjson::Value& /*data*/) {
 
 }
 
-void Emitter::start_draw(Camera* camera, const mat4& perspective, const vec3& resScalar)
+void Emitter::start_draw(const mat4& perspective, const vec3& resScalar)
 {
+	Camera* camera = GraphicSystem::get_camera();
+
 	Shader* shader = GLManager::shader_[GLManager::Pipeline::PARTICLE];
 	shader->use();
 
@@ -100,16 +118,17 @@ void Emitter::start_draw(Camera* camera, const mat4& perspective, const vec3& re
 	glEnable(GL_BLEND);
 	glEnable(GL_DEPTH_TEST);
 	glBlendFunc(sfactor_, dfactor_);
-	glPointSize(pointSize);
+	// glPointSize(pointSize);
 }
 
 void Emitter::draw(float dt)
 {
 	if (active) {
 
+		Camera* camera = GraphicSystem::get_camera();
 		Shader* shader = GLManager::shader_[GLManager::Pipeline::PARTICLE];
 
-		for (auto particle : particles_) {
+		for (auto& particle : particles_) {
 
 			if (particle->life < 0.f)
 				refresh_particle(particle);
@@ -122,11 +141,11 @@ void Emitter::draw(float dt)
 				if (rotationSpeed)
 					particle->rotation += particle->rotationSpeed * dt;
 
-				if (changeColor_)
+				if (colorDiff_ == vec3::zero)
 					particle->color += colorDiff_ * dt;
 
-				vec3 viewDirection = (camera_->position_ - particle->position).normalized();
-
+				vec3 viewDirection = (camera->position_ - particle->position).normalized();
+				
 				// Send transform info to shader
 				shader->set_matrix("m4_translate", mat4::translate(particle->position));
 				shader->set_matrix("m4_rotate", mat4::rotate(Math::deg_to_rad(particle->rotation), viewDirection));
@@ -135,16 +154,15 @@ void Emitter::draw(float dt)
 				shader->set_vec4("v4_color", vec4(particle->color, particle->life));
 				shader->set_bool("boolean_hide", particle->hidden);
 
-				glBindTexture(GL_TEXTURE_2D, texture_);
 				glBindVertexArray(vao_);
+				glBindTexture(GL_TEXTURE_2D, texture_);
 				glDrawElements(GL_TRIANGLES, quadIndices.size(), GL_UNSIGNED_INT, nullptr);
+				glBindTexture(GL_TEXTURE_2D, 0);
 				glBindVertexArray(0);
 				
 			}
 		}
 	}
-
-	glBindVertexArray(0);
 }
 
 void Emitter::end_draw()
@@ -241,6 +259,8 @@ void Emitter::set_size(unsigned size)
 			particles_.emplace_back(generate_particle());
 
 		size_ = size;
+
+		colorDiff_ = (endColor_ - startColor_) / life;
 	}
 
 	else
@@ -250,14 +270,10 @@ void Emitter::set_size(unsigned size)
 void Emitter::set_colors(const vec3& start, const vec3& end)
 {
 	startColor_ = start, endColor_ = end;
-	colorDiff_ = (endColor_ - startColor_) / life;
-
-	// If dff is zero, no need to add diff
-	if (colorDiff_ == vec3::zero)
-		changeColor_ = false;
-
-	else
-		changeColor_ = true;
 }
+
+void Emitter::set_texture(unsigned t) { texture_ = t; }
+
+unsigned Emitter::get_texture() const { return texture_; }
 
 jeEnd

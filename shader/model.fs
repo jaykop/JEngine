@@ -74,7 +74,6 @@ void main() {
 	if (boolean_light)
 		LightingEffect(finalTexture);
 	
-	// Unless..
 	else
 		finalTexture = texture(Texture, v2_outTexCoord) * v4_color;
 	

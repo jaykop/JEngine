@@ -37,7 +37,7 @@ public:
 	Text(Object* owner);
 	virtual ~Text();
 
-	void start_draw(Camera* camera, const mat4& perspective, const vec3& resScalar) override;
+	void start_draw(const mat4& perspective, const vec3& resScalar) override;
 	void draw(float dt) override;
 	void end_draw() override;
 	void render_character(unsigned long key, float& newX, float intervalY);

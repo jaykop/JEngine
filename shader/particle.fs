@@ -1,20 +1,27 @@
 #version 450 core
 
-// Interpolated values from the vertex shaders
+layout (location = 0) out vec4 v4_fragColor;
+
+////////////////////////////
+// in variables
+////////////////////////////
 in vec2 v2_outTexCoord;
-in vec4 v4_outColor;
 
-// Ouput data
-out vec4 color;
+////////////////////////////
+// uniform variables
+////////////////////////////
+uniform vec4 v4_color;
+uniform sampler2D Texture;
 
-uniform sampler2D 	Texture;
+////////////////////////////
+// entry point
+////////////////////////////
+void main() {
 
-void main(){
-
-	vec4 finalTexture = texture( Texture, v2_outTexCoord ) * v4_outColor;
+	vec4 finalTexture = texture(Texture, v2_outTexCoord ) * v4_color;
 	if (finalTexture.a <= 0.0)
 		discard;
 
-	color = finalTexture;
+	v4_fragColor = finalTexture;
 
 }

@@ -59,9 +59,11 @@ void DebugRenderer::load(const rapidjson::Value& /*data*/) {
 
 }
 
-void DebugRenderer::start_draw(Camera* camera, const mat4& perspective, const vec3& resScalar)
+void DebugRenderer::start_draw(const mat4& perspective, const vec3& resScalar)
 {
-	Shader* shader = GLManager::shader_[GLManager::Pipeline::FORWARD];
+	Camera* camera = GraphicSystem::get_camera();
+
+	Shader* shader = GLManager::shader_[GLManager::Pipeline::DEBUG];
 	shader->use();
 
 	shader->set_matrix("m4_translate", mat4::translate(transform_->position));

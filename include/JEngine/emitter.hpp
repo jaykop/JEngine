@@ -3,8 +3,6 @@
 
 jeBegin
 
-class Camera;
-
 class Emitter : public Renderer
 {
 	jeBaseFriends(Emitter);
@@ -12,10 +10,9 @@ class Emitter : public Renderer
 
 	struct Particle {
 
-		vec3 color, position, direction, velocity;
-		float life, rotationSpeed, rotation;
-		bool hidden, dead;
-		Emitter* pEmitter;
+		vec3 color = vec3::zero, position = vec3::zero, direction = vec3::zero, velocity = vec3::zero;
+		float life = 0.f, rotationSpeed = 0.f, rotation = 0.f;
+		bool hidden = false, dead = false;
 	};
 
 	using Particles = std::vector<Particle*>;
@@ -30,7 +27,7 @@ public:
 	void set_texture(unsigned texture);
 	unsigned get_texture() const;
 
-	void start_draw(Camera* camera, const mat4& perspective, const vec3& resScalar) override;
+	void start_draw(const mat4& perspective, const vec3& resScalar) override;
 	void draw(float dt) override;
 	void end_draw() override;
 
@@ -57,10 +54,8 @@ private:
 
 	Particles particles_;
 	vec3 startColor_, endColor_, colorDiff_;
-	bool changeColor_;
 	unsigned deadCount_, size_;
 	unsigned vao_, vbo_, ebo_, texture_;
-	Camera* camera_ = nullptr;
 };
 
 jeDeclareComponentBuilder(Emitter);

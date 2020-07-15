@@ -21,7 +21,7 @@ public:
 	void set_mesh(const std::string& name);
 	const Meshes& get_meshes(void) const;
 
-	void start_draw(Camera* camera, const mat4& perspective, const vec3& resScalar) override;
+	void start_draw(const mat4& perspective, const vec3& resScalar) override;
 	void draw(float dt) override;
 	void end_draw() override;
 

@@ -85,9 +85,9 @@ void Sprite::load(const rapidjson::Value& /*data*/) {
 
 }
 
-void Sprite::start_draw(Camera* camera,
-	const mat4& perspective, const vec3& resScalar)
+void Sprite::start_draw(const mat4& perspective, const vec3& resScalar)
 {
+	Camera* camera = GraphicSystem::get_camera();
 	Shader* shader = GLManager::shader_[GLManager::Pipeline::NORMAL];
 	shader->use();
 
@@ -137,12 +137,9 @@ void Sprite::draw(float /*dt*/)
 {
 	run_animation();
 
-	Shader* shader = GLManager::shader_[GLManager::Pipeline::NORMAL];
-	shader->use();
-
 	glBindVertexArray(vao_);
 	glBindTexture(GL_TEXTURE_2D, texture_);
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+	glDrawElements(GL_TRIANGLES, quadIndices.size(), GL_UNSIGNED_INT, nullptr);
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glBindVertexArray(0);
 }

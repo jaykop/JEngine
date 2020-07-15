@@ -61,9 +61,10 @@ void Model::draw_debug_info()
 }
 
 
-void Model::start_draw(Camera* camera,
-	const mat4& perspective, const vec3& resScalar)
+void Model::start_draw(const mat4& perspective, const vec3& resScalar)
 {
+	Camera* camera = GraphicSystem::get_camera();
+
 	//Shader* shader = GLManager::shader_[GLManager::Pipeline::NORMAL];
 	//shader->use();
 

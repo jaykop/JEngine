@@ -41,7 +41,7 @@ class GraphicSystem {
 
 public:
 
-	static void set_camera(Camera* mainCameras);
+	static void set_camera(Camera* camera);
 	static Camera* get_camera();
 
 	static vec4 backgroundColor_, screenColor_;

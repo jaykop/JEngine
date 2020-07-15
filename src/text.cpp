@@ -37,8 +37,7 @@ Text::Text(Object* owner)
 	glEnableVertexAttribArray(2);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo_);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned) * textIndices.size(),
-		static_cast<const void*>(&textIndices[0]), GL_DYNAMIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned) * textIndices.size(), (&textIndices[0]), GL_STATIC_DRAW);
 	glBindVertexArray(0);
 
 	set_font(AssetManager::get_font("Default"));
@@ -67,8 +66,10 @@ void Text::load(const rapidjson::Value& /*data*/) {
 
 }
 
-void Text::start_draw(Camera* camera, const mat4& perspective, const vec3& resScalar)
+void Text::start_draw(const mat4& perspective, const vec3& resScalar)
 {
+	Camera* camera = GraphicSystem::get_camera();
+
 	Shader* shader = GLManager::shader_[GLManager::Pipeline::TEXT];
 	shader->use();
 
