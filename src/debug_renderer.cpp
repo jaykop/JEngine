@@ -59,7 +59,7 @@ void DebugRenderer::load(const rapidjson::Value& /*data*/) {
 
 }
 
-void DebugRenderer::start_draw(const mat4& perspective, const vec3& resScalar)
+void DebugRenderer::start_draw(const vec3& resScalar)
 {
 	Camera* camera = GraphicSystem::get_camera();
 
@@ -74,21 +74,26 @@ void DebugRenderer::start_draw(const mat4& perspective, const vec3& resScalar)
 
 	if (prjType == ProjectType::PERSPECTIVE) {
 
-		shader->set_matrix("m4_projection", perspective);
 		viewport = mat4::look_at(camera->position_, camera->target_, camera->up_);
+
+		mat4 perspective = mat4::perspective(
+			camera->fovy_, camera->aspect_,
+			camera->near_, camera->far_);
+
+		shader->set_matrix("m4_projection", perspective);
 	}
 
 	else {
+
+		viewport = mat4::scale(resScalar);
+
 		float right_ = GLManager::get_width() * .5f;
 		float left_ = -right_;
 		float top_ = GLManager::get_height() * .5f;
 		float bottom_ = -top_;
 
 		mat4 orthogonal = mat4::orthogonal(left_, right_, bottom_, top_, camera->near_, camera->far_);
-
 		shader->set_matrix("m4_projection", orthogonal);
-
-		viewport = mat4::scale(resScalar);
 	}
 
 	// Send camera info to shader

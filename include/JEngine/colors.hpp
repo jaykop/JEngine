@@ -6,8 +6,9 @@ namespace Color {
 	static const vec3 red = vec3(1.f, 0.f, 0.f);
 	static const vec3 blue = vec3(0.f, 0.f, 1.f);
 	static const vec3 white = vec3(1.f, 1.f, 1.f);
-	static const vec3 green = vec3(0, 1.f, 0);
-	static const vec3 yellow = vec3(1.f, 1.f, 0);
+	static const vec3 green = vec3(0.f, 1.f, 0.f);
+	static const vec3 yellow = vec3(1.f, 1.f, 0.f);
+	static const vec3 black = vec3(0.f, 0.f, 0.f);
 
 	static vec3 colors_list[] = {
 		vec3(1, 0, 0),

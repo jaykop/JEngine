@@ -12,6 +12,8 @@
 #include "animation_2d.hpp"
 #include "debug_renderer.hpp"
 
+#include "colors.hpp"
+
 jeBegin
 
 void TestScene::initialize()
@@ -100,9 +102,10 @@ void TestScene::init_emitters()
 	trans1->position.set(-50.f, 0.f, 0.f);
 	trans1->scale.set(1.f, 1.f, 0.f);
 	emi1->set_texture(AssetManager::get_texture("rect"));
-	emi1->set_colors(vec3::one, vec3::zero);
+	emi1->set_colors(Color::yellow, Color::red);
 	emi1->active = true;
 	emi1->life = 1.f;
+	emi1->colorSpeed = 1.f;
 	emi1->velocity.set(15.f, 15.f, 0.f);
 	// emi->direction.set(0.f, 0.f, 0.f);
 	emi1->set_size(100);
@@ -116,14 +119,30 @@ void TestScene::init_emitters()
 	trans2->position.set(-50.f, 25.f, 0.f);
 	trans2->scale.set(1.f, 1.f, 0.f);
 	emi2->set_texture(AssetManager::get_texture("rect"));
-	emi2->set_colors(vec3::one, vec3::zero);
+	emi2->set_colors(Color::white, Color::black);
 	emi2->type = Emitter::ParticleType::EXPLOSION;
-	emi2->active = true;
 	emi2->life = .5f;
+	emi2->colorSpeed = 1.f;
 	emi2->velocity.set(30.f, 30.f, 0.f);
-	// emi->direction.set(0.f, 0.f, 0.f);
 	emi2->set_size(100);
 	register_object(emitter2);
+
+	Object* emitter3 = ObjectManager::create_object("emitter3");
+	emitter3->add_component<Emitter>();
+	auto* emi3 = emitter3->get_component<Emitter>();
+	auto* trans3 = emitter3->get_component<Transform>();
+	trans3->position.set(-50.f, -25.f, 0.f);
+	trans3->scale.set(1.f, 1.f, 0.f);
+	emi3->set_texture(AssetManager::get_texture("rect"));
+	emi3->set_colors(Color::white, Color::blue);
+	emi3->type = Emitter::ParticleType::WIDE;
+	emi3->life = 3.f;
+	emi3->rotationSpeed = 100.f;
+	emi3->range.set(20.f, 1.f, 0.f);
+	emi3->velocity.set(0.f, 10.f, 0.f);
+	emi3->direction.set(0.f, -1.f, 0.f);
+	emi3->set_size(100);
+	register_object(emitter3);
 }
 
 jeEnd

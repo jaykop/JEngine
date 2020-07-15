@@ -1,4 +1,5 @@
 #pragma once
+#include <vector>
 #include <renderer.hpp>
 
 jeBegin
@@ -27,7 +28,7 @@ public:
 	void set_texture(unsigned texture);
 	unsigned get_texture() const;
 
-	void start_draw(const mat4& perspective, const vec3& resScalar) override;
+	void start_draw(const vec3& resScalar) override;
 	void draw(float dt) override;
 	void end_draw() override;
 
@@ -40,7 +41,7 @@ public:
 	void set_colors(const vec3& start, const vec3& end);
 
 	vec3 direction, velocity, range;
-	float life, rotationSpeed, pointSize;
+	float life, rotationSpeed, colorSpeed, pointSize;
 	bool active;
 	ParticleType type;
 

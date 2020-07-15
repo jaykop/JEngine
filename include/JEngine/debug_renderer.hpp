@@ -27,7 +27,7 @@ public:
 	DebugRenderer(Object* owner);
 	virtual ~DebugRenderer(void);
 
-	void start_draw(const mat4& perspective, const vec3& resScalar) override;
+	void start_draw(const vec3& resScalar) override;
 	void draw(float dt) override; 
 	void end_draw() override;
 	

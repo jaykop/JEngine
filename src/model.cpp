@@ -53,7 +53,6 @@ const Model::Meshes& Model::get_meshes(void) const
 	return meshes_;
 }
 
-
 void Model::draw_debug_info()
 {
 	//pDDrawer_->render_lines(pShader, pTrans_->model_to_world());
@@ -61,7 +60,7 @@ void Model::draw_debug_info()
 }
 
 
-void Model::start_draw(const mat4& perspective, const vec3& resScalar)
+void Model::start_draw(const vec3& resScalar)
 {
 	Camera* camera = GraphicSystem::get_camera();
 

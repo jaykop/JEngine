@@ -66,7 +66,7 @@ void Text::load(const rapidjson::Value& /*data*/) {
 
 }
 
-void Text::start_draw(const mat4& perspective, const vec3& resScalar)
+void Text::start_draw(const vec3& resScalar)
 {
 	Camera* camera = GraphicSystem::get_camera();
 
@@ -82,6 +82,11 @@ void Text::start_draw(const mat4& perspective, const vec3& resScalar)
 	if (prjType == ProjectType::PERSPECTIVE) {
 
 		viewport = mat4::look_at(camera->position_, camera->target_, camera->up_);
+
+		mat4 perspective = mat4::perspective(
+			camera->fovy_, camera->aspect_,
+			camera->near_, camera->far_);
+
 		shader->set_matrix("m4_projection", perspective);
 	}
 

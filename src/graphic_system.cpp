@@ -24,7 +24,6 @@ jeBegin
 
 const vec3 stdResolution(1.f / 800.f, 1.f / 600.f, 1.f);
 vec3 resolutionScaler_;
-mat4 perspective_;
 
 Camera* GraphicSystem::mainCamera_ = nullptr;
 GraphicSystem::Renderers GraphicSystem::renderers_;
@@ -67,13 +66,8 @@ void GraphicSystem::update(float dt) {
 	vec3 windowSize(GLManager::get_width(), GLManager::get_height(), 1.f);
 	resolutionScaler_ = windowSize * stdResolution;
 
-	// Update the perpsective matrix by camera's zoom
-	perspective_ = mat4::perspective(
-		mainCamera_->fovy_, mainCamera_->aspect_,
-		mainCamera_->near_, mainCamera_->far_);
-
 	for (auto& r : renderers_) {
-		r->start_draw(perspective_, resolutionScaler_);
+		r->start_draw(resolutionScaler_);
 		r->draw(dt);
 		r->end_draw();
 	}

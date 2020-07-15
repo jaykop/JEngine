@@ -17,6 +17,7 @@ void ExplodingParticleController::update(float /*dt*/)
 		std::cout << "explosion!\n";
 		Emitter* explosion = get_owner()->get_component<Emitter>();
 		explosion->refresh_particles();
+		explosion->active = true;
 	}
 
 	if (InputHandler::key_pressed(KEY::SPACE))

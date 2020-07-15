@@ -24,7 +24,10 @@ const std::vector<float> quadVertices =
 const std::vector<unsigned> quadIndices = { 2, 0, 1, 2, 3, 0 };
 
 Emitter::Emitter(Object* owner)
-	: Renderer(owner)
+	: Renderer(owner), direction(vec3::zero), velocity(vec3::zero), range(vec3::zero),
+	life(1.f), rotationSpeed(0.f), colorSpeed(1.f), pointSize(0.f), active(true), 
+	type(ParticleType::NORMAL), startColor_(vec3::zero), endColor_(vec3::zero), colorDiff_(vec3::zero),
+	deadCount_(0), size_(0)
 {
 	sfactor_ = GL_SRC_ALPHA;
 	dfactor_ = GL_ONE;
@@ -69,6 +72,18 @@ Emitter::~Emitter()
 	glDeleteBuffers(1, &ebo_);
 }
 void Emitter::add_to_system() {
+
+	if (particles_.empty()) {
+
+		for (unsigned i = 0; i < size_; ++i)
+			particles_.emplace_back(generate_particle());
+
+		colorDiff_ = (endColor_ - startColor_) / life;
+	}
+
+	else
+		jeDebugPrint("!Emitter - Already allocated.\n");
+
 	GraphicSystem::add_renderer(this);
 }
 
@@ -80,7 +95,7 @@ void Emitter::load(const rapidjson::Value& /*data*/) {
 
 }
 
-void Emitter::start_draw(const mat4& perspective, const vec3& resScalar)
+void Emitter::start_draw(const vec3& resScalar)
 {
 	Camera* camera = GraphicSystem::get_camera();
 
@@ -95,6 +110,12 @@ void Emitter::start_draw(const mat4& perspective, const vec3& resScalar)
 	if (prjType == ProjectType::PERSPECTIVE) {
 
 		viewport = mat4::look_at(camera->position_, camera->target_, camera->up_);
+
+		// Update the perpsective matrix by camera's zoom
+		mat4 perspective = mat4::perspective(
+			camera->fovy_, camera->aspect_,
+			camera->near_, camera->far_);
+
 		shader->set_matrix("m4_projection", perspective);
 	}
 
@@ -141,8 +162,8 @@ void Emitter::draw(float dt)
 				if (rotationSpeed)
 					particle->rotation += particle->rotationSpeed * dt;
 
-				if (colorDiff_ == vec3::zero)
-					particle->color += colorDiff_ * dt;
+				if (colorDiff_ != vec3::zero)
+					particle->color += colorDiff_ * dt * colorSpeed;
 
 				vec3 viewDirection = (camera->position_ - particle->position).normalized();
 				
@@ -194,11 +215,11 @@ Emitter::Particle* Emitter::generate_particle()
 
 void Emitter::refresh_particle(Particle* particle)
 {
-	particle->rotation = Random::get_rand_float(0.f, 360.f);
-	particle->rotationSpeed = Random::get_rand_float(0.f, rotationSpeed);
-
 	particle->life = Random::get_rand_float(0.f, life);
 	particle->color.set(startColor_);
+	particle->rotation = Random::get_rand_float(0.f, 360.f);
+	if (rotationSpeed)
+		particle->rotationSpeed = Random::get_rand_float(0.f, rotationSpeed);
 
 	if (type == ParticleType::NORMAL) {
 
@@ -216,15 +237,22 @@ void Emitter::refresh_particle(Particle* particle)
 
 		else if (!particle->dead) {
 
-			// Ready for next update
-			particle->position = transform_->position;
-			particle->direction = direction == vec3::zero ? Random::get_rand_vec3(-vec3::one, vec3::one) : direction;
-
 			// Set dead and add number
 			particle->dead = true;
 			particle->hidden = true;
 			++deadCount_;
 		}
+
+		else if (!deadCount_)
+		{
+			particle->hidden = false;
+			particle->dead = false;
+			particle->velocity = Random::get_rand_vec3(vec3::zero, velocity);
+			particle->position = transform_->position;
+			particle->direction = direction == vec3::zero ? Random::get_rand_vec3(-vec3::one, vec3::one) : direction;
+			particle->direction.normalize();
+		}
+
 	}
 
 	else if (type == ParticleType::WIDE) {
@@ -253,18 +281,7 @@ void Emitter::refresh_particles()
 
 void Emitter::set_size(unsigned size)
 {
-	if (particles_.empty()) {
-
-		for (unsigned i = 0; i < size; ++i)
-			particles_.emplace_back(generate_particle());
-
-		size_ = size;
-
-		colorDiff_ = (endColor_ - startColor_) / life;
-	}
-
-	else
-		jeDebugPrint("!Emitter - Already allocated.\n");
+	size_ = size;
 }
 
 void Emitter::set_colors(const vec3& start, const vec3& end)
