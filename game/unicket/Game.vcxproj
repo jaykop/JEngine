@@ -191,6 +191,7 @@ xcopy /y /d "..\..\lib\assimp\$(Configuration)\$(Platform)\*.dll" "$(TargetDir)"
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="camera_controller.cpp" />
     <ClCompile Include="JEngine.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="scene_controller.cpp" />
@@ -199,6 +200,7 @@ xcopy /y /d "..\..\lib\assimp\$(Configuration)\$(Platform)\*.dll" "$(TargetDir)"
     <ClCompile Include="particle_conrtoller.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="camera_controller.h" />
     <ClInclude Include="game_logics.h" />
     <ClInclude Include="game_scenes.h" />
     <ClInclude Include="JEngine.h" />

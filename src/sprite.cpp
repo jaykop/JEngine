@@ -94,7 +94,7 @@ void Sprite::start_draw(const vec3& resScalar)
 	shader->set_matrix("m4_translate", mat4::translate(transform_->position));
 	shader->set_matrix("m4_scale", mat4::scale(transform_->scale));
 	shader->set_matrix("m4_rotate", transform_->orientation.to_mat4());
-	shader->set_vec3("v3_cameraPosition", camera->position_);
+	shader->set_vec3("v3_cameraPosition", camera->position);
 	shader->set_bool("boolean_bilboard", (status & IS_BILBOARD) == IS_BILBOARD);
 	shader->set_vec4("v4_color", color);
 
@@ -102,16 +102,17 @@ void Sprite::start_draw(const vec3& resScalar)
 
 	if (prjType == ProjectType::PERSPECTIVE) {
 
-		viewport = mat4::look_at(camera->position_, camera->target_, camera->up_);
+		viewport = mat4::look_at(camera->position, camera->target, camera->up_);
 
 		mat4 perspective = mat4::perspective(
 			camera->fovy_, camera->aspect_,
 			camera->near_, camera->far_);
+
 		shader->set_matrix("m4_projection", perspective);
 	}
 
 	else {
-		
+
 		viewport = mat4::scale(resScalar);
 
 		float right_ = GLManager::get_width() * .5f;

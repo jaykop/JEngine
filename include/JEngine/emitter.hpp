@@ -34,7 +34,6 @@ public:
 
 	Particle* generate_particle();
 	void refresh_particle(Particle* pParticle);
-
 	void refresh_particles();
 
 	void set_size(unsigned size);

@@ -109,9 +109,8 @@ void Emitter::start_draw(const vec3& resScalar)
 
 	if (prjType == ProjectType::PERSPECTIVE) {
 
-		viewport = mat4::look_at(camera->position_, camera->target_, camera->up_);
+		viewport = mat4::look_at(camera->position, camera->target, camera->up_);
 
-		// Update the perpsective matrix by camera's zoom
 		mat4 perspective = mat4::perspective(
 			camera->fovy_, camera->aspect_,
 			camera->near_, camera->far_);
@@ -165,7 +164,7 @@ void Emitter::draw(float dt)
 				if (colorDiff_ != vec3::zero)
 					particle->color += colorDiff_ * dt * colorSpeed;
 
-				vec3 viewDirection = (camera->position_ - particle->position).normalized();
+				vec3 viewDirection = (camera->position - particle->position).normalized();
 				
 				// Send transform info to shader
 				shader->set_matrix("m4_translate", mat4::translate(particle->position));

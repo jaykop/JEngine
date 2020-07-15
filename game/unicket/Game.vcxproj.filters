@@ -36,6 +36,9 @@
     <ClInclude Include="particle_conrtoller.h">
       <Filter>game_logics</Filter>
     </ClInclude>
+    <ClInclude Include="camera_controller.h">
+      <Filter>game_logics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -54,6 +57,9 @@
       <Filter>game_logics</Filter>
     </ClCompile>
     <ClCompile Include="particle_conrtoller.cpp">
+      <Filter>game_logics</Filter>
+    </ClCompile>
+    <ClCompile Include="camera_controller.cpp">
       <Filter>game_logics</Filter>
     </ClCompile>
   </ItemGroup>

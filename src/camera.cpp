@@ -21,18 +21,18 @@ void Camera::load(const rapidjson::Value& /*data*/) {
 }
 
 Camera::Camera(Object* owner) : Component(owner),
-	position_(vec3::zero), near_(.1f), far_(1000.f),
-	up_(vec3(0, 1, 0)), target_(vec3::zero), right_(vec3::zero), back_(vec3::zero),
+	position(vec3::zero), near_(.1f), far_(1000.f),
+	up_(vec3(0, 1, 0)), target(vec3::zero), right_(vec3::zero), back_(vec3::zero),
 	viewGeometry_(vec3::zero), distance_(1.f), fovy_(0.f), aspect_(0.f),
 	width_(0.f), height_(0.f)
 {
-	set_camera(position_, vec3(0, 0, 1), up_, 45.f, GLManager::get_width() / GLManager::get_height(), 1.f);
+	set_camera(position, vec3(0, 0, 1), up_, 45.f, GLManager::get_width() / GLManager::get_height(), 1.f);
 }
 
 void Camera::set_camera(const vec3& eye, const vec3& look, const vec3& up,
 	float fov, float aspect, float distance)
 {
-	position_ = eye;
+	position = eye;
 	right_ = look.cross(up).normalized();
 	up_ = right_.cross(look).normalized();
 	back_ = (-look).normalized();

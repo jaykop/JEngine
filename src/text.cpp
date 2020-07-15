@@ -81,7 +81,7 @@ void Text::start_draw(const vec3& resScalar)
 
 	if (prjType == ProjectType::PERSPECTIVE) {
 
-		viewport = mat4::look_at(camera->position_, camera->target_, camera->up_);
+		viewport = mat4::look_at(camera->position, camera->target, camera->up_);
 
 		mat4 perspective = mat4::perspective(
 			camera->fovy_, camera->aspect_,

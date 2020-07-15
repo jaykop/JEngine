@@ -47,8 +47,9 @@ void TestScene::init_basic()
 	// add camera
 	Object* mainCamera = ObjectManager::create_object("main_camera");
 	mainCamera->add_component<Camera>();
-	mainCamera->get_component<Camera>()->target_ = vec3::zero + vec3(0.f, 0.f, 0.f);
-	mainCamera->get_component<Camera>()->position_ = vec3::zero + vec3(0.f, 0.f, 100.f);
+	mainCamera->add_component<CameraController>();
+	mainCamera->get_component<Camera>()->target = vec3::zero + vec3(0.f, 0.f, 0.f);
+	mainCamera->get_component<Camera>()->position = vec3::zero + vec3(0.f, 0.f, 100.f);
 	register_object(mainCamera);
 
 	// scene controller
