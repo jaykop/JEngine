@@ -17,9 +17,9 @@ class Emitter : public Renderer
 
 	using Particles = std::vector<Particle*>;
 
-	enum ParticleType { PARTICLE_NORMAL, PARTICLE_EXPLODE, PARTICLE_WIDE, PARTICLE_SMOG };
-
 public:
+
+	enum class ParticleType { NORMAL, EXPLOSION, WIDE, SMOKE };
 
 	Emitter(Object* owner);
 	virtual ~Emitter();

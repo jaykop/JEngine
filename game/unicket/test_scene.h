@@ -24,6 +24,11 @@ protected:
 	void update(float dt) override;
 	void close() override;
 
+	void init_basic();
+	void init_sprite();
+	void init_text();
+	void init_emitters();
+
 private:
 
 };

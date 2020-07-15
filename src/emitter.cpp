@@ -184,7 +184,7 @@ Emitter::Particle* Emitter::generate_particle()
 	newParticle->direction = direction == vec3::zero ? Random::get_rand_vec3(-vec3::one, vec3::one) : direction;
 	newParticle->direction.normalize();
 	newParticle->color.set(startColor_);
-	newParticle->hidden = type != PARTICLE_EXPLODE;
+	newParticle->hidden = type != ParticleType::EXPLOSION;
 
 	if (rotationSpeed)
 		newParticle->rotationSpeed = Random::get_rand_float(0.f, rotationSpeed);
@@ -200,14 +200,14 @@ void Emitter::refresh_particle(Particle* particle)
 	particle->life = Random::get_rand_float(0.f, life);
 	particle->color.set(startColor_);
 
-	if (type == PARTICLE_NORMAL) {
+	if (type == ParticleType::NORMAL) {
 
 		particle->position = transform_->position;
 		particle->hidden = false;
 		particle->direction = direction == vec3::zero ? Random::get_rand_vec3(-vec3::one, vec3::one) : direction;
 	}
 
-	else if (type == PARTICLE_EXPLODE) {
+	else if (type == ParticleType::EXPLOSION) {
 
 		// No more particle to update,
 		// turn off the active toggle
@@ -227,7 +227,7 @@ void Emitter::refresh_particle(Particle* particle)
 		}
 	}
 
-	else if (type == PARTICLE_WIDE) {
+	else if (type == ParticleType::WIDE) {
 
 		particle->hidden = false;
 
