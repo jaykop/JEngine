@@ -8,6 +8,11 @@ jeBegin
 
 jeDefineUserComponentBuilder(ExplodingParticleController);
 
+ExplodingParticleController::~ExplodingParticleController()
+{
+	remove_from_system();
+}
+
 void ExplodingParticleController::init() { }
 
 void ExplodingParticleController::update(float /*dt*/)

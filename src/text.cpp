@@ -45,6 +45,8 @@ Text::Text(Object* owner)
 
 Text::~Text()
 {
+	remove_from_system();
+
 	if (buffer_) {
 		delete[] buffer_;
 		buffer_ = nullptr;

@@ -68,6 +68,8 @@ Sprite::Sprite(Object* owner)
 
 Sprite::~Sprite()
 {
+	remove_from_system();
+
 	glDeleteVertexArrays(1, &vao_);
 	glDeleteBuffers(1, &vbo_);
 	glDeleteBuffers(1, &ebo_);

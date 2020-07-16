@@ -9,6 +9,8 @@
 #include <random.hpp>
 #include <math_util.hpp>
 
+#include <thread>
+
 jeBegin
 
 jeDefineComponentBuilder(Emitter);
@@ -59,6 +61,8 @@ Emitter::Emitter(Object* owner)
 
 Emitter::~Emitter()
 {
+	remove_from_system();
+
 	for (auto& p : particles_)
 	{
 		delete p;
@@ -145,42 +149,41 @@ void Emitter::draw(float dt)
 {
 	if (active) {
 
+		//std::vector< std::thread> threads;
+		//unsigned size = particles_.size();
+		//for (unsigned i = 0; i < size; ++i) {
+		//	std::thread thread(&Emitter::update_particle, this, particles_[i], dt);
+		//	threads.push_back(std::move(thread));
+		//}
+
+		//for (unsigned i = 0; i < size; ++i)
+		//	threads[i].join();
+
 		Camera* camera = GraphicSystem::get_camera();
 		Shader* shader = GLManager::shader_[GLManager::Pipeline::PARTICLE];
 
 		for (auto& particle : particles_) {
 
-			if (particle->life < 0.f)
-				refresh_particle(particle);
+			update_particle(particle, dt);
 
-			else {
+			vec3 viewDirection = (camera->position - particle->position).normalized();
 
-				particle->life -= dt;
-				particle->position += particle->direction * dt * velocity;
+			// Send transform info to shader
+			particle->position.z = transform_->position.z;
+			shader->set_matrix("m4_translate", mat4::translate(particle->position));
+			shader->set_matrix("m4_rotate", mat4::rotate(Math::deg_to_rad(particle->rotation), viewDirection));
 
-				if (rotationSpeed)
-					particle->rotation += particle->rotationSpeed * dt;
+			// Send color info to shader
+			shader->set_vec4("v4_color", vec4(particle->color, particle->life));
+			shader->set_bool("boolean_hide", particle->hidden);
 
-				if (colorDiff_ != vec3::zero)
-					particle->color += colorDiff_ * dt * colorSpeed;
+			glBindVertexArray(vao_);
+			glBindTexture(GL_TEXTURE_2D, texture_);
+			glDrawElements(GL_TRIANGLES, quadIndices.size(), GL_UNSIGNED_INT, nullptr);
+			glBindTexture(GL_TEXTURE_2D, 0);
+			glBindVertexArray(0);
 
-				vec3 viewDirection = (camera->position - particle->position).normalized();
-				
-				// Send transform info to shader
-				shader->set_matrix("m4_translate", mat4::translate(particle->position));
-				shader->set_matrix("m4_rotate", mat4::rotate(Math::deg_to_rad(particle->rotation), viewDirection));
-
-				// Send color info to shader
-				shader->set_vec4("v4_color", vec4(particle->color, particle->life));
-				shader->set_bool("boolean_hide", particle->hidden);
-
-				glBindVertexArray(vao_);
-				glBindTexture(GL_TEXTURE_2D, texture_);
-				glDrawElements(GL_TRIANGLES, quadIndices.size(), GL_UNSIGNED_INT, nullptr);
-				glBindTexture(GL_TEXTURE_2D, 0);
-				glBindVertexArray(0);
-				
-			}
+			/*}*/
 		}
 	}
 }
@@ -192,7 +195,40 @@ void Emitter::end_draw()
 	glDisable(GL_BLEND);
 }
 
-Emitter::Particle* Emitter::generate_particle()
+void Emitter::update_particle(Particle* particle, float dt)
+{
+	if (particle->life < 0.f)
+		refresh_particle(particle);
+
+	else
+	{
+		particle->life -= dt;
+		particle->position += particle->direction * dt * velocity;
+
+		if (rotationSpeed)
+			particle->rotation += particle->rotationSpeed * dt;
+
+		if (colorDiff_ != vec3::zero)
+			particle->color += colorDiff_ * dt * colorSpeed;
+	}
+
+	/*if (particle.life < 0.f)
+		refresh_particle(&particle);
+
+	else
+	{
+		particle.life -= dt;
+		particle.position += particle.direction * dt * velocity;
+
+		if (rotationSpeed)
+			particle.rotation += particle.rotationSpeed * dt;
+
+		if (colorDiff_ != vec3::zero)
+			particle.color += colorDiff_ * dt * colorSpeed;
+	}*/
+}
+
+Particle* Emitter::generate_particle()
 {
 	Particle* newParticle = new Particle;
 
@@ -269,6 +305,8 @@ void Emitter::refresh_particle(Particle* particle)
 		particle->color.set(startColor_);
 
 	}
+
+	particle->position.z = transform_->position.z;
 }
 
 void Emitter::refresh_particles()

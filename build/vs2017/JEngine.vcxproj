@@ -100,6 +100,7 @@
     <ClInclude Include="..\..\include\JEngine\random.hpp" />
     <ClInclude Include="..\..\include\JEngine\scene.hpp" />
     <ClInclude Include="..\..\include\JEngine\scene_manager.hpp" />
+    <ClInclude Include="..\..\include\JEngine\Semaphore.h" />
     <ClInclude Include="..\..\include\JEngine\shader.hpp" />
     <ClInclude Include="..\..\include\JEngine\sound_system.hpp" />
     <ClInclude Include="..\..\include\JEngine\sprite.hpp" />

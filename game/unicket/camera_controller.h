@@ -12,7 +12,7 @@ class CameraController : public Behavior {
 public:
 
 	CameraController(Object* owner) : Behavior(owner) {};
-	virtual ~CameraController() {};
+	virtual ~CameraController();
 
 	void init() override;
 	void update(float dt) override;

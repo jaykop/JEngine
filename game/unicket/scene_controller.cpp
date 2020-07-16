@@ -6,6 +6,11 @@ jeBegin
 
 jeDefineUserComponentBuilder(SceneController);
 
+SceneController::~SceneController()
+{
+	remove_from_system();
+}
+
 void SceneController::init() { }
 
 void SceneController::update(float /*dt*/)
@@ -18,6 +23,7 @@ void SceneController::update(float /*dt*/)
 		// TODO: Need to get position
 		// InputHandler::position
 		std::cout << "MOUSE_RIGHT\n";
+		ObjectManager::remove_object("emitter1");
 	}
 
 	if (InputHandler::get_mouse_wheel_status(KEY::MOUSE_WHEEL_DOWN))

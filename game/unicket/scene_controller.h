@@ -12,7 +12,7 @@ class SceneController : public Behavior {
 public:
 
 	SceneController(Object* owner) : Behavior(owner) {};
-	virtual ~SceneController() {};
+	virtual ~SceneController();
 
 	void init() override;
 	void update(float dt) override;

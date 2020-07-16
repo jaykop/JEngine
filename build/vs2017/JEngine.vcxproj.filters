@@ -277,6 +277,9 @@
     <ClInclude Include="..\..\include\JEngine\debug_renderer.hpp">
       <Filter>system\grahpics_components</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\Semaphore.h">
+      <Filter>util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\include\JEngine\component_manager.inl">

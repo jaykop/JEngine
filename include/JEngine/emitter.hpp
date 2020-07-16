@@ -1,20 +1,29 @@
 #pragma once
 #include <vector>
+#include <random.hpp>
 #include <renderer.hpp>
 
 jeBegin
+
+struct Particle {
+
+	vec3 color, position, direction, velocity;
+	float life, rotationSpeed, rotation;
+	bool hidden, dead;
+
+	Particle() : color(vec3::zero), position(vec3::zero), direction(vec3::zero), velocity(vec3::zero),
+		life(0.f), rotationSpeed(0.f), rotation(0.f), hidden(false), dead(false) {}
+
+	Particle(Particle&& rhs) noexcept
+	: color(rhs.color), position(rhs.position), direction(rhs.direction), velocity(rhs.velocity),
+	life(rhs.life), rotationSpeed(rhs.rotationSpeed), rotation(rhs.rotation),
+	hidden(rhs.hidden), dead(rhs.dead)  {} 
+};
 
 class Emitter : public Renderer
 {
 	jeBaseFriends(Emitter);
 	friend class GraphicSystem;
-
-	struct Particle {
-
-		vec3 color = vec3::zero, position = vec3::zero, direction = vec3::zero, velocity = vec3::zero;
-		float life = 0.f, rotationSpeed = 0.f, rotation = 0.f;
-		bool hidden = false, dead = false;
-	};
 
 	using Particles = std::vector<Particle*>;
 
@@ -32,6 +41,8 @@ public:
 	void draw(float dt) override;
 	void end_draw() override;
 
+	void update_particle(Particle* particle, float dt);
+
 	Particle* generate_particle();
 	void refresh_particle(Particle* pParticle);
 	void refresh_particles();
@@ -43,6 +54,11 @@ public:
 	float life, rotationSpeed, colorSpeed, pointSize;
 	bool active;
 	ParticleType type;
+
+	//Emitter(const Emitter& rhs) = delete;
+	//Emitter& operator=(const Emitter& rhs) = delete;
+	//Emitter(Emitter&& rhs) noexcept = delete;
+	//Emitter& operator=(Emitter&& rhs) noexcept = delete;
 
 protected:
 

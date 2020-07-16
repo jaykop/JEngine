@@ -12,7 +12,7 @@ class TopDownController : public Behavior {
 public:
 
 	TopDownController(Object* owner) : Behavior(owner) {};
-	virtual ~TopDownController() {};
+	virtual ~TopDownController();
 
 	void init() override;
 	void update(float dt) override;

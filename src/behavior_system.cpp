@@ -42,8 +42,9 @@ void BehaviorSystem::initialize()
 
 void BehaviorSystem::update(float dt)
 {
-	for (const auto& b : behaviors_)
-		b->update(dt);
+	// flxeible size change
+	for (unsigned i = 0; i < behaviors_.size(); ++i)
+		behaviors_[i]->update(dt);
 }
 
 void BehaviorSystem::close()

@@ -8,6 +8,11 @@ jeBegin
 
 jeDefineUserComponentBuilder(CameraController);
 
+CameraController::~CameraController()
+{
+	remove_from_system();
+}
+
 void CameraController::init() { }
 
 void CameraController::update(float dt)

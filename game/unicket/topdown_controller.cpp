@@ -7,6 +7,11 @@ jeBegin
 
 jeDefineUserComponentBuilder(TopDownController);
 
+TopDownController::~TopDownController()
+{
+	remove_from_system();
+}
+
 void TopDownController::init() { }
 
 void TopDownController::update(float dt)

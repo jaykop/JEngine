@@ -12,7 +12,7 @@ class ExplodingParticleController : public Behavior {
 public:
 
 	ExplodingParticleController(Object* owner) : Behavior(owner) {};
-	virtual ~ExplodingParticleController() {};
+	virtual ~ExplodingParticleController();
 
 	void init() override;
 	void update(float dt) override;
