@@ -108,7 +108,7 @@ void TestScene::init_emitters()
 	emi1->life = 1.f;
 	emi1->colorSpeed = 3.f;
 	emi1->velocity.set(15.f, 15.f, 0.f);
-	// emi->direction.set(0.f, 0.f, 0.f);
+	emi1->direction.set(1.f, 0.f, 0.f);
 	emi1->set_size(1000);
 	register_object(emitter1);
 

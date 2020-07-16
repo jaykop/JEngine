@@ -169,7 +169,7 @@ void Emitter::draw(float dt)
 			vec3 viewDirection = (camera->position - particle->position).normalized();
 
 			// Send transform info to shader
-			particle->position.z = transform_->position.z;
+			// particle->position.z = transform_->position.z;
 			shader->set_matrix("m4_translate", mat4::translate(particle->position));
 			shader->set_matrix("m4_rotate", mat4::rotate(Math::deg_to_rad(particle->rotation), viewDirection));
 
@@ -260,7 +260,19 @@ void Emitter::refresh_particle(Particle* particle)
 
 		particle->position = transform_->position;
 		particle->hidden = false;
+		// particle->velocity = Random::get_rand_vec3(vec3::zero, velocity);
+
 		particle->direction = direction == vec3::zero ? Random::get_rand_vec3(-vec3::one, vec3::one) : direction;
+		//float rad_min = Math::deg_to_rad(270.f);
+		//float rad_max = Math::deg_to_rad(0.f);
+		//float cos_max = cosf(rad_max);
+		//float cos_min = cosf(rad_min);
+		//float sin_max = sinf(rad_max);
+		//float sin_min = sinf(rad_min);
+		//if (cos_max < cos_min) std::swap(cos_max, cos_min);
+		//if (sin_max < sin_min) std::swap(sin_max, sin_min);
+		//vec3 min(cos_min, sin_min, 0.f), max(cos_max, sin_max, 0.f);
+		//particle->direction = Random::get_rand_vec3(min, max);
 	}
 
 	else if (type == ParticleType::EXPLOSION) {
@@ -300,10 +312,10 @@ void Emitter::refresh_particle(Particle* particle)
 		particle->position.x = Random::get_rand_float(position.x - range.x, position.x + range.x);
 		particle->position.y = Random::get_rand_float(position.y - range.y, position.y + range.y);
 		particle->position.z = Random::get_rand_float(position.z - range.z, position.z + range.z);
+		// particle->velocity = Random::get_rand_vec3(vec3::zero, velocity);
 
 		particle->life = Random::get_rand_float(0.f, life);
 		particle->color.set(startColor_);
-
 	}
 
 	particle->position.z = transform_->position.z;

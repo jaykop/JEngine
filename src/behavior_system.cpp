@@ -24,9 +24,8 @@ void BehaviorSystem::add_behavior(Behavior* behavior)
 
 void BehaviorSystem::remove_behavior(Behavior* behavior)
 {
-	for (Behaviors::iterator it = behaviors_.begin();
-		it != behaviors_.end(); ++it) {
-		if ((*it)->get_owner()->get_id() == behavior->get_owner()->get_id()) {
+	for (auto it = behaviors_.begin(); it != behaviors_.end(); ++it) {
+		if (*it == behavior) {
 			behaviors_.erase(it);
 			break;
 		}
