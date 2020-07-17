@@ -45,8 +45,6 @@ private:
 
 	void clear();
 
-	unsigned vao_, vbo_, texture_;
-
 	std::vector<Vertex> vertices_;
 	std::vector<DebugMesh> meshes_;
 

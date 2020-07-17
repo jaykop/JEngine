@@ -16,35 +16,11 @@ jeDefineComponentBuilder(DebugRenderer);
 DebugRenderer::DebugRenderer(Object* owner)
 	: Renderer(owner)
 {
-	glGenVertexArrays(1, &vao_);
-	glBindVertexArray(vao_);
-
-	glGenBuffers(1, &vbo_);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo_);
-
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
-		reinterpret_cast<void*>(offsetof(Vertex, Vertex::position)));
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
-		reinterpret_cast<void*>(offsetof(Vertex, Vertex::normal)));
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex),
-		reinterpret_cast<void*>(offsetof(Vertex, Vertex::texCoords)));
-	glEnableVertexAttribArray(2);
-	glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex),
-		reinterpret_cast<void*>(offsetof(Vertex, Vertex::color)));
-	glEnableVertexAttribArray(3);
-
-	glBindVertexArray(0);
-
 	add_quad(transform_->position, transform_->scale, Color::white);
-
 }
 
 DebugRenderer::~DebugRenderer(void)
 {
-	glDeleteBuffers(1, &vao_);
-	glDeleteBuffers(1, &vbo_);
 }
 
 void DebugRenderer::add_to_system() {
@@ -104,8 +80,8 @@ void DebugRenderer::draw(float /*dt*/)
 {
 	if (!vertices_.empty()) {
 
-		glBindVertexArray(vao_);
-		glBindBuffer(GL_ARRAY_BUFFER, vbo_);
+		glBindVertexArray(GLManager::drVao_);
+		glBindBuffer(GL_ARRAY_BUFFER, GLManager::drVbo_);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * vertices_.size(), &vertices_[0], GL_DYNAMIC_DRAW);
 		glDrawArrays(GL_LINES, 0, GLsizei(vertices_.size()));
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -169,9 +145,9 @@ void DebugRenderer::add_quad(const vec3& pos, const vec3& size, const vec3& colo
 	add_line(v3, v4, color);
 	add_line(v4, v1, color);
 
-	glBindBuffer(GL_ARRAY_BUFFER, vbo_);
+	/*glBindBuffer(GL_ARRAY_BUFFER, vbo_);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * vertices_.size(), &vertices_[0], GL_DYNAMIC_DRAW);
-	glBindVertexArray(0);
+	glBindVertexArray(0);*/
 }
 
 void DebugRenderer::clear()

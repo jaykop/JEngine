@@ -12,16 +12,6 @@ jeBegin
 
 jeDefineComponentBuilder(Sprite);
 
-const std::vector<float> quadVertices =
-{
-	-.5f, .5f, 0.0f , 0.f, 0.f, 1.f,  0.0f, 0.0f ,
-	-.5f, -.5f, 0.0f , 0.f, 0.f, 1.f,  0.0f, 1.0f,
-	.5f, -.5f, 0.0f , 0.f, 0.f, 1.f,  1.0f, 1.0f,
-	.5f,  .5f, 0.0f , 0.f, 0.f, 1.f,  1.0f, 0.0f 
-};
-
-const std::vector<unsigned> quadIndices = { 2, 0, 1, 2, 3, 0 };
-
 Sprite::Sprite(Object* owner)
 	: Renderer(owner), color(vec4::one), animation_ (nullptr)
 {
@@ -29,50 +19,11 @@ Sprite::Sprite(Object* owner)
 		owner->add_component<Animation2D>();
 
 	animation_ = owner->get_component<Animation2D>();
-
-	// generate vertex array
-	glGenVertexArrays(1, &vao_);
-	glBindVertexArray(vao_);
-
-	// generate vertex buffer
-	glGenBuffers(1, &vbo_);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo_);
-
-	// set vertex data
-	glBufferData(GL_ARRAY_BUFFER, quadVertices.size() * sizeof(float), &quadVertices[0], GL_STATIC_DRAW);
-
-	// vertex position
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(0);
-
-	// normals of vertices
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-	glEnableVertexAttribArray(1);
-
-	// texture coordinate position
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-	glEnableVertexAttribArray(2);
-
-	// generate index buffer
-	glGenBuffers(1, &ebo_);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo_);
-
-	// set index data
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, quadIndices.size() * sizeof(unsigned), &quadIndices[0], GL_STATIC_DRAW);
-
-	// unbind buffer
-	glBindVertexArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
 Sprite::~Sprite()
 {
 	remove_from_system();
-
-	glDeleteVertexArrays(1, &vao_);
-	glDeleteBuffers(1, &vbo_);
-	glDeleteBuffers(1, &ebo_);
 }
 
 void Sprite::add_to_system() {
@@ -146,10 +97,14 @@ void Sprite::draw(float /*dt*/)
 {
 	run_animation();
 
-	glBindVertexArray(vao_);
+	glBindVertexArray(GLManager::quadVao_);
+	glBindBuffer(GL_ARRAY_BUFFER, GLManager::quadVbo_);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, GLManager::quadEbo_);
 	glBindTexture(GL_TEXTURE_2D, texture_);
-	glDrawElements(GL_TRIANGLES, quadIndices.size(), GL_UNSIGNED_INT, nullptr);
+	glDrawElements(GL_TRIANGLES, GLManager::quadIndicesSize_, GL_UNSIGNED_INT, nullptr);
 	glBindTexture(GL_TEXTURE_2D, 0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
 }
 

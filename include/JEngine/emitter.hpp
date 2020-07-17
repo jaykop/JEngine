@@ -71,7 +71,7 @@ private:
 	Particles particles_;
 	vec3 startColor_, endColor_, colorDiff_;
 	unsigned deadCount_, size_;
-	unsigned vao_, vbo_, ebo_, texture_;
+	unsigned texture_;
 };
 
 jeDeclareComponentBuilder(Emitter);

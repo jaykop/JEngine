@@ -49,6 +49,7 @@
     <ClCompile Include="..\..\src\object_manager.cpp" />
     <ClCompile Include="..\..\src\physics_system.cpp" />
     <ClCompile Include="..\..\src\random.cpp" />
+    <ClCompile Include="..\..\src\rigidbody.cpp" />
     <ClCompile Include="..\..\src\scene.cpp" />
     <ClCompile Include="..\..\src\scene_controller.cpp" />
     <ClCompile Include="..\..\src\scene_manager.cpp" />
@@ -98,9 +99,10 @@
     <ClInclude Include="..\..\include\JEngine\object_manager.hpp" />
     <ClInclude Include="..\..\include\JEngine\physics_system.hpp" />
     <ClInclude Include="..\..\include\JEngine\random.hpp" />
+    <ClInclude Include="..\..\include\JEngine\rigidbody.hpp" />
     <ClInclude Include="..\..\include\JEngine\scene.hpp" />
     <ClInclude Include="..\..\include\JEngine\scene_manager.hpp" />
-    <ClInclude Include="..\..\include\JEngine\Semaphore.h" />
+    <ClInclude Include="..\..\include\JEngine\semaphore.hpp" />
     <ClInclude Include="..\..\include\JEngine\shader.hpp" />
     <ClInclude Include="..\..\include\JEngine\sound_system.hpp" />
     <ClInclude Include="..\..\include\JEngine\sprite.hpp" />

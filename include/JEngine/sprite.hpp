@@ -35,7 +35,7 @@ protected:
 private:
 
 	Animation2D* animation_ = nullptr;
-	unsigned vao_, vbo_, ebo_, texture_;
+	unsigned texture_;
 };
 
 jeDeclareComponentBuilder(Sprite);

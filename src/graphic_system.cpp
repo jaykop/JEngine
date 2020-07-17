@@ -28,7 +28,8 @@ vec3 resolutionScaler_;
 Camera* GraphicSystem::mainCamera_ = nullptr;
 GraphicSystem::Renderers GraphicSystem::renderers_;
 GraphicSystem::Cameras GraphicSystem::cameras_;
-vec4 GraphicSystem::backgroundColor_ = vec4::zero, GraphicSystem::screenColor_ = vec4::zero;
+vec4 GraphicSystem::backgroundColor = vec4::zero, GraphicSystem::screenColor = vec4::zero;
+bool GraphicSystem::renderGrid = false;
 
 void GraphicSystem::set_camera(Camera* camera)
 {
@@ -52,25 +53,29 @@ void GraphicSystem::initialize() {
 void GraphicSystem::update(float dt) {
 
 	// get current scene color
-	backgroundColor_ = SceneManager::get_current_scene()->background;
+	backgroundColor = SceneManager::get_current_scene()->background;
 
 	// clear buffers
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(
-		backgroundColor_.r, 
-		backgroundColor_.g, 
-		backgroundColor_.b, 
-		backgroundColor_.a);
+		backgroundColor.r,
+		backgroundColor.g,
+		backgroundColor.b,
+		backgroundColor.a);
 
 	// Update the projection size by window screen size
 	vec3 windowSize(GLManager::get_width(), GLManager::get_height(), 1.f);
 	resolutionScaler_ = windowSize * stdResolution;
 
+	// update renderers
 	for (auto& r : renderers_) {
 		r->start_draw(resolutionScaler_);
 		r->draw(dt);
 		r->end_draw();
 	}
+
+	if (renderGrid)
+		render_grid();
 
 }
 
@@ -82,8 +87,15 @@ void GraphicSystem::close() {
 	mainCamera_ = nullptr;
 }
 
-void GraphicSystem::render()
+void GraphicSystem::render_grid()
 {
+	//glEnable(GL_BLEND);
+	//glDisable(GL_DEPTH_TEST);
+	//glBlendFunc(GL_ONE_MINUS_SRC_ALPHA, GL_SRC_ALPHA);
+
+	//glDrawArrays(GL_TRIANGLE_STRIP, 0, GLsizei(gridVertices.size()));
+
+	//glDisable(GL_BLEND);
 }
 
 void GraphicSystem::add_renderer(Renderer* model) {

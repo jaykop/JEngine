@@ -44,7 +44,7 @@ class GLManager
 	using Shaders = std::vector<Shader*>;
 
 	enum class Target { SCREEN, TEXT, END };
-	enum Pipeline { DEBUG, NORMAL, TEXT, PARTICLE, LIGHT, SCREEN, END };
+	enum Pipeline { DEBUG, NORMAL, TEXT, PARTICLE, LIGHT, SCREEN, /*GRID,*/ END };
 
 public:
 
@@ -58,10 +58,16 @@ private:
 	static void close();
 
 	static void initialize_shaders();
+	static void initialize_buffers();
 	static void initialize_framebuffer(); 
+	static void delete_buffers();
 
 	static float width_, height_;
 	static GLint buffers_, samples_, attributes_;
+	static unsigned quadVao_, quadVbo_, quadEbo_,
+		drVao_, drVbo_,
+		gridVao_, gridVbo_,
+		quadIndicesSize_;
 	static Shaders shader_;
 };
 

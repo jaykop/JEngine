@@ -44,7 +44,8 @@ public:
 	static void set_camera(Camera* camera);
 	static Camera* get_camera();
 
-	static vec4 backgroundColor_, screenColor_;
+	static vec4 backgroundColor, screenColor;
+	static bool renderGrid;
 
 private:
 
@@ -62,7 +63,7 @@ private:
 	//void remove_light(Light* pLight);
 
 	static void update_pipelines(float dt);
-	static void render();
+	static void render_grid();
 
 	static Camera* mainCamera_;
 	static Renderers renderers_;
