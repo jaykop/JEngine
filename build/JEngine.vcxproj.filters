@@ -1,297 +1,297 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="..\..\src\asset_manager.cpp">
+    <ClCompile Include="..\src\asset_manager.cpp">
       <Filter>core\asset</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\component_manager.cpp">
+    <ClCompile Include="..\src\component_manager.cpp">
       <Filter>core\component</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\gl_manager.cpp">
+    <ClCompile Include="..\src\gl_manager.cpp">
       <Filter>core\opengl</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\object.cpp">
+    <ClCompile Include="..\src\object.cpp">
       <Filter>core\object</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\object_manager.cpp">
+    <ClCompile Include="..\src\object_manager.cpp">
       <Filter>core\object</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\input_handler.cpp">
+    <ClCompile Include="..\src\input_handler.cpp">
       <Filter>core\input</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\scene_controller.cpp">
+    <ClCompile Include="..\src\scene_controller.cpp">
       <Filter>core\scene</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\scene_manager.cpp">
+    <ClCompile Include="..\src\scene_manager.cpp">
       <Filter>core\scene</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\scene.cpp">
+    <ClCompile Include="..\src\scene.cpp">
       <Filter>core\scene</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\mat3.cpp">
+    <ClCompile Include="..\src\mat3.cpp">
       <Filter>util\math</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\mat4.cpp">
+    <ClCompile Include="..\src\mat4.cpp">
       <Filter>util\math</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\mat4_transform.cpp">
+    <ClCompile Include="..\src\mat4_transform.cpp">
       <Filter>util\math</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\vec2.cpp">
+    <ClCompile Include="..\src\vec2.cpp">
       <Filter>util\math</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\vec3.cpp">
+    <ClCompile Include="..\src\vec3.cpp">
       <Filter>util\math</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\vec4.cpp">
+    <ClCompile Include="..\src\vec4.cpp">
       <Filter>util\math</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\json_parser.cpp">
+    <ClCompile Include="..\src\json_parser.cpp">
       <Filter>util\json</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\debug_tools.cpp">
+    <ClCompile Include="..\src\debug_tools.cpp">
       <Filter>util\debug</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\random.cpp">
+    <ClCompile Include="..\src\random.cpp">
       <Filter>util\rand</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\timer.cpp">
+    <ClCompile Include="..\src\timer.cpp">
       <Filter>util\time</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\include\lodepng\lodepng.cpp">
+    <ClCompile Include="..\include\lodepng\lodepng.cpp">
       <Filter>util\lodepng</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\include\lodepng\lodepng_util.cpp">
+    <ClCompile Include="..\include\lodepng\lodepng_util.cpp">
       <Filter>util\lodepng</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\graphic_system.cpp">
+    <ClCompile Include="..\src\graphic_system.cpp">
       <Filter>system\graphics</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\behavior_system.cpp">
+    <ClCompile Include="..\src\behavior_system.cpp">
       <Filter>system\behavior</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\sound_system.cpp">
+    <ClCompile Include="..\src\sound_system.cpp">
       <Filter>system\sound</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\physics_system.cpp">
+    <ClCompile Include="..\src\physics_system.cpp">
       <Filter>system\physics</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\shader.cpp">
+    <ClCompile Include="..\src\shader.cpp">
       <Filter>core\opengl</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\application.cpp">
+    <ClCompile Include="..\src\application.cpp">
       <Filter>core\app</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\transform.cpp">
+    <ClCompile Include="..\src\transform.cpp">
       <Filter>system</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\obj_loader.cpp">
+    <ClCompile Include="..\src\obj_loader.cpp">
       <Filter>core\asset</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\quat.cpp">
+    <ClCompile Include="..\src\quat.cpp">
       <Filter>util\math</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\eigen.cpp">
+    <ClCompile Include="..\src\eigen.cpp">
       <Filter>util\math</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\behavior.cpp">
+    <ClCompile Include="..\src\behavior.cpp">
       <Filter>system\behavior_components</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\animation_2d.cpp">
+    <ClCompile Include="..\src\animation_2d.cpp">
       <Filter>system\grahpics_components</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\camera.cpp">
+    <ClCompile Include="..\src\camera.cpp">
       <Filter>system\grahpics_components</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\emitter.cpp">
+    <ClCompile Include="..\src\emitter.cpp">
       <Filter>system\grahpics_components</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\renderer.cpp">
+    <ClCompile Include="..\src\renderer.cpp">
       <Filter>system\grahpics_components</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\text.cpp">
+    <ClCompile Include="..\src\text.cpp">
       <Filter>system\grahpics_components</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\model.cpp">
+    <ClCompile Include="..\src\model.cpp">
       <Filter>system\grahpics_components</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\sprite.cpp">
+    <ClCompile Include="..\src\sprite.cpp">
       <Filter>system\grahpics_components</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\mesh.cpp">
+    <ClCompile Include="..\src\mesh.cpp">
       <Filter>system\graphics_elements</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\debug_renderer.cpp">
+    <ClCompile Include="..\src\debug_renderer.cpp">
       <Filter>system\grahpics_components</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\rigidbody.cpp">
+    <ClCompile Include="..\src\rigidbody.cpp">
       <Filter>system\physics_components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\include\JEngine\macros.hpp" />
-    <ClInclude Include="..\..\include\JEngine\application.hpp">
+    <ClInclude Include="..\include\JEngine\macros.hpp" />
+    <ClInclude Include="..\include\JEngine\application.hpp">
       <Filter>core\app</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\asset_manager.hpp">
+    <ClInclude Include="..\include\JEngine\asset_manager.hpp">
       <Filter>core\asset</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\component.hpp">
+    <ClInclude Include="..\include\JEngine\component.hpp">
       <Filter>core\component</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\component_builder.hpp">
+    <ClInclude Include="..\include\JEngine\component_builder.hpp">
       <Filter>core\component</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\component_manager.hpp">
+    <ClInclude Include="..\include\JEngine\component_manager.hpp">
       <Filter>core\component</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\gl_manager.hpp">
+    <ClInclude Include="..\include\JEngine\gl_manager.hpp">
       <Filter>core\opengl</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\object_manager.hpp">
+    <ClInclude Include="..\include\JEngine\object_manager.hpp">
       <Filter>core\object</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\object.hpp">
+    <ClInclude Include="..\include\JEngine\object.hpp">
       <Filter>core\object</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\key_map.hpp">
+    <ClInclude Include="..\include\JEngine\key_map.hpp">
       <Filter>core\input</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\input_handler.hpp">
+    <ClInclude Include="..\include\JEngine\input_handler.hpp">
       <Filter>core\input</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\scene_manager.hpp">
+    <ClInclude Include="..\include\JEngine\scene_manager.hpp">
       <Filter>core\scene</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\scene.hpp">
+    <ClInclude Include="..\include\JEngine\scene.hpp">
       <Filter>core\scene</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\math_util.hpp">
+    <ClInclude Include="..\include\JEngine\math_util.hpp">
       <Filter>util\math</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\mat3.hpp">
+    <ClInclude Include="..\include\JEngine\mat3.hpp">
       <Filter>util\math</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\mat4.hpp">
+    <ClInclude Include="..\include\JEngine\mat4.hpp">
       <Filter>util\math</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\vec2.hpp">
+    <ClInclude Include="..\include\JEngine\vec2.hpp">
       <Filter>util\math</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\vec3.hpp">
+    <ClInclude Include="..\include\JEngine\vec3.hpp">
       <Filter>util\math</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\vec4.hpp">
+    <ClInclude Include="..\include\JEngine\vec4.hpp">
       <Filter>util\math</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\json_parser.hpp">
+    <ClInclude Include="..\include\JEngine\json_parser.hpp">
       <Filter>util\json</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\debug_tools.hpp">
+    <ClInclude Include="..\include\JEngine\debug_tools.hpp">
       <Filter>util\debug</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\random.hpp">
+    <ClInclude Include="..\include\JEngine\random.hpp">
       <Filter>util\rand</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\timer.hpp">
+    <ClInclude Include="..\include\JEngine\timer.hpp">
       <Filter>util\time</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\lodepng\lodepng_util.h">
+    <ClInclude Include="..\include\lodepng\lodepng_util.h">
       <Filter>util\lodepng</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\lodepng\lodepng.h">
+    <ClInclude Include="..\include\lodepng\lodepng.h">
       <Filter>util\lodepng</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\graphic_system.hpp">
+    <ClInclude Include="..\include\JEngine\graphic_system.hpp">
       <Filter>system\graphics</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\behavior_system.hpp">
+    <ClInclude Include="..\include\JEngine\behavior_system.hpp">
       <Filter>system\behavior</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\sound_system.hpp">
+    <ClInclude Include="..\include\JEngine\sound_system.hpp">
       <Filter>system\sound</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\physics_system.hpp">
+    <ClInclude Include="..\include\JEngine\physics_system.hpp">
       <Filter>system\physics</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\shader.hpp">
+    <ClInclude Include="..\include\JEngine\shader.hpp">
       <Filter>core\opengl</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\transform.hpp">
+    <ClInclude Include="..\include\JEngine\transform.hpp">
       <Filter>system</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\eigen.hpp">
+    <ClInclude Include="..\include\JEngine\eigen.hpp">
       <Filter>util\math</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\quat.hpp">
+    <ClInclude Include="..\include\JEngine\quat.hpp">
       <Filter>util\math</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\behavior.hpp">
+    <ClInclude Include="..\include\JEngine\behavior.hpp">
       <Filter>system\behavior_components</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\animation_2d.hpp">
+    <ClInclude Include="..\include\JEngine\animation_2d.hpp">
       <Filter>system\grahpics_components</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\camera.hpp">
+    <ClInclude Include="..\include\JEngine\camera.hpp">
       <Filter>system\grahpics_components</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\emitter.hpp">
+    <ClInclude Include="..\include\JEngine\emitter.hpp">
       <Filter>system\grahpics_components</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\renderer.hpp">
+    <ClInclude Include="..\include\JEngine\renderer.hpp">
       <Filter>system\grahpics_components</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\text.hpp">
+    <ClInclude Include="..\include\JEngine\text.hpp">
       <Filter>system\grahpics_components</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\sprite.hpp">
+    <ClInclude Include="..\include\JEngine\sprite.hpp">
       <Filter>system\grahpics_components</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\model.hpp">
+    <ClInclude Include="..\include\JEngine\model.hpp">
       <Filter>system\grahpics_components</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\vertex.hpp">
+    <ClInclude Include="..\include\JEngine\vertex.hpp">
       <Filter>system\graphics_elements</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\mesh.hpp">
+    <ClInclude Include="..\include\JEngine\mesh.hpp">
       <Filter>system\graphics_elements</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\half_edge_vertex.hpp">
+    <ClInclude Include="..\include\JEngine\half_edge_vertex.hpp">
       <Filter>system\graphics_elements</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\half_edge_mesh.hpp">
+    <ClInclude Include="..\include\JEngine\half_edge_mesh.hpp">
       <Filter>system\graphics_elements</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\half_edge.hpp">
+    <ClInclude Include="..\include\JEngine\half_edge.hpp">
       <Filter>system\graphics_elements</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\face.hpp">
+    <ClInclude Include="..\include\JEngine\face.hpp">
       <Filter>system\graphics_elements</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\colors.hpp">
+    <ClInclude Include="..\include\JEngine\colors.hpp">
       <Filter>system\graphics_elements</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\debug_renderer.hpp">
+    <ClInclude Include="..\include\JEngine\debug_renderer.hpp">
       <Filter>system\grahpics_components</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\semaphore.hpp">
+    <ClInclude Include="..\include\JEngine\semaphore.hpp">
       <Filter>util</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\rigidbody.hpp">
+    <ClInclude Include="..\include\JEngine\rigidbody.hpp">
       <Filter>system\physics_components</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\assets.hpp">
+    <ClInclude Include="..\include\JEngine\assets.hpp">
       <Filter>core\asset</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\components.hpp">
+    <ClInclude Include="..\include\JEngine\components.hpp">
       <Filter>core\component</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\include\JEngine\component_manager.inl">
+    <None Include="..\include\JEngine\component_manager.inl">
       <Filter>core\component</Filter>
     </None>
-    <None Include="..\..\include\JEngine\object.inl">
+    <None Include="..\include\JEngine\object.inl">
       <Filter>core\object</Filter>
     </None>
   </ItemGroup>

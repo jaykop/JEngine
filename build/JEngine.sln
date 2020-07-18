@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.29503.13
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "JEngine", "JEngine.vcxproj", "{51D36CA1-1DAA-44C3-896B-86690F8BC886}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Game", "..\..\game\unicket\Game.vcxproj", "{F06C8CEF-E8B8-4958-A306-5D8CAD45BC42}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Game", "..\game\unicket\Game.vcxproj", "{F06C8CEF-E8B8-4958-A306-5D8CAD45BC42}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
