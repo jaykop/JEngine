@@ -57,6 +57,9 @@ void GraphicSystem::initialize() {
 
 void GraphicSystem::update(float dt) {
 
+	// update main camera
+	// mainCamera_->update();
+
 	// get current scene color
 	backgroundColor = SceneManager::get_current_scene()->background;
 
@@ -106,11 +109,9 @@ void GraphicSystem::render_grid()
 
 	else {
 
-		// viewport = mat4::scale(GLManager::resScaler_);
-
-		float right_ = GLManager::get_width() * .5f;
+		float right_ = GLManager::get_width() * GLManager::resScaler_.x;
 		float left_ = -right_;
-		float top_ = GLManager::get_height() * .5f;
+		float top_ = GLManager::get_height() * GLManager::resScaler_.y;
 		float bottom_ = -top_;
 
 		mat4 orthogonal = mat4::orthogonal(left_, right_, bottom_, top_, mainCamera_->near_, mainCamera_->far_);

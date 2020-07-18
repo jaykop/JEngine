@@ -48,6 +48,8 @@ protected:
 
 private:
 
+	void update();
+
 	vec3 up_, right_, back_, viewGeometry_;
 	float distance_, aspect_, width_, height_, near_, far_;
 

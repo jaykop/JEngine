@@ -20,22 +20,36 @@ void Camera::remove_from_system() {
 void Camera::load(const rapidjson::Value& /*data*/) {
 }
 
+void Camera::update()
+{
+	right_ = target.cross(up_).normalized();
+	up_ = right_.cross(target).normalized();
+	back_ = (-target).normalized();
+
+	aspect_ = GLManager::get_width() / GLManager::get_height();
+	width_ = 2 * tanf(.5f * fovy);
+	height_ = width_ / aspect_;
+
+	viewGeometry_.set(width_, height_, distance_);
+}
+
 Camera::Camera(Object* owner) : Component(owner),
 	position(vec3::zero), near_(.1f), far_(1000.f),
 	up_(vec3(0, 1, 0)), target(vec3::zero), right_(vec3::zero), back_(vec3::zero),
 	viewGeometry_(vec3::zero), distance_(1.f), fovy(0.f), aspect_(0.f),
 	width_(0.f), height_(0.f)
 {
-	set_camera(position, vec3(0, 0, 1), up_, 45.f, GLManager::get_width() / GLManager::get_height(), 1.f);
+	set_camera(position, vec3(0, 0, -1), up_, 45.f, GLManager::get_width() / GLManager::get_height(), 1.f);
 }
 
 void Camera::set_camera(const vec3& eye, const vec3& look, const vec3& up,
 	float fov, float aspect, float distance)
 {
 	position = eye;
-	right_ = look.cross(up).normalized();
-	up_ = right_.cross(look).normalized();
-	back_ = (-look).normalized();
+	target = look;
+	right_ = target.cross(up).normalized();
+	up_ = right_.cross(target).normalized();
+	back_ = (-target).normalized();
 
 	fovy = fov;
 	aspect_ = aspect;

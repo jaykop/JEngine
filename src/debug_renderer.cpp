@@ -9,6 +9,7 @@
 #include <colors.hpp>
 #include <graphic_system.hpp>
 #include <mat4.hpp>
+#include <math_util.hpp>
 
 jeBegin
 
@@ -57,11 +58,9 @@ void DebugRenderer::draw(float /*dt*/)
 
 	else {
 
-		// viewport = mat4::scale(GLManager::resScaler_);
-
-		float right_ = GLManager::get_width() * .5f;
+		float right_ = GLManager::get_width() * GLManager::resScaler_.x;
 		float left_ = -right_;
-		float top_ = GLManager::get_height() * .5f;
+		float top_ = GLManager::get_height() * GLManager::resScaler_.y;
 		float bottom_ = -top_;
 
 		mat4 orthogonal = mat4::orthogonal(left_, right_, bottom_, top_, camera->near_, camera->far_);

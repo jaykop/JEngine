@@ -96,6 +96,7 @@ void GLManager::initialize(float w, float h)
 
 	vec3 windowSize(width_, height_, 1.f);
 	resScaler_ = windowSize * stdResolution;
+	resScaler_.set(0.5f / resScaler_.x, 0.5f / resScaler_.y, 1.f);
 }
 
 void GLManager::update(SDL_Window* window, const SDL_Event& event)
@@ -110,6 +111,7 @@ void GLManager::update(SDL_Window* window, const SDL_Event& event)
 		// Update the projection size by window screen size
 		vec3 windowSize(width_, height_, 1.f);
 		resScaler_ = windowSize * stdResolution;
+		resScaler_.set(0.5f / resScaler_.x, 0.5f / resScaler_.y, 1.f);
 	}
 
 	else if (event.type == SDL_WINDOWEVENT_CLOSE) {
