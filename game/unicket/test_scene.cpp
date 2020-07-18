@@ -32,15 +32,26 @@ void TestScene::initialize()
 }
 
 void TestScene::update(float dt)
-
 {
-	DebugRenderer* dr = renderer_2d->get_component<DebugRenderer>();
-	if (InputHandler::key_triggered(MOUSE_LEFT))
+	if (renderer_2d)
 	{
-		if (dr->picked())
-			std::cout << "in\n";
-		else
-			std::cout << "out\n";
+		DebugRenderer* dr = renderer_2d->get_component<DebugRenderer>();
+		if (InputHandler::key_triggered(MOUSE_LEFT))
+		{
+			if (dr->picked())
+				std::cout << "in\n";
+			else
+				std::cout << "out\n";
+		}
+	}
+
+	if (emitter1)
+	{
+		auto* emi1 = emitter1->get_component<Emitter>();
+		static float angle = 0.f;
+		angle += 100.f * dt;
+		emi1->angle.set(angle, angle + 180.f);
+		if (angle >= 360.f) angle = 0.f;
 	}
 
 	// base update
@@ -89,17 +100,16 @@ void TestScene::init_sprite()
 	trans->position.z = 0.f;
 	register_object(renderer_2d);
 
-	// gen rand obj
-	rand_obj = ObjectManager::create_object("rand_obj");
-	rand_obj->add_component<Sprite>();
-	trans = rand_obj->get_component<Transform>();
-	renderer = rand_obj->get_component<Sprite>();
-	renderer->set_texture(AssetManager::get_texture("rect"));
-	renderer->color.set_one();
-	trans->scale.set(0.5, 0.5, 0.f);
-	trans->position = Random::get_rand_vec3(-50, -50, 0, 50, 50, 0);
-	trans->position.z = 0.f;
-	register_object(rand_obj);
+	//// gen rand obj
+	//rand_obj = ObjectManager::create_object("rand_obj");
+	//rand_obj->add_component<Sprite>();
+	//trans = rand_obj->get_component<Transform>();
+	//renderer = rand_obj->get_component<Sprite>();
+	//renderer->set_texture(AssetManager::get_texture("rect"));
+	//renderer->color.set_one();
+	//trans->scale.set(100., 190., 0.f);
+	//trans->position.set_zero();
+	//register_object(rand_obj);
 
 }
 
@@ -113,14 +123,14 @@ void TestScene::init_text()
 	//text_component->set_font();
 	text_component->set_text(L"JEngine에 오신 걸 환영합니다\n");
 	trans->position.set(20.f, 0.f, 0.f);
-	trans->scale.set(.1f, .1f, 0.f);
+	trans->scale.set(.5f, .5f, 0.f);
 	register_object(text);
 }
 
 void TestScene::init_emitters()
 {
 	// testing emitter
-	Object* emitter1 = ObjectManager::create_object("emitter1");
+	emitter1 = ObjectManager::create_object("emitter1");
 	emitter1->add_component<Emitter>();
 	auto* emi1 = emitter1->get_component<Emitter>();
 	auto* trans1 = emitter1->get_component<Transform>();
@@ -132,7 +142,7 @@ void TestScene::init_emitters()
 	emi1->life = 1.f;
 	emi1->colorSpeed = 3.f;
 	emi1->velocity.set(15.f, 15.f, 0.f);
-	emi1->angle.set(60.f, 90.f);
+	emi1->angle.set(0.f, 180.f);
 	emi1->set_size(1000);
 	register_object(emitter1);
 

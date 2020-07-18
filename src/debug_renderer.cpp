@@ -46,11 +46,7 @@ void DebugRenderer::draw(float /*dt*/)
 	shader->set_matrix("m4_scale", mat4::scale(transform_->scale));
 	shader->set_matrix("m4_rotate", transform_->orientation.to_mat4());
 
-	mat4 viewport;
-
 	if (prjType == ProjectType::PERSPECTIVE) {
-
-		viewport = mat4::look_at(camera->position, camera->target, camera->up_);
 
 		mat4 perspective = mat4::perspective(
 			camera->fovy, camera->aspect_,
@@ -61,7 +57,7 @@ void DebugRenderer::draw(float /*dt*/)
 
 	else {
 
-		viewport = mat4::scale(GLManager::resScaler_);
+		// viewport = mat4::scale(GLManager::resScaler_);
 
 		float right_ = GLManager::get_width() * .5f;
 		float left_ = -right_;
@@ -73,6 +69,7 @@ void DebugRenderer::draw(float /*dt*/)
 	}
 
 	// Send camera info to shader
+	mat4 viewport = mat4::look_at(camera->position, camera->target, camera->up_);
 	shader->set_matrix("m4_viewport", viewport);
 
 	if (!vertices_.empty()) {

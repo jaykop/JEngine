@@ -53,11 +53,7 @@ void Sprite::draw(float /*dt*/)
 	shader->set_bool("boolean_bilboard", (status & IS_BILBOARD) == IS_BILBOARD);
 	shader->set_vec4("v4_color", color);
 
-	mat4 viewport;
-
 	if (prjType == ProjectType::PERSPECTIVE) {
-
-		viewport = mat4::look_at(camera->position, camera->target, camera->up_);
 
 		mat4 perspective = mat4::perspective(
 			camera->fovy, camera->aspect_,
@@ -68,7 +64,7 @@ void Sprite::draw(float /*dt*/)
 
 	else {
 
-		viewport = mat4::scale(GLManager::resScaler_);
+		// viewport = mat4::scale(GLManager::resScaler_);
 
 		float right_ = GLManager::get_width() * .5f;
 		float left_ = -right_;
@@ -80,6 +76,7 @@ void Sprite::draw(float /*dt*/)
 	}
 
 	// Send camera info to shader
+	mat4 viewport = mat4::look_at(camera->position, camera->target, camera->up_);
 	shader->set_matrix("m4_viewport", viewport);
 
 	//bool hasParent = (pModel->status_ & Model::IS_INHERITED) == Model::IS_INHERITED;
@@ -101,6 +98,7 @@ void Sprite::draw(float /*dt*/)
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, GLManager::quadEbo_);
 	glBindTexture(GL_TEXTURE_2D, texture_);
 	glDrawElements(GL_TRIANGLES, GLManager::quadIndicesSize_, GL_UNSIGNED_INT, nullptr);
+	
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);

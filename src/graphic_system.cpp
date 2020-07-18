@@ -95,11 +95,7 @@ void GraphicSystem::render_grid()
 	shader->set_matrix("m4_rotate", mat4::identity);
 	shader->set_vec3("v3_color", grid.color);
 
-	mat4 viewport;
-
 	if (grid.prjType == Renderer::ProjectType::PERSPECTIVE) {
-
-		viewport = mat4::look_at(mainCamera_->position, mainCamera_->target, mainCamera_->up_);
 
 		mat4 perspective = mat4::perspective(
 			mainCamera_->fovy, mainCamera_->aspect_,
@@ -110,7 +106,7 @@ void GraphicSystem::render_grid()
 
 	else {
 
-		viewport = mat4::scale(GLManager::resScaler_);
+		// viewport = mat4::scale(GLManager::resScaler_);
 
 		float right_ = GLManager::get_width() * .5f;
 		float left_ = -right_;
@@ -122,6 +118,7 @@ void GraphicSystem::render_grid()
 	}
 
 	// Send camera info to shader
+	mat4 viewport = mat4::look_at(mainCamera_->position, mainCamera_->target, mainCamera_->up_);
 	shader->set_matrix("m4_viewport", viewport);
 
 	glEnable(GL_BLEND);

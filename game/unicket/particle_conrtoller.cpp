@@ -17,7 +17,7 @@ void ExplodingParticleController::init() { }
 
 void ExplodingParticleController::update(float /*dt*/)
 {
-	if (InputHandler::key_triggered(KEY::SPACE))
+	if (InputHandler::key_triggered(KEY::ENTER))
 	{
 		std::cout << "explosion!\n";
 		Emitter* explosion = get_owner()->get_component<Emitter>();
@@ -25,10 +25,10 @@ void ExplodingParticleController::update(float /*dt*/)
 		explosion->active = true;
 	}
 
-	if (InputHandler::key_pressed(KEY::SPACE))
-	{
-		std::cout << "space pressed\n";
-	}
+	//if (InputHandler::key_pressed(KEY::SPACE))
+	//{
+	//	std::cout << "space pressed\n";
+	//}
 }
 
 void ExplodingParticleController::close() { }

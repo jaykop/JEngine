@@ -24,7 +24,8 @@ void SceneController::init()
 
 	//InputHandler::ray_intersects_triangle();
 
-	GraphicSystem::grid.color = Color::blue;
+	GraphicSystem::grid.color = Color::white;
+	GraphicSystem::grid.prjType = Renderer::ProjectType::ORTHOGONAL;
 }
 
 void SceneController::update(float /*dt*/)
@@ -36,9 +37,7 @@ void SceneController::update(float /*dt*/)
 	}
 
 	if (InputHandler::key_pressed(KEY::MOUSE_RIGHT))
-	{	
 		std::cout << "MOUSE_RIGHT\n";
-	}
 
 	if (InputHandler::key_pressed(KEY::ENTER))
 		std::cout << "ENTER\n";

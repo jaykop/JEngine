@@ -32,6 +32,7 @@ protected:
 private:
 
 	Object* renderer_2d, *rand_obj;
+	Object* emitter1;
 
 };
 

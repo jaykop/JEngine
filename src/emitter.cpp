@@ -75,11 +75,7 @@ void Emitter::draw(float dt)
 		shader->set_matrix("m4_scale", mat4::scale(transform_->scale));
 		shader->set_bool("boolean_bilboard", (status & IS_BILBOARD) == IS_BILBOARD);
 
-		mat4 viewport;
-
 		if (prjType == ProjectType::PERSPECTIVE) {
-
-			viewport = mat4::look_at(camera->position, camera->target, camera->up_);
 
 			mat4 perspective = mat4::perspective(
 				camera->fovy, camera->aspect_,
@@ -90,7 +86,7 @@ void Emitter::draw(float dt)
 
 		else {
 
-			viewport = mat4::scale(GLManager::resScaler_);
+			// viewport = mat4::scale(GLManager::resScaler_);
 
 			float right_ = GLManager::get_width() * .5f;
 			float left_ = -right_;
@@ -102,6 +98,7 @@ void Emitter::draw(float dt)
 		}
 
 		// Send camera info to shader
+		mat4 viewport = mat4::look_at(camera->position, camera->target, camera->up_);
 		shader->set_matrix("m4_viewport", viewport);
 
 		glDepthMask(GL_FALSE);

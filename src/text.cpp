@@ -81,12 +81,9 @@ void Text::draw(float /*dt*/)
 		shader->set_matrix("m4_rotate", transform_->orientation.to_mat4());
 		shader->set_vec4("v4_color", color);
 
-		mat4 viewport;
-
 		if (prjType == ProjectType::PERSPECTIVE) {
 
-			viewport = mat4::look_at(camera->position, camera->target, camera->up_);
-
+			
 			mat4 perspective = mat4::perspective(
 				camera->fovy, camera->aspect_,
 				camera->near_, camera->far_);
@@ -96,7 +93,7 @@ void Text::draw(float /*dt*/)
 
 		else {
 
-			viewport = mat4::scale(GLManager::resScaler_);
+			// viewport = mat4::scale(GLManager::resScaler_);
 
 			float right_ = GLManager::get_width() * .5f;
 			float left_ = -right_;
@@ -108,6 +105,7 @@ void Text::draw(float /*dt*/)
 		}
 
 		// Send camera info to shader
+		mat4 viewport = mat4::look_at(camera->position, camera->target, camera->up_);
 		shader->set_matrix("m4_viewport", viewport);
 
 		glEnable(GL_DEPTH_TEST);

@@ -1,4 +1,7 @@
 *emitter direction
+
+===========================================
+*emitter explosion refresh
 *mouse position/click + mesh vector
 *debug coord
 *light
