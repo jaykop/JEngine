@@ -1,5 +1,6 @@
 *emitter direction
 *orthogonal projection
+*emitter using thread
 
 ===========================================
 *emitter explosion refresh
@@ -9,8 +10,7 @@
 *vector ostream
 
 *FMOD Lib
-*Look for part to implement thread
-*physics
+*physics + thread
 *camera controller
 *separate scene asset loader
 

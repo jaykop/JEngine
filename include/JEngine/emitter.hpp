@@ -6,21 +6,15 @@
 #include <vec3.hpp>
 #include <vec2.hpp>
 
+#include <mutex>
+
 jeBegin
 
 struct Particle {
 
-	vec3 color, position, direction, velocity;
-	float life, rotationSpeed, rotation;
-	bool hidden, dead;
-
-	Particle() : color(vec3::zero), position(vec3::zero), direction(vec3::zero), velocity(vec3::zero),
-		life(0.f), rotationSpeed(0.f), rotation(0.f), hidden(false), dead(false) {}
-
-	Particle(Particle&& rhs) noexcept
-	: color(rhs.color), position(rhs.position), direction(rhs.direction), velocity(rhs.velocity),
-	life(rhs.life), rotationSpeed(rhs.rotationSpeed), rotation(rhs.rotation),
-	hidden(rhs.hidden), dead(rhs.dead)  {} 
+	vec3 color = vec3::zero, position = vec3::zero, direction = vec3::zero, velocity = vec3::zero;
+	float life = 0.f, rotationSpeed = 0.f, rotation = 0.f;
+	bool hidden = false, dead = false, done = false;
 };
 
 class Emitter : public Renderer
@@ -39,7 +33,8 @@ public:
 
 	void draw(float dt) override;
 
-	void update_particle(Particle* particle, float dt);
+	void update_particle(Particles& particles, 
+		float dt, unsigned start, unsigned end);
 
 	Particle* generate_particle();
 	void refresh_particle(Particle* pParticle);
@@ -78,6 +73,7 @@ private:
 	unsigned deadCount_, size_, drawMode_;
 	float pointSize_;
 	unsigned texture_;
+	std::mutex mutex_;
 };
 
 jeDeclareComponentBuilder(Emitter);

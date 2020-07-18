@@ -16,6 +16,8 @@ jeBegin
 
 jeDefineComponentBuilder(Emitter);
 
+const unsigned NUM_THREADS = 8;
+
 Emitter::Emitter(Object* owner)
 	: Renderer(owner), angle(vec2::zero), velocity(vec3::zero), range(vec3::zero),
 	life(1.f), rotationSpeed(0.f), colorSpeed(1.f), pointSize_(0.f), active(true), 
@@ -105,15 +107,20 @@ void Emitter::draw(float dt)
 		glBlendFunc(sfactor_, dfactor_);
 		glPointSize(pointSize_);
 
-		//std::vector< std::thread> threads;
-		//unsigned size = particles_.size();
-		//for (unsigned i = 0; i < size; ++i) {
-		//	std::thread thread(&Emitter::update_particle, this, particles_[i], dt);
-		//	threads.push_back(std::move(thread));
-		//}
+		std::vector< std::thread> threads;
+		
+		unsigned blockSize = size_ / NUM_THREADS;
+		for (unsigned i = 0; i < NUM_THREADS; ++i) {
+			if (i != NUM_THREADS - 1)
+				threads.emplace_back(std::thread(&Emitter::update_particle, this, 
+					std::ref(particles_), dt, i * blockSize, (i + 1) * blockSize));
+			else
+				threads.emplace_back(std::thread(&Emitter::update_particle, this, 
+					std::ref(particles_), dt, i * blockSize, size_));
+		}
 
-		//for (unsigned i = 0; i < size; ++i)
-		//	threads[i].join();
+		for (auto& t : threads)
+			t.join();
 
 		glBindVertexArray(GLManager::quadVao_);
 		glBindBuffer(GL_ARRAY_BUFFER, GLManager::quadVbo_);
@@ -122,8 +129,7 @@ void Emitter::draw(float dt)
 
 		for (auto& particle : particles_) {
 
-			update_particle(particle, dt);
-
+			particle->done = false;
 			vec3 viewDirection = (camera->position - particle->position).normalized();
 
 			// Send transform info to shader
@@ -136,8 +142,6 @@ void Emitter::draw(float dt)
 			shader->set_bool("boolean_hide", particle->hidden);
 
 			glDrawElements(drawMode_, GLManager::quadIndicesSize_, GL_UNSIGNED_INT, nullptr);
-
-			/*}*/
 		}
 
 		glBindTexture(GL_TEXTURE_2D, 0);
@@ -151,21 +155,34 @@ void Emitter::draw(float dt)
 	}
 }
 
-void Emitter::update_particle(Particle* particle, float dt)
+void Emitter::update_particle(Particles& particles, float dt,
+	unsigned start, unsigned end)
 {
-	if (particle->life < 0.f)
-		refresh_particle(particle);
-
-	else
+	for (int i = start; i < end; ++i)
 	{
-		particle->life -= dt;
-		particle->position += particle->direction * dt * velocity;
+		std::unique_lock<std::mutex> lck(mutex_);
+		if (particles[i]->done) continue;
+		lck.unlock();
 
-		if (rotationSpeed)
-			particle->rotation += particle->rotationSpeed * dt;
+		if (particles[i]->life < 0.f)
+			refresh_particle(particles[i]);
 
-		if (colorDiff_ != vec3::zero)
-			particle->color += colorDiff_ * dt * colorSpeed;
+		else
+		{
+			particles[i]->life -= dt;
+			particles[i]->position += particles[i]->direction * dt * velocity;
+
+			if (rotationSpeed)
+				particles[i]->rotation += particles[i]->rotationSpeed * dt;
+
+			if (colorDiff_ != vec3::zero)
+				particles[i]->color += colorDiff_ * dt * colorSpeed;
+
+		}
+
+		lck.lock();
+		particles[i]->done = !particles[i]->done ? true : false;
+		lck.unlock();
 	}
 }
 
