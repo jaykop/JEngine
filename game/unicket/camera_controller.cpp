@@ -45,6 +45,12 @@ void CameraController::update(float dt)
 		camera->position += dis;
 		camera->target += dis;
 	}
+
+	if (InputHandler::get_mouse_wheel_status(KEY::MOUSE_WHEEL_DOWN))
+		camera->fovy += dt * 10.f;
+
+	if (InputHandler::get_mouse_wheel_status(KEY::MOUSE_WHEEL_UP))
+		camera->fovy -= dt * 10.f;
 }
 
 void CameraController::close() { }

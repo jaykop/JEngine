@@ -35,6 +35,7 @@ class AssetManager {
 
 	jePreventClone(AssetManager)
 
+	friend class GraphicSystem;
 	friend class Application;
 
 	using MeshMap = std::unordered_map<std::string, Mesh*>;

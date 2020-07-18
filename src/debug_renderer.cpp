@@ -8,6 +8,7 @@
 
 #include <colors.hpp>
 #include <graphic_system.hpp>
+#include <mat4.hpp>
 
 jeBegin
 
@@ -35,11 +36,11 @@ void DebugRenderer::load(const rapidjson::Value& /*data*/) {
 
 }
 
-void DebugRenderer::start_draw(const vec3& resScalar)
+void DebugRenderer::start_draw()
 {
 	Camera* camera = GraphicSystem::get_camera();
 
-	Shader* shader = GLManager::shader_[GLManager::Pipeline::DEBUG];
+	Shader* shader = GLManager::shader_[GLManager::DEBUG];
 	shader->use();
 
 	shader->set_matrix("m4_translate", mat4::translate(transform_->position));
@@ -53,7 +54,7 @@ void DebugRenderer::start_draw(const vec3& resScalar)
 		viewport = mat4::look_at(camera->position, camera->target, camera->up_);
 
 		mat4 perspective = mat4::perspective(
-			camera->fovy_, camera->aspect_,
+			camera->fovy, camera->aspect_,
 			camera->near_, camera->far_);
 
 		shader->set_matrix("m4_projection", perspective);
@@ -61,7 +62,7 @@ void DebugRenderer::start_draw(const vec3& resScalar)
 
 	else {
 
-		viewport = mat4::scale(resScalar);
+		viewport = mat4::scale(GLManager::resScaler_);
 
 		float right_ = GLManager::get_width() * .5f;
 		float left_ = -right_;

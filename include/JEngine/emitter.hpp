@@ -3,6 +3,8 @@
 #include <random.hpp>
 #include <renderer.hpp>
 
+#include <vec3.hpp>
+
 jeBegin
 
 struct Particle {
@@ -37,7 +39,7 @@ public:
 	void set_texture(unsigned texture);
 	unsigned get_texture() const;
 
-	void start_draw(const vec3& resScalar) override;
+	void start_draw() override;
 	void draw(float dt) override;
 	void end_draw() override;
 

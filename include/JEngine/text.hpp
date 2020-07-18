@@ -4,8 +4,9 @@
 
 #include <string>
 #include <unordered_map>
-#include <vec2.hpp>
 #include <renderer.hpp>
+#include <vec2.hpp>
+#include <vec4.hpp>
 
 jeBegin
 
@@ -37,7 +38,7 @@ public:
 	Text(Object* owner);
 	virtual ~Text();
 
-	void start_draw(const vec3& resScalar) override;
+	void start_draw() override;
 	void draw(float dt) override;
 	void end_draw() override;
 	void render_character(unsigned long key, float& newX, float intervalY);

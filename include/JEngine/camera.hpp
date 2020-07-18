@@ -22,6 +22,7 @@ class Camera : public Component
 public:
 
 	vec3 position, target;
+	float fovy;
 
 	void set_camera(const vec3& eye, const vec3& look, const vec3& up, float fov, float aspect, float distance);
 	const vec3& get_viewGeometry() const;
@@ -47,7 +48,7 @@ protected:
 private:
 
 	vec3 up_, right_, back_, viewGeometry_;
-	float distance_, aspect_, width_, height_, fovy_, near_, far_;
+	float distance_, aspect_, width_, height_, near_, far_;
 
 	Camera(Object* pOwner);
 	virtual ~Camera() {};

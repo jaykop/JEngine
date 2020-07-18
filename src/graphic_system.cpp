@@ -14,22 +14,24 @@ Contains the methods of GraphicSystem class
 #include <graphic_system.hpp>
 #include <scene_manager.hpp>
 #include <gl_manager.hpp>
+#include <asset_manager.hpp>
 #include <scene.hpp>
 #include <camera.hpp>
 #include <renderer.hpp>
+#include <shader.hpp>
 
+#include <vec2.hpp>
 #include <mat4.hpp>
+#include <colors.hpp>
 
 jeBegin
-
-const vec3 stdResolution(1.f / 800.f, 1.f / 600.f, 1.f);
-vec3 resolutionScaler_;
 
 Camera* GraphicSystem::mainCamera_ = nullptr;
 GraphicSystem::Renderers GraphicSystem::renderers_;
 GraphicSystem::Cameras GraphicSystem::cameras_;
 vec4 GraphicSystem::backgroundColor = vec4::zero, GraphicSystem::screenColor = vec4::zero;
 bool GraphicSystem::renderGrid = false;
+GraphicSystem::Grid GraphicSystem::grid;
 
 void GraphicSystem::set_camera(Camera* camera)
 {
@@ -42,6 +44,9 @@ Camera* GraphicSystem::get_camera()
 }
 
 void GraphicSystem::initialize() {
+
+	if (!grid.texture_)
+		grid.texture_ = AssetManager::get_texture("grid");
 
 	if (!mainCamera_ && !(cameras_.empty()))
 		mainCamera_ = *cameras_.begin();
@@ -63,20 +68,16 @@ void GraphicSystem::update(float dt) {
 		backgroundColor.b,
 		backgroundColor.a);
 
-	// Update the projection size by window screen size
-	vec3 windowSize(GLManager::get_width(), GLManager::get_height(), 1.f);
-	resolutionScaler_ = windowSize * stdResolution;
-
-	// update renderers
-	for (auto& r : renderers_) {
-		r->start_draw(resolutionScaler_);
-		r->draw(dt);
-		r->end_draw();
-	}
-
+	// render grid
 	if (renderGrid)
 		render_grid();
 
+	// update renderers
+	for (auto& r : renderers_) {
+		r->start_draw();
+		r->draw(dt);
+		r->end_draw();
+	}
 }
 
 void GraphicSystem::close() {
@@ -89,13 +90,58 @@ void GraphicSystem::close() {
 
 void GraphicSystem::render_grid()
 {
-	//glEnable(GL_BLEND);
-	//glDisable(GL_DEPTH_TEST);
-	//glBlendFunc(GL_ONE_MINUS_SRC_ALPHA, GL_SRC_ALPHA);
+	Shader* shader = GLManager::shader_[GLManager::GRID];
+	shader->use();
 
-	//glDrawArrays(GL_TRIANGLE_STRIP, 0, GLsizei(gridVertices.size()));
+	shader->set_matrix("m4_translate", mat4::translate(vec3::zero));
+	shader->set_matrix("m4_scale", mat4::scale(vec3::one * grid.size));
+	shader->set_matrix("m4_rotate", mat4::identity);
+	shader->set_vec3("v3_color", grid.color);
 
-	//glDisable(GL_BLEND);
+	mat4 viewport;
+
+	if (grid.prjType == Renderer::ProjectType::PERSPECTIVE) {
+
+		viewport = mat4::look_at(mainCamera_->position, mainCamera_->target, mainCamera_->up_);
+
+		mat4 perspective = mat4::perspective(
+			mainCamera_->fovy, mainCamera_->aspect_,
+			mainCamera_->near_, mainCamera_->far_);
+
+		shader->set_matrix("m4_projection", perspective);
+	}
+
+	else {
+
+		viewport = mat4::scale(GLManager::resScaler_);
+
+		float right_ = GLManager::get_width() * .5f;
+		float left_ = -right_;
+		float top_ = GLManager::get_height() * .5f;
+		float bottom_ = -top_;
+
+		mat4 orthogonal = mat4::orthogonal(left_, right_, bottom_, top_, mainCamera_->near_, mainCamera_->far_);
+		shader->set_matrix("m4_projection", orthogonal);
+	}
+
+	// Send camera info to shader
+	shader->set_matrix("m4_viewport", viewport);
+
+	glEnable(GL_BLEND);
+	glDisable(GL_DEPTH_TEST);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	glBindVertexArray(GLManager::quadVao_);
+	glBindBuffer(GL_ARRAY_BUFFER, GLManager::quadVbo_);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, GLManager::quadEbo_);
+	glBindTexture(GL_TEXTURE_2D, grid.texture_);
+	glDrawElements(GL_TRIANGLES, GLManager::quadIndicesSize_, GL_UNSIGNED_INT, nullptr);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindVertexArray(0);
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+
 }
 
 void GraphicSystem::add_renderer(Renderer* model) {

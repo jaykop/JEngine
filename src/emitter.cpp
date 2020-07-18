@@ -8,6 +8,7 @@
 
 #include <random.hpp>
 #include <math_util.hpp>
+#include <mat4.hpp>
 
 #include <thread>
 
@@ -62,11 +63,11 @@ void Emitter::load(const rapidjson::Value& /*data*/) {
 
 }
 
-void Emitter::start_draw(const vec3& resScalar)
+void Emitter::start_draw()
 {
 	Camera* camera = GraphicSystem::get_camera();
 
-	Shader* shader = GLManager::shader_[GLManager::Pipeline::PARTICLE];
+	Shader* shader = GLManager::shader_[GLManager::PARTICLE];
 	shader->use();
 
 	shader->set_matrix("m4_scale", mat4::scale(transform_->scale));
@@ -79,7 +80,7 @@ void Emitter::start_draw(const vec3& resScalar)
 		viewport = mat4::look_at(camera->position, camera->target, camera->up_);
 
 		mat4 perspective = mat4::perspective(
-			camera->fovy_, camera->aspect_,
+			camera->fovy, camera->aspect_,
 			camera->near_, camera->far_);
 
 		shader->set_matrix("m4_projection", perspective);
@@ -87,7 +88,7 @@ void Emitter::start_draw(const vec3& resScalar)
 
 	else {
 
-		viewport = mat4::scale(resScalar);
+		viewport = mat4::scale(GLManager::resScaler_);
 
 		float right_ = GLManager::get_width() * .5f;
 		float left_ = -right_;
@@ -123,7 +124,13 @@ void Emitter::draw(float dt)
 		//	threads[i].join();
 
 		Camera* camera = GraphicSystem::get_camera();
-		Shader* shader = GLManager::shader_[GLManager::Pipeline::PARTICLE];
+		Shader* shader = GLManager::shader_[GLManager::PARTICLE];
+
+
+		glBindVertexArray(GLManager::quadVao_);
+		glBindBuffer(GL_ARRAY_BUFFER, GLManager::quadVbo_);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, GLManager::quadEbo_);
+		glBindTexture(GL_TEXTURE_2D, texture_);
 
 		for (auto& particle : particles_) {
 
@@ -140,18 +147,15 @@ void Emitter::draw(float dt)
 			shader->set_vec4("v4_color", vec4(particle->color, particle->life));
 			shader->set_bool("boolean_hide", particle->hidden);
 
-			glBindVertexArray(GLManager::quadVao_);
-			glBindBuffer(GL_ARRAY_BUFFER, GLManager::quadVbo_);
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, GLManager::quadEbo_);
-			glBindTexture(GL_TEXTURE_2D, texture_);
 			glDrawElements(GL_TRIANGLES, GLManager::quadIndicesSize_, GL_UNSIGNED_INT, nullptr);
-			glBindTexture(GL_TEXTURE_2D, 0);
-			glBindBuffer(GL_ARRAY_BUFFER, 0);
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-			glBindVertexArray(0);
 
 			/*}*/
 		}
+
+		glBindTexture(GL_TEXTURE_2D, 0);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+		glBindVertexArray(0);
 	}
 }
 

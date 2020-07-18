@@ -1,5 +1,6 @@
 #pragma once
 #include <renderer.hpp>
+#include <vec4.hpp>
 
 jeBegin
 
@@ -20,7 +21,7 @@ public:
 	unsigned get_texture() const;
 
 	void run_animation();
-	void start_draw(const vec3& resScalar) override;
+	void start_draw() override;
 	void draw(float dt) override;
 	void end_draw() override;
 

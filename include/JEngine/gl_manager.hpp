@@ -15,6 +15,7 @@ Contains the definition of GLManager class
 #define GLEW_STATIC
 #include <macros.hpp>
 #include <vector>
+#include <vec3.hpp>
 
 union SDL_Event;
 struct SDL_Window;
@@ -43,8 +44,8 @@ class GLManager
 
 	using Shaders = std::vector<Shader*>;
 
-	enum class Target { SCREEN, TEXT, END };
-	enum Pipeline { DEBUG, NORMAL, TEXT, PARTICLE, LIGHT, SCREEN, /*GRID,*/ END };
+	// enum class Target { SCREEN, TEXT, END };
+	enum Pipeline { DEBUG, NORMAL, TEXT, PARTICLE, LIGHT, SCREEN, GRID, END };
 
 public:
 
@@ -62,12 +63,14 @@ private:
 	static void initialize_framebuffer(); 
 	static void delete_buffers();
 
+	static vec3 resScaler_;
 	static float width_, height_;
 	static GLint buffers_, samples_, attributes_;
 	static unsigned quadVao_, quadVbo_, quadEbo_,
 		drVao_, drVbo_,
 		gridVao_, gridVbo_,
-		quadIndicesSize_;
+		quadIndicesSize_,
+		gridVerticeSize_;
 	static Shaders shader_;
 };
 

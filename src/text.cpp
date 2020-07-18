@@ -68,11 +68,11 @@ void Text::load(const rapidjson::Value& /*data*/) {
 
 }
 
-void Text::start_draw(const vec3& resScalar)
+void Text::start_draw()
 {
 	Camera* camera = GraphicSystem::get_camera();
 
-	Shader* shader = GLManager::shader_[GLManager::Pipeline::TEXT];
+	Shader* shader = GLManager::shader_[GLManager::TEXT];
 	shader->use();
 
 	shader->set_matrix("m4_scale", mat4::scale(transform_->scale));
@@ -86,7 +86,7 @@ void Text::start_draw(const vec3& resScalar)
 		viewport = mat4::look_at(camera->position, camera->target, camera->up_);
 
 		mat4 perspective = mat4::perspective(
-			camera->fovy_, camera->aspect_,
+			camera->fovy, camera->aspect_,
 			camera->near_, camera->far_);
 
 		shader->set_matrix("m4_projection", perspective);
@@ -94,7 +94,7 @@ void Text::start_draw(const vec3& resScalar)
 
 	else {
 
-		viewport = mat4::scale(resScalar);
+		viewport = mat4::scale(GLManager::resScaler_);
 
 		float right_ = GLManager::get_width() * .5f;
 		float left_ = -right_;
@@ -151,7 +151,7 @@ void Text::render_character(unsigned long key, float& newX, float intervalY)
 
 	newX += (character.advance >> characterShift) * scale.x;
 
-	Shader* shader = GLManager::shader_[GLManager::Pipeline::TEXT];
+	Shader* shader = GLManager::shader_[GLManager::TEXT];
 	shader->set_matrix("m4_translate", mat4::translate(position));
 
 	GLfloat width = character.size.x;
@@ -165,12 +165,10 @@ void Text::render_character(unsigned long key, float& newX, float intervalY)
 		{ width, 0.f, 0.f, 0.f, 0.f, 1.f, 1.f, 1.f }
 	};
 
-	glBindTexture(GL_TEXTURE_2D, character.texture);
-
 	glBindVertexArray(vao_);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo_);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
+	glBindTexture(GL_TEXTURE_2D, character.texture);
 	glDrawElements(GL_TRIANGLE_STRIP, GLsizei(textIndices.size()), GL_UNSIGNED_INT, nullptr);
 	glBindVertexArray(0);
 

@@ -6,7 +6,8 @@
 		{ "Directory": "../../shader/text.vs" },
 		{ "Directory": "../../shader/particle.vs" },
 		{ "Directory": "../../shader/lighting.vs" },
-		{ "Directory": "../../shader/screen.vs" }
+		{ "Directory": "../../shader/screen.vs" },
+		{ "Directory": "../../shader/grid.vs" }
 
 	],
 
@@ -17,7 +18,8 @@
 		{ "Directory": "../../shader/text.fs" },
 		{ "Directory": "../../shader/particle.fs" },
 		{ "Directory": "../../shader/lighting.fs" },
-		{ "Directory": "../../shader/screen.fs" }
+		{ "Directory": "../../shader/screen.fs" },
+		{ "Directory": "../../shader/grid.fs" }
 
 	]
 	

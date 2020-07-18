@@ -1,5 +1,10 @@
 #include <shader.hpp>
 #include <fstream>
+#include <debug_renderer.hpp>
+
+#include <mat4.hpp>
+#include <vec4.hpp>
+#include <vec2.hpp>
 
 jeBegin
 
@@ -56,7 +61,7 @@ void Shader::create_shader(const char* file_path, Type type, unsigned shaderNumb
 	if (infoLogLength_ > 0) {
 		std::vector<char> ShaderErrorMessage(infoLogLength_ + int(1));
 		glGetShaderInfoLog(localShader, infoLogLength_, nullptr, &ShaderErrorMessage[0]);
-		jeDebugPrint("!Shader - %4s / %i\n", &ShaderErrorMessage[0], shaderNumber);
+		jeDebugPrint("!Shader - %4s / %s\n", &ShaderErrorMessage[0], file_path);
 	}
 }
 
@@ -79,17 +84,17 @@ void Shader::combine_shaders(unsigned shaderNumber)
 
 		glLinkProgram(programId_);
 
-		// Check the program
-		glGetProgramiv(programId_, GL_LINK_STATUS, &result_);
-		glGetShaderiv(programId_, GL_INFO_LOG_LENGTH, &infoLogLength_);
+		//// Check the program
+		//glGetProgramiv(programId_, GL_LINK_STATUS, &result_);
+		//glGetShaderiv(programId_, GL_INFO_LOG_LENGTH, &infoLogLength_);
 
-		// Check if linked properly
-		if (infoLogLength_ > 0) {
-			std::vector<char> ProgramErrorMessage(infoLogLength_ + 1);
-			glGetShaderInfoLog(programId_, infoLogLength_, nullptr, &ProgramErrorMessage[0]);
-			jeDebugPrint("!Shader - %4s / %i\n", &ProgramErrorMessage[0], shaderNumber);
+		//// Check if linked properly
+		//if (infoLogLength_ > 0) {
+		//	std::vector<char> ProgramErrorMessage(infoLogLength_ + 1);
+		//	glGetShaderInfoLog(programId_, infoLogLength_, nullptr, &ProgramErrorMessage[0]);
+		//	jeDebugPrint("!Shader - %4s / %i\n", &ProgramErrorMessage[0], shaderNumber);
 
-		}	// if (infoLogLength > 0) {
+		//}
 
 		glUseProgram(programId_);	// Start using shade  program
 
@@ -130,6 +135,12 @@ void Shader::set_vec3(const char* name, const vec3& vector)
 {
 	glUniform3f(glGetUniformLocation(programId_, name),
 		vector.x, vector.y, vector.z);
+}
+
+void Shader::set_vec2(const char* name, const vec2& vector)
+{
+	glUniform2f(glGetUniformLocation(programId_, name),
+		vector.x, vector.y);
 }
 
 void Shader::use()

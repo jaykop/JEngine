@@ -9,6 +9,7 @@
 	"Texture" : [
 
 		{"Key" : "rect", 			"Directory" : "resource/texture/rect.png"},
+		{"Key" : "grid", 			"Directory" : "resource/texture/box_line.png"},
 		{"Key" : "circle", 			"Directory" : "resource/texture/circle.png"},
 		{"Key" : "fire", 			"Directory" : "resource/texture/fire.png"},
 		{"Key" : "smoke", 			"Directory" : "resource/texture/smoke.png"},

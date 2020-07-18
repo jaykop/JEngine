@@ -60,11 +60,11 @@ void Model::draw_debug_info()
 }
 
 
-void Model::start_draw(const vec3& resScalar)
+void Model::start_draw()
 {
 	Camera* camera = GraphicSystem::get_camera();
 
-	//Shader* shader = GLManager::shader_[GLManager::Pipeline::NORMAL];
+	//Shader* shader = GLManager::shader_[GLManager::NORMAL];
 	//shader->use();
 
 	//shader->set_matrix("m4_translate", mat4::translate(transform_->position));
@@ -133,7 +133,7 @@ void Model::draw_normals()
 	if (renderVertexNormals_
 		|| renderFaceNormals_) {
 
-		Shader* shader = GLManager::shader_[GLManager::Pipeline::NORMAL];
+		Shader* shader = GLManager::shader_[GLManager::NORMAL];
 		shader->use();
 
 		for (const auto& m : meshes_) {

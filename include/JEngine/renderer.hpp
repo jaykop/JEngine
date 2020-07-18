@@ -1,7 +1,8 @@
 #pragma once
 #include <component_builder.hpp>
 #include <component.hpp>
-#include <vec4.hpp>
+
+struct vec3;
 
 jeBegin
 
@@ -30,7 +31,7 @@ public:
 	virtual ~Renderer() {};
 
 	// public methods
-	virtual void start_draw(const vec3& resScalar) = 0;
+	virtual void start_draw() = 0;
 	virtual void draw(float dt) = 0;
 	virtual void end_draw() = 0;
 

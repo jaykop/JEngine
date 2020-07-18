@@ -14,6 +14,7 @@ Contains the definition of GraphicSystem class
 #include <macros.hpp>
 #include <vector>
 #include <vec4.hpp>
+#include <renderer.hpp>
 
 jeBegin
 
@@ -39,11 +40,23 @@ class GraphicSystem {
 	using Renderers = std::vector<Renderer*>;
 	using Cameras = std::vector<Camera*>;
 
+	struct Grid
+	{
+		vec3 color = vec3::one;
+		unsigned size = 10000;
+		Renderer::ProjectType prjType = Renderer::ProjectType::PERSPECTIVE;
+
+	private:
+		friend class GraphicSystem;
+		unsigned texture_;
+	};
+
 public:
 
 	static void set_camera(Camera* camera);
 	static Camera* get_camera();
 
+	static Grid grid;
 	static vec4 backgroundColor, screenColor;
 	static bool renderGrid;
 
@@ -65,10 +78,10 @@ private:
 	static void update_pipelines(float dt);
 	static void render_grid();
 
-	static Camera* mainCamera_;
 	static Renderers renderers_;
 	static Cameras cameras_;
-
+	
+	static Camera* mainCamera_;
 };
 
 jeEnd

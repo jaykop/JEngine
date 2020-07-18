@@ -2,6 +2,8 @@
 #include "application.hpp"
 #include "scene_controller.h"
 
+#include "colors.hpp"
+
 jeBegin
 
 jeDefineUserComponentBuilder(SceneController);
@@ -11,7 +13,10 @@ SceneController::~SceneController()
 	remove_from_system();
 }
 
-void SceneController::init() { }
+void SceneController::init() 
+{ 
+	GraphicSystem::grid.color = Color::blue;
+}
 
 void SceneController::update(float /*dt*/)
 {
@@ -26,18 +31,12 @@ void SceneController::update(float /*dt*/)
 		ObjectManager::remove_object("emitter1");
 	}
 
-	if (InputHandler::get_mouse_wheel_status(KEY::MOUSE_WHEEL_DOWN))
-		std::cout << "MOUSE_WHEEL_DOWN\n";
-
-	if (InputHandler::get_mouse_wheel_status(KEY::MOUSE_WHEEL_UP))
-		std::cout << "MOUSE_WHEEL_UP\n";
-
 	if (InputHandler::key_pressed(KEY::ENTER))
 		std::cout << "ENTER\n";
 
 	if (InputHandler::key_triggered(KEY::SPACE))
-		std::cout << "SPACE\n";
-
+		GraphicSystem::renderGrid = !GraphicSystem::renderGrid;
+	
 	if (InputHandler::key_triggered(KEY::ESC))
 		Application::quit();
 }

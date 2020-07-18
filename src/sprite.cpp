@@ -7,6 +7,7 @@
 
 #include <camera.hpp>
 #include <transform.hpp>
+#include <mat4.hpp>
 
 jeBegin
 
@@ -38,10 +39,10 @@ void Sprite::load(const rapidjson::Value& /*data*/) {
 
 }
 
-void Sprite::start_draw(const vec3& resScalar)
+void Sprite::start_draw()
 {
 	Camera* camera = GraphicSystem::get_camera();
-	Shader* shader = GLManager::shader_[GLManager::Pipeline::NORMAL];
+	Shader* shader = GLManager::shader_[GLManager::NORMAL];
 	shader->use();
 
 	shader->set_matrix("m4_translate", mat4::translate(transform_->position));
@@ -58,7 +59,7 @@ void Sprite::start_draw(const vec3& resScalar)
 		viewport = mat4::look_at(camera->position, camera->target, camera->up_);
 
 		mat4 perspective = mat4::perspective(
-			camera->fovy_, camera->aspect_,
+			camera->fovy, camera->aspect_,
 			camera->near_, camera->far_);
 
 		shader->set_matrix("m4_projection", perspective);
@@ -66,7 +67,7 @@ void Sprite::start_draw(const vec3& resScalar)
 
 	else {
 
-		viewport = mat4::scale(resScalar);
+		viewport = mat4::scale(GLManager::resScaler_);
 
 		float right_ = GLManager::get_width() * .5f;
 		float left_ = -right_;
@@ -150,7 +151,7 @@ void Sprite::run_animation()
 		}
 
 		// Send color info to shader
-		Shader* shader = GLManager::shader_[GLManager::Pipeline::NORMAL];
+		Shader* shader = GLManager::shader_[GLManager::NORMAL];
 		shader->use();
 
 		shader->set_bool("boolean_flip", (status & IS_FLIPPED) == IS_FLIPPED);
