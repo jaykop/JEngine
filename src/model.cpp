@@ -59,8 +59,7 @@ void Model::draw_debug_info()
 	//pDDrawer_->render_meshes(pShader);
 }
 
-
-void Model::start_draw()
+void Model::draw(float /*dt*/)
 {
 	Camera* camera = GraphicSystem::get_camera();
 
@@ -109,20 +108,14 @@ void Model::start_draw()
 	//glEnable(GL_BLEND);
 	//glEnable(GL_DEPTH_TEST);
 	//glBlendFunc(sfactor_, dfactor_);
-}
 
-void Model::draw(float /*dt*/)
-{
 	for (auto mesh : meshes_)
 	{
 		glBindVertexArray(mesh->vao_);
 		glDrawElements(drawMode_, mesh->get_indice_count(), GL_UNSIGNED_INT, nullptr);
 		glBindVertexArray(0);
 	}
-}
 
-void Model::end_draw()
-{
 	//glDisable(GL_DEPTH_TEST);
 	//glDisable(GL_BLEND);
 }

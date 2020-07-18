@@ -73,11 +73,8 @@ void GraphicSystem::update(float dt) {
 		render_grid();
 
 	// update renderers
-	for (auto& r : renderers_) {
-		r->start_draw();
+	for (auto& r : renderers_)
 		r->draw(dt);
-		r->end_draw();
-	}
 }
 
 void GraphicSystem::close() {

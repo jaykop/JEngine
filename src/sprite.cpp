@@ -39,7 +39,8 @@ void Sprite::load(const rapidjson::Value& /*data*/) {
 
 }
 
-void Sprite::start_draw()
+
+void Sprite::draw(float /*dt*/)
 {
 	Camera* camera = GraphicSystem::get_camera();
 	Shader* shader = GLManager::shader_[GLManager::NORMAL];
@@ -92,10 +93,7 @@ void Sprite::start_draw()
 	glEnable(GL_BLEND);
 	glEnable(GL_DEPTH_TEST);
 	glBlendFunc(sfactor_, dfactor_);
-}
 
-void Sprite::draw(float /*dt*/)
-{
 	run_animation();
 
 	glBindVertexArray(GLManager::quadVao_);
@@ -107,10 +105,7 @@ void Sprite::draw(float /*dt*/)
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
-}
 
-void Sprite::end_draw()
-{
 	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_BLEND);
 }

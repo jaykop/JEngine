@@ -17,13 +17,12 @@ public:
 	Sprite(Object* owner);
 	virtual ~Sprite();
 
+	void draw(float dt) override;
+
 	void set_texture(unsigned texture);
 	unsigned get_texture() const;
 
 	void run_animation();
-	void start_draw() override;
-	void draw(float dt) override;
-	void end_draw() override;
 
 	vec4 color;
 	

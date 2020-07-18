@@ -63,55 +63,52 @@ void Emitter::load(const rapidjson::Value& /*data*/) {
 
 }
 
-void Emitter::start_draw()
-{
-	Camera* camera = GraphicSystem::get_camera();
-
-	Shader* shader = GLManager::shader_[GLManager::PARTICLE];
-	shader->use();
-
-	shader->set_matrix("m4_scale", mat4::scale(transform_->scale));
-	shader->set_bool("boolean_bilboard", (status & IS_BILBOARD) == IS_BILBOARD);
-
-	mat4 viewport;
-
-	if (prjType == ProjectType::PERSPECTIVE) {
-
-		viewport = mat4::look_at(camera->position, camera->target, camera->up_);
-
-		mat4 perspective = mat4::perspective(
-			camera->fovy, camera->aspect_,
-			camera->near_, camera->far_);
-
-		shader->set_matrix("m4_projection", perspective);
-	}
-
-	else {
-
-		viewport = mat4::scale(GLManager::resScaler_);
-
-		float right_ = GLManager::get_width() * .5f;
-		float left_ = -right_;
-		float top_ = GLManager::get_height() * .5f;
-		float bottom_ = -top_;
-
-		mat4 orthogonal = mat4::orthogonal(left_, right_, bottom_, top_, camera->near_, camera->far_);
-		shader->set_matrix("m4_projection", orthogonal);
-	}
-
-	// Send camera info to shader
-	shader->set_matrix("m4_viewport", viewport);
-
-	glDepthMask(GL_FALSE);
-	glEnable(GL_BLEND);
-	glEnable(GL_DEPTH_TEST);
-	glBlendFunc(sfactor_, dfactor_);
-	// glPointSize(pointSize);
-}
-
 void Emitter::draw(float dt)
 {
 	if (active) {
+
+		Camera* camera = GraphicSystem::get_camera();
+
+		Shader* shader = GLManager::shader_[GLManager::PARTICLE];
+		shader->use();
+
+		shader->set_matrix("m4_scale", mat4::scale(transform_->scale));
+		shader->set_bool("boolean_bilboard", (status & IS_BILBOARD) == IS_BILBOARD);
+
+		mat4 viewport;
+
+		if (prjType == ProjectType::PERSPECTIVE) {
+
+			viewport = mat4::look_at(camera->position, camera->target, camera->up_);
+
+			mat4 perspective = mat4::perspective(
+				camera->fovy, camera->aspect_,
+				camera->near_, camera->far_);
+
+			shader->set_matrix("m4_projection", perspective);
+		}
+
+		else {
+
+			viewport = mat4::scale(GLManager::resScaler_);
+
+			float right_ = GLManager::get_width() * .5f;
+			float left_ = -right_;
+			float top_ = GLManager::get_height() * .5f;
+			float bottom_ = -top_;
+
+			mat4 orthogonal = mat4::orthogonal(left_, right_, bottom_, top_, camera->near_, camera->far_);
+			shader->set_matrix("m4_projection", orthogonal);
+		}
+
+		// Send camera info to shader
+		shader->set_matrix("m4_viewport", viewport);
+
+		glDepthMask(GL_FALSE);
+		glEnable(GL_BLEND);
+		glEnable(GL_DEPTH_TEST);
+		glBlendFunc(sfactor_, dfactor_);
+		// glPointSize(pointSize);
 
 		//std::vector< std::thread> threads;
 		//unsigned size = particles_.size();
@@ -122,10 +119,6 @@ void Emitter::draw(float dt)
 
 		//for (unsigned i = 0; i < size; ++i)
 		//	threads[i].join();
-
-		Camera* camera = GraphicSystem::get_camera();
-		Shader* shader = GLManager::shader_[GLManager::PARTICLE];
-
 
 		glBindVertexArray(GLManager::quadVao_);
 		glBindBuffer(GL_ARRAY_BUFFER, GLManager::quadVbo_);
@@ -156,14 +149,11 @@ void Emitter::draw(float dt)
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 		glBindVertexArray(0);
-	}
-}
 
-void Emitter::end_draw()
-{
-	glDisable(GL_DEPTH_TEST);
-	glDepthMask(GL_TRUE);
-	glDisable(GL_BLEND);
+		glDisable(GL_DEPTH_TEST);
+		glDepthMask(GL_TRUE);
+		glDisable(GL_BLEND);
+	}
 }
 
 void Emitter::update_particle(Particle* particle, float dt)

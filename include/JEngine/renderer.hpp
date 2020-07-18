@@ -31,9 +31,7 @@ public:
 	virtual ~Renderer() {};
 
 	// public methods
-	virtual void start_draw() = 0;
 	virtual void draw(float dt) = 0;
-	virtual void end_draw() = 0;
 
 	static void draw_lighting_effect(Light* light);
 

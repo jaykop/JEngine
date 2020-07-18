@@ -68,52 +68,49 @@ void Text::load(const rapidjson::Value& /*data*/) {
 
 }
 
-void Text::start_draw()
-{
-	Camera* camera = GraphicSystem::get_camera();
-
-	Shader* shader = GLManager::shader_[GLManager::TEXT];
-	shader->use();
-
-	shader->set_matrix("m4_scale", mat4::scale(transform_->scale));
-	shader->set_matrix("m4_rotate", transform_->orientation.to_mat4());
-	shader->set_vec4("v4_color", color);
-
-	mat4 viewport;
-
-	if (prjType == ProjectType::PERSPECTIVE) {
-
-		viewport = mat4::look_at(camera->position, camera->target, camera->up_);
-
-		mat4 perspective = mat4::perspective(
-			camera->fovy, camera->aspect_,
-			camera->near_, camera->far_);
-
-		shader->set_matrix("m4_projection", perspective);
-	}
-
-	else {
-
-		viewport = mat4::scale(GLManager::resScaler_);
-
-		float right_ = GLManager::get_width() * .5f;
-		float left_ = -right_;
-		float top_ = GLManager::get_height() * .5f;
-		float bottom_ = -top_;
-
-		mat4 orthogonal = mat4::orthogonal(left_, right_, bottom_, top_, camera->near_, camera->far_);
-		shader->set_matrix("m4_projection", orthogonal);
-	}
-
-	// Send camera info to shader
-	shader->set_matrix("m4_viewport", viewport);
-
-	glEnable(GL_DEPTH_TEST);
-}
-
 void Text::draw(float /*dt*/)
 {
 	if (!text_.empty()) {
+
+		Camera* camera = GraphicSystem::get_camera();
+
+		Shader* shader = GLManager::shader_[GLManager::TEXT];
+		shader->use();
+
+		shader->set_matrix("m4_scale", mat4::scale(transform_->scale));
+		shader->set_matrix("m4_rotate", transform_->orientation.to_mat4());
+		shader->set_vec4("v4_color", color);
+
+		mat4 viewport;
+
+		if (prjType == ProjectType::PERSPECTIVE) {
+
+			viewport = mat4::look_at(camera->position, camera->target, camera->up_);
+
+			mat4 perspective = mat4::perspective(
+				camera->fovy, camera->aspect_,
+				camera->near_, camera->far_);
+
+			shader->set_matrix("m4_projection", perspective);
+		}
+
+		else {
+
+			viewport = mat4::scale(GLManager::resScaler_);
+
+			float right_ = GLManager::get_width() * .5f;
+			float left_ = -right_;
+			float top_ = GLManager::get_height() * .5f;
+			float bottom_ = -top_;
+
+			mat4 orthogonal = mat4::orthogonal(left_, right_, bottom_, top_, camera->near_, camera->far_);
+			shader->set_matrix("m4_projection", orthogonal);
+		}
+
+		// Send camera info to shader
+		shader->set_matrix("m4_viewport", viewport);
+
+		glEnable(GL_DEPTH_TEST);
 
 		const vec3 scale = transform_->scale;
 		const vec3 pos = transform_->position;
@@ -136,6 +133,8 @@ void Text::draw(float /*dt*/)
 			else 
 				render_character(*letter, newX, intervalY);
 		}
+
+		glDisable(GL_DEPTH_TEST);
 	}
 }
 
@@ -172,11 +171,6 @@ void Text::render_character(unsigned long key, float& newX, float intervalY)
 	glDrawElements(GL_TRIANGLE_STRIP, GLsizei(textIndices.size()), GL_UNSIGNED_INT, nullptr);
 	glBindVertexArray(0);
 
-}
-
-void Text::end_draw()
-{
-	glDisable(GL_DEPTH_TEST);
 }
 
 void Text::set_text(const wchar_t* text, ...)

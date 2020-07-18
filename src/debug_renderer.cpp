@@ -36,10 +36,9 @@ void DebugRenderer::load(const rapidjson::Value& /*data*/) {
 
 }
 
-void DebugRenderer::start_draw()
+void DebugRenderer::draw(float /*dt*/)
 {
 	Camera* camera = GraphicSystem::get_camera();
-
 	Shader* shader = GLManager::shader_[GLManager::DEBUG];
 	shader->use();
 
@@ -75,10 +74,7 @@ void DebugRenderer::start_draw()
 
 	// Send camera info to shader
 	shader->set_matrix("m4_viewport", viewport);
-}
 
-void DebugRenderer::draw(float /*dt*/)
-{
 	if (!vertices_.empty()) {
 
 		glBindVertexArray(GLManager::drVao_);
@@ -110,10 +106,6 @@ void DebugRenderer::draw(float /*dt*/)
 
 		glPolygonMode(GL_FRONT_AND_BACK, polygon_mode[0]);
 	}
-}
-
-void DebugRenderer::end_draw()
-{
 }
 
 void DebugRenderer::add_line(const vec3& start, const vec3& end, const vec3& color)

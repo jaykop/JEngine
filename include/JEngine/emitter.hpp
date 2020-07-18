@@ -36,12 +36,7 @@ public:
 	Emitter(Object* owner);
 	virtual ~Emitter();
 
-	void set_texture(unsigned texture);
-	unsigned get_texture() const;
-
-	void start_draw() override;
 	void draw(float dt) override;
-	void end_draw() override;
 
 	void update_particle(Particle* particle, float dt);
 
@@ -51,6 +46,9 @@ public:
 
 	void set_size(unsigned size);
 	void set_colors(const vec3& start, const vec3& end);
+
+	void set_texture(unsigned texture);
+	unsigned get_texture() const;
 
 	vec3 direction, velocity, range;
 	float life, rotationSpeed, colorSpeed, pointSize;

@@ -22,9 +22,7 @@ public:
 	void set_mesh(const std::string& name);
 	const Meshes& get_meshes(void) const;
 
-	void start_draw() override;
 	void draw(float dt) override;
-	void end_draw() override;
 
 	void draw_normals();
 	void draw_debug_info();
