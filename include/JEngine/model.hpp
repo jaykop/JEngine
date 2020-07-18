@@ -19,7 +19,7 @@ public:
 	Model(Object* owner);
 	virtual ~Model();
 
-	void set_mesh(const std::string& name);
+	void set_mesh(const char* name);
 	const Meshes& get_meshes(void) const;
 
 	void draw(float dt) override;

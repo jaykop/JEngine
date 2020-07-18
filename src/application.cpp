@@ -14,11 +14,11 @@ jeBegin
 // static variables
 //////////////////////////////////////////////////////////////////////////
 bool Application::run_ = true;
-SDL_Event		Application::event_;
-SDL_Window*		Application::window_ = nullptr;
-SDL_Surface		*Application::surface_ = nullptr, *Application::icon_= nullptr;
-SDL_GLContext	Application::context_ = nullptr;
-Application::AppData	Application::data_ = { "demo", "../resource/ico/main.ico", false, 800, 600 };
+SDL_Event Application::event_;
+SDL_Window* Application::window_ = nullptr;
+SDL_Surface	*Application::surface_ = nullptr, *Application::icon_= nullptr;
+SDL_GLContext Application::context_ = nullptr;
+Application::AppData Application::data_ = { "demo", "../resource/ico/main.ico", false, 800, 600 };
 
 void Application::run()
 {

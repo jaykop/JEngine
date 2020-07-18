@@ -103,6 +103,8 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(ProjectDir)..\..\include\JEngine;$(ProjectDir)..\..\include\SDL2;$(ProjectDir)..\..\include;$(SolutionDir)..\..\include\rapidjson;$(SolutionDir)..\..\include\freetype2</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <PreprocessorDefinitions>_SILENCE_CXX17_ITERATOR_BASE_CLASS_DEPRECATION_WARNING;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalDependencies>JEngine_d.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;freetype.lib;opengl32.lib;glew32.lib;assimp-vc142-mtd.lib</AdditionalDependencies>
@@ -123,6 +125,8 @@ xcopy /y /d "..\..\lib\assimp\$(Configuration)\$(Platform)\*.dll" "$(TargetDir)"
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(ProjectDir)..\..\include\JEngine;$(ProjectDir)..\..\include\SDL2;$(ProjectDir)..\..\include;$(SolutionDir)..\..\include\rapidjson;$(SolutionDir)..\..\include\freetype2</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <PreprocessorDefinitions>_SILENCE_CXX17_ITERATOR_BASE_CLASS_DEPRECATION_WARNING;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalDependencies>JEngine_d.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;freetype.lib;opengl32.lib;glew32.lib;assimp-vc142-mtd.lib</AdditionalDependencies>
@@ -145,6 +149,8 @@ xcopy /y /d "..\..\lib\assimp\$(Configuration)\$(Platform)\*.dll" "$(TargetDir)"
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(ProjectDir)..\..\include\JEngine;$(ProjectDir)..\..\include\SDL2;$(ProjectDir)..\..\include;$(SolutionDir)..\..\include\rapidjson;$(SolutionDir)..\..\include\freetype2</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <PreprocessorDefinitions>_SILENCE_CXX17_ITERATOR_BASE_CLASS_DEPRECATION_WARNING;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -169,6 +175,8 @@ xcopy /y /d "..\..\lib\assimp\$(Configuration)\$(Platform)\*.dll" "$(TargetDir)"
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(ProjectDir)..\..\include\JEngine;$(ProjectDir)..\..\include\SDL2;$(ProjectDir)..\..\include;$(SolutionDir)..\..\include\rapidjson;$(SolutionDir)..\..\include\freetype2</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <PreprocessorDefinitions>_SILENCE_CXX17_ITERATOR_BASE_CLASS_DEPRECATION_WARNING;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>

@@ -22,7 +22,7 @@ bool AssetManager::load_obj(const char* path)
 {
 	std::string parsed_key = parse_name(path);
 
-	if (meshMap_.find(parsed_key) == meshMap_.end()) {
+	if (meshMap_.find(parsed_key.c_str()) == meshMap_.end()) {
 
 		std::ifstream obj(path, std::ios::in);
 		std::stringstream buffer;
@@ -44,7 +44,7 @@ bool AssetManager::load_obj(const char* path)
 		calculate_normals(&newMesh);
 		Mesh::describe_mesh_attribs(newMesh);
 
-		meshMap_.insert({ parsed_key, newMesh });
+		meshMap_.insert({ parsed_key.c_str(), newMesh });
 	}
 
 	// todo: would make some problem

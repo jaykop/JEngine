@@ -34,10 +34,10 @@ void Model::load(const rapidjson::Value& /*data*/) {
 
 }
 
-void Model::set_mesh(const std::string& name)
+void Model::set_mesh(const char* name)
 {
 	// get new mesh
-	Mesh* newMesh = AssetManager::get_mesh(name.c_str());
+	Mesh* newMesh = AssetManager::get_mesh(name);
 
 	// add to the mesh
 	meshes_.emplace_back(newMesh);

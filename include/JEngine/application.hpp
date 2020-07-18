@@ -45,7 +45,7 @@ public:
 
 	static AppData get_appdata();
 	static void set_screensize(int w, int h);
-	static void set_title(const std::string& title);
+	static void set_title(const char* title);
 	static void set_fullscreen(bool isFullScreen);
 	static void activate_vsync(bool on);
 

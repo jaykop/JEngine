@@ -36,7 +36,7 @@ const char* ComponentManager::key_to_type(const char* name)
 {
 	auto found = types_.find(name);
 	DEBUG_ASSERT(found == types_.end(), "No such name of conmponent");
-	return found->second.c_str();
+	return found->second.data();
 
 }
 
@@ -47,7 +47,7 @@ const char* ComponentManager::type_to_key(const char* type)
 		jeDebugPrint("No such name of conmponent");
 		return nullptr;
 	}
-	return found->second.c_str();
+	return found->second.data();
 }
 
 void ComponentManager::clear_builders()

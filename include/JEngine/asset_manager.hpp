@@ -14,6 +14,8 @@ Contains the definition of asset_manager class
 #include <vec3.hpp>
 #include <macros.hpp>
 #include <unordered_map>
+
+#include <string>
 // #include <graphic_system.h>
 
 jeBegin
@@ -38,19 +40,19 @@ class AssetManager {
 	friend class GraphicSystem;
 	friend class Application;
 
-	using MeshMap = std::unordered_map<std::string, Mesh*>;
-	using FontMap =	std::unordered_map<std::string, Font*>;
-	using AudioMap = std::unordered_map<const char*, Audio*>;
-	using SceneMap = std::unordered_map<const char*, Scene*>;
-	using TextureMap = std::unordered_map<std::string, unsigned>;
-	using ArchetypeMap = std::unordered_map<const char*, Archetype*>;
-
 	struct Image {
 		std::vector<unsigned char> pixels;
 		unsigned handle, width, height;
 	};
 
-	using Images = std::unordered_map<std::string, AssetManager::Image>;
+	using MeshMap = std::unordered_map<std::string_view, Mesh*>;
+	using FontMap =	std::unordered_map<std::string_view, Font*>;
+	using AudioMap = std::unordered_map<std::string_view, Audio*>;
+	using SceneMap = std::unordered_map<std::string_view, Scene*>;
+	using TextureMap = std::unordered_map<std::string_view, unsigned>;
+	using ArchetypeMap = std::unordered_map<std::string_view, Archetype*>;
+
+	using Images = std::unordered_map<const char*, AssetManager::Image>;
 
 public:
 
@@ -95,7 +97,6 @@ private:
 	static std::string initDirectory_, assetDirectory_,
 		stateDirectory_, archeDirectory_;
 
-	// obj loader
 public:
 
 	static bool load_obj(const char* path);

@@ -158,7 +158,7 @@ void Emitter::draw(float dt)
 void Emitter::update_particle(Particles& particles, float dt,
 	unsigned start, unsigned end)
 {
-	for (int i = start; i < end; ++i)
+	for (unsigned i = start; i < end; ++i)
 	{
 		std::unique_lock<std::mutex> lck(mutex_);
 		if (particles[i]->done) continue;

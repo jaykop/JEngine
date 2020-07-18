@@ -3,16 +3,15 @@
 *emitter using thread
 
 ===========================================
-*emitter explosion refresh
+*light
+*separate scene asset loader
 *mouse position/click + mesh vector
 *debug coord
-*light
 *vector ostream
-
 *FMOD Lib
 *physics + thread
 *camera controller
-*separate scene asset loader
+*emitter explosion refresh
 
 *Add loading screen
 *Add orbiting camera to camera controller

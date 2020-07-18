@@ -94,9 +94,6 @@
     <ClCompile Include="..\..\src\eigen.cpp">
       <Filter>util\math</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\graphic_pipeline.cpp">
-      <Filter>system\graphics</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\behavior.cpp">
       <Filter>system\behavior_components</Filter>
     </ClCompile>

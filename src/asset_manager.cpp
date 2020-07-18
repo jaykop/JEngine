@@ -112,10 +112,10 @@ void AssetManager::load_assets()
 		load_image(textures[i]["Directory"].GetString(), textures[i]["Key"].GetString());
 		jeDebugPrint("*AssetManager - Loaded image: %s.\n", textures[i]["Directory"].GetString());
 	}
-
+	
 	// Register images to gpu
 	for (auto it : images_)
-		register_image(it.second, it.first.c_str());
+		register_image(it.second, it.first);
 
 	// Load font
 	for (rapidjson::SizeType i = 0; i < fontSize; ++i) {

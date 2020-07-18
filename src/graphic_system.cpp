@@ -155,4 +155,194 @@ void GraphicSystem::remove_camera(Camera* camera) {
 	cameras_.erase(std::remove(cameras_.begin(), cameras_.end(), camera), cameras_.end());
 }
 
+
+//void GraphicSystem::RenderToFramebuffer() const
+//{
+//	// Render to framebuffer
+//	glBindFramebuffer(GL_FRAMEBUFFER, GLM::fbo_);
+//	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+//	glClearColor(0.f, 0.f, 0.f, 0.f);
+//	glViewport(0, 0, GLint(width_), GLint(height_));
+//
+//	// Backface culling
+//	glEnable(GL_CULL_FACE);
+//	glCullFace(GL_BACK);
+//	glFrontFace(GL_CCW);
+//}
+//
+//void GraphicSystem::RenderToScreen() const
+//{
+//	const static GLsizei sizeOfPlaneIndices
+//		= static_cast<GLsizei>(GLM::targetMesh_[GLM::JE_TARGET_SCREEN]->GetIndiceCount());
+//
+//	// Bind default framebuffer and render to screen
+//	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+//	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+//	glClearColor(backgroundColor_.x, backgroundColor_.y, backgroundColor_.z, backgroundColor_.w);
+//
+//	glDisable(GL_CULL_FACE);	//Disable face culling
+//	glDisable(GL_DEPTH_TEST);	//Disable depth test
+//
+//	// Render to plane 2d
+//	glBindVertexArray(GLM::targetMesh_[GLM::JE_TARGET_SCREEN]->vao_);
+//	Shader::Use(GLM::JE_SHADER_SCREEN);
+//	Shader::pCurrentShader_->SetVector4("v4_screenColor", screenColor_);
+//
+//	// Impose screen effect 
+//	Shader::pCurrentShader_->SetEnum("enum_effectType", screenEffect_);
+//
+//	if (screenEffect_ == JE_EFFECT_BLUR) {
+//		Shader::pCurrentShader_->SetFloat("float_blurSize", blurSize_);
+//		Shader::pCurrentShader_->SetFloat("float_blurAmount", blurAmount_);
+//	}
+//	else if (screenEffect_ == JE_EFFECT_SOBEL)
+//		Shader::pCurrentShader_->SetFloat("float_sobelAmount", sobelAmount_);
+//
+//	glActiveTexture(GL_TEXTURE0);
+//	glBindTexture(GL_TEXTURE_2D, GLM::texColorBuf_);
+//	glDrawElements(GL_TRIANGLES, sizeOfPlaneIndices, GL_UNSIGNED_INT, nullptr);
+//	glEnable(GL_DEPTH_TEST);
+//
+//	glBindVertexArray(0);
+//}
+//
+////////////////////////////////////////////////////////////////////////////
+//// Light box pipeline
+////////////////////////////////////////////////////////////////////////////
+//void GraphicSystem::LightSourcePipeline()
+//{
+//	if (isLight_) {
+//
+//		glEnable(GL_BLEND);
+//		glEnable(GL_DEPTH_TEST);
+//
+//		Shader::Use(GLM::JE_SHADER_LIGHTING);
+//
+//		for (auto light : lights_) {
+//
+//			Transform* transform = light->pTransform_;
+//
+//			Shader::pCurrentShader_->SetMatrix(
+//				"m4_translate", Translate(transform->position_));
+//
+//			Shader::pCurrentShader_->SetMatrix(
+//				"m4_rotate", Rotate(Math::DegToRad(transform->rotation_), transform->rotationAxis_));
+//
+//			Shader::pCurrentShader_->SetMatrix("m4_scale", Scale(transform->scale_));
+//
+//			Shader::pCurrentShader_->SetMatrix(
+//				"m4_rotateZ", RotateZ(atan2(light->direction_.y, light->direction_.x)));
+//
+//			Shader::pCurrentShader_->SetMatrix(
+//				"m4_rotateY", RotateY(-atan2(light->direction_.z, light->direction_.x)));
+//
+//			if (light->projection_ == PROJECTION_PERSPECTIVE) {
+//				Shader::pCurrentShader_->SetMatrix("m4_projection", perspective_);
+//
+//				viewport_ = LookAt(mainCamera_->position_, mainCamera_->target_, mainCamera_->up_);
+//			}
+//
+//			else {
+//				right_ = width_ * .5f;
+//				left_ = -right_;
+//				top_ = height_ * .5f;
+//				bottom_ = -top_;
+//
+//				orthogonal_ = Orthogonal(left_, right_, bottom_, top_, mainCamera_->near_, mainCamera_->far_);
+//
+//				Shader::pCurrentShader_->SetMatrix("m4_projection", orthogonal_);
+//
+//				SetIdentity(viewport_);
+//				viewport_ = Scale(resolutionScaler_);
+//			}
+//
+//			Shader::pCurrentShader_->SetMatrix("m4_viewport", viewport_);
+//			Shader::pCurrentShader_->SetVector4("v4_color", light->color_);
+//
+//			glBlendFunc(light->sfactor_, light->dfactor_);
+//
+//			// Update every mesh
+//			for (auto mesh : light->meshes_)
+//				Render(mesh, mesh->drawMode_);
+//
+//		} // for (auto light : lights_) {
+//	} // if (isLight_) {
+//
+//	glDisable(GL_DEPTH_TEST);
+//	glDisable(GL_BLEND);
+//}
+//
+//void GraphicSystem::ParentPipeline(Transform* pTransform) const
+//{
+//	glUniformMatrix4fv(glGetUniformLocation(Shader::pCurrentShader_->programId_, "m4_parentTranslate"),
+//		1, GL_FALSE, &Translate(pTransform->position_).m[0][0]);
+//
+//	glUniformMatrix4fv(glGetUniformLocation(Shader::pCurrentShader_->programId_, "m4_parentScale"),
+//		1, GL_FALSE, &Scale(pTransform->scale_).m[0][0]);
+//
+//	glUniformMatrix4fv(glGetUniformLocation(Shader::pCurrentShader_->programId_, "m4_parentRotate"),
+//		1, GL_FALSE, &Rotate(DegToRad(pTransform->rotation_), pTransform->rotationAxis_).m[0][0]);
+//}
+//
+
+//
+//void GraphicSystem::LightingEffectPipeline(Material* pMaterial)
+//{
+//	Shader::pCurrentShader_->SetInt("int_lightSize", int(lights_.size()));
+//
+//	// Send material info to shader
+//	Shader::pCurrentShader_->SetInt("material.m_specular", pMaterial->specular_);
+//	Shader::pCurrentShader_->SetInt("material.m_diffuse", pMaterial->diffuse_);
+//	Shader::pCurrentShader_->SetFloat("material.m_shininess", pMaterial->shininess_);
+//
+//	static int s_lightIndex;
+//	static std::string s_index, s_light,
+//		amb("m_ambient"), spec("m_specular"), diff("m_diffuse"),
+//		type("m_type"), constant("m_constant"), linear("m_linear"), dir("m_direction"), pos("m_position"),
+//		cut("m_cutOff"), outcut("m_outerCutOff"), quad("m_quadratic");
+//	s_lightIndex = 0;
+//
+//	for (auto _light : lights_) {
+//
+//		s_index = std::to_string(s_lightIndex);
+//
+//		Shader::pCurrentShader_->SetVector4(
+//			("v4_lightColor[" + s_index + "]").c_str(), _light->color_);
+//
+//		s_light = "light[" + s_index + "].";
+//
+//		Shader::pCurrentShader_->SetVector4(
+//			(s_light + spec).c_str(), _light->specular_);
+//
+//		Shader::pCurrentShader_->SetVector4(
+//			(s_light + diff).c_str(), _light->diffuse_);
+//
+//		Shader::pCurrentShader_->SetEnum(
+//			(s_light + type).c_str(), _light->type_);
+//
+//		Shader::pCurrentShader_->SetVector3(
+//			(s_light + dir).c_str(), _light->direction_);
+//
+//		Shader::pCurrentShader_->SetFloat(
+//			(s_light + constant).c_str(), _light->constant_);
+//
+//		Shader::pCurrentShader_->SetFloat(
+//			(s_light + linear).c_str(), _light->linear_);
+//
+//		Shader::pCurrentShader_->SetFloat(
+//			(s_light + quad).c_str(), _light->quadratic_);
+//
+//		Shader::pCurrentShader_->SetVector3(
+//			(s_light + pos).c_str(), _light->pTransform_->position_);
+//
+//		Shader::pCurrentShader_->SetFloat(
+//			(s_light + cut).c_str(), cosf(Math::DegToRad(_light->cutOff_)));
+//
+//		Shader::pCurrentShader_->SetFloat(
+//			(s_light + outcut).c_str(), cosf(Math::DegToRad(_light->outerCutOff_)));
+//
+//		s_lightIndex++;
+//	}
+//}
+
 jeEnd
