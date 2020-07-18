@@ -16,13 +16,7 @@ Contains the definition of asset_manager class
 
 jeBegin
 
-struct Font;
-struct Texture;
-class Mesh;
-class Audio;
-class Scene;
-class Archetype;
-class HalfEdgeMesh;
+// class HalfEdgeMesh;
 
 // generic asset manager class
 class AssetManager {
@@ -81,8 +75,8 @@ private:
 
 public:
 
-	static bool load_obj(const char* path);
-	static Mesh* get_mesh(const char* name);
+	//static bool load_obj(const char* path);
+	//static Mesh* get_mesh(const char* name);
 	static std::string parse_name(const char* name);
 	static void clear_meshes();
 

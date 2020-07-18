@@ -10,12 +10,12 @@ Contains the methods of SceneManager class
 */
 /******************************************************************************/
 
-#include <scene_manager.hpp>
-#include <timer.hpp>
-#include <scene.hpp>
-#include <input_handler.hpp>
-#include <gl_manager.hpp>
 #include <SDL.h>
+#include <scene_manager.hpp>
+#include <scene.hpp>
+#include <gl_manager.hpp>
+#include <input_handler.hpp>
+#include <timer.hpp>
 
 jeBegin
 

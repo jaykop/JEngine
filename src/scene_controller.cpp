@@ -11,8 +11,8 @@ Contains the methods of SceneManager class
 /******************************************************************************/
 
 #include <scene.hpp>
-#include <scene_manager.hpp>
 #include <debug_tools.hpp>
+#include <scene_manager.hpp>
 
 jeBegin
 
@@ -22,7 +22,6 @@ Scene* SceneManager::nextScene_ = nullptr;
 
 void SceneManager::change_scene()
 {
-
 	// If the status has changed
 	if (status_ == Status::CHANGE
 		|| status_ == Status::PAUSE

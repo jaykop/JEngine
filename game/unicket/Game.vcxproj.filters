@@ -39,6 +39,15 @@
     <ClInclude Include="camera_controller.h">
       <Filter>game_logics</Filter>
     </ClInclude>
+    <ClInclude Include="level1.h">
+      <Filter>game_scene</Filter>
+    </ClInclude>
+    <ClInclude Include="level2.h">
+      <Filter>game_scene</Filter>
+    </ClInclude>
+    <ClInclude Include="level3.h">
+      <Filter>game_scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -61,6 +70,15 @@
     </ClCompile>
     <ClCompile Include="camera_controller.cpp">
       <Filter>game_logics</Filter>
+    </ClCompile>
+    <ClCompile Include="level1.cpp">
+      <Filter>game_scene</Filter>
+    </ClCompile>
+    <ClCompile Include="level2.cpp">
+      <Filter>game_scene</Filter>
+    </ClCompile>
+    <ClCompile Include="level3.cpp">
+      <Filter>game_scene</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

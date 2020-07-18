@@ -12,9 +12,8 @@ Contains the definition of Shader class
 #pragma once
 
 #include <glew.h>
-#include <macros.hpp>
-#include <string>
 #include <vector>
+#include <macros.hpp>
 
 struct mat4;
 struct vec4;

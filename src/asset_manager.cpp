@@ -44,7 +44,7 @@ bool AssetManager::set_bulit_in_components()
 
 	// Graphic components
 	// jeRegisterComponent(Renderer);
-	jeRegisterComponent(Model);
+	// jeRegisterComponent(Model);
 	jeRegisterComponent(Sprite);
 	jeRegisterComponent(Camera);
 	jeRegisterComponent(Animation2D);
@@ -74,6 +74,8 @@ void AssetManager::load_shaders() {
 
 void AssetManager::load_assets()
 {
+	// AssetManager::set_asset_directory("../resource/register/asset.json");
+
 	// Read scene info
 	JsonParser::read_file(stateDirectory_.c_str());
 	const rapidjson::Value& scenes = JsonParser::get_document()["Scene"];

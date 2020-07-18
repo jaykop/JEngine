@@ -68,7 +68,6 @@ private:
 	static GLint buffers_, samples_, attributes_;
 	static unsigned quadVao_, quadVbo_, quadEbo_,
 		drVao_, drVbo_,
-		gridVao_, gridVbo_,
 		quadIndicesSize_,
 		gridVerticeSize_;
 	static Shaders shader_;

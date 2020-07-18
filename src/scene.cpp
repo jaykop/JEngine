@@ -13,6 +13,7 @@ Contains the methods of scene class
 #include <scene.hpp>
 #include <object.hpp>
 #include <object_manager.hpp>
+
 #include <sound_system.hpp>
 #include <physics_system.hpp>
 #include <graphic_system.hpp>
@@ -24,8 +25,6 @@ void Scene::load()
 {
 	// bind the objects to the manager
 	ObjectManager::objects_ = &objects_;
-
-	// Here load from json file...
 }
 
 void Scene::initialize()

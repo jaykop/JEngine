@@ -17,7 +17,6 @@ Contains the definition of InputHandler class
 #include <vec3.hpp>
 
 union SDL_Event;
-struct SDL_Window;
 
 jeBegin
 

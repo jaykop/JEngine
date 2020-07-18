@@ -13,7 +13,6 @@ Contains the methods of ObjectManager class
 #include <object.hpp>
 #include <debug_tools.hpp>
 #include <object_manager.hpp>
-
 #include <transform.hpp>
 
 jeBegin

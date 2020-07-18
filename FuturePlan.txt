@@ -2,10 +2,10 @@
 *orthogonal projection
 *emitter using thread
 *changed string to string_view
+*separate scene asset loader
 
 ===========================================
 *light
-*separate scene asset loader
 *mouse position/click + mesh vector
 *debug coord
 *vector ostream
@@ -13,6 +13,8 @@
 *physics + thread
 *camera controller
 *emitter explosion refresh
+
+jeDebugPrint / assert / friend / constructor+operator
 
 *Add loading screen
 *Add orbiting camera to camera controller

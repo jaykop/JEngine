@@ -11,12 +11,10 @@ Contains the definition of Component class
 /******************************************************************************/
 
 #pragma once
-#include <macros.hpp>
 #include <json_parser.hpp>
 
 jeBegin
 
-class Object;
 class Component {
 
 	friend class Object;

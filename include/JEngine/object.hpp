@@ -31,7 +31,6 @@ public:
 	void register_components();
 
 	const char* get_name();
-	// void set_name(const char* name);
 
 	Object* get_parent() { return parent_; }
 	bool has_parent() { return parent_ != nullptr; }

@@ -15,9 +15,6 @@ Contains the definition of ObjectManager class
 
 jeBegin
 
-class Object;
-
-
 class ObjectManager {
 
 	// Prevent to clone this class

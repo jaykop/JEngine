@@ -1,6 +1,6 @@
 #include <shader.hpp>
 #include <fstream>
-#include <debug_renderer.hpp>
+#include <string>
 
 #include <mat4.hpp>
 #include <vec4.hpp>

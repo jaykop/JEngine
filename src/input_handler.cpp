@@ -13,7 +13,6 @@ Contains the methods of InputHandler class
 #include <SDL_events.h>
 #include <debug_tools.hpp>
 #include <input_handler.hpp>
-#include <iostream>
 
 #include <camera.hpp>
 #include <gl_manager.hpp>
@@ -23,11 +22,11 @@ Contains the methods of InputHandler class
 jeBegin
 
 float InputHandler::wheelSensitivity_ = 0.f;
-KeyMap InputHandler::keyMap_, InputHandler::triggerMap_;
-InputHandler::MouseWheel InputHandler::mouseWheel_ = MouseWheel::NONE;
 bool InputHandler::mouseDown_ = false, InputHandler::keyDown_ = false;
-LockedKeys InputHandler::triggerLock_;
 vec3 InputHandler::position_ = vec3::one;
+InputHandler::MouseWheel InputHandler::mouseWheel_ = MouseWheel::NONE;
+LockedKeys InputHandler::triggerLock_;
+KeyMap InputHandler::keyMap_, InputHandler::triggerMap_;
 
 bool InputHandler::any_input_down()
 {

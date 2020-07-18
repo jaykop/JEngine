@@ -11,28 +11,13 @@ Contains the methods of GLManager class
 /******************************************************************************/
 
 #include <SDL_Video.h>
+#include <SDL_events.h>
 #include <gl_manager.hpp>
 #include <debug_tools.hpp>
 #include <shader.hpp>
-#include <SDL_events.h>
-#include <mesh.hpp>
+#include <vertex.hpp>
 
 jeBegin
-
-const std::vector<float> gridVertices =
-{
-	-.5f, .5f, 0.0f , 0.0f, 0.0f ,
-	-.5f, -.5f, 0.0f , 0.0f, 1.0f,
-
-	-.5f, -.5f, 0.0f , 0.0f, 1.0f,
-	.5f, -.5f, 0.0f , 1.0f, 1.0f,
-
-	.5f, -.5f, 0.0f , 1.0f, 1.0f,
-	.5f,  .5f, 0.0f , 1.0f, 0.0f,
-
-	.5f,  .5f, 0.0f , 1.0f, 0.0f,
-	- .5f, .5f, 0.0f , 0.0f, 0.0f
-};
 
 const std::vector<float> quadVertices =
 {
@@ -43,7 +28,6 @@ const std::vector<float> quadVertices =
 };
 
 const std::vector<unsigned> quadIndices = { 2, 0, 1, 2, 3, 0 };
-// const std::vector<float> gridVertices = { 1.f,  1.f,  0.f, -1.f, 1.f, 0.f, 1.f, -1.f, 0.f, -1.f, -1.f, 0.f };
 const vec3 stdResolution(1.f / 800.f, 1.f / 600.f, 1.f);
 
 vec3 GLManager::resScaler_;
@@ -52,7 +36,6 @@ float GLManager::width_ = 0.f, GLManager::height_ = 0.f;
 GLint GLManager::buffers_, GLManager::samples_, GLManager::attributes_;
 unsigned GLManager::quadVao_ = 0, GLManager::quadVbo_ = 0, GLManager::quadEbo_ = 0,
 GLManager::drVao_ = 0, GLManager::drVbo_ = 0,
-GLManager::gridVao_ = 0, GLManager::gridVbo_ = 0,
 GLManager::quadIndicesSize_ = 6, GLManager::gridVerticeSize_ = 48;
 
 void GLManager::initialize(float w, float h)
@@ -218,30 +201,6 @@ void GLManager::initialize_buffers()
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
-
-	/**************************** GRID BUFFER ******************************/
-
-	glGenVertexArrays(1, &gridVao_);
-	glBindVertexArray(gridVao_);
-
-	glGenBuffers(1, &gridVbo_);
-	glBindBuffer(GL_ARRAY_BUFFER, gridVbo_);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * gridVertices.size(), &gridVertices[0], GL_STATIC_DRAW);
-
-	//glBufferData(GL_ARRAY_BUFFER, gridVertices.size() * sizeof(float), &gridVertices[0], GL_STATIC_DRAW);
-
-	//// vertex position
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(0);
-
-	// texture coordinate position
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
-	glEnableVertexAttribArray(1);
-
-	//glBindBuffer(GL_ARRAY_BUFFER, vbo_);
-
-	//glBindBuffer(GL_ARRAY_BUFFER, 0);
-	//glBindVertexArray(0);
 }
 
 void GLManager::delete_buffers()
@@ -252,15 +211,6 @@ void GLManager::delete_buffers()
 
 	glDeleteVertexArrays(1, &drVao_);
 	glDeleteBuffers(1, &drVbo_);
-	// glDeleteBuffers(1, &ebo_);
-
-	glDeleteVertexArrays(1, &gridVao_);
-	glDeleteBuffers(1, &gridVbo_);
-	// glDeleteBuffers(1, &ebo_);
-
-	//glDeleteVertexArrays(1, &vao_);
-	//glDeleteBuffers(1, &vbo_);
-	//glDeleteBuffers(1, &ebo_);
 }
 
 float GLManager::get_width() { return width_; }

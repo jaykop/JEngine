@@ -23,7 +23,6 @@ struct SDL_Window;
 jeBegin
 
 class Scene;
-class ObjectContainer;
 using Scenes = std::vector<Scene*>;
 
 class SceneManager {
