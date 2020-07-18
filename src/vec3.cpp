@@ -186,3 +186,17 @@ vec3 vec3::cross(const vec3& lhs, const vec3& rhs)
 {
 	return lhs.cross(rhs);
 }
+
+float vec3::sign(const vec3& p1, const vec3& p2, const vec3& p3)
+{ 
+	return (p1.x - p3.x) * (p2.y - p3.y) - (p2.x - p3.x) * (p1.y - p3.y); 
+}
+
+bool vec3::inside(const vec3& v1, const vec3& v2, const vec3& v3) const
+{ 
+	bool b1, b2, b3;  
+	b1 = sign(*this, v1, v2) < 0.0f;
+	b2 = sign(*this, v2, v3) < 0.0f;
+	b3 = sign(*this, v3, v1) < 0.0f;
+	return ((b1 == b2) && (b2 == b3)); 
+}

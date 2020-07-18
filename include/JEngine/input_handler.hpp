@@ -50,6 +50,8 @@ public:
 	// mouse position
 	static vec3 get_position();
 
+	static bool ray_intersects_triangle(const vec3& v0, const vec3& v1, const vec3& v2);
+
 private:
 
 	static KEY key_translator(const SDL_Event& event);

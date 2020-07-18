@@ -34,6 +34,7 @@ public:
 	virtual void draw(float dt) = 0;
 
 	static void draw_lighting_effect(Light* light);
+	bool picked() const;
 
 protected:
 

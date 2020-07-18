@@ -31,6 +31,8 @@ public:
 
 	void draw(float dt) override; 
 	
+	// bool inside(const vec3& point);
+
 	void add_line(const vec3& start, const vec3& end, const vec3& color);
 	void add_quad(const vec3& pos, const vec3& size, const vec3& color);
 	void add_mesh(Mesh* m, /*const mat4& model_to_world,*/ const vec3& color);

@@ -13,6 +13,7 @@
 #include "debug_renderer.hpp"
 
 #include "colors.hpp"
+#include <iostream>
 
 jeBegin
 
@@ -31,7 +32,17 @@ void TestScene::initialize()
 }
 
 void TestScene::update(float dt)
+
 {
+	DebugRenderer* dr = renderer_2d->get_component<DebugRenderer>();
+	if (InputHandler::key_triggered(MOUSE_LEFT))
+	{
+		if (dr->picked())
+			std::cout << "in\n";
+		else
+			std::cout << "out\n";
+	}
+
 	// base update
 	Scene::update(dt);
 }
@@ -61,7 +72,7 @@ void TestScene::init_basic()
 void TestScene::init_sprite()
 {
 	// testing 2d renderer 
-	Object* renderer_2d = ObjectManager::create_object("renderer_2d");
+	renderer_2d = ObjectManager::create_object("renderer_2d");
 	renderer_2d->add_component<Sprite>();
 	renderer_2d->add_component<DebugRenderer>();
 	renderer_2d->add_component<TopDownController>();
@@ -75,8 +86,21 @@ void TestScene::init_sprite()
 	animation->set_speed(10.f);
 	// animation->fix_frame(0);
 	trans->scale.set(25, 40, 0.f);
-	trans->position.z = -10.f;
+	trans->position.z = 0.f;
 	register_object(renderer_2d);
+
+	// gen rand obj
+	rand_obj = ObjectManager::create_object("rand_obj");
+	rand_obj->add_component<Sprite>();
+	trans = rand_obj->get_component<Transform>();
+	renderer = rand_obj->get_component<Sprite>();
+	renderer->set_texture(AssetManager::get_texture("rect"));
+	renderer->color.set_one();
+	trans->scale.set(0.5, 0.5, 0.f);
+	trans->position = Random::get_rand_vec3(-50, -50, 0, 50, 50, 0);
+	trans->position.z = 0.f;
+	register_object(rand_obj);
+
 }
 
 void TestScene::init_text()

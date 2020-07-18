@@ -233,6 +233,11 @@ bool InputHandler::get_mouse_wheel_status(KEY key)
 
 vec3 InputHandler::get_position()
 {
+	return position_;
+}
+
+bool InputHandler::ray_intersects_triangle(const vec3& v0, const vec3& v1, const vec3& v2) {
+
 	float x = (2.0f * position_.x) / GLManager::get_width() - 1.0f;
 	float y = 1.0f - (2.0f * position_.y) / GLManager::get_height();
 	float z = 1.0f;
@@ -252,7 +257,44 @@ vec3 InputHandler::get_position()
 	// don't forget to normalise the vector at some point
 	ray_wor.normalize();
 
-	return ray_wor;
+	vec3 d = ray_wor;
+	vec3 p = camera->position;
+
+	vec3 e1, e2, h, s, q;
+	float a, f, u, v;
+
+	e1.set(v1.x - v0.x, v1.y - v0.y, v1.z - v0.z);
+	e2.set(v2.x - v0.x, v2.y - v0.y, v2.z - v0.z);
+
+	h = vec3::cross(d, e2);
+	a = e1.dot(h);
+
+	if (a > -0.00001 && a < 0.00001)
+		return false;
+
+	f = 1 / a;
+	s.set(p.x - v0.x, p.y - v0.y, p.z - v0.z);
+	u = f * (s.dot(h));
+
+	if (u < 0.0 || u > 1.0)
+		return false;
+
+	q = vec3::cross(s, e1);
+	v = f * d.dot(q);
+
+	if (v < 0.0 || u + v > 1.0)
+		return false;
+
+	// at this stage we can compute t to find out where
+	// the intersection point is on the line
+	float t = f * e2.dot(q);
+
+	if (t > 0.00001) // ray intersection
+		return true;
+
+	else // this means that there is a line intersection
+		 // but not a ray intersection
+		return false;
 }
 
 jeEnd

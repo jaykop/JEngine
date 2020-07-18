@@ -49,6 +49,8 @@ struct vec3
 	float dot(const vec3& rhs) const;
 	vec3 cross(const vec3& rhs) const;
 
+	bool inside(const vec3& v1, const vec3& v2, const vec3& v3) const;
+
 	// operators
 	vec3 operator+(const vec3& rhs) const;
 	vec3 operator*(const vec3 & rhs) const;
@@ -69,8 +71,8 @@ struct vec3
 	// static methods
 	static float distance(const vec3& a, const vec3& b);
 	static float distance_sq(const vec3& a, const vec3& b);
-
-	static vec3 cross(const vec3& lhs, const vec3& rhs);
+	static vec3 cross(const vec3& lhs, const vec3& rhs) ;
+	static float sign(const vec3& p1, const vec3& p2, const vec3& p3);
 
 }; // struct vec3
 

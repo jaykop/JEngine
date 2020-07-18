@@ -382,3 +382,24 @@ jeEnd
 //	vertex_list_.clear();
 //	meshes_.clear();
 //}
+
+
+//bool DebugRenderer::inside(const vec3& point)
+//{
+//	vec3 center = transform_->position;
+//	vec3 half = transform_->scale;
+//
+//	float half_x = half.x * 0.5f;
+//	float half_y = half.y * 0.5f;
+//
+//	// create 8 vertices
+//	vec3 v1 = center + vec3(-half_x, half_y, center.z);
+//	vec3 v2 = center + vec3(-half_x, -half_y, center.z);
+//	vec3 v3 = center + vec3(half_x, -half_y, center.z);
+//	vec3 v4 = center + vec3(half_x, half_y, center.z);
+//
+//	bool in1 = point.inside(v1, v2, v3);
+//	bool in2 = point.inside(v3, v4, v1);
+//
+//	return in1 || in2;
+//}

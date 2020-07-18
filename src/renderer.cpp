@@ -9,6 +9,7 @@
 #include <colors.hpp>
 #include <math_util.hpp>
 #include <transform.hpp>
+#include <input_handler.hpp>
 
 jeBegin
 
@@ -61,6 +62,26 @@ void Renderer::draw_lighting_effect(Light* /*pLight*/)
 	//pShader->set_float(pLight->innerAngleStr_, pLight->innerAngle_ * deg_to_rad);
 	//pShader->set_float(pLight->outerAngleStr_, pLight->outerAngle_ * deg_to_rad);
 
+}
+
+bool Renderer::picked() const
+{
+	vec3 center = transform_->position;
+	vec3 half = transform_->scale;
+
+	float half_x = half.x * 0.5f;
+	float half_y = half.y * 0.5f;
+
+	// create 8 vertices
+	vec3 v1 = center + vec3(-half_x, half_y, center.z);
+	vec3 v2 = center + vec3(-half_x, -half_y, center.z);
+	vec3 v3 = center + vec3(half_x, -half_y, center.z);
+	vec3 v4 = center + vec3(half_x, half_y, center.z);
+
+	bool in1 = InputHandler::ray_intersects_triangle(v1, v2, v3);
+	bool in2 = InputHandler::ray_intersects_triangle(v3, v4, v1);
+
+	return in1 || in2;
 }
 
 jeEnd

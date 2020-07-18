@@ -31,6 +31,8 @@ protected:
 
 private:
 
+	Object* renderer_2d, *rand_obj;
+
 };
 
 jeEnd
