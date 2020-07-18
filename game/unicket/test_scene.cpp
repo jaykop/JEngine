@@ -132,7 +132,7 @@ void TestScene::init_emitters()
 	emi1->life = 1.f;
 	emi1->colorSpeed = 3.f;
 	emi1->velocity.set(15.f, 15.f, 0.f);
-	emi1->direction.set(1.f, 0.f, 0.f);
+	emi1->angle.set(60.f, 90.f);
 	emi1->set_size(1000);
 	register_object(emitter1);
 
@@ -148,7 +148,8 @@ void TestScene::init_emitters()
 	emi2->type = Emitter::ParticleType::EXPLOSION;
 	emi2->life = .5f;
 	emi2->colorSpeed = 1.f;
-	emi2->velocity.set(30.f, 30.f, 0.f);
+	emi2->velocity.set(15.f, 15.f, 0.f);
+	emi2->angle.set(0.f, 360.f);
 	emi2->set_size(1000);
 	register_object(emitter2);
 
@@ -165,7 +166,7 @@ void TestScene::init_emitters()
 	emi3->rotationSpeed = 100.f;
 	emi3->range.set(20.f, 1.f, 0.f);
 	emi3->velocity.set(0.f, 10.f, 0.f);
-	emi3->direction.set(0.f, -1.f, 0.f);
+	emi3->angle.set(270.f, 270.f);
 	emi3->set_size(1000);
 	register_object(emitter3);
 }

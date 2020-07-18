@@ -1,0 +1,29 @@
+*emitter direction
+*mouse position/click + mesh vector
+*debug coord
+*light
+
+*FMOD Lib
+*Look for part to implement thread
+*physics
+*camera controller
+*separate scene asset loader
+
+*Add loading screen
+*Add orbiting camera to camera controller
+
+*Clone function - copy and move constructor
+*Polish event handler with std function
+*Broadcasting design
+
+*Deferred rendering
+*Rippling effect
+
+*Go over ai example and techniques
+*Import assimp lib
+
+*Math library unit test
+*premake build/cmake/emscripten/python
+*SIMD Tech
+*Culling
+*Add doxygen comments

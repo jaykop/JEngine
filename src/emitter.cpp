@@ -17,7 +17,7 @@ jeBegin
 jeDefineComponentBuilder(Emitter);
 
 Emitter::Emitter(Object* owner)
-	: Renderer(owner), direction(vec3::zero), velocity(vec3::zero), range(vec3::zero),
+	: Renderer(owner), angle(vec2::zero), velocity(vec3::zero), range(vec3::zero),
 	life(1.f), rotationSpeed(0.f), colorSpeed(1.f), pointSize(0.f), active(true), 
 	type(ParticleType::NORMAL), startColor_(vec3::zero), endColor_(vec3::zero), colorDiff_(vec3::zero),
 	deadCount_(0), size_(0)
@@ -172,21 +172,6 @@ void Emitter::update_particle(Particle* particle, float dt)
 		if (colorDiff_ != vec3::zero)
 			particle->color += colorDiff_ * dt * colorSpeed;
 	}
-
-	/*if (particle.life < 0.f)
-		refresh_particle(&particle);
-
-	else
-	{
-		particle.life -= dt;
-		particle.position += particle.direction * dt * velocity;
-
-		if (rotationSpeed)
-			particle.rotation += particle.rotationSpeed * dt;
-
-		if (colorDiff_ != vec3::zero)
-			particle.color += colorDiff_ * dt * colorSpeed;
-	}*/
 }
 
 Particle* Emitter::generate_particle()
@@ -195,16 +180,25 @@ Particle* Emitter::generate_particle()
 
 	newParticle->dead = false;
 	newParticle->life = Random::get_rand_float(0.f, life);
-	newParticle->velocity = Random::get_rand_vec3(vec3::zero, velocity);
+	newParticle->velocity = Random::get_rand_vec3(-velocity, velocity);
 	newParticle->position = transform_->position;
 	newParticle->rotation = Random::get_rand_float(0.f, 360.f);
-	newParticle->direction = direction == vec3::zero ? Random::get_rand_vec3(-vec3::one, vec3::one) : direction;
-	newParticle->direction.normalize();
 	newParticle->color.set(startColor_);
 	newParticle->hidden = type != ParticleType::EXPLOSION;
 
 	if (rotationSpeed)
 		newParticle->rotationSpeed = Random::get_rand_float(0.f, rotationSpeed);
+
+	if (angle == vec2::zero)
+		newParticle->direction = Random::get_rand_vec3(-vec3::one, vec3::one);
+
+	else
+	{
+		float rad = Math::deg_to_rad(Random::get_rand_float(angle.x, angle.y));
+		newParticle->direction.set(cosf(rad), sinf(rad), 0.f);
+	}
+
+	newParticle->direction.normalize();
 
 	return newParticle;
 }
@@ -221,19 +215,7 @@ void Emitter::refresh_particle(Particle* particle)
 
 		particle->position = transform_->position;
 		particle->hidden = false;
-		// particle->velocity = Random::get_rand_vec3(vec3::zero, velocity);
-
-		particle->direction = direction == vec3::zero ? Random::get_rand_vec3(-vec3::one, vec3::one) : direction;
-		//float rad_min = Math::deg_to_rad(270.f);
-		//float rad_max = Math::deg_to_rad(0.f);
-		//float cos_max = cosf(rad_max);
-		//float cos_min = cosf(rad_min);
-		//float sin_max = sinf(rad_max);
-		//float sin_min = sinf(rad_min);
-		//if (cos_max < cos_min) std::swap(cos_max, cos_min);
-		//if (sin_max < sin_min) std::swap(sin_max, sin_min);
-		//vec3 min(cos_min, sin_min, 0.f), max(cos_max, sin_max, 0.f);
-		//particle->direction = Random::get_rand_vec3(min, max);
+		particle->velocity = Random::get_rand_vec3(-velocity, velocity);
 	}
 
 	else if (type == ParticleType::EXPLOSION) {
@@ -255,10 +237,8 @@ void Emitter::refresh_particle(Particle* particle)
 		{
 			particle->hidden = false;
 			particle->dead = false;
-			particle->velocity = Random::get_rand_vec3(vec3::zero, velocity);
+			particle->velocity = Random::get_rand_vec3(-velocity, velocity);
 			particle->position = transform_->position;
-			particle->direction = direction == vec3::zero ? Random::get_rand_vec3(-vec3::one, vec3::one) : direction;
-			particle->direction.normalize();
 		}
 
 	}
@@ -269,16 +249,26 @@ void Emitter::refresh_particle(Particle* particle)
 
 		vec3 position;
 		position = transform_->position;
-		particle->direction = direction == vec3::zero ? Random::get_rand_vec3(-vec3::one, vec3::one) : direction;
+		
 		particle->position.x = Random::get_rand_float(position.x - range.x, position.x + range.x);
 		particle->position.y = Random::get_rand_float(position.y - range.y, position.y + range.y);
 		particle->position.z = Random::get_rand_float(position.z - range.z, position.z + range.z);
-		// particle->velocity = Random::get_rand_vec3(vec3::zero, velocity);
 
+		particle->velocity = Random::get_rand_vec3(-velocity, velocity);
 		particle->life = Random::get_rand_float(0.f, life);
 		particle->color.set(startColor_);
 	}
 
+	if (angle == vec2::zero)
+		particle->direction = Random::get_rand_vec3(-vec3::one, vec3::one);
+
+	else
+	{
+		float rad = Math::deg_to_rad(Random::get_rand_float(angle.x, angle.y));
+		particle->direction.set(cosf(rad), sinf(rad), 0.f);
+	}
+
+	particle->direction.normalize();
 	particle->position.z = transform_->position.z;
 }
 

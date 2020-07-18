@@ -4,6 +4,7 @@
 #include <renderer.hpp>
 
 #include <vec3.hpp>
+#include <vec2.hpp>
 
 jeBegin
 
@@ -50,7 +51,8 @@ public:
 	void set_texture(unsigned texture);
 	unsigned get_texture() const;
 
-	vec3 direction, velocity, range;
+	vec2 angle;
+	vec3 velocity, range;
 	float life, rotationSpeed, colorSpeed, pointSize;
 	bool active;
 	ParticleType type;

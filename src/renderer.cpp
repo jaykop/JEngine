@@ -66,6 +66,7 @@ void Renderer::draw_lighting_effect(Light* /*pLight*/)
 
 bool Renderer::picked() const
 {
+	// todo: change function modifying mesh
 	vec3 center = transform_->position;
 	vec3 half = transform_->scale;
 
