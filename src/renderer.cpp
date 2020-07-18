@@ -20,12 +20,11 @@ Renderer::RenderType Renderer::renderType_ = Renderer::RenderType::NONE;
 
 Renderer::Renderer(Object* owner)
 	: Component(owner),
-	status(0x000), drawMode_(GL_TRIANGLES), prjType(ProjectType::ORTHOGONAL),
+	status(0x000), drawMode_(GL_TRIANGLES), prjType(ProjectType::PERSPECTIVE),
 	sfactor_(GL_SRC_ALPHA), dfactor_(GL_ONE_MINUS_SRC_ALPHA)
 {
 	// connect transform component
 	transform_ = owner->get_component<Transform>();
-
 }
 
 void Renderer::draw_lighting_effect(Light* /*pLight*/)

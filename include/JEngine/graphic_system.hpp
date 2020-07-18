@@ -48,7 +48,7 @@ class GraphicSystem {
 
 	private:
 		friend class GraphicSystem;
-		unsigned texture_;
+		unsigned texture_ = 0;
 	};
 
 public:

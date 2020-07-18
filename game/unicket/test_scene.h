@@ -31,8 +31,8 @@ protected:
 
 private:
 
-	Object* renderer_2d, *rand_obj;
-	Object* emitter1;
+	Object* renderer_2d = nullptr, *rand_obj = nullptr;
+	Object* emitter1 = nullptr;
 
 };
 

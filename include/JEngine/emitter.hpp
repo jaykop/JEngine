@@ -51,9 +51,12 @@ public:
 	void set_texture(unsigned texture);
 	unsigned get_texture() const;
 
+	void set_pointSize(float size);
+	float get_pointSize() const;
+
 	vec2 angle;
 	vec3 velocity, range;
-	float life, rotationSpeed, colorSpeed, pointSize;
+	float life, rotationSpeed, colorSpeed;
 	bool active;
 	ParticleType type;
 
@@ -72,7 +75,8 @@ private:
 
 	Particles particles_;
 	vec3 startColor_, endColor_, colorDiff_;
-	unsigned deadCount_, size_;
+	unsigned deadCount_, size_, drawMode_;
+	float pointSize_;
 	unsigned texture_;
 };
 

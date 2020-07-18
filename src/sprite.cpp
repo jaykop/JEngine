@@ -14,7 +14,7 @@ jeBegin
 jeDefineComponentBuilder(Sprite);
 
 Sprite::Sprite(Object* owner)
-	: Renderer(owner), color(vec4::one), animation_ (nullptr)
+	: Renderer(owner), color(vec4::one), animation_ (nullptr), texture_(0)
 {
 	if (!owner->has_component<Animation2D>())
 		owner->add_component<Animation2D>();

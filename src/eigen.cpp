@@ -72,10 +72,10 @@ void eigen::symmetric_schur(mat3& a, int p, int q, float& c, float& s)
 		float r = (a.m[q][q] - a.m[p][p]) / (2.0f * a.m[p][q]);
 		float t;
 		if (r >= 0.0f)
-			t = 1.0f / (r + sqrt(1.0f + r * r));
+			t = 1.0f / (r + sqrtf(1.0f + r * r));
 		else
-			t = -1.0f / (-r + sqrt(1.0f + r * r));
-		c = 1.0f / sqrt(1.0f + t * t);
+			t = -1.0f / (-r + sqrtf(1.0f + r * r));
+		c = 1.0f / sqrtf(1.0f + t * t);
 		s = t * c;
 	}
 	else

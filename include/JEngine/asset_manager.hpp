@@ -104,7 +104,6 @@ public:
 	static void clear_meshes();
 
 	static MeshMap meshMap_;
-	static std::string key;
 	static vec3 maxPoint, minPoint;
 
 private:

@@ -25,7 +25,7 @@ void SceneController::init()
 	//InputHandler::ray_intersects_triangle();
 
 	GraphicSystem::grid.color = Color::white;
-	GraphicSystem::grid.prjType = Renderer::ProjectType::ORTHOGONAL;
+	GraphicSystem::grid.prjType = Renderer::ProjectType::PERSPECTIVE;
 }
 
 void SceneController::update(float /*dt*/)

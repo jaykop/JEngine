@@ -61,7 +61,7 @@ void Model::draw_debug_info()
 
 void Model::draw(float /*dt*/)
 {
-	Camera* camera = GraphicSystem::get_camera();
+	// Camera* camera = GraphicSystem::get_camera();
 
 	//Shader* shader = GLManager::shader_[GLManager::NORMAL];
 	//shader->use();

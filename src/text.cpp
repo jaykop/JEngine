@@ -117,7 +117,7 @@ void Text::draw(float /*dt*/)
 
 		// Iterate all character
 		std::wstring::const_iterator letter;
-		for (auto letter = text_.begin(); letter != text_.end(); ++letter)
+		for (letter = text_.begin(); letter != text_.end(); ++letter)
 		{
 			const wchar_t newline = *letter;
 			if (newline == L'\n') {

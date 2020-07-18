@@ -123,7 +123,7 @@ void TestScene::init_text()
 	//text_component->set_font();
 	text_component->set_text(L"JEngine에 오신 걸 환영합니다\n");
 	trans->position.set(20.f, 0.f, 0.f);
-	trans->scale.set(.5f, .5f, 0.f);
+	trans->scale.set(.1f, .1f, 0.f);
 	register_object(text);
 }
 
@@ -178,6 +178,7 @@ void TestScene::init_emitters()
 	emi3->velocity.set(0.f, 10.f, 0.f);
 	emi3->angle.set(270.f, 270.f);
 	emi3->set_size(1000);
+	emi3->set_pointSize(1.f);
 	register_object(emitter3);
 }
 

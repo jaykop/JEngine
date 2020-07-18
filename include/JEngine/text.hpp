@@ -11,10 +11,10 @@
 jeBegin
 
 struct Character {
-	unsigned texture;	// ID handle of the glyph texture
-	unsigned advance;	// Horizontal offset to advance to next glyph
-	vec2 size;		// Size of glyph
-	vec2 bearing;	// Offset from baseline to left/top of glyph
+	unsigned texture = 0; // ID handle of the glyph texture
+	unsigned advance = 0; // Horizontal offset to advance to next glyph
+	vec2 size = vec2::zero;	// Size of glyph
+	vec2 bearing = vec2::zero; // Offset from baseline to left/top of glyph
 };
 
 struct Font {
@@ -22,8 +22,8 @@ struct Font {
 	using FontData = std::unordered_map<unsigned long, Character>;
 
 	FontData data;
-	FT_Face	face;
-	FT_Library lib;
+	FT_Face	face = 0;
+	FT_Library lib = 0;
 	unsigned size = 0;
 	float newline = 0.f;
 };

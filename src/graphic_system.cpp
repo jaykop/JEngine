@@ -94,7 +94,7 @@ void GraphicSystem::render_grid()
 	shader->use();
 
 	shader->set_matrix("m4_translate", mat4::translate(vec3::zero));
-	shader->set_matrix("m4_scale", mat4::scale(vec3::one * grid.size));
+	shader->set_matrix("m4_scale", mat4::scale(vec3::one * static_cast<float>(grid.size)));
 	shader->set_matrix("m4_rotate", mat4::identity);
 	shader->set_vec3("v3_color", grid.color);
 

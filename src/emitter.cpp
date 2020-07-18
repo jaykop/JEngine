@@ -18,9 +18,9 @@ jeDefineComponentBuilder(Emitter);
 
 Emitter::Emitter(Object* owner)
 	: Renderer(owner), angle(vec2::zero), velocity(vec3::zero), range(vec3::zero),
-	life(1.f), rotationSpeed(0.f), colorSpeed(1.f), pointSize(0.f), active(true), 
+	life(1.f), rotationSpeed(0.f), colorSpeed(1.f), pointSize_(0.f), active(true), 
 	type(ParticleType::NORMAL), startColor_(vec3::zero), endColor_(vec3::zero), colorDiff_(vec3::zero),
-	deadCount_(0), size_(0)
+	deadCount_(0), size_(0), drawMode_(GL_TRIANGLES), texture_(0)
 {
 	sfactor_ = GL_SRC_ALPHA;
 	dfactor_ = GL_ONE;
@@ -103,7 +103,7 @@ void Emitter::draw(float dt)
 		glEnable(GL_BLEND);
 		glEnable(GL_DEPTH_TEST);
 		glBlendFunc(sfactor_, dfactor_);
-		// glPointSize(pointSize);
+		glPointSize(pointSize_);
 
 		//std::vector< std::thread> threads;
 		//unsigned size = particles_.size();
@@ -135,7 +135,7 @@ void Emitter::draw(float dt)
 			shader->set_vec4("v4_color", vec4(particle->color, particle->life));
 			shader->set_bool("boolean_hide", particle->hidden);
 
-			glDrawElements(GL_TRIANGLES, GLManager::quadIndicesSize_, GL_UNSIGNED_INT, nullptr);
+			glDrawElements(drawMode_, GLManager::quadIndicesSize_, GL_UNSIGNED_INT, nullptr);
 
 			/*}*/
 		}
@@ -287,5 +287,20 @@ void Emitter::set_colors(const vec3& start, const vec3& end)
 void Emitter::set_texture(unsigned t) { texture_ = t; }
 
 unsigned Emitter::get_texture() const { return texture_; }
+
+void Emitter::set_pointSize(float size)
+{
+	if (size)
+		drawMode_ = GL_POINTS;
+	else
+		drawMode_ = GL_TRIANGLES;
+
+	pointSize_ = size;
+}
+
+float Emitter::get_pointSize() const
+{
+	return pointSize_;
+}
 
 jeEnd

@@ -1,10 +1,12 @@
 *emitter direction
+*orthogonal projection
 
 ===========================================
 *emitter explosion refresh
 *mouse position/click + mesh vector
 *debug coord
 *light
+*vector ostream
 
 *FMOD Lib
 *Look for part to implement thread
