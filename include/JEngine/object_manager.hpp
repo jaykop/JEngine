@@ -11,14 +11,12 @@ Contains the definition of ObjectManager class
 /******************************************************************************/
 
 #pragma once
-#include <macros.hpp>
-#include <unordered_map>
-#include <string>
+#include <assets.hpp>
 
 jeBegin
 
 class Object;
-using ObjectMap = std::unordered_map<const char*, Object*>;
+
 
 class ObjectManager {
 

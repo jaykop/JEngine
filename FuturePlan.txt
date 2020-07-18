@@ -1,6 +1,7 @@
 *emitter direction
 *orthogonal projection
 *emitter using thread
+*changed string to string_view
 
 ===========================================
 *light

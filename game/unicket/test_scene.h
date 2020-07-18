@@ -1,11 +1,7 @@
 #pragma once
 #include "scene.hpp"
 
-
 jeBegin
-
-class Object;
-using ObjectMap = std::unordered_map<const char*, Object*>;
 
 // Generic scene class
 class TestScene : public Scene

@@ -65,12 +65,14 @@
   <ItemGroup>
     <ClInclude Include="..\..\include\JEngine\animation_2d.hpp" />
     <ClInclude Include="..\..\include\JEngine\application.hpp" />
+    <ClInclude Include="..\..\include\JEngine\assets.hpp" />
     <ClInclude Include="..\..\include\JEngine\asset_manager.hpp" />
     <ClInclude Include="..\..\include\JEngine\behavior.hpp" />
     <ClInclude Include="..\..\include\JEngine\behavior_system.hpp" />
     <ClInclude Include="..\..\include\JEngine\camera.hpp" />
     <ClInclude Include="..\..\include\JEngine\colors.hpp" />
     <ClInclude Include="..\..\include\JEngine\component.hpp" />
+    <ClInclude Include="..\..\include\JEngine\components.hpp" />
     <ClInclude Include="..\..\include\JEngine\component_builder.hpp" />
     <ClInclude Include="..\..\include\JEngine\component_manager.hpp" />
     <ClInclude Include="..\..\include\JEngine\debug_renderer.hpp" />
@@ -106,7 +108,6 @@
     <ClInclude Include="..\..\include\JEngine\sound_system.hpp" />
     <ClInclude Include="..\..\include\JEngine\sprite.hpp" />
     <ClInclude Include="..\..\include\JEngine\text.hpp" />
-    <ClInclude Include="..\..\include\JEngine\texture.hpp" />
     <ClInclude Include="..\..\include\JEngine\timer.hpp" />
     <ClInclude Include="..\..\include\JEngine\transform.hpp" />
     <ClInclude Include="..\..\include\JEngine\vec2.hpp" />

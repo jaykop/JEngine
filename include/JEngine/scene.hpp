@@ -11,14 +11,10 @@ Contains the definition of Scene class
 /******************************************************************************/
 
 #pragma once
-#include <macros.hpp>
-#include <unordered_map>
+#include <assets.hpp>
 #include <vec4.hpp>
 
 jeBegin
-
-class Object;
-using ObjectMap = std::unordered_map<const char*, Object*>;
 
 // Generic scene class
 class Scene {

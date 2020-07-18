@@ -10,26 +10,19 @@ Contains the methods of asset_manager class
 */
 /******************************************************************************/
 
+#include <thread>
+#include <lodepng.h>
+
+#include <debug_tools.hpp>
 #include <scene_manager.hpp>
 #include <asset_manager.hpp>
 #include <json_parser.hpp>
-#include <debug_tools.hpp>
 #include <gl_manager.hpp>
 #include <shader.hpp>
-#include <thread>
-#include <lodepng.h>
-#include <mesh.hpp>
-
-// component list
 #include <component_manager.hpp>
-#include <transform.hpp>
-#include <model.hpp>
-#include <sprite.hpp>
-#include <text.hpp>
-#include <camera.hpp>
-#include <animation_2d.hpp>
-#include <debug_renderer.hpp>
-#include <emitter.hpp>
+#include <components.hpp>
+
+#include <mesh.hpp>
 
 jeBegin
 
@@ -37,13 +30,13 @@ std::string	AssetManager::initDirectory_, AssetManager::assetDirectory_,
 AssetManager::stateDirectory_, AssetManager::archeDirectory_;
 
 unsigned char* AssetManager::pixel_chunk = nullptr;
-AssetManager::Images AssetManager::images_;
 
-AssetManager::FontMap		AssetManager::fontMap_;
-AssetManager::AudioMap		AssetManager::audioMap_;
-AssetManager::SceneMap		AssetManager::sceneMap_;
-AssetManager::TextureMap	AssetManager::textureMap_;
-AssetManager::ArchetypeMap	AssetManager::archetypeMap_;
+Images AssetManager::images_;
+FontMap	AssetManager::fontMap_;
+AudioMap AssetManager::audioMap_;
+TextureMap AssetManager::textureMap_;
+ArchetypeMap AssetManager::archetypeMap_;
+SceneMap AssetManager::sceneMap_;
 
 bool AssetManager::set_bulit_in_components()
 {

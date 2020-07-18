@@ -253,9 +253,6 @@
     <ClInclude Include="..\..\include\JEngine\vertex.hpp">
       <Filter>system\graphics_elements</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\texture.hpp">
-      <Filter>system\graphics_elements</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\JEngine\mesh.hpp">
       <Filter>system\graphics_elements</Filter>
     </ClInclude>
@@ -282,6 +279,12 @@
     </ClInclude>
     <ClInclude Include="..\..\include\JEngine\rigidbody.hpp">
       <Filter>system\physics_components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\assets.hpp">
+      <Filter>core\asset</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\components.hpp">
+      <Filter>core\asset</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -12,11 +12,7 @@ Contains the definition of asset_manager class
 
 #pragma once
 #include <vec3.hpp>
-#include <macros.hpp>
-#include <unordered_map>
-
-#include <string>
-// #include <graphic_system.h>
+#include <assets.hpp>
 
 jeBegin
 
@@ -39,20 +35,6 @@ class AssetManager {
 
 	friend class GraphicSystem;
 	friend class Application;
-
-	struct Image {
-		std::vector<unsigned char> pixels;
-		unsigned handle, width, height;
-	};
-
-	using MeshMap = std::unordered_map<std::string_view, Mesh*>;
-	using FontMap =	std::unordered_map<std::string_view, Font*>;
-	using AudioMap = std::unordered_map<std::string_view, Audio*>;
-	using SceneMap = std::unordered_map<std::string_view, Scene*>;
-	using TextureMap = std::unordered_map<std::string_view, unsigned>;
-	using ArchetypeMap = std::unordered_map<std::string_view, Archetype*>;
-
-	using Images = std::unordered_map<const char*, AssetManager::Image>;
 
 public:
 
@@ -88,10 +70,10 @@ private:
 	static unsigned char* pixel_chunk;
 	static Images images_;
 
-	static FontMap		fontMap_;
-	static AudioMap		audioMap_;
-	static SceneMap		sceneMap_;
-	static TextureMap	textureMap_;
+	static FontMap fontMap_;
+	static AudioMap	audioMap_;
+	static SceneMap	sceneMap_;
+	static TextureMap textureMap_;
 	static ArchetypeMap	archetypeMap_;
 
 	static std::string initDirectory_, assetDirectory_,

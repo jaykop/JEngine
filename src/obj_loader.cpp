@@ -15,7 +15,7 @@ static const unsigned max_unsinged = (std::numeric_limits<unsigned>::max)();
 //static const vec3 vnormColor = Color::red;
 //static const vec3 fnormColor = Color::blue;
 
-AssetManager::MeshMap AssetManager::meshMap_;
+MeshMap AssetManager::meshMap_;
 vec3 AssetManager::maxPoint, AssetManager::minPoint;
 
 bool AssetManager::load_obj(const char* path)
