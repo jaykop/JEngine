@@ -14,6 +14,7 @@ Contains the definition of InputHandler class
 #include <set>
 #include <key_map.hpp>
 #include <unordered_map>
+#include <vec3.hpp>
 
 union SDL_Event;
 struct SDL_Window;
@@ -47,7 +48,8 @@ public:
 	static bool get_mouse_wheel_status(KEY key);
 
 	// mouse position
-	
+	static vec3 get_position();
+
 private:
 
 	static KEY key_translator(const SDL_Event& event);
@@ -64,6 +66,8 @@ private:
 	static KeyMap keyMap_, triggerMap_;
 	static MouseWheel mouseWheel_;
 	static LockedKeys triggerLock_;
+
+	static vec3 position_;
 	
 };
 

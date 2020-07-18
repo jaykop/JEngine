@@ -20,15 +20,15 @@ void SceneController::init()
 
 void SceneController::update(float /*dt*/)
 {
-	if (InputHandler::key_pressed(KEY::MOUSE_LEFT))
-		std::cout << "MOUSE_LEFT\n";
+	if (InputHandler::key_triggered(KEY::MOUSE_LEFT))
+	{
+		auto pos = InputHandler::get_position();
+		std::cout << pos.x << " " << pos.y << " " << pos.z << "\n";
+	}
 
-	if (InputHandler::key_triggered(KEY::MOUSE_RIGHT)) {
-		
-		// TODO: Need to get position
-		// InputHandler::position
+	if (InputHandler::key_pressed(KEY::MOUSE_RIGHT))
+	{	
 		std::cout << "MOUSE_RIGHT\n";
-		ObjectManager::remove_object("emitter1");
 	}
 
 	if (InputHandler::key_pressed(KEY::ENTER))

@@ -15,6 +15,11 @@ Contains the methods of InputHandler class
 #include <input_handler.hpp>
 #include <iostream>
 
+#include <camera.hpp>
+#include <gl_manager.hpp>
+#include <graphic_system.hpp>
+#include <mat4.hpp>
+
 jeBegin
 
 float InputHandler::wheelSensitivity_ = 0.f;
@@ -22,6 +27,7 @@ KeyMap InputHandler::keyMap_, InputHandler::triggerMap_;
 InputHandler::MouseWheel InputHandler::mouseWheel_ = MouseWheel::NONE;
 bool InputHandler::mouseDown_ = false, InputHandler::keyDown_ = false;
 LockedKeys InputHandler::triggerLock_;
+vec3 InputHandler::position_ = vec3::one;
 
 bool InputHandler::any_input_down()
 {
@@ -141,11 +147,15 @@ void InputHandler::initialize()
 
 void InputHandler::update(const SDL_Event& event)
 {
+	int x, y;
+	SDL_GetMouseState(&x, &y);
+	position_.set(static_cast<float>(x), static_cast<float>(y), 0.f);
+
 	auto key = key_translator(event);
 	auto mouse = mouse_translator(event);
 
 	switch (event.type) {
-	
+
 	case SDL_KEYUP:
 	{
 		triggerLock_.clear();
@@ -165,6 +175,7 @@ void InputHandler::update(const SDL_Event& event)
 	
 	case SDL_MOUSEBUTTONUP:
 	{
+		triggerLock_.clear();
 		triggerMap_[mouse] = keyMap_[mouse] = false;
 		mouseDown_ = false;
 
@@ -218,6 +229,30 @@ bool InputHandler::get_mouse_wheel_status(KEY key)
 		return true;
 	
 	return false;
+}
+
+vec3 InputHandler::get_position()
+{
+	float x = (2.0f * position_.x) / GLManager::get_width() - 1.0f;
+	float y = 1.0f - (2.0f * position_.y) / GLManager::get_height();
+	float z = 1.0f;
+	vec3 ray_nds = vec3(x, y, z);
+	vec4 ray_clip = vec4(x, y, -1.0, 1.0);
+
+	Camera* camera = GraphicSystem::get_camera();
+	mat4 viewport = mat4::look_at(camera->position, camera->target, camera->up_);
+	mat4 perspective = mat4::perspective(
+		camera->fovy, camera->aspect_,
+		camera->near_, camera->far_);
+
+	vec4 ray_eye = perspective.inverted() * ray_clip;
+	ray_eye = vec4(ray_eye.x, ray_eye.y, -1.f, 0.f);
+
+	vec3 ray_wor = (viewport.inverted() * ray_eye).to_vec3();
+	// don't forget to normalise the vector at some point
+	ray_wor.normalize();
+
+	return ray_wor;
 }
 
 jeEnd
