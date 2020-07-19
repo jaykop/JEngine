@@ -3,6 +3,8 @@
 
 jeBegin
 
+class Sprite;
+
 // Generic scene class
 class License : public Scene
 {
@@ -28,6 +30,10 @@ private:
 
 	Object *fmod = nullptr, *rj = nullptr, *ft = nullptr;
 	Object* camera = nullptr;
+	Sprite* rd = nullptr;
+
+	bool fade = false;
+	int count = 0;
 
 };
 
