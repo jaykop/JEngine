@@ -140,6 +140,12 @@ void AssetManager::unload_assets()
 	}
 
 	fontMap_.clear();
+	textureMap_.clear();
+	audioMap_.clear();
+	archetypeMap_.clear();
+
+	// memory to be release by scene manager
+	sceneMap_.clear();
 }
 
 void AssetManager::load_texture(const char* path, const char* textureKey, TextureMap* tMap)

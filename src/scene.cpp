@@ -20,6 +20,8 @@ Contains the methods of scene class
 #include <graphic_system.hpp>
 #include <behavior_system.hpp>
 
+#include <text.hpp>
+
 jeBegin
 
 void Scene::load()
@@ -89,6 +91,18 @@ void Scene::close()
 
 void Scene::unload()
 {	
+	// unload all assets for current scene
+	for (auto& font : fonts_)
+	{
+		delete font.second;
+		font.second = nullptr;
+	}
+
+	fonts_.clear();
+	textures_.clear();
+	audios_.clear();
+	archetypes_.clear();
+
 	// make sure current object map belongs to the current scene
 	ObjectManager::objects_ = &objects_;
 

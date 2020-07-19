@@ -16,12 +16,6 @@
 
 jeBegin
 
-void Level1::load()
-{
-	// base load
-	Scene::load();
-}
-
 void Level1::initialize()
 {
 	init_basic();
@@ -67,12 +61,6 @@ void Level1::close()
 {
 	// base close
 	Scene::close();
-}
-
-void Level1::unload()
-{
-	// base unload
-	Scene::unload();
 }
 
 void Level1::init_basic()

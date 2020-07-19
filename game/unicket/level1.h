@@ -15,11 +15,9 @@ public:
 
 protected:
 
-	void load() override;
 	void initialize() override;
 	void update(float dt) override;
 	void close() override;
-	void unload() override;
 
 private:
 
