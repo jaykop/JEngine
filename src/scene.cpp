@@ -20,6 +20,7 @@ Contains the methods of scene class
 #include <graphic_system.hpp>
 #include <behavior_system.hpp>
 
+#include <gl_manager.hpp>
 #include <text.hpp>
 
 jeBegin
@@ -92,10 +93,24 @@ void Scene::close()
 void Scene::unload()
 {	
 	// unload all assets for current scene
+	// clear font memory
 	for (auto& font : fonts_)
 	{
+		if (font.second)
+		{
+			for (auto& c : font.second->data)
+				glDeleteTextures(1, &c.second.texture);
+		}
+
 		delete font.second;
 		font.second = nullptr;
+	}
+
+	// clear texture memory
+	for (auto& tex : textures_)
+	{
+		if (tex.second)
+			glDeleteTextures(1, &tex.second);
 	}
 
 	fonts_.clear();

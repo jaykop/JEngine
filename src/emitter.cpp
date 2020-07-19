@@ -16,7 +16,7 @@ jeBegin
 
 jeDefineComponentBuilder(Emitter);
 
-const unsigned NUM_THREADS = 8;
+const unsigned NUM_THREADS = 12;
 
 Emitter::Emitter(Object* owner)
 	: Renderer(owner), angle(vec2::zero), velocity(vec3::zero), range(vec3::zero),

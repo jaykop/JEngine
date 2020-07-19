@@ -18,7 +18,7 @@ SDL_Event Application::event_;
 SDL_Window* Application::window_ = nullptr;
 SDL_Surface	*Application::surface_ = nullptr, *Application::icon_= nullptr;
 SDL_GLContext Application::context_ = nullptr;
-Application::AppData Application::data_ = { "demo", "../resource/ico/main.ico", false, 800, 600 };
+Application::AppData Application::data_ = { "demo", "resource/ico/main.ico", false, 800, 600 };
 
 void Application::run()
 {
@@ -92,9 +92,9 @@ bool Application::initialize()
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-	//SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
+	//SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
 	//SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
 	//SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 4);
 

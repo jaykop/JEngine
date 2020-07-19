@@ -132,11 +132,24 @@ void AssetManager::unload_assets()
 {
 	ComponentManager::clear_builders();
 
-	// clear font map
+	// clear font memory
 	for (auto& font : fontMap_)
 	{
+		if (font.second)
+		{
+			for (auto& c : font.second->data)
+				glDeleteTextures(1, &c.second.texture);
+		}
+
 		delete font.second;
 		font.second = nullptr;
+	}
+
+	// clear texture memory
+	for (auto& tex : textureMap_)
+	{
+		if (tex.second)
+			glDeleteTextures(1, &tex.second);
 	}
 
 	fontMap_.clear();
