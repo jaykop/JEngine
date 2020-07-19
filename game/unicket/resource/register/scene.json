@@ -1,5 +1,5 @@
 {
-	"FirstScene" : "level1",
+	"FirstScene" : "license",
 	
 	"Scene" : [
 		{"Key" : "js_level2", 	"Directory" : "resource/scene/js_level2.json"},

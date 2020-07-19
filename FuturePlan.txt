@@ -6,7 +6,7 @@
 *independent execution
 
 ===========================================
-
+*add license
 *light
 *mouse position/click + mesh vector
 *debug coord

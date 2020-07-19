@@ -3,10 +3,11 @@
 ===========================================
 
 **Next goals** - 2D  
+*License  
+*FMOD Lib  
 *light  
 *mouse position/click + mesh vector  
 *debug coord  
-*FMOD Lib  
 *physics + thread  
 *emitter explosion refresh  
 

@@ -29,12 +29,15 @@ void Scene::load()
 {
 	// Read asset info
 	JsonParser::read_file(directory_);
-	const rapidjson::Value& textures = JsonParser::get_document()["Texture"];
-
-	// Read font info
-	const rapidjson::Value& fonts = JsonParser::get_document()["Font"];
+	
+	const rapidjson::Value& backgroundColor = JsonParser::get_document()["Background"];
+	background.set(backgroundColor[0].GetFloat(),
+		backgroundColor[1].GetFloat(),
+		backgroundColor[2].GetFloat(),
+		backgroundColor[3].GetFloat());
 
 	// Load textures 
+	const rapidjson::Value& textures = JsonParser::get_document()["Texture"];
 	for (rapidjson::SizeType i = 0; i < textures.Size(); ++i) {
 		AssetManager::load_texture(textures[i]["Directory"].GetString(), textures[i]["Key"].GetString(),
 			&textures_);
@@ -42,6 +45,8 @@ void Scene::load()
 	}
 
 	// Load font
+	// Read font info
+	const rapidjson::Value& fonts = JsonParser::get_document()["Font"];
 	for (rapidjson::SizeType i = 0; i < fonts.Size(); ++i) {
 
 		// Load default ascii characters (0 - 128)

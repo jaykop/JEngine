@@ -1,0 +1,21 @@
+{
+	"Font": [
+
+	],
+
+	"Texture": [
+
+		{ "Key": "fmod", "Directory": "resource/license/FMOD Logo White - Black Background.png" },
+		{ "Key": "rapidjson", "Directory": "resource/license/rapidjson.png" }
+
+	],
+
+	"Audio": [
+
+	],
+
+	"Background": [ 0.75, 0.75, 0.75, 1 ],
+	"Screen": [ 1.0, 1.0, 1.0, 1.0 ],
+	"Effect": { "Type": "None" },
+	"Object": []
+}

@@ -39,6 +39,9 @@
     <ClInclude Include="level1.h">
       <Filter>game_scene</Filter>
     </ClInclude>
+    <ClInclude Include="license.h">
+      <Filter>game_scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -60,6 +63,9 @@
       <Filter>game_logics</Filter>
     </ClCompile>
     <ClCompile Include="level1.cpp">
+      <Filter>game_scene</Filter>
+    </ClCompile>
+    <ClCompile Include="license.cpp">
       <Filter>game_scene</Filter>
     </ClCompile>
   </ItemGroup>

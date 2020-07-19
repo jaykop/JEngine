@@ -2,14 +2,7 @@
 #include "game_logics.h"
 #include "pch.h"
 
-// components
-#include "emitter.hpp"
-#include "text.hpp"
-#include "camera.hpp"
-#include "sprite.hpp"
-#include "transform.hpp"
-#include "animation_2d.hpp"
-#include "debug_renderer.hpp"
+#include "components.hpp"
 
 #include "colors.hpp"
 #include <iostream>

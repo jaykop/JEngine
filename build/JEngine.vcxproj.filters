@@ -94,9 +94,6 @@
     <ClCompile Include="..\src\eigen.cpp">
       <Filter>util\math</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\mesh.cpp">
-      <Filter>system\graphics_elements</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\behavior.cpp">
       <Filter>system\behavior</Filter>
     </ClCompile>
@@ -132,6 +129,9 @@
     </ClCompile>
     <ClCompile Include="..\src\sound_manager.cpp">
       <Filter>core\fmod</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\mesh.cpp">
+      <Filter>system\graphics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -232,27 +232,6 @@
     <ClInclude Include="..\include\JEngine\quat.hpp">
       <Filter>util\math</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\JEngine\vertex.hpp">
-      <Filter>system\graphics_elements</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\JEngine\mesh.hpp">
-      <Filter>system\graphics_elements</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\JEngine\half_edge_vertex.hpp">
-      <Filter>system\graphics_elements</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\JEngine\half_edge_mesh.hpp">
-      <Filter>system\graphics_elements</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\JEngine\half_edge.hpp">
-      <Filter>system\graphics_elements</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\JEngine\face.hpp">
-      <Filter>system\graphics_elements</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\JEngine\colors.hpp">
-      <Filter>system\graphics_elements</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\JEngine\semaphore.hpp">
       <Filter>util</Filter>
     </ClInclude>
@@ -297,6 +276,27 @@
     </ClInclude>
     <ClInclude Include="..\include\JEngine\sound_manager.hpp">
       <Filter>core\fmod</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\JEngine\vertex.hpp">
+      <Filter>system\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\JEngine\colors.hpp">
+      <Filter>system\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\JEngine\face.hpp">
+      <Filter>system\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\JEngine\half_edge.hpp">
+      <Filter>system\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\JEngine\half_edge_mesh.hpp">
+      <Filter>system\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\JEngine\half_edge_vertex.hpp">
+      <Filter>system\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\JEngine\mesh.hpp">
+      <Filter>system\graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -367,9 +367,6 @@
     </Filter>
     <Filter Include="system\sound">
       <UniqueIdentifier>{340b4a86-cf49-4e83-a96e-33e155d85e22}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="system\graphics_elements">
-      <UniqueIdentifier>{21673132-dd6c-4029-a138-bcf37df341d0}</UniqueIdentifier>
     </Filter>
     <Filter Include="core\fmod">
       <UniqueIdentifier>{8254de40-1274-4943-9c22-7d055d05f5f7}</UniqueIdentifier>
