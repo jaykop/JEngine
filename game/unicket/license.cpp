@@ -12,7 +12,8 @@ void License::initialize()
 	add_camera();
 	add_fmod();
 	add_rapidjson();
-	// add_freetype();
+	add_freetype();
+
 	rd = fmod->get_component<Sprite>();
 
 	// base init
@@ -23,7 +24,7 @@ void License::update(float dt)
 {
 	if (fade)
 	{
-		rd->color.a -= dt;
+		rd->color.a -= speed * dt;
 		if (rd->color.a < 0.f)
 		{
 			rd->color.a = 0.f;
@@ -34,7 +35,7 @@ void License::update(float dt)
 
 	else
 	{
-		rd->color.a += dt;
+		rd->color.a += speed * dt;
 		if (rd->color.a > 1.f)
 		{
 			rd->color.a = 1.f;
@@ -45,14 +46,16 @@ void License::update(float dt)
 	switch (count)
 	{
 	case 1:
-		rd = rj->get_component<Sprite>();
 		// rapidjson
+		rd = rj->get_component<Sprite>();
 		break;
 	case 2:
 		// freetype
+		rd = ft->get_component<Sprite>();
 		break;
 	case 3:
 		// next scene
+		SceneManager::set_next_scene("level1");
 		break;
 	}
 
@@ -74,6 +77,8 @@ void License::add_camera()
 	camera->get_component<Camera>()->position = vec3(0.f, 0.f, 100.f);
 
 	register_object(camera);
+
+	GraphicSystem::set_camera(camera->get_component<Camera>());
 }
 
 void License::add_fmod()
@@ -111,8 +116,9 @@ void License::add_freetype()
 	auto* renderer = ft->get_component<Sprite>();
 	auto* transform = ft->get_component<Transform>();
 	renderer->set_texture(AssetManager::get_texture("freetype"));
+	renderer->color.a = 0.f;
 	renderer->prjType = Renderer::ProjectType::ORTHOGONAL;
-	transform->scale.set(25, 40, 0.f);
+	transform->scale.set(800, 134, 0.f);
 
 	register_object(ft);
 }

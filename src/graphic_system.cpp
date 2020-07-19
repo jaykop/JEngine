@@ -82,8 +82,7 @@ void GraphicSystem::update(float dt) {
 
 void GraphicSystem::close() {
 
-	//for (auto& model : models_)
-	//	models_->close();
+	renderers_.clear();
 
 	mainCamera_ = nullptr;
 }

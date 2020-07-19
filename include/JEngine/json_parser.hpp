@@ -31,7 +31,8 @@ class JsonParser {
 private:
 
 	static void	read_file(const char* directory);
-	static const rapidjson::Document& get_document();
+	static rapidjson::Document& get_document();
+	// static void clear_document();
 	static void	close();
 
 	static void load_objects();

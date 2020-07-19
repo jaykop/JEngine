@@ -75,38 +75,44 @@ void AssetManager::load_assets()
 
 	// Read scene info
 	JsonParser::read_file(stateDirectory_.c_str());
-	const rapidjson::Value& scenes = JsonParser::get_document()["Scene"];
-	const rapidjson::Value& fristStates = JsonParser::get_document()["FirstScene"];
-
-	// Read asset info
-	JsonParser::read_file(assetDirectory_.c_str());
-	const rapidjson::Value& textures = JsonParser::get_document()["Texture"];
-
-	// Read font info
-	const rapidjson::Value& fonts = JsonParser::get_document()["Font"];
 
 	// Get sizes of them
-	unsigned sceneSize = scenes.Size(), textureSize = textures.Size(), fontSize = fonts.Size();
+	const rapidjson::Value& scenes = JsonParser::get_document()["Scene"];
 
 	// Load scenes 
-	for (rapidjson::SizeType i = 0; i < sceneSize; ++i) {
+	for (rapidjson::SizeType i = 0; i < scenes.Size(); ++i) {
 		SceneManager::push_scene(scenes[i]["Directory"].GetString(), scenes[i]["Key"].GetString());
 		jeDebugPrint("Loaded %s\n", scenes[i]["Key"].GetString());
 	}
 
 	// Set first state
-	std::string firstStateName = SceneManager::firstScene_.empty() ? fristStates.GetString() : SceneManager::firstScene_;
-	SceneManager::set_first_scene(firstStateName.c_str());
-	jeDebugPrint("The first scene is %s.\n", firstStateName.c_str());
+	const rapidjson::Value& fristStates = JsonParser::get_document()["FirstScene"];
+	if (fristStates.GetString())
+	{
+		SceneManager::set_first_scene(fristStates.GetString());
+		jeDebugPrint("The first scene is %s.\n", fristStates.GetString());
+	}
+
+	// Read asset info
+	JsonParser::read_file(assetDirectory_.c_str());
+
+
+	std::unordered_map<const char*, const char*> test;
 
 	// Load textures 
-	for (rapidjson::SizeType i = 0; i < textureSize; ++i) {
+	const rapidjson::Value& textures = JsonParser::get_document()["Texture"];
+	for (rapidjson::SizeType i = 0; i < textures.Size(); ++i) {
+
+		test.insert(std::unordered_map<const char*, const char*>::value_type
+		(textures[i]["Directory"].GetString(), textures[i]["Key"].GetString()));
+
 		load_texture(textures[i]["Directory"].GetString(), textures[i]["Key"].GetString());
 		jeDebugPrint("*AssetManager - Loaded image: %s.\n", textures[i]["Directory"].GetString());
 	}
 	
 	// Load font
-	for (rapidjson::SizeType i = 0; i < fontSize; ++i) {
+	const rapidjson::Value& fonts = JsonParser::get_document()["Font"];
+	for (rapidjson::SizeType i = 0; i < fonts.Size(); ++i) {
 
 		// Load default ascii characters (0 - 128)
 		load_font(fonts[i]["Directory"].GetString(), 
@@ -123,6 +129,10 @@ void AssetManager::load_assets()
 				static_cast<unsigned long>(fonts[i]["Additional"][j][1].GetUint64()));
 		}
 	}
+
+	JsonParser::get_document().SetNull();
+	JsonParser::get_document().GetAllocator().Clear();
+	
 }
 
 void AssetManager::unload_assets()

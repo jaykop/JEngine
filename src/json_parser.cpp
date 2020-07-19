@@ -23,18 +23,31 @@ rapidjson::Document JsonParser::document_;
 
 void JsonParser::read_file(const char* directory)
 {
+	document_.SetNull();
+	document_.GetAllocator().Clear();
+
 	std::ifstream read(directory);
 	rapidjson::IStreamWrapper toInputStream(read);
 #if defined(_DEBUG)
 	DEBUG_ASSERT(!document_.ParseStream(toInputStream).HasParseError(), "Json file has a problem");
+
 #else
 	document_.ParseStream(toInputStream);
 #endif // DEBUG
 }
 
-const rapidjson::Document& JsonParser::get_document() { return document_; }
+rapidjson::Document& JsonParser::get_document() { return document_; }
 
-void JsonParser::close() { document_.Clear();}
+//void JsonParser::clear_document()
+//{
+//	delete document_;
+//	document_ = nullptr;
+//}
+
+void JsonParser::close() 
+{
+	// clear_document();
+}
 
 void JsonParser::load_objects()
 {

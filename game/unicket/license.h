@@ -34,6 +34,7 @@ private:
 
 	bool fade = false;
 	int count = 0;
+	float speed = 0.5f;
 
 };
 

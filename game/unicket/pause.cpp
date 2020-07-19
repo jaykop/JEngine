@@ -1,4 +1,4 @@
-#include "level1.h"
+#include "pause.h"
 #include "game_logics.h"
 #include "pch.h"
 
@@ -9,7 +9,7 @@
 
 jeBegin
 
-void Level1::initialize()
+void Pause::initialize()
 {
 	init_basic();
 	init_sprite();
@@ -21,7 +21,7 @@ void Level1::initialize()
 	Scene::initialize();
 }
 
-void Level1::update(float dt)
+void Pause::update(float dt)
 {
 	if (renderer_2d)
 	{
@@ -39,13 +39,13 @@ void Level1::update(float dt)
 	Scene::update(dt);
 }
 
-void Level1::close()
+void Pause::close()
 {
 	// base close
 	Scene::close();
 }
 
-void Level1::init_basic()
+void Pause::init_basic()
 {
 	// add camera
 	Object* camera = ObjectManager::create_object("main_camera");
@@ -63,7 +63,7 @@ void Level1::init_basic()
 	register_object(controller);
 }
 
-void Level1::init_sprite()
+void Pause::init_sprite()
 {
 	// testing 2d renderer 
 	renderer_2d = ObjectManager::create_object("renderer_2d");

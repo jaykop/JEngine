@@ -2,7 +2,7 @@
 	"FirstScene" : "license",
 	
 	"Scene" : [
-		{"Key" : "js_level2", 	"Directory" : "resource/scene/js_level2.json"},
-		{"Key" : "js_level3", 	"Directory" : "resource/scene/js_level3.json"}
+		{"Key" : "js_level1", 	"Directory" : "resource/scene/js_level1.json"},
+		{"Key" : "js_level2", 	"Directory" : "resource/scene/js_level2.json"}
 	]
 }

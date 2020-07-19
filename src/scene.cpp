@@ -125,11 +125,7 @@ void Scene::unload()
 
 	// make sure current object map belongs to the current scene
 	ObjectManager::objects_ = &objects_;
-
-	// clear current object map
 	ObjectManager::clear_objects();
-
-	// initialize
 	ObjectManager::objects_ = nullptr;
 }
 

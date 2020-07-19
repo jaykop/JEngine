@@ -41,7 +41,7 @@ class SceneManager {
 
 public:
 
-	static void add_scene(Scene* scene);
+	static void push_scene(Scene* scene);
 
 	// methods to control the scenes
 	static void restart();

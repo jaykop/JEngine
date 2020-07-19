@@ -19,9 +19,6 @@
     <ClCompile Include="..\src\input_handler.cpp">
       <Filter>core\input</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\scene_controller.cpp">
-      <Filter>core\scene</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\scene_manager.cpp">
       <Filter>core\scene</Filter>
     </ClCompile>

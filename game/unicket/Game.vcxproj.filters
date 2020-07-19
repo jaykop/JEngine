@@ -42,6 +42,15 @@
     <ClInclude Include="license.h">
       <Filter>game_scene</Filter>
     </ClInclude>
+    <ClInclude Include="level2.h">
+      <Filter>game_scene</Filter>
+    </ClInclude>
+    <ClInclude Include="level3.h">
+      <Filter>game_scene</Filter>
+    </ClInclude>
+    <ClInclude Include="pause.h">
+      <Filter>game_scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -66,6 +75,15 @@
       <Filter>game_scene</Filter>
     </ClCompile>
     <ClCompile Include="license.cpp">
+      <Filter>game_scene</Filter>
+    </ClCompile>
+    <ClCompile Include="level2.cpp">
+      <Filter>game_scene</Filter>
+    </ClCompile>
+    <ClCompile Include="level3.cpp">
+      <Filter>game_scene</Filter>
+    </ClCompile>
+    <ClCompile Include="pause.cpp">
       <Filter>game_scene</Filter>
     </ClCompile>
   </ItemGroup>

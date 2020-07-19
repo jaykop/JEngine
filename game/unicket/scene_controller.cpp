@@ -15,21 +15,24 @@ SceneController::~SceneController()
 
 void SceneController::init() 
 { 
-	//vec3 v1(-1.f, 0., 0.0);
-	//vec3 v2(1.f, 0., 0.0);
-	//vec3 v3(0.f, 1.f, 0.0);
-
-	//vec3 a(1.f, 1., 0.0);
-	//bool in = a.inside(v1, v2, v3);
-
-	//InputHandler::ray_intersects_triangle();
-
+	// set grid attributes
 	GraphicSystem::grid.color = Color::white;
 	GraphicSystem::grid.prjType = Renderer::ProjectType::PERSPECTIVE;
 }
 
 void SceneController::update(float /*dt*/)
 {
+	if (InputHandler::key_triggered(KEY::NUM_0))
+		SceneManager::restart();
+	if (InputHandler::key_triggered(KEY::NUM_1))
+		SceneManager::set_next_scene("level1");
+	if (InputHandler::key_triggered(KEY::NUM_2))
+		SceneManager::set_next_scene("level2");
+	if (InputHandler::key_triggered(KEY::NUM_3))
+		SceneManager::set_next_scene("level3");
+	if (InputHandler::key_triggered(KEY::BACK))
+		SceneManager::pause("pause");
+
 	if (InputHandler::key_triggered(KEY::MOUSE_LEFT))
 	{
 		auto pos = InputHandler::get_position();
