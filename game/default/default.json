@@ -1,0 +1,32 @@
+{
+	"Font" : [
+		{
+			"Key": "default",
+			"Directory": "../default/default.ttf",
+			"Size": 48,
+			"Additional": [ [ 44032, 55215 ] ]
+		}
+	],
+	
+	"Texture" : [
+
+		{
+			"Key": "rect",
+			"Directory": "../default/rect.png"
+		},
+		{
+			"Key": "grid",
+			"Directory": "../default/box_line.png"
+		},
+		{
+			"Key": "particle",
+			"Directory": "../default/particle.png"
+		}
+	
+	],
+	
+	"Audio" : [
+
+	]
+	
+}

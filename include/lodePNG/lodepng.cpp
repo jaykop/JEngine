@@ -1,3 +1,11 @@
+#pragma warning (disable : 4267)
+#pragma warning (disable : 4334)
+#pragma warning (disable : 4551)
+#pragma warning (disable : 6011)
+#pragma warning (disable : 6297)
+#pragma warning (disable : 26451)
+#pragma warning (disable : 26812)
+
 /*
 LodePNG version 20191109
 

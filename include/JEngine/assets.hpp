@@ -9,11 +9,11 @@ jeBegin
 
 struct Image {
 	std::vector<unsigned char> pixels;
-	unsigned handle, width, height;
+	unsigned handle = 0, width = 0, height = 0;
 };
 
 struct Texture {
-	unsigned id;
+	unsigned id = 0;
 	std::string type, path;
 };
 

@@ -40,7 +40,7 @@ Text::Text(Object* owner)
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned) * textIndices.size(), (&textIndices[0]), GL_STATIC_DRAW);
 	glBindVertexArray(0);
 
-	set_font(AssetManager::get_font("Default"));
+	set_font(AssetManager::get_font("default"));
 }
 
 Text::~Text()
@@ -179,7 +179,7 @@ void Text::set_text(const wchar_t* text, ...)
 
 		va_start(argumens, text);
 		// Get new size of the new text
-		newSize = _vscwprintf(text, argumens) + 1;
+		newSize = static_cast<unsigned>(_vscwprintf(text, argumens) + 1);
 
 		// If new size is greater than one,
 		// reallocate the new heap memories

@@ -32,7 +32,7 @@ void SceneManager::change_scene()
 
 			Scene* toResume = currentScene_;
 			currentScene_ = nextScene_; // move to the next scene
-			currentScene_->lastScene_ = toResume; // save the last scene to resume
+			currentScene_->prevScene_ = toResume; // save the last scene to resume
 		}
 
 		// Just change current state
@@ -51,10 +51,10 @@ void SceneManager::change_scene()
 		Scene* toRelease = currentScene_;
 
 		// Set the current, next, and the last scene to same
-		currentScene_ = nextScene_ = currentScene_->lastScene_;
+		currentScene_ = nextScene_ = currentScene_->prevScene_;
 
 		// initialize the last scene
-		toRelease->lastScene_ = nullptr;
+		toRelease->prevScene_ = nullptr;
 	}
 
 	// Resume and change
@@ -63,10 +63,10 @@ void SceneManager::change_scene()
 		Scene* toRelease = currentScene_;
 		
 		// resume to the last scene
-		currentScene_ = currentScene_->lastScene_;
+		currentScene_ = currentScene_->prevScene_;
 
 		// initialize the last scene
-		toRelease->lastScene_ = nullptr;
+		toRelease->prevScene_ = nullptr;
 
 		// change the status
 		status_ = Status::CHANGE;
@@ -176,7 +176,7 @@ bool SceneManager::is_paused()
 {
 	// if the current scene has a scene to resume,
 	// then it is pause scene
-	return currentScene_->lastScene_ != nullptr;
+	return currentScene_->prevScene_ != nullptr;
 }
 
 SceneManager::Status SceneManager::get_status(void)
@@ -191,7 +191,7 @@ void SceneManager::set_next_scene(const char* nextState)
 		jeDoPrint("Cannot set the current scene as the next scene");
 	
 	// if there is no scene to resume
-	if (currentScene_->lastScene_)
+	if (currentScene_->prevScene_)
 		jeDoPrint("Cannot change on a pause scene.\nUse resume_and_next function");
 
 	if (has_scene(nextState)) {
@@ -217,7 +217,7 @@ void SceneManager::pause(const char* nextState)
 void SceneManager::resume()
 {
 	// Check state to resume
-	if (currentScene_->lastScene_ == nullptr)
+	if (currentScene_->prevScene_ == nullptr)
 		jeDoPrint("No state to resume");
 
 	status_ = Status::RESUME;

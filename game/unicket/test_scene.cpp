@@ -20,7 +20,7 @@ jeBegin
 void TestScene::initialize()
 {
 	init_basic();
-	init_sprite();
+	//init_sprite();
 	init_text();
 	init_emitters();
 

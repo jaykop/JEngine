@@ -19,6 +19,7 @@ Contains the methods of asset_manager class
 #include <json_parser.hpp>
 #include <gl_manager.hpp>
 #include <shader.hpp>
+#include <scene.hpp>
 #include <component_manager.hpp>
 #include <components.hpp>
 
@@ -61,7 +62,7 @@ bool AssetManager::set_bulit_in_components()
 void AssetManager::load_shaders() {
 
 	// raed shader directory
-	JsonParser::read_file("../../shader/shaders.json");
+	JsonParser::read_file("../shader/shaders.json");
 
 	const rapidjson::Value& vs = JsonParser::get_document()["vertex"];
 	const rapidjson::Value& fs = JsonParser::get_document()["fragment"];
@@ -74,7 +75,7 @@ void AssetManager::load_shaders() {
 
 void AssetManager::load_assets()
 {
-	// AssetManager::set_asset_directory("../resource/register/asset.json");
+	AssetManager::set_asset_directory("../default/default.json");
 
 	// Read scene info
 	JsonParser::read_file(stateDirectory_.c_str());
@@ -393,17 +394,11 @@ Font* AssetManager::get_font(const char* key)
 	if (found != fontMap_.end())
 		return found->second;
 
-	jeDebugPrint("!AssetManager - Cannot find such name of font resource: %s.\n", key);
-	return nullptr;
-}
-
-Scene* AssetManager::get_scene(const char* key)
-{
-	auto found = sceneMap_.find(key);
-	if (found != sceneMap_.end())
+	found = SceneManager::currentScene_->fonts_.find(key);
+	if (found != SceneManager::currentScene_->fonts_.end())
 		return found->second;
 
-	jeDebugPrint("!AssetManager - Cannot find such name of state resource: %s.\n", key);
+	jeDebugPrint("!AssetManager - Cannot find such name of font resource: %s.\n", key);
 	return nullptr;
 }
 
@@ -411,6 +406,10 @@ Audio* AssetManager::get_audio(const char* key)
 {
 	auto found = audioMap_.find(key);
 	if (found != audioMap_.end())
+		return found->second;
+
+	found = SceneManager::currentScene_->audios_.find(key);
+	if (found != SceneManager::currentScene_->audios_.end())
 		return found->second;
 
 	jeDebugPrint("!AssetManager - Cannot find such name of audio resource: %s.\n", key);
@@ -423,6 +422,10 @@ unsigned AssetManager::get_texture(const char* key)
 	if (found != textureMap_.end())
 		return found->second;
 
+	found = SceneManager::currentScene_->textures_.find(key);
+	if (found != SceneManager::currentScene_->textures_.end())
+		return found->second;
+
 	jeDebugPrint("!AssetManager - Cannot find such name of texture resource: %s.\n", key);
 	return 0;
 }
@@ -433,7 +436,21 @@ Archetype* AssetManager::get_archetype(const char* key)
 	if (found != archetypeMap_.end())
 		return found->second;
 
+	found = SceneManager::currentScene_->archetypes_.find(key);
+	if (found != SceneManager::currentScene_->archetypes_.end())
+		return found->second;
+
 	jeDebugPrint("!AssetManager: Cannot find such name of archetype resource: %s.\n", key);
+	return nullptr;
+}
+
+Scene* AssetManager::get_scene(const char* key)
+{
+	auto found = sceneMap_.find(key);
+	if (found != sceneMap_.end())
+		return found->second;
+
+	jeDebugPrint("!AssetManager - Cannot find such name of state resource: %s.\n", key);
 	return nullptr;
 }
 

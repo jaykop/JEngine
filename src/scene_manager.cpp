@@ -95,7 +95,7 @@ void SceneManager::update(SDL_Event* event)
 		// The case to quit app
 	case Status::QUIT:
 		while (currentScene_) {
-			Scene* last = currentScene_->lastScene_;
+			Scene* last = currentScene_->prevScene_;
 			currentScene_->close();
 			currentScene_->unload();
 			currentScene_ = last;

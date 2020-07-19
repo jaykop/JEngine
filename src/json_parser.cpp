@@ -80,7 +80,7 @@ void JsonParser::load_objects()
 	//} // for (rapidjson::SizeType i = 0; i < object.Size(); ++i) {
 }
 
-void JsonParser::load_components(const rapidjson::Value& data)
+void JsonParser::load_components(const rapidjson::Value& /*data*/)
 {
 	//FACTORY::GetCreatedObject()->AddComponent(data["Type"].GetString());
 	//Component* found =

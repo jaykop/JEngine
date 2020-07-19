@@ -2,9 +2,11 @@
 *orthogonal projection
 *emitter using thread
 *changed string to string_view
-*separate scene asset loader
 
 ===========================================
+*separate scene asset loader
+*independent execution
+
 *light
 *mouse position/click + mesh vector
 *debug coord

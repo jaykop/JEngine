@@ -1,3 +1,5 @@
+#pragma warning (disable : 26812)
+
 /*
   Simple DirectMedia Layer
   Copyright (C) 1997-2018 Sam Lantinga <slouken@libsdl.org>

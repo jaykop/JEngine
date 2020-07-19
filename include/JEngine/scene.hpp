@@ -25,6 +25,7 @@ class Scene {
 
 	// Only SceneManager can manage this class
 	friend class SceneManager;
+	friend class AssetManager;
 
 public:
 
@@ -45,11 +46,17 @@ protected:
 	virtual void close();
 	virtual void unload();
 
-	Scene* lastScene_ = nullptr; // pointer to the last scene (before this scene)
+	Scene* prevScene_ = nullptr;
 	const char* name_, * directory_;
 
 	// obj container
 	ObjectMap objects_;
+
+	// asset containers
+	FontMap fonts_;
+	AudioMap audios_;
+	TextureMap textures_;
+	ArchetypeMap archetypes_;
 
 private:
 	
