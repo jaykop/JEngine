@@ -12,6 +12,7 @@ All codes are written by Jaykop Jeong...
 #pragma once
 #include <component_builder.hpp>
 #include <component.hpp>
+#include <fmod.hpp>
 
 jeBegin
 
@@ -47,16 +48,16 @@ protected:
 private:
 
 	Audio(Object* owner);
-	virtual ~Audio() {};
+	virtual ~Audio();
 
 	Audio& operator=(const Audio& rhs);
 
+	FMOD::Channel* channel_;
+	FMOD::Sound* sound_; 
+	FMOD::System* system_;
+
 	float volume_;
 	bool  pause_, play_;
-
-	FMOD::Channel* channel_; // Maybe not in need..
-	FMOD::Sound* sound_; // Fmod sound
-	FMOD::System* system_;
 
 };
 

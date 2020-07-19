@@ -94,38 +94,41 @@
     <ClCompile Include="..\src\eigen.cpp">
       <Filter>util\math</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\behavior.cpp">
-      <Filter>system\behavior_components</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\animation_2d.cpp">
-      <Filter>system\grahpics_components</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\camera.cpp">
-      <Filter>system\grahpics_components</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\emitter.cpp">
-      <Filter>system\grahpics_components</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\renderer.cpp">
-      <Filter>system\grahpics_components</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\text.cpp">
-      <Filter>system\grahpics_components</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\model.cpp">
-      <Filter>system\grahpics_components</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\sprite.cpp">
-      <Filter>system\grahpics_components</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\mesh.cpp">
       <Filter>system\graphics_elements</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\debug_renderer.cpp">
-      <Filter>system\grahpics_components</Filter>
+    <ClCompile Include="..\src\behavior.cpp">
+      <Filter>system\behavior</Filter>
     </ClCompile>
     <ClCompile Include="..\src\rigidbody.cpp">
-      <Filter>system\physics_components</Filter>
+      <Filter>system\physics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\animation_2d.cpp">
+      <Filter>system\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\camera.cpp">
+      <Filter>system\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\debug_renderer.cpp">
+      <Filter>system\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\emitter.cpp">
+      <Filter>system\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\model.cpp">
+      <Filter>system\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\renderer.cpp">
+      <Filter>system\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\sprite.cpp">
+      <Filter>system\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\text.cpp">
+      <Filter>system\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\audio.cpp">
+      <Filter>system\sound</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -226,30 +229,6 @@
     <ClInclude Include="..\include\JEngine\quat.hpp">
       <Filter>util\math</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\JEngine\behavior.hpp">
-      <Filter>system\behavior_components</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\JEngine\animation_2d.hpp">
-      <Filter>system\grahpics_components</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\JEngine\camera.hpp">
-      <Filter>system\grahpics_components</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\JEngine\emitter.hpp">
-      <Filter>system\grahpics_components</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\JEngine\renderer.hpp">
-      <Filter>system\grahpics_components</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\JEngine\text.hpp">
-      <Filter>system\grahpics_components</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\JEngine\sprite.hpp">
-      <Filter>system\grahpics_components</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\JEngine\model.hpp">
-      <Filter>system\grahpics_components</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\JEngine\vertex.hpp">
       <Filter>system\graphics_elements</Filter>
     </ClInclude>
@@ -271,20 +250,47 @@
     <ClInclude Include="..\include\JEngine\colors.hpp">
       <Filter>system\graphics_elements</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\JEngine\debug_renderer.hpp">
-      <Filter>system\grahpics_components</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\JEngine\semaphore.hpp">
       <Filter>util</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\JEngine\rigidbody.hpp">
-      <Filter>system\physics_components</Filter>
     </ClInclude>
     <ClInclude Include="..\include\JEngine\assets.hpp">
       <Filter>core\asset</Filter>
     </ClInclude>
     <ClInclude Include="..\include\JEngine\components.hpp">
       <Filter>core\component</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\JEngine\behavior.hpp">
+      <Filter>system\behavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\JEngine\rigidbody.hpp">
+      <Filter>system\physics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\JEngine\animation_2d.hpp">
+      <Filter>system\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\JEngine\camera.hpp">
+      <Filter>system\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\JEngine\debug_renderer.hpp">
+      <Filter>system\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\JEngine\emitter.hpp">
+      <Filter>system\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\JEngine\model.hpp">
+      <Filter>system\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\JEngine\renderer.hpp">
+      <Filter>system\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\JEngine\sprite.hpp">
+      <Filter>system\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\JEngine\text.hpp">
+      <Filter>system\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\JEngine\audio.hpp">
+      <Filter>system\sound</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -355,18 +361,6 @@
     </Filter>
     <Filter Include="system\sound">
       <UniqueIdentifier>{340b4a86-cf49-4e83-a96e-33e155d85e22}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="system\grahpics_components">
-      <UniqueIdentifier>{9d3e21e3-9420-4535-9444-1edf8305ea54}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="system\physics_components">
-      <UniqueIdentifier>{354cea77-7299-4b5f-ac5a-ed30293b5981}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="system\sound_components">
-      <UniqueIdentifier>{c9cba70c-da7c-4e73-a45a-02501ae849fe}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="system\behavior_components">
-      <UniqueIdentifier>{4bee1a04-d52d-4487-af77-d3f1b348a89e}</UniqueIdentifier>
     </Filter>
     <Filter Include="system\graphics_elements">
       <UniqueIdentifier>{21673132-dd6c-4029-a138-bcf37df341d0}</UniqueIdentifier>

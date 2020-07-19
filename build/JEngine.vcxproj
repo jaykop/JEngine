@@ -24,6 +24,7 @@
     <ClCompile Include="..\src\animation_2d.cpp" />
     <ClCompile Include="..\src\application.cpp" />
     <ClCompile Include="..\src\asset_manager.cpp" />
+    <ClCompile Include="..\src\audio.cpp" />
     <ClCompile Include="..\src\behavior.cpp" />
     <ClCompile Include="..\src\behavior_system.cpp" />
     <ClCompile Include="..\src\camera.cpp" />
@@ -77,6 +78,7 @@
     <ClInclude Include="..\include\JEngine\application.hpp" />
     <ClInclude Include="..\include\JEngine\assets.hpp" />
     <ClInclude Include="..\include\JEngine\asset_manager.hpp" />
+    <ClInclude Include="..\include\JEngine\audio.hpp" />
     <ClInclude Include="..\include\JEngine\behavior.hpp" />
     <ClInclude Include="..\include\JEngine\behavior_system.hpp" />
     <ClInclude Include="..\include\JEngine\camera.hpp" />
@@ -220,7 +222,7 @@
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\include\JEngine;$(SolutionDir)..\include\GL;$(SolutionDir)..\include\rapidjson;$(SolutionDir)..\include\imgui;$(SolutionDir)..\include\SDL2;$(SolutionDir)..\include\lodePNG;$(SolutionDir)..\include\freetype2;$(SolutionDir)..\include\assimp;$(SolutionDir)..\include\stb_image;$(SolutionDir)..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\include\JEngine;$(SolutionDir)..\include\GL;$(SolutionDir)..\include\rapidjson;$(SolutionDir)..\include\imgui;$(SolutionDir)..\include\SDL2;$(SolutionDir)..\include\lodePNG;$(SolutionDir)..\include\freetype2;$(SolutionDir)..\include\assimp;$(SolutionDir)..\include\stb_image;$(SolutionDir)..\include\fmod;$(SolutionDir)..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <PreprocessorDefinitions>_SILENCE_CXX17_ITERATOR_BASE_CLASS_DEPRECATION_WARNING;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
@@ -230,7 +232,7 @@
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\include\JEngine;$(SolutionDir)..\include\GL;$(SolutionDir)..\include\rapidjson;$(SolutionDir)..\include\imgui;$(SolutionDir)..\include\SDL2;$(SolutionDir)..\include\lodePNG;$(SolutionDir)..\include\freetype2;$(SolutionDir)..\include\assimp;$(SolutionDir)..\include\stb_image;$(SolutionDir)..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\include\JEngine;$(SolutionDir)..\include\GL;$(SolutionDir)..\include\rapidjson;$(SolutionDir)..\include\imgui;$(SolutionDir)..\include\SDL2;$(SolutionDir)..\include\lodePNG;$(SolutionDir)..\include\freetype2;$(SolutionDir)..\include\assimp;$(SolutionDir)..\include\stb_image;$(SolutionDir)..\include\fmod;$(SolutionDir)..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <PreprocessorDefinitions>_SILENCE_CXX17_ITERATOR_BASE_CLASS_DEPRECATION_WARNING;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
@@ -242,7 +244,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\include\JEngine;$(SolutionDir)..\include\GL;$(SolutionDir)..\include\rapidjson;$(SolutionDir)..\include\imgui;$(SolutionDir)..\include\SDL2;$(SolutionDir)..\include\lodePNG;$(SolutionDir)..\include\freetype2;$(SolutionDir)..\include\assimp;$(SolutionDir)..\include\stb_image;$(SolutionDir)..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\include\JEngine;$(SolutionDir)..\include\GL;$(SolutionDir)..\include\rapidjson;$(SolutionDir)..\include\imgui;$(SolutionDir)..\include\SDL2;$(SolutionDir)..\include\lodePNG;$(SolutionDir)..\include\freetype2;$(SolutionDir)..\include\assimp;$(SolutionDir)..\include\stb_image;$(SolutionDir)..\include\fmod;$(SolutionDir)..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <PreprocessorDefinitions>_SILENCE_CXX17_ITERATOR_BASE_CLASS_DEPRECATION_WARNING;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
@@ -258,7 +260,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\include\JEngine;$(SolutionDir)..\include\GL;$(SolutionDir)..\include\rapidjson;$(SolutionDir)..\include\imgui;$(SolutionDir)..\include\SDL2;$(SolutionDir)..\include\lodePNG;$(SolutionDir)..\include\freetype2;$(SolutionDir)..\include\assimp;$(SolutionDir)..\include\stb_image;$(SolutionDir)..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\include\JEngine;$(SolutionDir)..\include\GL;$(SolutionDir)..\include\rapidjson;$(SolutionDir)..\include\imgui;$(SolutionDir)..\include\SDL2;$(SolutionDir)..\include\lodePNG;$(SolutionDir)..\include\freetype2;$(SolutionDir)..\include\assimp;$(SolutionDir)..\include\stb_image;$(SolutionDir)..\include\fmod;$(SolutionDir)..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <PreprocessorDefinitions>_SILENCE_CXX17_ITERATOR_BASE_CLASS_DEPRECATION_WARNING;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>

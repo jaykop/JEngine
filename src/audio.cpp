@@ -21,8 +21,8 @@ jeBegin
 */
 /******************************************************************************/
 Audio::Audio(Object* owner)
-	: Component(owner), m_channel(0), m_sound(0), m_system(system),
-	m_volume(0.5f), m_pause(false), m_play(true)
+	: Component(owner), channel_(nullptr), sound_(nullptr), system_(nullptr),
+	volume_(0.5f), pause_(false), play_(false)
 {
 
 }
@@ -42,10 +42,10 @@ Audio::~Audio()
 \brief - Play audio
 */
 /******************************************************************************/
-void Audio::Play(void)
+void Audio::play(void)
 {
-	if (m_play)
-		m_system->playSound(FMOD_CHANNEL_FREE, m_sound, false, &m_channel);
+	//if (play_)
+	//	system_->playSound(FMOD_CHANNEL_FREE, sound_, false, &channel_);
 }
 
 /******************************************************************************/
@@ -53,9 +53,9 @@ void Audio::Play(void)
 \brief - Stop audio
 */
 /******************************************************************************/
-void Audio::Stop(void)
+void Audio::stop(void)
 {
-	m_channel->stop();
+	channel_->stop();
 }
 
 /******************************************************************************/
@@ -64,9 +64,9 @@ void Audio::Stop(void)
 \param boolean - toggle
 */
 /******************************************************************************/
-void Audio::Pause(bool boolean)
+void Audio::pause(bool boolean)
 {
-	m_channel->setPaused(boolean);
+	channel_->setPaused(boolean);
 }
 
 /******************************************************************************/
@@ -75,9 +75,9 @@ void Audio::Pause(bool boolean)
 \param boolean - toggle
 */
 /******************************************************************************/
-void Audio::SetMuteToggle(bool toggle)
+void Audio::mute(bool toggle)
 {
-	m_play = toggle;
+	play_ = toggle;
 }
 
 /******************************************************************************/
@@ -86,9 +86,9 @@ void Audio::SetMuteToggle(bool toggle)
 \return m_play
 */
 /******************************************************************************/
-bool Audio::GetMuteToggle(void) const
+bool Audio::is_muted(void) const
 {
-	return m_play;
+	return play_;
 }
 
 /******************************************************************************/
@@ -97,9 +97,9 @@ bool Audio::GetMuteToggle(void) const
 \return m_volume
 */
 /******************************************************************************/
-float Audio::GetVolume(void) const
+float Audio::get_volume(void) const
 {
-	return m_volume;
+	return volume_;
 }
 
 /******************************************************************************/
@@ -108,9 +108,9 @@ float Audio::GetVolume(void) const
 \param volume
 */
 /******************************************************************************/
-void Audio::SetVolume(float volume)
+void Audio::set_volume(float volume)
 {
-	m_volume = volume;
+	volume_ = volume;
 }
 
 jeEnd
