@@ -53,7 +53,6 @@ protected:
 	ObjectMap objects_;
 
 	// asset containers
-	Images images_;
 	FontMap fonts_;
 	AudioMap audios_;
 	TextureMap textures_;

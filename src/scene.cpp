@@ -31,18 +31,12 @@ void Scene::load()
 	// Read font info
 	const rapidjson::Value& fonts = JsonParser::get_document()["Font"];
 
-	// Load images 
+	// Load textures 
 	for (rapidjson::SizeType i = 0; i < textures.Size(); ++i) {
-		AssetManager::load_image(
-			textures[i]["Directory"].GetString(),
-			textures[i]["Key"].GetString(),
-			&images_);
+		AssetManager::load_texture(textures[i]["Directory"].GetString(), textures[i]["Key"].GetString(),
+			&textures_);
 		jeDebugPrint("*AssetManager - Loaded image: %s.\n", textures[i]["Directory"].GetString());
 	}
-
-	// Register images to gpu
-	for (auto it : images_)
-		AssetManager::register_image(it.second, it.first, &textures_);
 
 	// Load font
 	for (rapidjson::SizeType i = 0; i < fonts.Size(); ++i) {

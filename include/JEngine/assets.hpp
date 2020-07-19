@@ -32,6 +32,5 @@ using AudioMap = std::unordered_map<std::string_view, Audio*>;
 using SceneMap = std::unordered_map<std::string_view, Scene*>;
 using TextureMap = std::unordered_map<std::string_view, unsigned>;
 using ArchetypeMap = std::unordered_map<std::string_view, Archetype*>;
-using Images = std::unordered_map<const char*, Image>;
 
 jeEnd

@@ -55,9 +55,8 @@ private:
 		AudioMap* aMap = &audioMap_);
 	static void load_archetype(const char* path, const char* archetypeKey,
 		ArchetypeMap* atMap = &archetypeMap_);
-	static void load_image(const char* path, const char* textureKey,
-		Images* img = &images_);
-	static void register_image(Image& image, const char* textureKey, TextureMap* tMap = &textureMap_);
+	static void load_texture(const char* path, const char* textureKey, 
+		TextureMap* tMap = &textureMap_);
 
 	static Mesh* load_object(const char* path);
 
@@ -69,7 +68,6 @@ private:
 	static void unload_assets();
 
 	static unsigned char* pixel_chunk;
-	static Images images_;
 
 	static FontMap fontMap_;
 	static AudioMap	audioMap_;

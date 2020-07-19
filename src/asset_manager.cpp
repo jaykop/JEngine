@@ -32,7 +32,6 @@ AssetManager::stateDirectory_, AssetManager::archeDirectory_;
 
 unsigned char* AssetManager::pixel_chunk = nullptr;
 
-Images AssetManager::images_;
 FontMap	AssetManager::fontMap_;
 AudioMap AssetManager::audioMap_;
 TextureMap AssetManager::textureMap_;
@@ -103,16 +102,12 @@ void AssetManager::load_assets()
 	SceneManager::set_first_scene(firstStateName.c_str());
 	jeDebugPrint("The first scene is %s.\n", firstStateName.c_str());
 
-	// Load images 
+	// Load textures 
 	for (rapidjson::SizeType i = 0; i < textureSize; ++i) {
-		load_image(textures[i]["Directory"].GetString(), textures[i]["Key"].GetString());
+		load_texture(textures[i]["Directory"].GetString(), textures[i]["Key"].GetString());
 		jeDebugPrint("*AssetManager - Loaded image: %s.\n", textures[i]["Directory"].GetString());
 	}
 	
-	// Register images to gpu
-	for (auto it : images_)
-		register_image(it.second, it.first);
-
 	// Load font
 	for (rapidjson::SizeType i = 0; i < fontSize; ++i) {
 
@@ -143,10 +138,11 @@ void AssetManager::unload_assets()
 		delete font.second;
 		font.second = nullptr;
 	}
+
 	fontMap_.clear();
 }
 
-void AssetManager::load_image(const char* path, const char* textureKey, Images* img)
+void AssetManager::load_texture(const char* path, const char* textureKey, TextureMap* tMap)
 {
 	Image image;
 	unsigned error = lodepng::decode(image.pixels, image.width, image.height, path);
@@ -155,35 +151,34 @@ void AssetManager::load_image(const char* path, const char* textureKey, Images* 
 		jeDebugPrint("!AssetManager - Decoder error %d / %s.\n", error, lodepng_error_text(error));
 
 	else
-		img->insert(Images::value_type(textureKey, image));
-}
-
-void AssetManager::register_image(Image& image, const char* textureKey, TextureMap* tMap)
-{
-	// Enable the texture for OpenGL.
-	glEnable(GL_TEXTURE_2D);
-	glGenTextures(1, &image.handle);
-	glBindTexture(GL_TEXTURE_2D, image.handle);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image.width, image.height, 0,
-		GL_RGBA, GL_UNSIGNED_BYTE, &image.pixels[0]);
-
-	if (!strcmp(textureKey, "grid"))
 	{
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, 16);
-		glGenerateMipmap(GL_TEXTURE_2D);
-	}
-	else
-	{
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	}
+		// Enable the texture for OpenGL.
+		glEnable(GL_TEXTURE_2D);
+		glGenTextures(1, &image.handle);
+		glBindTexture(GL_TEXTURE_2D, image.handle);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image.width, image.height, 0,
+			GL_RGBA, GL_UNSIGNED_BYTE, &image.pixels[0]);
 
-	tMap->insert(TextureMap::value_type(
-		textureKey, image.handle));
+		// texture only for engine
+		if (!strcmp(textureKey, "grid") && tMap == &textureMap_)
+		{
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, 16);
+			glGenerateMipmap(GL_TEXTURE_2D);
+		}
+
+		else
+		{
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		}
+
+		tMap->insert(TextureMap::value_type(
+			textureKey, image.handle));
+	}
 }
 
 void AssetManager::load_font(const char* path, const char* key, unsigned size,
