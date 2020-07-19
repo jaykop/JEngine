@@ -12,7 +12,13 @@ All codes are written by Jaykop Jeong...
 #pragma once
 #include <component_builder.hpp>
 #include <component.hpp>
-#include <fmod.hpp>
+
+namespace FMOD
+{
+	class Channel;
+	class Sound;
+	class System;
+}
 
 jeBegin
 
@@ -39,6 +45,9 @@ public:
 	float get_volume(void) const;
 	void set_volume(float volume);
 
+	bool is_playing() const;
+	bool is_paused() const;
+
 protected:
 
 	virtual void add_to_system() {};
@@ -52,9 +61,9 @@ private:
 
 	Audio& operator=(const Audio& rhs);
 
+	FMOD::System* system_;
 	FMOD::Channel* channel_;
 	FMOD::Sound* sound_; 
-	FMOD::System* system_;
 
 	float volume_;
 	bool  pause_, play_;

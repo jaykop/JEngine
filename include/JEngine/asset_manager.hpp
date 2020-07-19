@@ -42,7 +42,7 @@ public:
 
 	static Font* get_font(const char* key);
 	static Scene* get_scene(const char* key);
-	static Audio* get_audio(const char* key);
+	static FMOD::Sound* get_audio(const char* key);
 	static unsigned	get_texture(const char* key);
 	static Archetype* get_archetype(const char* key);
 
@@ -66,8 +66,6 @@ private:
 	static bool set_bulit_in_components();
 	static void load_assets();
 	static void unload_assets();
-
-	static unsigned char* pixel_chunk;
 
 	static FontMap fontMap_;
 	static AudioMap	audioMap_;

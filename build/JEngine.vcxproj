@@ -64,6 +64,7 @@
     <ClCompile Include="..\src\scene_controller.cpp" />
     <ClCompile Include="..\src\scene_manager.cpp" />
     <ClCompile Include="..\src\shader.cpp" />
+    <ClCompile Include="..\src\sound_manager.cpp" />
     <ClCompile Include="..\src\sound_system.cpp" />
     <ClCompile Include="..\src\sprite.cpp" />
     <ClCompile Include="..\src\text.cpp" />
@@ -122,6 +123,7 @@
     <ClInclude Include="..\include\JEngine\scene_manager.hpp" />
     <ClInclude Include="..\include\JEngine\semaphore.hpp" />
     <ClInclude Include="..\include\JEngine\shader.hpp" />
+    <ClInclude Include="..\include\JEngine\sound_manager.hpp" />
     <ClInclude Include="..\include\JEngine\sound_system.hpp" />
     <ClInclude Include="..\include\JEngine\sprite.hpp" />
     <ClInclude Include="..\include\JEngine\text.hpp" />

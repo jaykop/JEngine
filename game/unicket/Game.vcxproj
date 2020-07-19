@@ -102,12 +102,12 @@
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\include\JEngine;$(ProjectDir)..\..\include\SDL2;$(ProjectDir)..\..\include;$(ProjectDir)..\..\include\rapidjson;$(ProjectDir)..\..\include\freetype2</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\include\JEngine;$(ProjectDir)..\..\include\SDL2;$(ProjectDir)..\..\include;$(ProjectDir)..\..\include\rapidjson;$(ProjectDir)..\..\include\freetype2;$(ProjectDir)..\..\include\fmod</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <PreprocessorDefinitions>_SILENCE_CXX17_ITERATOR_BASE_CLASS_DEPRECATION_WARNING;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>JEngine_d.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;freetype.lib;opengl32.lib;glew32.lib;assimp-vc142-mtd.lib</AdditionalDependencies>
+      <AdditionalDependencies>JEngine_d.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;freetype.lib;opengl32.lib;glew32.lib;assimp-vc142-mtd.lib;fmod_vc.lib</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
       <AdditionalLibraryDirectories>$(ProjectDir)..\..\lib\SDL2\$(Platform);$(ProjectDir)..\..\lib\GL\$(Platform);$(ProjectDir)..\..\lib\assimp\$(Configuration)\$(Platform);$(ProjectDir)..\..\lib\jengine\$(Configuration)\$(Platform);$(ProjectDir)..\..\lib\freetype\$(Platform);$(ProjectDir)..\..\lib\fmod\$(Platform);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
@@ -127,12 +127,12 @@ xcopy /y /s /i "$(ProjectDir)..\default" "$(TargetDir)..\default"</Command>
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\include\JEngine;$(ProjectDir)..\..\include\SDL2;$(ProjectDir)..\..\include;$(ProjectDir)..\..\include\rapidjson;$(ProjectDir)..\..\include\freetype2</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\include\JEngine;$(ProjectDir)..\..\include\SDL2;$(ProjectDir)..\..\include;$(ProjectDir)..\..\include\rapidjson;$(ProjectDir)..\..\include\freetype2;$(ProjectDir)..\..\include\fmod</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <PreprocessorDefinitions>_SILENCE_CXX17_ITERATOR_BASE_CLASS_DEPRECATION_WARNING;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>JEngine_d.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;freetype.lib;opengl32.lib;glew32.lib;assimp-vc142-mtd.lib</AdditionalDependencies>
+      <AdditionalDependencies>JEngine_d.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;freetype.lib;opengl32.lib;glew32.lib;assimp-vc142-mtd.lib;fmod_vc.lib</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
       <AdditionalLibraryDirectories>$(ProjectDir)..\..\lib\SDL2\$(Platform);$(ProjectDir)..\..\lib\GL\$(Platform);$(ProjectDir)..\..\lib\assimp\$(Configuration)\$(Platform);$(ProjectDir)..\..\lib\jengine\$(Configuration)\$(Platform);$(ProjectDir)..\..\lib\freetype\$(Platform);$(ProjectDir)..\..\lib\fmod\$(Platform);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
@@ -154,14 +154,14 @@ xcopy /y /s /i "$(ProjectDir)..\default" "$(TargetDir)..\default"</Command>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\include\JEngine;$(ProjectDir)..\..\include\SDL2;$(ProjectDir)..\..\include;$(ProjectDir)..\..\include\rapidjson;$(ProjectDir)..\..\include\freetype2</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\include\JEngine;$(ProjectDir)..\..\include\SDL2;$(ProjectDir)..\..\include;$(ProjectDir)..\..\include\rapidjson;$(ProjectDir)..\..\include\freetype2;$(ProjectDir)..\..\include\fmod</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <PreprocessorDefinitions>_SILENCE_CXX17_ITERATOR_BASE_CLASS_DEPRECATION_WARNING;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>JEngine.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;freetype.lib;opengl32.lib;glew32.lib;assimp-vc142-mt.lib</AdditionalDependencies>
+      <AdditionalDependencies>JEngine.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;freetype.lib;opengl32.lib;glew32.lib;assimp-vc142-mt.lib;fmod_vc.lib</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
       <AdditionalLibraryDirectories>$(ProjectDir)..\..\lib\SDL2\$(Platform);$(ProjectDir)..\..\lib\GL\$(Platform);$(ProjectDir)..\..\lib\assimp\$(Configuration)\$(Platform);$(ProjectDir)..\..\lib\jengine\$(Configuration)\$(Platform);$(ProjectDir)..\..\lib\freetype\$(Platform);$(ProjectDir)..\..\lib\fmod\$(Platform);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
@@ -183,14 +183,14 @@ xcopy /y /s /i "$(ProjectDir)..\default" "$(TargetDir)..\default"</Command>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\include\JEngine;$(ProjectDir)..\..\include\SDL2;$(ProjectDir)..\..\include;$(ProjectDir)..\..\include\rapidjson;$(ProjectDir)..\..\include\freetype2</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\include\JEngine;$(ProjectDir)..\..\include\SDL2;$(ProjectDir)..\..\include;$(ProjectDir)..\..\include\rapidjson;$(ProjectDir)..\..\include\freetype2;$(ProjectDir)..\..\include\fmod</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <PreprocessorDefinitions>_SILENCE_CXX17_ITERATOR_BASE_CLASS_DEPRECATION_WARNING;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>JEngine.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;freetype.lib;opengl32.lib;glew32.lib;assimp-vc142-mt.lib</AdditionalDependencies>
+      <AdditionalDependencies>JEngine.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;freetype.lib;opengl32.lib;glew32.lib;assimp-vc142-mt.lib;fmod_vc.lib</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
       <AdditionalLibraryDirectories>$(ProjectDir)..\..\lib\SDL2\$(Platform);$(ProjectDir)..\..\lib\GL\$(Platform);$(ProjectDir)..\..\lib\assimp\$(Configuration)\$(Platform);$(ProjectDir)..\..\lib\jengine\$(Configuration)\$(Platform);$(ProjectDir)..\..\lib\freetype\$(Platform);$(ProjectDir)..\..\lib\fmod\$(Platform);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>

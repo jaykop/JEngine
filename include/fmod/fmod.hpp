@@ -1,3 +1,5 @@
+#pragma warning (disable : 26812)
+
 /* ======================================================================================== */
 /* FMOD Core API - C++ header file.                                                         */
 /* Copyright (c), Firelight Technologies Pty, Ltd. 2004-2020.                               */

@@ -16,7 +16,6 @@ Contains the methods of asset_manager class
 #include <debug_tools.hpp>
 #include <scene_manager.hpp>
 #include <asset_manager.hpp>
-#include <json_parser.hpp>
 #include <gl_manager.hpp>
 #include <shader.hpp>
 #include <scene.hpp>
@@ -29,8 +28,6 @@ jeBegin
 
 std::string	AssetManager::initDirectory_, AssetManager::assetDirectory_, 
 AssetManager::stateDirectory_, AssetManager::archeDirectory_;
-
-unsigned char* AssetManager::pixel_chunk = nullptr;
 
 FontMap	AssetManager::fontMap_;
 AudioMap AssetManager::audioMap_;
@@ -333,10 +330,10 @@ void AssetManager::generate_screenshot(const char* directory)
 
 	// Send the pixel info to the image vector
 	std::vector<unsigned char> image;
-	pixel_chunk = new unsigned char[size];
+	unsigned char* pixelChunk = new unsigned char[size];
 
 	// Read pixel from window screen
-	glReadPixels(0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, &pixel_chunk[0]);
+	glReadPixels(0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, &pixelChunk[0]);
 
 	// Invert the image vertucally
 	for (unsigned y = 0; y < height / 2; y++)
@@ -345,14 +342,14 @@ void AssetManager::generate_screenshot(const char* directory)
 			unsigned index = 4 * (width * y + x);
 			unsigned invertedInder = 4 * (width * (height - y - 1) + x);
 
-			std::swap(pixel_chunk[index + 0], pixel_chunk[invertedInder + 0]);
-			std::swap(pixel_chunk[index + 1], pixel_chunk[invertedInder + 1]);
-			std::swap(pixel_chunk[index + 2], pixel_chunk[invertedInder + 2]);
-			std::swap(pixel_chunk[index + 3], pixel_chunk[invertedInder + 3]);
+			std::swap(pixelChunk[index + 0], pixelChunk[invertedInder + 0]);
+			std::swap(pixelChunk[index + 1], pixelChunk[invertedInder + 1]);
+			std::swap(pixelChunk[index + 2], pixelChunk[invertedInder + 2]);
+			std::swap(pixelChunk[index + 3], pixelChunk[invertedInder + 3]);
 		}
 
 	// Check error
-	unsigned error = lodepng::encode(image, pixel_chunk, width, height);
+	unsigned error = lodepng::encode(image, pixelChunk, width, height);
 	if (!error) {
 
 		std::string fileName;
@@ -398,8 +395,8 @@ void AssetManager::generate_screenshot(const char* directory)
 		jeDebugPrint("!AssetManager - Cannot export screenshot image : %i\n", error);
 
 
-	delete[] pixel_chunk;
-	pixel_chunk = nullptr;
+	delete[] pixelChunk;
+	pixelChunk = nullptr;
 }
 
 Font* AssetManager::get_font(const char* key)
@@ -416,7 +413,7 @@ Font* AssetManager::get_font(const char* key)
 	return nullptr;
 }
 
-Audio* AssetManager::get_audio(const char* key)
+FMOD::Sound* AssetManager::get_audio(const char* key)
 {
 	auto found = audioMap_.find(key);
 	if (found != audioMap_.end())

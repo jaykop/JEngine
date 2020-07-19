@@ -10,7 +10,9 @@ All codes are written by Jaykop Jeong...
 */
 /******************************************************************************/
 
-#include "audio.hpp"
+#include <audio.hpp>
+#include <sound_manager.hpp>
+#include <fmod.hpp>
 
 jeBegin
 
@@ -21,7 +23,7 @@ jeBegin
 */
 /******************************************************************************/
 Audio::Audio(Object* owner)
-	: Component(owner), channel_(nullptr), sound_(nullptr), system_(nullptr),
+	: Component(owner), system_(SoundManager::system_), channel_(nullptr), sound_(nullptr),
 	volume_(0.5f), pause_(false), play_(false)
 {
 
@@ -44,8 +46,8 @@ Audio::~Audio()
 /******************************************************************************/
 void Audio::play(void)
 {
-	//if (play_)
-	//	system_->playSound(FMOD_CHANNEL_FREE, sound_, false, &channel_);
+	if (!is_playing())
+		system_->playSound(sound_, 0, false, &channel_);
 }
 
 /******************************************************************************/
@@ -111,6 +113,20 @@ float Audio::get_volume(void) const
 void Audio::set_volume(float volume)
 {
 	volume_ = volume;
+}
+
+bool Audio::is_playing() const
+{
+	bool playing;
+	channel_->isPlaying(&playing);
+	return playing;
+}
+
+bool Audio::is_paused() const
+{
+	bool paused;
+	channel_->getPaused(&paused);
+	return paused;
 }
 
 jeEnd

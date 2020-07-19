@@ -13,6 +13,13 @@ Contains the definition of SoundSystem class
 #pragma once
 #include <macros.hpp>
 
+namespace FMOD
+{
+	class Channel;
+	class Sound;
+	class System;
+};
+
 jeBegin
 
 class SoundSystem {
@@ -27,13 +34,17 @@ class SoundSystem {
 
 public:
 
-
+	static FMOD::Sound* get_current_sound();
 
 private:
 
 	static void initialize();
 	static void update(float dt);
 	static void close();
+
+	static FMOD::System* system_;
+	static FMOD::Channel* channel_;
+	static FMOD::Sound* current_;
 
 };
 

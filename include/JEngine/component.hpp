@@ -11,6 +11,7 @@ Contains the definition of Component class
 /******************************************************************************/
 
 #pragma once
+#include <macros.hpp>
 #include <json_parser.hpp>
 
 jeBegin
