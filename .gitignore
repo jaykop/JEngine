@@ -350,4 +350,7 @@ MigrationBackup/
 .ionide/
 
 !/lib/*/x64/
-!/lib/assimp/*/x64/
+!/lib/assimp/Debug/
+!/lib/assimp/Release/
+!/lib/assimp/Debug/x64/
+!/lib/assimp/Release/x64/
