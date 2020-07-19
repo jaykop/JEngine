@@ -1,3 +1,5 @@
+#pragma warning (disable : 26451)
+
 #include <shader.hpp>
 #include <fstream>
 #include <string>
@@ -15,7 +17,7 @@ Shader::Shader() : programId_(0), vertexId_(0),
 	fragmentId_(0), geometryId_(0),
 	infoLogLength_(0), result_(GL_FALSE) {}
 
-void Shader::create_shader(const char* file_path, Type type, unsigned shaderNumber)
+void Shader::create_shader(const char* file_path, Type type)
 {
 	// Create the shader
 	GLuint localShader = 0;
@@ -59,7 +61,7 @@ void Shader::create_shader(const char* file_path, Type type, unsigned shaderNumb
 	glGetShaderiv(localShader, GL_INFO_LOG_LENGTH, &infoLogLength_);
 
 	if (infoLogLength_ > 0) {
-		std::vector<char> ShaderErrorMessage(infoLogLength_ + int(1));
+		std::vector<char> ShaderErrorMessage(infoLogLength_ + 1);
 		glGetShaderInfoLog(localShader, infoLogLength_, nullptr, &ShaderErrorMessage[0]);
 		jeDebugPrint("!Shader - %4s / %s\n", &ShaderErrorMessage[0], file_path);
 	}
@@ -83,18 +85,6 @@ void Shader::combine_shaders(unsigned shaderNumber)
 			glAttachShader(programId_, geometryId_);
 
 		glLinkProgram(programId_);
-
-		//// Check the program
-		//glGetProgramiv(programId_, GL_LINK_STATUS, &result_);
-		//glGetShaderiv(programId_, GL_INFO_LOG_LENGTH, &infoLogLength_);
-
-		//// Check if linked properly
-		//if (infoLogLength_ > 0) {
-		//	std::vector<char> ProgramErrorMessage(infoLogLength_ + 1);
-		//	glGetShaderInfoLog(programId_, infoLogLength_, nullptr, &ProgramErrorMessage[0]);
-		//	jeDebugPrint("!Shader - %4s / %i\n", &ProgramErrorMessage[0], shaderNumber);
-
-		//}
 
 		glUseProgram(programId_);	// Start using shade  program
 
