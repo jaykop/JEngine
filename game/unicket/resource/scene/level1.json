@@ -1,64 +1,108 @@
 {
+	"Font": [
 
-	"Background" : [ 0.5, 0.5, 0.5, 0.5 ],
-	"Screen" : [ 1.0, 1.0, 1.0, 1.0 ],
-	"Effect" : { "Type" : "None" },
-	"Object" : [
+	],
+
+	"Texture": [
+
 		{
-			"Name" : "Camera",
-			"Component" : [
+			"Key": "testAnimation",
+			"Directory": "resource/texture/testAnimation.png"
+		}
+
+	],
+
+	"Audio": [
+
+	],
+
+	"Background": [ 0.5, 0.5, 0.5, 0.5 ],
+	"Screen": [ 1.0, 1.0, 1.0, 1.0 ],
+	"Effect": { "Type": "None" },
+	"Object": [
+		{
+			"Name": "Camera",
+			"Component": [
 				{
 					"Type": "Camera",
-					"Values": {"Position" : [ 50, 50, 100], "Target" : [0, 0, 0],	"Up" : [0, 1, 0]}
-				}
-			]
-		},				
-		{
-			"Name" : "Model1",
-			"Component" : [
-				{
-					"Type": "Transform",
-					"Values": {"Position" : [50, 0, 0], "Scale" : [50, 50, 50]}
-				},
-				{
-					"Type": "Model",
 					"Values": {
-						"Mesh" : [
-							{	
-								"Shape" : "WireBox",
-								"Texture" : [ "rect" ],
-								"DrawMode" : "Line_Strip"
-							}
-						],
-
-						"Color" : [1, 1, 1, 1], "Projection" : "Perspective"}
+						"Position": [ 100, 100, 100 ],
+						"Target": [ 0, 0, 0 ],
+						"Up": [ 0, 1, 0 ]
+					}
 				}
 			]
 		},
 		{
-			"Name" : "Model2",
-			"Component" : [
+			"Name": "PerspectiveModel",
+			"Component": [
 				{
 					"Type": "Transform",
-					"Values": {"Position" : [-50, 0, 0], "Scale" : [50, 50, 50]}
+					"Values": {
+						"Position": [ 50, 0, 0 ],
+						"Scale": [ 50, 50, 50 ]
+					}
 				},
 				{
 					"Type": "Model",
 					"Values": {
-						"Mesh" : [
-							{	
-								"Shape" : "Cube",
-								"Texture" : [ "uvtemplate" ]
+						"Mesh": [
+							{
+								"Shape": "Cube",
+								"Texture": [ "uvtemplate" ]
 							}
 						],
-
-						"Color" : [1, 1, 1, 1], "Projection" : "Perspective"}
+						"Color": [ 1, 1, 1, 1 ],
+						"Projection": "Perspective"
+					}
 				}
 			]
 		},
 		{
-			"Name" : "LevelController",
-			"Component" : [
+			"Name": "OrthogonalSprite",
+			"Component": [
+				{
+					"Type": "Transform",
+					"Values": {
+						"Position": [ 300, 50, -10 ],
+						"Scale": [ 150, 250, 0 ]
+					}
+				},
+				{
+					"Type": "Model",
+					"Values": {
+						"Mesh": [
+							{
+								"Shape": "Rect",
+								"Texture": [ "testAnimation" ]
+							}
+						],
+						"Color": [ 1, 1, 1, 1 ],
+						"Projection": "Orthogonal"
+					}
+				},
+				{
+					"Type": "Animation",
+					"Values": {
+						"Frame": 8,
+						"Speed": 12,
+						"Active": true
+					}
+				}
+			]
+		},
+		{
+			"Name": "TestObject",
+			"Component": [
+				{
+					"Type": "TestLogic",
+					"Values": {}
+				}
+			]
+		},
+		{
+			"Name": "LevelController",
+			"Component": [
 				{
 					"Type": "LevelController",
 					"Values": {}

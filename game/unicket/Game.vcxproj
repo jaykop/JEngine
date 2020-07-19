@@ -210,11 +210,8 @@ xcopy /y /s /i "$(ProjectDir)..\default" "$(TargetDir)..\default"</Command>
     <ClCompile Include="camera_controller.cpp" />
     <ClCompile Include="JEngine.cpp" />
     <ClCompile Include="level1.cpp" />
-    <ClCompile Include="level2.cpp" />
-    <ClCompile Include="level3.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="scene_controller.cpp" />
-    <ClCompile Include="test_scene.cpp" />
     <ClCompile Include="topdown_controller.cpp" />
     <ClCompile Include="particle_conrtoller.cpp" />
   </ItemGroup>
@@ -224,11 +221,8 @@ xcopy /y /s /i "$(ProjectDir)..\default" "$(TargetDir)..\default"</Command>
     <ClInclude Include="game_scenes.h" />
     <ClInclude Include="JEngine.h" />
     <ClInclude Include="level1.h" />
-    <ClInclude Include="level2.h" />
-    <ClInclude Include="level3.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="scene_controller.h" />
-    <ClInclude Include="test_scene.h" />
     <ClInclude Include="topdown_controller.h" />
     <ClInclude Include="particle_conrtoller.h" />
   </ItemGroup>

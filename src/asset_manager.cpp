@@ -146,16 +146,56 @@ void AssetManager::unload_assets()
 	fontMap_.clear();
 }
 
+void AssetManager::load_image(const char* path, const char* textureKey, Images* img)
+{
+	Image image;
+	unsigned error = lodepng::decode(image.pixels, image.width, image.height, path);
+
+	if (error)
+		jeDebugPrint("!AssetManager - Decoder error %d / %s.\n", error, lodepng_error_text(error));
+
+	else
+		img->insert(Images::value_type(textureKey, image));
+}
+
+void AssetManager::register_image(Image& image, const char* textureKey, TextureMap* tMap)
+{
+	// Enable the texture for OpenGL.
+	glEnable(GL_TEXTURE_2D);
+	glGenTextures(1, &image.handle);
+	glBindTexture(GL_TEXTURE_2D, image.handle);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image.width, image.height, 0,
+		GL_RGBA, GL_UNSIGNED_BYTE, &image.pixels[0]);
+
+	if (!strcmp(textureKey, "grid"))
+	{
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, 16);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+	{
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	}
+
+	tMap->insert(TextureMap::value_type(
+		textureKey, image.handle));
+}
+
 void AssetManager::load_font(const char* path, const char* key, unsigned size,
-	unsigned long start, unsigned long end)
+	unsigned long start, unsigned long end, FontMap* fMap)
 {
 	// Set pointer to new font
 	Font* newFont = nullptr;
 	static bool s_existing = false;
 	static float s_newLineLevel = 0;
-	auto found = fontMap_.find(key);
+	auto found = fMap->find(key);
 
-	if (found != fontMap_.end()) {
+	if (found != fMap->end()) {
 		// There is existing font map
 		s_existing = true;
 		// Then get that one
@@ -199,7 +239,7 @@ void AssetManager::load_font(const char* path, const char* key, unsigned size,
 	// add new one
 	if (!s_existing) {
 		newFont->newline = s_newLineLevel;
-		fontMap_.insert(FontMap::value_type(key, newFont));
+		fMap->insert(FontMap::value_type(key, newFont));
 	}
 }
 
@@ -252,53 +292,13 @@ void AssetManager::load_characters(Font* font, float& newLineLevel,
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void AssetManager::load_audio(const char* /*path*/, const char* /*_audioKey*/)
+void AssetManager::load_audio(const char* /*path*/, const char* /*_audioKey*/, AudioMap* /*aMap*/)
 {
 	// TODO
 	// load audio assets
 }
 
-void AssetManager::load_image(const char* path, const char* textureKey)
-{
-	Image image;
-	unsigned error = lodepng::decode(image.pixels, image.width, image.height, path);
-
-	if (error)
-		jeDebugPrint("!AssetManager - Decoder error %d / %s.\n", error, lodepng_error_text(error));
-
-	else
-		images_.insert(Images::value_type(textureKey, image));
-}
-
-void AssetManager::register_image(Image& image, const char* textureKey)
-{
-	// Enable the texture for OpenGL.
-	glEnable(GL_TEXTURE_2D);
-	glGenTextures(1, &image.handle);
-	glBindTexture(GL_TEXTURE_2D, image.handle);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image.width, image.height, 0,
-		GL_RGBA, GL_UNSIGNED_BYTE, &image.pixels[0]);
-
-	if (!strcmp(textureKey, "grid"))
-	{
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, 16);
-		glGenerateMipmap(GL_TEXTURE_2D);
-	}
-	else
-	{
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	}
-
-	textureMap_.insert(TextureMap::value_type(
-		textureKey, image.handle));
-}
-
-void AssetManager::load_archetype(const char* /*path*/, const char* /*_archetypeKey*/)
+void AssetManager::load_archetype(const char* /*path*/, const char* /*_archetypeKey*/, ArchetypeMap* /*atMap*/)
 {
 	// TODO
 	// load archetpye assets

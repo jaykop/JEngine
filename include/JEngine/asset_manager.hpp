@@ -25,8 +25,9 @@ class AssetManager {
 	AssetManager() = delete;
 	~AssetManager() = delete;
 
-	jePreventClone(AssetManager)
+	jePreventClone(AssetManager);
 
+	friend class Scene;
 	friend class GraphicSystem;
 	friend class Application;
 
@@ -47,15 +48,21 @@ public:
 
 private:
 
-	static void load_shaders();
 	static void load_font(const char* path, const char* audioKey, unsigned size,
-		unsigned long start, unsigned long end);
-	static void load_characters(Font* font, float& newLineLevel, unsigned long start, unsigned long end);
-	static void load_audio(const char* path, const char* audioKey);
-	static void load_image(const char* path, const char* textureKey);
-	static void register_image(Image& image, const char* textureKey);
-	static void load_archetype(const char* path, const char* archetypeKey);
+		unsigned long start, unsigned long end, 
+		FontMap* fMap = &fontMap_);
+	static void load_audio(const char* path, const char* audioKey, 
+		AudioMap* aMap = &audioMap_);
+	static void load_archetype(const char* path, const char* archetypeKey,
+		ArchetypeMap* atMap = &archetypeMap_);
+	static void load_image(const char* path, const char* textureKey,
+		Images* img = &images_);
+	static void register_image(Image& image, const char* textureKey, TextureMap* tMap = &textureMap_);
+
 	static Mesh* load_object(const char* path);
+
+	static void load_shaders();
+	static void load_characters(Font* font, float& newLineLevel, unsigned long start, unsigned long end);
 	
 	static bool set_bulit_in_components();
 	static void load_assets();

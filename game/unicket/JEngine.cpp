@@ -19,8 +19,7 @@ void JEngine::register_builders()
 void JEngine::register_scenes()
 {
 	// add scene manully here
-	SceneManager::add_scene(new TestScene("test_scene"));
-	
+	SceneManager::add_scene(new Level1("Level1", "resource/scene/level1.json"));
 }
 
 bool JEngine::register_assets()

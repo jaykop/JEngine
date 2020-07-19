@@ -18,9 +18,6 @@
     <ClInclude Include="game_logics.h">
       <Filter>provided</Filter>
     </ClInclude>
-    <ClInclude Include="test_scene.h">
-      <Filter>game_scene</Filter>
-    </ClInclude>
     <ClInclude Include="game_scenes.h">
       <Filter>provided</Filter>
     </ClInclude>
@@ -42,12 +39,6 @@
     <ClInclude Include="level1.h">
       <Filter>game_scene</Filter>
     </ClInclude>
-    <ClInclude Include="level2.h">
-      <Filter>game_scene</Filter>
-    </ClInclude>
-    <ClInclude Include="level3.h">
-      <Filter>game_scene</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -55,9 +46,6 @@
     </ClCompile>
     <ClCompile Include="JEngine.cpp">
       <Filter>provided</Filter>
-    </ClCompile>
-    <ClCompile Include="test_scene.cpp">
-      <Filter>game_scene</Filter>
     </ClCompile>
     <ClCompile Include="scene_controller.cpp">
       <Filter>game_logics</Filter>
@@ -72,12 +60,6 @@
       <Filter>game_logics</Filter>
     </ClCompile>
     <ClCompile Include="level1.cpp">
-      <Filter>game_scene</Filter>
-    </ClCompile>
-    <ClCompile Include="level2.cpp">
-      <Filter>game_scene</Filter>
-    </ClCompile>
-    <ClCompile Include="level3.cpp">
       <Filter>game_scene</Filter>
     </ClCompile>
   </ItemGroup>

@@ -37,7 +37,7 @@ public:
 
 protected:
 
-	Scene(const char* name) : name_(name), directory_(nullptr) {}
+	Scene(const char* name, const char* dir) : name_(name), directory_(dir) {}
 	~Scene() {};
 
 	virtual void load();
@@ -53,6 +53,7 @@ protected:
 	ObjectMap objects_;
 
 	// asset containers
+	Images images_;
 	FontMap fonts_;
 	AudioMap audios_;
 	TextureMap textures_;

@@ -95,8 +95,7 @@ void SceneManager::push_scene(const char* path, const char* stateName)
 	if (!sameOne) {
 
 		// make a new scene as intended
-		Scene* newScene = new Scene(stateName);
-		newScene->directory_ = path;
+		Scene* newScene = new Scene(stateName, path);
 
 		// push to the vector
 		scenes_.push_back(newScene);
@@ -125,7 +124,7 @@ void SceneManager::add_scene(Scene* scene)
 	if (!sameOne) {
 
 		// push to the vector
-		scenes_.push_back(scene);
+		scenes_.emplace_back(scene);
 		jeDoPrint("Added scene->name_");
 
 		// if there is only single scene,

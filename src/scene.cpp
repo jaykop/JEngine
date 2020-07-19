@@ -13,6 +13,7 @@ Contains the methods of scene class
 #include <scene.hpp>
 #include <object.hpp>
 #include <object_manager.hpp>
+#include <asset_manager.hpp>
 
 #include <sound_system.hpp>
 #include <physics_system.hpp>
@@ -23,6 +24,46 @@ jeBegin
 
 void Scene::load()
 {
+	// Read asset info
+	JsonParser::read_file(directory_);
+	const rapidjson::Value& textures = JsonParser::get_document()["Texture"];
+
+	// Read font info
+	const rapidjson::Value& fonts = JsonParser::get_document()["Font"];
+
+	// Load images 
+	for (rapidjson::SizeType i = 0; i < textures.Size(); ++i) {
+		AssetManager::load_image(
+			textures[i]["Directory"].GetString(),
+			textures[i]["Key"].GetString(),
+			&images_);
+		jeDebugPrint("*AssetManager - Loaded image: %s.\n", textures[i]["Directory"].GetString());
+	}
+
+	// Register images to gpu
+	for (auto it : images_)
+		AssetManager::register_image(it.second, it.first, &textures_);
+
+	// Load font
+	for (rapidjson::SizeType i = 0; i < fonts.Size(); ++i) {
+
+		// Load default ascii characters (0 - 128)
+		AssetManager::load_font(fonts[i]["Directory"].GetString(),
+			fonts[i]["Key"].GetString(),
+			fonts[i]["Size"].GetUint(),
+			0, 128, &fonts_);
+
+		// Load additional korean set
+		for (unsigned j = 0; j < fonts[i]["Additional"].Size(); ++j) {
+			AssetManager::load_font(fonts[i]["Directory"].GetString(),
+				fonts[i]["Key"].GetString(),
+				fonts[i]["Size"].GetUint(),
+				static_cast<unsigned long>(fonts[i]["Additional"][j][0].GetUint64()),
+				static_cast<unsigned long>(fonts[i]["Additional"][j][1].GetUint64()),
+				&fonts_);
+		}
+	}
+
 	// bind the objects to the manager
 	ObjectManager::objects_ = &objects_;
 }
