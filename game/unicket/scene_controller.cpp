@@ -46,9 +46,12 @@ void SceneController::update(float /*dt*/)
 
 	if (InputHandler::key_pressed(KEY::MOUSE_RIGHT))
 		std::cout << "MOUSE_RIGHT\n";
-
-	if (InputHandler::key_pressed(KEY::ENTER))
+	
+	if (InputHandler::key_triggered(KEY::ENTER))
+	{
 		std::cout << "ENTER\n";
+		AssetManager::generate_screenshot("resource/screenshot/");
+	}
 
 	if (InputHandler::key_triggered(KEY::SPACE))
 		GraphicSystem::grid.render = !GraphicSystem::grid.render;
