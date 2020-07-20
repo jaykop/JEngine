@@ -130,6 +130,9 @@
     <ClCompile Include="..\src\mesh.cpp">
       <Filter>system\graphics</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\light.cpp">
+      <Filter>system\graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\JEngine\macros.hpp" />
@@ -293,6 +296,9 @@
       <Filter>system\graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\include\JEngine\mesh.hpp">
+      <Filter>system\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\JEngine\light.hpp">
       <Filter>system\graphics</Filter>
     </ClInclude>
   </ItemGroup>

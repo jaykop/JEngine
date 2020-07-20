@@ -231,7 +231,7 @@ void SceneManager::set_first_scene(const char* stateName)
 		return;
 	}
 
-	jeDebugPrint("No state to resume\n");
+	jeDebugPrint("No such name of scene\n");
 }
 
 void SceneManager::set_next_scene(const char* nextState)
@@ -257,7 +257,7 @@ void SceneManager::set_next_scene(const char* nextState)
 		status_ = Status::CHANGE;
 		return;
 	}
-	jeDebugPrint("No state to resume\n");
+	jeDebugPrint("No such name of scene\n");
 }
 
 void SceneManager::pause(const char* nextState)
@@ -277,7 +277,7 @@ void SceneManager::pause(const char* nextState)
 		status_ = Status::PAUSE;
 		return;
 	}
-	jeDebugPrint("No state to resume\n");
+	jeDebugPrint("No such name of scene\n");
 }
 
 void SceneManager::resume()

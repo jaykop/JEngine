@@ -37,6 +37,7 @@
     <ClCompile Include="..\src\graphic_system.cpp" />
     <ClCompile Include="..\src\input_handler.cpp" />
     <ClCompile Include="..\src\json_parser.cpp" />
+    <ClCompile Include="..\src\light.cpp" />
     <ClCompile Include="..\src\mat3.cpp" />
     <ClCompile Include="..\src\mat4.cpp" />
     <ClCompile Include="..\src\mat4_transform.cpp" />
@@ -100,6 +101,7 @@
     <ClInclude Include="..\include\JEngine\input_handler.hpp" />
     <ClInclude Include="..\include\JEngine\json_parser.hpp" />
     <ClInclude Include="..\include\JEngine\key_map.hpp" />
+    <ClInclude Include="..\include\JEngine\light.hpp" />
     <ClInclude Include="..\include\JEngine\macros.hpp" />
     <ClInclude Include="..\include\JEngine\mat3.hpp" />
     <ClInclude Include="..\include\JEngine\mat4.hpp" />

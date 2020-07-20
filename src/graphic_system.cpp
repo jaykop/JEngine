@@ -16,20 +16,28 @@ Contains the methods of GraphicSystem class
 #include <gl_manager.hpp>
 #include <asset_manager.hpp>
 #include <scene.hpp>
-#include <camera.hpp>
-#include <renderer.hpp>
 #include <shader.hpp>
-
+#include <math_util.hpp>
 #include <vec2.hpp>
 #include <mat4.hpp>
 #include <colors.hpp>
 
+#include <transform.hpp>
+#include <camera.hpp>
+#include <renderer.hpp>
+#include <light.hpp>
+
 jeBegin
+
+const std::string type("mode"), position("position"), direction("direction"),
+innerAngle("innerAngle"), outerAngle("outerAngle"), fallOff("fallOff"),
+aColor("aColor"), sColor("sColor"), dColor("dColor"), activate("activate"), radius("radius");
 
 std::stack<GraphicSystem::Graphic> GraphicSystem::graphicStack_;
 Camera* GraphicSystem::mainCamera_ = nullptr;
 GraphicSystem::Renderers GraphicSystem::renderers_;
 GraphicSystem::Cameras GraphicSystem::cameras_;
+GraphicSystem::Lights GraphicSystem::lights_;
 vec4 GraphicSystem::backgroundColor = vec4::zero, GraphicSystem::screenColor = vec4::zero;
 GraphicSystem::Grid GraphicSystem::grid;
 
@@ -75,6 +83,9 @@ void GraphicSystem::update(float dt) {
 	if (grid.render)
 		render_grid();
 
+	// update lights
+	update_lights(dt);
+
 	// update renderers
 	for (auto& r : renderers_)
 		r->draw(dt);
@@ -83,7 +94,6 @@ void GraphicSystem::update(float dt) {
 void GraphicSystem::close() {
 
 	renderers_.clear();
-
 	mainCamera_ = nullptr;
 }
 
@@ -138,20 +148,34 @@ void GraphicSystem::render_grid()
 
 }
 
-void GraphicSystem::add_renderer(Renderer* model) {
+void GraphicSystem::add_renderer(Renderer* model) 
+{
 	renderers_.emplace_back(model);
 }
 
-void GraphicSystem::add_camera(Camera* camera) { 
+void GraphicSystem::add_camera(Camera* camera) 
+{ 
 	cameras_.emplace_back(camera);
 }
 
-void GraphicSystem::remove_renderer(Renderer* model) {
+void GraphicSystem::add_light(Light* light)
+{
+	lights_.emplace_back(light);
+}
+
+void GraphicSystem::remove_renderer(Renderer* model)
+{
 	renderers_.erase(std::remove(renderers_.begin(), renderers_.end(), model), renderers_.end());
 }
 
-void GraphicSystem::remove_camera(Camera* camera) {
+void GraphicSystem::remove_camera(Camera* camera) 
+{
 	cameras_.erase(std::remove(cameras_.begin(), cameras_.end(), camera), cameras_.end());
+}
+
+void GraphicSystem::remove_light(Light* light)
+{
+	lights_.erase(std::remove(lights_.begin(), lights_.end(), light), lights_.end());
 }
 
 void GraphicSystem::pause()
@@ -163,12 +187,14 @@ void GraphicSystem::pause()
 	grp.grid = grid;
 	grp.renderers = renderers_;
 	grp.cameras = cameras_;
+	grp.lights = lights_;
 
 	graphicStack_.emplace(grp);
 
 	// 
 	renderers_.clear();
 	cameras_.clear();
+	lights_.clear();
 }
 
 void GraphicSystem::resume()
@@ -184,6 +210,57 @@ void GraphicSystem::resume()
 		grid = grp.grid;
 		renderers_ = grp.renderers;
 		cameras_ = grp.cameras;
+		lights_ = grp.lights;
+	}
+}
+
+void GraphicSystem::update_lights(float dt)
+{
+	Shader* shader = GLManager::shader_[GLManager::NORMAL];
+	shader->use();
+	shader->set_uint("uint_lightSize", lights_.size());
+	
+	for (unsigned i = 0; i < lights_.size() ; ++i)
+	{
+		shader = GLManager::shader_[GLManager::NORMAL];
+		shader->use();
+
+		// Update shader uniform info
+		std::string str("light[" + std::to_string(i) + "].");
+		shader->set_bool((str + activate).c_str(), lights_[i]->activate);
+
+		// Set strings as a static
+		if (lights_[i]->activate) {
+
+			/*Calculate the light max and set the radius for light volume optimization*/
+			// Calculate the light max
+			float ambientMax = std::fmaxf(std::fmaxf(lights_[i]->ambient.x, lights_[i]->ambient.y),lights_[i]->ambient.z);
+			float diffuseMax = std::fmaxf(std::fmaxf(lights_[i]->diffuse.x, lights_[i]->diffuse.y),lights_[i]->diffuse.z);
+			float speculaMax = std::fmaxf(std::fmaxf(lights_[i]->specular.x, lights_[i]->specular.y), lights_[i]->specular.z);
+			float lightMax = std::fmaxf(std::fmaxf(ambientMax, diffuseMax), speculaMax);
+
+			// Get radius
+			lights_[i]->radius = (-Light::linear 
+				+ std::sqrtf(Light::linear * Light::linear - 4 * Light::quadratic 
+					* (Light::constant - (256.f / 5.f) * lightMax))) * 0.5f * Light::quadratic;
+
+			// Update light direction
+			const vec3& pos = lights_[i]->transform_->position;
+			lights_[i]->direction = (vec3::zero - pos);
+			shader->set_vec3((str + type).c_str(), pos);
+
+			shader->set_int((str + type).c_str(), static_cast<int>(lights_[i]->type));
+			shader->set_vec3((str + type).c_str(), lights_[i]->direction);
+			shader->set_vec3((str + aColor).c_str(), lights_[i]->ambient);
+			shader->set_vec3((str + sColor).c_str(), lights_[i]->specular);
+			shader->set_vec3((str + dColor).c_str(), lights_[i]->diffuse);
+			shader->set_float((str + fallOff).c_str(), lights_[i]->fallOff);
+			shader->set_float((str + radius).c_str(), lights_[i]->radius);
+			shader->set_float((str + innerAngle).c_str(), Math::deg_to_rad(lights_[i]->innerAngle));
+			shader->set_float((str + outerAngle).c_str(), Math::deg_to_rad(lights_[i]->outerAngle));
+
+			lights_[i]->draw(dt);
+		}
 	}
 }
 
@@ -315,65 +392,5 @@ void GraphicSystem::resume()
 //		1, GL_FALSE, &Rotate(DegToRad(pTransform->rotation_), pTransform->rotationAxis_).m[0][0]);
 //}
 //
-
-//
-//void GraphicSystem::LightingEffectPipeline(Material* pMaterial)
-//{
-//	Shader::pCurrentShader_->SetInt("int_lightSize", int(lights_.size()));
-//
-//	// Send material info to shader
-//	Shader::pCurrentShader_->SetInt("material.m_specular", pMaterial->specular_);
-//	Shader::pCurrentShader_->SetInt("material.m_diffuse", pMaterial->diffuse_);
-//	Shader::pCurrentShader_->SetFloat("material.m_shininess", pMaterial->shininess_);
-//
-//	static int s_lightIndex;
-//	static std::string s_index, s_light,
-//		amb("m_ambient"), spec("m_specular"), diff("m_diffuse"),
-//		type("m_type"), constant("m_constant"), linear("m_linear"), dir("m_direction"), pos("m_position"),
-//		cut("m_cutOff"), outcut("m_outerCutOff"), quad("m_quadratic");
-//	s_lightIndex = 0;
-//
-//	for (auto _light : lights_) {
-//
-//		s_index = std::to_string(s_lightIndex);
-//
-//		Shader::pCurrentShader_->SetVector4(
-//			("v4_lightColor[" + s_index + "]").c_str(), _light->color_);
-//
-//		s_light = "light[" + s_index + "].";
-//
-//		Shader::pCurrentShader_->SetVector4(
-//			(s_light + spec).c_str(), _light->specular_);
-//
-//		Shader::pCurrentShader_->SetVector4(
-//			(s_light + diff).c_str(), _light->diffuse_);
-//
-//		Shader::pCurrentShader_->SetEnum(
-//			(s_light + type).c_str(), _light->type_);
-//
-//		Shader::pCurrentShader_->SetVector3(
-//			(s_light + dir).c_str(), _light->direction_);
-//
-//		Shader::pCurrentShader_->SetFloat(
-//			(s_light + constant).c_str(), _light->constant_);
-//
-//		Shader::pCurrentShader_->SetFloat(
-//			(s_light + linear).c_str(), _light->linear_);
-//
-//		Shader::pCurrentShader_->SetFloat(
-//			(s_light + quad).c_str(), _light->quadratic_);
-//
-//		Shader::pCurrentShader_->SetVector3(
-//			(s_light + pos).c_str(), _light->pTransform_->position_);
-//
-//		Shader::pCurrentShader_->SetFloat(
-//			(s_light + cut).c_str(), cosf(Math::DegToRad(_light->cutOff_)));
-//
-//		Shader::pCurrentShader_->SetFloat(
-//			(s_light + outcut).c_str(), cosf(Math::DegToRad(_light->outerCutOff_)));
-//
-//		s_lightIndex++;
-//	}
-//}
 
 jeEnd

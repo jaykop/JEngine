@@ -40,6 +40,7 @@ class GraphicSystem {
 
 	using Renderers = std::vector<Renderer*>;
 	using Cameras = std::vector<Camera*>;
+	using Lights = std::vector<Light*>;
 
 	struct Grid
 	{
@@ -67,16 +68,17 @@ private:
 	static void update(float dt);
 	static void close();
 
+	static void update_lights(float dt);
+	static void render_grid();
+
 	static void add_renderer(Renderer* model);
 	static void remove_renderer(Renderer* model);
 
 	static void add_camera(Camera* camera);
 	static void remove_camera(Camera* camera);
 
-	//void add_light(Light* pLight);
-	//void remove_light(Light* pLight);
-
-	static void render_grid();
+	static void add_light(Light* light);
+	static void remove_light(Light* light);
 
 	static void pause();
 	static void resume();
@@ -84,6 +86,7 @@ private:
 	static Camera* mainCamera_;
 	static Renderers renderers_;
 	static Cameras cameras_;
+	static Lights lights_;
 
 	struct Graphic
 	{
@@ -92,6 +95,7 @@ private:
 		Camera* mainCamera;
 		Renderers renderers;
 		Cameras cameras;
+		Lights lights;
 	};
 
 	static std::stack<Graphic> graphicStack_;

@@ -49,11 +49,10 @@ in vec3 v3_outFragmentPosition;
 ////////////////////////////
 // uniform variables
 ////////////////////////////
-uniform int 		int_lightSize;
+uniform uint 		uint_lightSize;
 uniform vec3 		v3_cameraPosition;
 uniform vec4 		v4_color;
 uniform vec4 		v4_lightColor[MAX_ARRAY];
-uniform bool 		boolean_light;
 uniform Light		light[MAX_ARRAY];
 uniform sampler2D 	Texture;
 uniform Material 	material;
@@ -70,12 +69,8 @@ void main() {
 
 	vec4 finalTexture = vec4(0,0,0,0);
 
-	// Implement light attributes	
-	if (boolean_light)
-		LightingEffect(finalTexture);
-	
-	else
-		finalTexture = texture(Texture, v2_outTexCoord) * v4_color;
+	finalTexture = texture(Texture, v2_outTexCoord) * v4_color;
+	LightingEffect(finalTexture);
 	
 	if (finalTexture.a <= 0.0)
 		discard;
@@ -88,7 +83,8 @@ void main() {
 ////////////////////////////
 void LightingEffect(inout vec4 _color) {
 
-	for (int index = 0; index < int_lightSize ; index++) {
+	float a = _color.w;
+	for (uint index = 0; index < uint_lightSize ; ++index) {
 
 		float 	attenuation = 1.f;
 		vec3 	gap = light[index].m_position - v3_outFragmentPosition;
@@ -133,5 +129,5 @@ void LightingEffect(inout vec4 _color) {
 	} 
 
 	// Refresh alpha value
-	_color.w = 1.0;
+	_color.w = a;
 }
