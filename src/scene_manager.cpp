@@ -106,6 +106,7 @@ void SceneManager::change_scene()
 		currentScene_ = nextScene_;
 		currentScene_->load();
 		currentScene_->initialize();
+		status_ = Status::NONE;
 		break;
 	}
 	case Status::PAUSE:
@@ -116,6 +117,7 @@ void SceneManager::change_scene()
 		currentScene_->prevScene_ = toResume; // save the last scene to resume
 		currentScene_->load();
 		currentScene_->initialize();
+		status_ = Status::NONE;
 		break;
 	}
 	case Status::RESTART:
@@ -123,6 +125,7 @@ void SceneManager::change_scene()
 		// simply refresh
 		currentScene_->load();
 		currentScene_->initialize();
+		status_ = Status::NONE;
 		break;
 	}
 	case Status::RESUME:
@@ -132,6 +135,7 @@ void SceneManager::change_scene()
 		currentScene_ = nextScene_ = currentScene_->prevScene_;
 		// initialize the last scene
 		delete toRelease;
+		status_ = Status::NONE;
 		break;
 	}
 	case Status::RESUME_AND_CHANGE:
@@ -147,10 +151,6 @@ void SceneManager::change_scene()
 	}
 	}
 
-	// if the current and the next scene are the same,
-	// update the status to normal
-	if (currentScene_ == nextScene_)
-		status_ = Status::NONE;
 }
 
 void SceneManager::warp_up_scene()

@@ -1,6 +1,10 @@
 {
 	"Font": [
-
+		{
+			"Key": "JKDot",
+			"Directory": "resource/font/JKDot.ttf",
+			"Size": 48
+		}
 	],
 
 	"Texture": [

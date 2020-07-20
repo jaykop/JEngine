@@ -59,8 +59,9 @@ void Pause::init_text()
 	auto* text_component = text->get_component<Text>();
 	auto* trans = text->get_component<Transform>();
 	//text_component->set_font();
-	text_component->set_text(L"정지 화면\n");
-	trans->scale.set(.1f, .1f, 0.f);
+	text_component->set_text(L"정지 화면 - Paused\n");
+	trans->scale.set(.25f, .25f, 0.f);
+	trans->position.set(-40.f, 0.f, 0.f);
 	register_object(text);
 }
 

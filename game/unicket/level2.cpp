@@ -54,14 +54,25 @@ void Level2::init_basic()
 void Level2::init_text()
 {
 	// testing text
-	Object* text = ObjectManager::create_object("text");
-	text->add_component<Text>();
-	auto* text_component = text->get_component<Text>();
-	auto* trans = text->get_component<Transform>();
+	Object* text1 = ObjectManager::create_object("text1");
+	text1->add_component<Text>();
+	auto* text_component = text1->get_component<Text>();
+	auto* trans = text1->get_component<Transform>();
 	//text_component->set_font();
 	text_component->set_text(L"JEngine에 오신 걸 환영합니다\n");
 	trans->scale.set(.1f, .1f, 0.f);
-	register_object(text);
+	register_object(text1);
+
+	Object* text2 = ObjectManager::create_object("text2");
+	text2->add_component<Text>();
+	text_component = text2->get_component<Text>();
+	trans = text2->get_component<Transform>();
+	text_component->set_font(AssetManager::get_font("JKDot"));
+	text_component->set_text(L"Using JKDot font\n");
+	text_component->color.set(1.f, .5f, .5f, 1.f);
+	trans->position.set(-50.f, 0.f, 0.f);
+	trans->scale.set(.1f, .1f, 0.f);
+	register_object(text2);
 }
 
 jeEnd

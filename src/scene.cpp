@@ -64,6 +64,8 @@ void Scene::load()
 				fonts[i]["Size"].GetUint(),
 				0, 128, &fonts_);
 
+			if (fonts[i].HasMember("Additional"))
+			{
 				// Load additional korean set
 				for (unsigned j = 0; j < fonts[i]["Additional"].Size(); ++j) {
 					AssetManager::load_font(fonts[i]["Directory"].GetString(),
@@ -73,6 +75,7 @@ void Scene::load()
 						static_cast<unsigned long>(fonts[i]["Additional"][j][1].GetUint64()),
 						&fonts_);
 				}
+			}
 		}
 	}
 
