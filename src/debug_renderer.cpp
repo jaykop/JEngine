@@ -68,7 +68,8 @@ void DebugRenderer::draw(float /*dt*/)
 	}
 
 	// Send camera info to shader
-	mat4 viewport = mat4::look_at(camera->position, camera->target, camera->up_);
+	mat4 viewport = camera->get_viewmatrix();
+	// mat4 viewport = mat4::look_at(camera->position, transform_->position, camera->up_);
 	shader->set_matrix("m4_viewport", viewport);
 
 	if (!vertices_.empty()) {

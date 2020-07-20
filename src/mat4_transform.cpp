@@ -78,8 +78,8 @@ mat4 mat4::rotate(float radian, const vec3& vec)
 {
 	mat4 toReturn;
 
-	float cosine = cos(radian);
-	float sine = sin(radian);
+	float cosine = std::cosf(radian);
+	float sine = std::sinf(radian);
 
 	vec3 norm = vec.normalized();
 	vec3 offset = norm * (1.f - cosine);

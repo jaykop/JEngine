@@ -66,7 +66,7 @@ void GraphicSystem::initialize() {
 void GraphicSystem::update(float dt) {
 
 	// update main camera
-	// mainCamera_->update();
+	mainCamera_->update();
 
 	// get current scene color
 	backgroundColor = SceneManager::get_current_scene()->background;
@@ -128,7 +128,8 @@ void GraphicSystem::render_grid()
 	}
 
 	// Send camera info to shader
-	mat4 viewport = mat4::look_at(mainCamera_->position, mainCamera_->target, mainCamera_->up_);
+	mat4 viewport = mainCamera_->get_viewmatrix();
+	// mat4 viewport = mat4::look_at(mainCamera_->position, mainCamera_->front, mainCamera_->up_);
 	shader->set_matrix("m4_viewport", viewport);
 
 	glEnable(GL_BLEND);

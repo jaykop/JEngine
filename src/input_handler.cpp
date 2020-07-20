@@ -244,7 +244,8 @@ bool InputHandler::ray_intersects_triangle(const vec3& v0, const vec3& v1, const
 	vec4 ray_clip = vec4(x, y, -1.0, 1.0);
 
 	Camera* camera = GraphicSystem::get_camera();
-	mat4 viewport = mat4::look_at(camera->position, camera->target, camera->up_);
+	mat4 viewport = camera->get_viewmatrix();
+	// mat4 viewport = mat4::look_at(camera->position, camera->front_, camera->up_);
 	mat4 perspective = mat4::perspective(
 		camera->fovy, camera->aspect_,
 		camera->near_, camera->far_);

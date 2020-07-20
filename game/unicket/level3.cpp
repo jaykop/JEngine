@@ -49,8 +49,7 @@ void Level3::init_basic()
 	Object* camera = ObjectManager::create_object("main_camera");
 	camera->add_component<Camera>();
 	camera->add_component<CameraController>();
-	camera->get_component<Camera>()->target = vec3::zero + vec3(0.f, 0.f, 0.f);
-	camera->get_component<Camera>()->position = vec3::zero + vec3(0.f, 0.f, 100.f);
+	camera->get_component<Camera>()->position = vec3(0.f, 0.f, 100.f);
 	register_object(camera);
 
 	GraphicSystem::set_camera(camera->get_component<Camera>());

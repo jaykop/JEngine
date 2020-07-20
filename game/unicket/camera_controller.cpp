@@ -25,25 +25,25 @@ void CameraController::update(float dt)
 	{
 		vec3 dis = vec3(-1.f, 0.f, 0.f) * offset;
 		camera->position += dis;
-		camera->target += dis;
+		camera->front += dis;
 	}
 	if (InputHandler::key_pressed(KEY::D))
 	{
 		vec3 dis = vec3(1.f, 0.f, 0.f) * offset;
 		camera->position += dis;
-		camera->target += dis;
+		camera->front += dis;
 	}
 	if (InputHandler::key_pressed(KEY::W))
 	{
 		vec3 dis = vec3(0.f, 1.f, 0.f) * offset;
 		camera->position += dis;
-		camera->target += dis;
+		camera->front += dis;
 	}
 	if (InputHandler::key_pressed(KEY::S))
 	{
 		vec3 dis = vec3(0.f, -1.f, 0.f) * offset;
 		camera->position += dis;
-		camera->target += dis;
+		camera->front += dis;
 	}
 
 	if (InputHandler::get_mouse_wheel_status(KEY::MOUSE_WHEEL_DOWN))
