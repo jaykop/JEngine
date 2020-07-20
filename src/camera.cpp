@@ -1,7 +1,7 @@
 #include <camera.hpp>
 #include <gl_manager.hpp>
-#include <mat4.hpp>
 #include <vec4.hpp>
+#include <mat4.hpp>
 #include <math_util.hpp>
 #include <graphic_system.hpp>
 
@@ -24,54 +24,31 @@ void Camera::load(const rapidjson::Value& /*data*/) {
 
 Camera::Camera(Object* owner) 
 	: Component(owner), position(vec3::zero), near_(.1f), far_(1000.f),
-	up_(vec3(0, 1, 0)), right_(vec3::zero), back_(vec3::zero), front(vec3::zero), width_(0.f), height_(0.f),
-	yaw_(0.f), roll_(0.f), pitch_(0.f), viewGeometry_(vec3::zero), distance_(1.f), fovy(0.f), aspect_(0.f)
+	up_(vec3(0, 1, 0)), right_(vec3::zero), back_(vec3::zero), target(vec3::zero), 
+	distance_(1.f), fovy_(45.f), zoom(0.f),
+	yaw_(-90.f), roll_(0.f), pitch_(0.f), width_(2 * tanf(.5f * fovy_)), height_(width_ / aspect_),
+	aspect_(GLManager::get_width() / GLManager::get_height())
 {
-	set_camera(position, -90.f, 0.f, 45.f, GLManager::get_width() / GLManager::get_height(), 1.f);
-}
-
-void Camera::set_camera(const vec3& eye, float yaw, float pitch,
-	float fov, float aspect, float distance)
-{
-	yaw_ = yaw;
-	pitch_ = pitch;
-	position = eye;
-	fovy = fov;
-	aspect_ = aspect;
-	distance_ = distance;
-	width_ = 2 * tanf(.5f * fovy);
-	height_ = width_ / aspect_;
-
-	viewGeometry_.set(width_, height_, distance_);
-
-	float rYaw = Math::deg_to_rad(yaw_);
-	float rPitch = Math::deg_to_rad(pitch_);
-
-	vec3 forward;
-	forward.x = cosf(rYaw) * cosf(rPitch);
-	forward.y = sinf(rPitch);
-	forward.z = sinf(rYaw) * cosf(rPitch);
-	front = forward.normalize();
-	back_ = (-front).normalized();
-	right_ = vec3::cross(front, worldUp_).normalized();
-	up_ = vec3::cross(right_, front).normalized();
+	viewgeometry_.set(width_, height_, distance_);
 }
 
 void Camera::update()
 {
 	aspect_ = GLManager::get_width() / GLManager::get_height();
-	width_ = 2 * tanf(.5f * fovy);
+	width_ = 2 * tanf(.5f * fovy_);
 	height_ = width_ / aspect_;
 
-	viewGeometry_.set(width_, height_, distance_);
+	viewgeometry_.set(width_, height_, distance_);
 
-	front.normalize();
-	back_ = (-front).normalized();
-	pitch_ = asin(back_.y);
-	yaw_ = atan2(back_.x, back_.z);
+	back_ = (target-position).normalized();
+	right_ = vec3::cross(-back_, up_).normalized();
+	up_ = vec3::cross(right_, -back_).normalized();
 
-	right_ = vec3::cross(front, up_).normalized();
-	up_ = vec3::cross(right_, front).normalized();
+	vec3 v = -back_;
+	vec3 vp(v.x, v.y, 0.f);
+	yaw_ = acosf(v.dot(vp) / (vec3::abs(v).dot(vec3::abs(vp))));
+	vec3 vpp(0.f, v.y, 0.f);
+	pitch_ = acosf(vp.dot(vpp) / (vec3::abs(vp).dot(vec3::abs(vp))));
 }
 
 void Camera::yaw(float degree)
@@ -86,7 +63,7 @@ void Camera::yaw(float degree)
 	vec4 back(back_.x, back_.y, back_.z, 1.f);
 	back = rotate * back;
 	back_.set(back.x, back.y, back.z);
-	front = (-back_).normalized();
+	target = (-back_).normalized();
 }
 
 void Camera::pitch(float degree)
@@ -101,7 +78,7 @@ void Camera::pitch(float degree)
 	vec4 back(back_.x, back_.y, back_.z, 1.f);
 	back = rotate * back;
 	back_.set(back.x, back.y, back.z);
-	front = (-back_).normalized();
+	target = (-back_).normalized();
 }
 
 void Camera::roll(float degree)
@@ -118,39 +95,9 @@ void Camera::roll(float degree)
 	up_.set(up.x, up.y, up.z);
 }
 
-void Camera::zoom(float zoom)
+const vec3& Camera::get_viewgeometry() const
 {
-	width_ *= zoom;
-	height_ += zoom;
-}
-
-mat4 Camera::get_viewmatrix() const
-{
-	mat4 toReturn;
-
-	toReturn.m[0][0] = right_.x;
-	toReturn.m[0][1] = right_.y;
-	toReturn.m[0][2] = right_.z;
-	toReturn.m[0][3] = (-right_).dot(position);
-
-	toReturn.m[1][0] = up_.x;
-	toReturn.m[1][1] = up_.y;
-	toReturn.m[1][2] = up_.z;
-	toReturn.m[1][3] = (-up_).dot(position);
-
-	toReturn.m[2][0] = back_.x;
-	toReturn.m[2][1] = back_.y;
-	toReturn.m[2][2] = back_.z;
-	toReturn.m[2][3] = (-back_).dot(position);
-
-	toReturn.m[3][3] = 1.f;
-
-	return toReturn;
-}
-
-const vec3& Camera::get_viewGeometry() const
-{
-	return viewGeometry_;
+	return viewgeometry_;
 }
 
 float Camera::get_aspect() const

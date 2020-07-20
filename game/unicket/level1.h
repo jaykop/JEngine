@@ -23,6 +23,7 @@ private:
 
 	void init_basic();
 	void init_sprite();
+	void init_ui();
 
 	Object* renderer_2d = nullptr;
 

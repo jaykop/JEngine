@@ -56,13 +56,14 @@ void Sprite::draw(float /*dt*/)
 	if (prjType == ProjectType::PERSPECTIVE) {
 
 		mat4 perspective = mat4::perspective(
-			camera->fovy, camera->aspect_,
+			camera->fovy_ + camera->zoom, camera->aspect_,
 			camera->near_, camera->far_);
 
 		shader->set_matrix("m4_projection", perspective);
 	}
 
 	else {
+		
 		float right_ = GLManager::get_width() * GLManager::resScaler_.x;
 		float left_ = -right_;
 		float top_ = GLManager::get_height() * GLManager::resScaler_.y;
@@ -73,8 +74,7 @@ void Sprite::draw(float /*dt*/)
 	}
 
 	// Send camera info to shader
-	mat4 viewport = camera->get_viewmatrix();
-	// mat4 viewport = mat4::look_at(camera->position, transform_->position, camera->up_);
+	mat4 viewport = mat4::look_at(camera->position, camera->position + camera->back_, camera->up_);
 	shader->set_matrix("m4_viewport", viewport);
 
 	//bool hasParent = (pModel->status_ & Model::IS_INHERITED) == Model::IS_INHERITED;

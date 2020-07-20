@@ -110,7 +110,7 @@ void GraphicSystem::render_grid()
 	if (grid.prjType == Renderer::ProjectType::PERSPECTIVE) {
 
 		mat4 perspective = mat4::perspective(
-			mainCamera_->fovy, mainCamera_->aspect_,
+			mainCamera_->fovy_ + mainCamera_->zoom, mainCamera_->aspect_,
 			mainCamera_->near_, mainCamera_->far_);
 
 		shader->set_matrix("m4_projection", perspective);
@@ -128,8 +128,7 @@ void GraphicSystem::render_grid()
 	}
 
 	// Send camera info to shader
-	mat4 viewport = mainCamera_->get_viewmatrix();
-	// mat4 viewport = mat4::look_at(mainCamera_->position, mainCamera_->front, mainCamera_->up_);
+	mat4 viewport = mat4::look_at(mainCamera_->position, mainCamera_->position + mainCamera_->back_, mainCamera_->up_);
 	shader->set_matrix("m4_viewport", viewport);
 
 	glEnable(GL_BLEND);

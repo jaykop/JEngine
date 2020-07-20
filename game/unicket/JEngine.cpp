@@ -14,6 +14,7 @@ void JEngine::register_builders()
 	jeRegisterComponent(TopDownController);
 	jeRegisterComponent(ExplodingParticleController);
 	jeRegisterComponent(CameraController);
+	jeRegisterComponent(IsUI);
 }
 
 void JEngine::register_scenes()

@@ -170,6 +170,16 @@ bool vec3::operator!=(const vec3& rhs) const
 	return !(*this == rhs);
 }
 
+vec3 vec3::abs(const vec3& v)
+{
+	vec3 toReturn = v;
+	if (toReturn.x < 0.f) toReturn.x = -toReturn.x;
+	if (toReturn.y < 0.f) toReturn.y = -toReturn.y;
+	if (toReturn.z < 0.f) toReturn.z = -toReturn.z;
+
+	return toReturn;
+}
+
 float vec3::distance(const vec3& a, const vec3& b)
 {
 	vec3 diff = b - a;

@@ -2,7 +2,6 @@
 #include <component_builder.hpp>
 #include <component.hpp>
 #include <vec3.hpp>
-#include <mat4.hpp>
 
 jeBegin
 
@@ -24,14 +23,10 @@ class Camera : public Component
 
 public:
 
-	vec3 position, front;
-	float fovy;
+	vec3 position, target;
+	float zoom;
 
-	void set_camera(const vec3& eye, float yaw, float pitch, 
-		float fov, float aspect, float distance);
-
-	mat4 get_viewmatrix() const;
-	const vec3& get_viewGeometry() const;
+	const vec3& get_viewgeometry() const;
 
 	float get_aspect() const;
 	float get_distance() const;
@@ -43,7 +38,6 @@ public:
 	void yaw(float degree);
 	void pitch(float degree);
 	void roll(float degree);
-	void zoom(float zoom);
 
 protected:
 
@@ -57,8 +51,8 @@ private:
 
 	static vec3 worldUp_;
 
-	vec3 up_, right_, back_, viewGeometry_;
-	float distance_, aspect_, width_, height_, near_, far_;
+	vec3 up_, right_, back_, viewgeometry_;
+	float distance_, aspect_, fovy_, width_, height_, near_, far_;
 	float yaw_, roll_, pitch_;
 
 	Camera(Object* pOwner);

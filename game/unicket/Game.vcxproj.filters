@@ -51,6 +51,9 @@
     <ClInclude Include="pause.h">
       <Filter>game_scene</Filter>
     </ClInclude>
+    <ClInclude Include="is_ui.h">
+      <Filter>game_logics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -85,6 +88,9 @@
     </ClCompile>
     <ClCompile Include="pause.cpp">
       <Filter>game_scene</Filter>
+    </ClCompile>
+    <ClCompile Include="is_ui.cpp">
+      <Filter>game_logics</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
