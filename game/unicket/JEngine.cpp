@@ -18,9 +18,12 @@ void JEngine::register_builders()
 
 void JEngine::register_scenes()
 {
-	// add scene manully here
+	// add scene manually here
 	SceneManager::push_scene(new License("license", "resource/scene/license.json"));
+	SceneManager::push_scene(new Pause("pause", "resource/scene/pause.json"));
 	SceneManager::push_scene(new Level1("level1", "resource/scene/level1.json"));
+	SceneManager::push_scene(new Level2("level2", "resource/scene/level2.json"));
+	SceneManager::push_scene(new Level3("level3", "resource/scene/level3.json"));
 
 	//
 	SceneManager::set_first_scene("level1");

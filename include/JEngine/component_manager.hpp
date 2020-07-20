@@ -19,8 +19,8 @@ jeBegin
 class Component;
 class ComponentBuilder;
 
-using Directory = std::unordered_map<std::string_view, std::string_view>;
-using BuilderMap = std::unordered_map<std::string_view, ComponentBuilder*>;
+using Directory = std::unordered_map<std::string, std::string>;
+using BuilderMap = std::unordered_map<std::string, ComponentBuilder*>;
 
 class ComponentManager {
 

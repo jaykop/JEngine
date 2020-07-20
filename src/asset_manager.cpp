@@ -96,16 +96,9 @@ void AssetManager::load_assets()
 	// Read asset info
 	JsonParser::read_file(assetDirectory_.c_str());
 
-
-	std::unordered_map<const char*, const char*> test;
-
 	// Load textures 
 	const rapidjson::Value& textures = JsonParser::get_document()["Texture"];
 	for (rapidjson::SizeType i = 0; i < textures.Size(); ++i) {
-
-		test.insert(std::unordered_map<const char*, const char*>::value_type
-		(textures[i]["Directory"].GetString(), textures[i]["Key"].GetString()));
-
 		load_texture(textures[i]["Directory"].GetString(), textures[i]["Key"].GetString());
 		jeDebugPrint("*AssetManager - Loaded image: %s.\n", textures[i]["Directory"].GetString());
 	}
@@ -128,11 +121,7 @@ void AssetManager::load_assets()
 				static_cast<unsigned long>(fonts[i]["Additional"][j][0].GetUint64()),
 				static_cast<unsigned long>(fonts[i]["Additional"][j][1].GetUint64()));
 		}
-	}
-
-	JsonParser::get_document().SetNull();
-	JsonParser::get_document().GetAllocator().Clear();
-	
+	}	
 }
 
 void AssetManager::unload_assets()

@@ -23,9 +23,6 @@ rapidjson::Document JsonParser::document_;
 
 void JsonParser::read_file(const char* directory)
 {
-	document_.SetNull();
-	document_.GetAllocator().Clear();
-
 	std::ifstream read(directory);
 	rapidjson::IStreamWrapper toInputStream(read);
 #if defined(_DEBUG)
@@ -36,13 +33,8 @@ void JsonParser::read_file(const char* directory)
 #endif // DEBUG
 }
 
-rapidjson::Document& JsonParser::get_document() { return document_; }
+const rapidjson::Document& JsonParser::get_document() { return document_; }
 
-//void JsonParser::clear_document()
-//{
-//	delete document_;
-//	document_ = nullptr;
-//}
 
 void JsonParser::close() 
 {

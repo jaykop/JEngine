@@ -3,4 +3,7 @@
 // customized game scene headers
 /////////////////////////////////////////////////////////////////////////
 #include "license.h"
+#include "pause.h"
 #include "level1.h"
+#include "level2.h"
+#include "level3.h"

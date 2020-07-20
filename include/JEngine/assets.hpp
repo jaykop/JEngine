@@ -29,12 +29,12 @@ class Scene;
 class Object;
 class Archetype;
 
-using ObjectMap = std::unordered_map<std::string_view, Object*>;
-using MeshMap = std::unordered_map<std::string_view, Mesh*>;
-using FontMap = std::unordered_map<std::string_view, Font*>;
-using AudioMap = std::unordered_map<std::string_view, FMOD::Sound*>;
-using SceneMap = std::unordered_map<std::string_view, Scene*>;
-using TextureMap = std::unordered_map<std::string_view, unsigned>;
-using ArchetypeMap = std::unordered_map<std::string_view, Archetype*>;
+using ObjectMap = std::unordered_map<std::string, Object*>;
+using MeshMap = std::unordered_map<std::string, Mesh*>;
+using FontMap = std::unordered_map<std::string, Font*>;
+using AudioMap = std::unordered_map<std::string, FMOD::Sound*>;
+using SceneMap = std::unordered_map<std::string, Scene*>;
+using TextureMap = std::unordered_map<std::string, unsigned>;
+using ArchetypeMap = std::unordered_map<std::string, Archetype*>;
 
 jeEnd
