@@ -2,6 +2,7 @@
 #include "application.hpp"
 #include "scene_controller.h"
 
+#include "game_scenes.h"
 #include "colors.hpp"
 
 jeBegin
@@ -25,14 +26,18 @@ void SceneController::update(float /*dt*/)
 	if (InputHandler::key_triggered(KEY::NUM_0))
 		SceneManager::restart();
 	if (InputHandler::key_triggered(KEY::NUM_1))
-		SceneManager::set_next_scene("level1");
+		SceneManager::set_next_scene<Level1>();
 	if (InputHandler::key_triggered(KEY::NUM_2))
-		SceneManager::set_next_scene("level2");
+		SceneManager::set_next_scene<Level2>();
 	if (InputHandler::key_triggered(KEY::NUM_3))
-		SceneManager::set_next_scene("level3");
+		SceneManager::set_next_scene<Level3>();
 	if (InputHandler::key_triggered(KEY::BACK))
-		SceneManager::pause("pause");
-
+	{
+		if (SceneManager::is_paused())
+			SceneManager::resume();
+		else 
+			SceneManager::pause<Pause>();
+	}
 	if (InputHandler::key_triggered(KEY::MOUSE_LEFT))
 	{
 		auto pos = InputHandler::get_position();
@@ -46,7 +51,7 @@ void SceneController::update(float /*dt*/)
 		std::cout << "ENTER\n";
 
 	if (InputHandler::key_triggered(KEY::SPACE))
-		GraphicSystem::renderGrid = !GraphicSystem::renderGrid;
+		GraphicSystem::grid.render = !GraphicSystem::grid.render;
 	
 	if (InputHandler::key_triggered(KEY::ESC))
 		Application::quit();

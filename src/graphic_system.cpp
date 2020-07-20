@@ -26,11 +26,11 @@ Contains the methods of GraphicSystem class
 
 jeBegin
 
+std::stack<GraphicSystem::Graphic> GraphicSystem::graphicStack_;
 Camera* GraphicSystem::mainCamera_ = nullptr;
 GraphicSystem::Renderers GraphicSystem::renderers_;
 GraphicSystem::Cameras GraphicSystem::cameras_;
 vec4 GraphicSystem::backgroundColor = vec4::zero, GraphicSystem::screenColor = vec4::zero;
-bool GraphicSystem::renderGrid = false;
 GraphicSystem::Grid GraphicSystem::grid;
 
 void GraphicSystem::set_camera(Camera* camera)
@@ -72,7 +72,7 @@ void GraphicSystem::update(float dt) {
 		backgroundColor.a);
 
 	// render grid
-	if (renderGrid)
+	if (grid.render)
 		render_grid();
 
 	// update renderers
@@ -154,6 +154,38 @@ void GraphicSystem::remove_camera(Camera* camera) {
 	cameras_.erase(std::remove(cameras_.begin(), cameras_.end(), camera), cameras_.end());
 }
 
+void GraphicSystem::pause()
+{
+	Graphic grp;
+	grp.backgroundColor = backgroundColor;
+	grp.screenColor = screenColor;
+	grp.mainCamera = mainCamera_;
+	grp.grid = grid;
+	grp.renderers = renderers_;
+	grp.cameras = cameras_;
+
+	graphicStack_.emplace(grp);
+
+	// 
+	renderers_.clear();
+	cameras_.clear();
+}
+
+void GraphicSystem::resume()
+{
+	if (!graphicStack_.empty())
+	{
+		auto grp = graphicStack_.top();
+		graphicStack_.pop();
+
+		backgroundColor = grp.backgroundColor;
+		screenColor = grp.screenColor;
+		mainCamera_ = grp.mainCamera;
+		grid = grp.grid;
+		renderers_ = grp.renderers;
+		cameras_ = grp.cameras;
+	}
+}
 
 //void GraphicSystem::RenderToFramebuffer() const
 //{

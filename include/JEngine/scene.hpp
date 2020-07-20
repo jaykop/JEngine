@@ -46,6 +46,9 @@ protected:
 	virtual void close();
 	virtual void unload();
 
+	void resume();
+	void pause();
+
 	Scene* prevScene_ = nullptr;
 	const char* name_, * directory_;
 

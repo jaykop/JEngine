@@ -303,6 +303,9 @@
     <None Include="..\include\JEngine\object.inl">
       <Filter>core\object</Filter>
     </None>
+    <None Include="..\include\JEngine\scene_manager.inl">
+      <Filter>core\scene</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="core">

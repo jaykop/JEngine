@@ -33,7 +33,7 @@ FontMap	AssetManager::fontMap_;
 AudioMap AssetManager::audioMap_;
 TextureMap AssetManager::textureMap_;
 ArchetypeMap AssetManager::archetypeMap_;
-SceneMap AssetManager::sceneMap_;
+// SceneMap AssetManager::sceneMap_;
 
 bool AssetManager::set_bulit_in_components()
 {
@@ -81,7 +81,7 @@ void AssetManager::load_assets()
 
 	// Load scenes 
 	for (rapidjson::SizeType i = 0; i < scenes.Size(); ++i) {
-		SceneManager::push_scene(scenes[i]["Directory"].GetString(), scenes[i]["Key"].GetString());
+		SceneManager::register_scene(scenes[i]["Directory"].GetString(), scenes[i]["Key"].GetString());
 		jeDebugPrint("Loaded %s\n", scenes[i]["Key"].GetString());
 	}
 
@@ -153,8 +153,8 @@ void AssetManager::unload_assets()
 	audioMap_.clear();
 	archetypeMap_.clear();
 
-	// memory to be release by scene manager
-	sceneMap_.clear();
+	//// memory to be release by scene manager
+	//sceneMap_.clear();
 }
 
 void AssetManager::load_texture(const char* path, const char* textureKey, TextureMap* tMap)
@@ -454,15 +454,15 @@ Archetype* AssetManager::get_archetype(const char* key)
 	return nullptr;
 }
 
-Scene* AssetManager::get_scene(const char* key)
-{
-	auto found = sceneMap_.find(key);
-	if (found != sceneMap_.end())
-		return found->second;
-
-	jeDebugPrint("!AssetManager - Cannot find such name of state resource: %s.\n", key);
-	return nullptr;
-}
+//Scene* AssetManager::get_scene(const char* key)
+//{
+//	/*auto found = sceneMap_.find(key);
+//	if (found != sceneMap_.end())
+//		return found->second;*/
+//
+//	jeDebugPrint("!AssetManager - Cannot find such name of state resource: %s.\n", key);
+//	return nullptr;
+//}
 
 void AssetManager::set_initdata_directory(const char* dir) { initDirectory_.assign(dir); }
 

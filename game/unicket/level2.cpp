@@ -60,7 +60,6 @@ void Level2::init_text()
 	auto* trans = text->get_component<Transform>();
 	//text_component->set_font();
 	text_component->set_text(L"JEngine에 오신 걸 환영합니다\n");
-	trans->position.set(20.f, 0.f, 0.f);
 	trans->scale.set(.1f, .1f, 0.f);
 	register_object(text);
 }

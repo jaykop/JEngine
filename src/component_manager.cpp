@@ -16,8 +16,8 @@ Contains the methods of ComponentManager class
 
 jeBegin
 
-BuilderMap ComponentManager::builderMap_;
-Directory ComponentManager::keys_, ComponentManager::types_;
+ComponentManager::BuilderMap ComponentManager::builderMap_;
+ComponentManager::Directory ComponentManager::keys_, ComponentManager::types_;
 
 Component* ComponentManager::create_component(const char* componentName,
 	Object* owner) {

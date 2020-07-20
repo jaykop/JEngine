@@ -14,8 +14,8 @@ Contains the definition of SceneManager class
 
 // Main scene manager class
 #include <vector>
-#include <string>
 #include <timer.hpp>
+#include <unordered_map>
 
 union SDL_Event;
 struct SDL_Window;
@@ -23,7 +23,7 @@ struct SDL_Window;
 jeBegin
 
 class Scene;
-using Scenes = std::vector<Scene*>;
+using SceneMap = std::unordered_map<const char*, const char*>;
 
 class SceneManager {
 
@@ -35,26 +35,37 @@ class SceneManager {
 
 	friend class Application;
 	friend class AssetManager;
-
+	
 	// enum indicates the status of the current scene
 	enum class Status {NONE, RESTART, PAUSE, RESUME, CHANGE, RESUME_AND_CHANGE, QUIT};
 
 public:
 
-	static void push_scene(Scene* scene);
+	template <typename SceneType>
+	static void register_scene(const char* dir);
+	template <typename SceneType>
+	static void set_next_scene();
+	template <typename SceneType>
+	static void resume_and_next();
+	template <typename SceneType>
+	static void set_first_scene();
+	template <typename SceneType>
+	static bool has_scene();
+	template <typename SceneType>
+	static void pause();
 
 	// methods to control the scenes
 	static void restart();
 	static void resume();
-	static void pause(const char* nextState);
 	static bool is_paused();
+	static void pause(const char* nextState);
+	static void register_scene(const char* sceneName, const char* dir);
 	static void set_next_scene(const char* nextState);
 	static void resume_and_next(const char* nextState);
 	static void set_first_scene(const char* stateName);
 
 	static Status get_status(void);
 	static Scene* get_current_scene(void);
-	static Scene* get_scene(const char* stateName);
 	static bool	has_scene(const char* stateName);
 
 	// methods to get frame and time info
@@ -68,11 +79,8 @@ private:
 	static void update(SDL_Event* event);
 	static void close();
 
-	// methods to control scenes
-	static void push_scene(const char* path, const char* stateName);
-	static void pop_scene(const char* stateName);
-
 	static void change_scene();
+	static void warp_up_scene();
 	static void clear_scenes();
 
 	// frame and timer
@@ -81,12 +89,13 @@ private:
 	static float frameTime_;
 
 	// scene info
-	static Scenes scenes_;
+	static SceneMap scenes_;
 	static Status status_;
 	static Scene *currentScene_, *nextScene_;
 	static SDL_Window *window_;
-	static std::string firstScene_;
 
 };
 
 jeEnd
+
+#include <scene_manager.inl>

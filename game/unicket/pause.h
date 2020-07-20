@@ -22,9 +22,7 @@ protected:
 private:
 
 	void init_basic();
-	void init_sprite();
-
-	Object* renderer_2d = nullptr;
+	void init_text();
 
 };
 

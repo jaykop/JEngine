@@ -139,6 +139,22 @@ void Scene::unload()
 	ObjectManager::objects_ = nullptr;
 }
 
+void Scene::resume()
+{
+	BehaviorSystem::resume();
+	//SoundSystem::resume();
+	//PhysicsSystem::resume();
+	GraphicSystem::resume();
+}
+
+void Scene::pause()
+{
+	BehaviorSystem::pause();
+	//SoundSystem::pause();
+	//PhysicsSystem::pause();
+	GraphicSystem::pause();
+}
+
 const char* Scene::get_name() const
 {
 	return name_;

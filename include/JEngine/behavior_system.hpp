@@ -10,6 +10,7 @@ Contains the definition of BehaviorSystem class
 */
 /******************************************************************************/
 #pragma once
+#include <stack>
 #include <macros.hpp>
 #include <vector>
 #include <unordered_map>
@@ -41,7 +42,11 @@ private:
 	static void update(float dt);
 	static void close();
 
+	static void resume();
+	static void pause();
+
 	static Behaviors behaviors_;
+	static std::stack<Behaviors> componentStack_;
 };
 
 jeEnd

@@ -3,6 +3,7 @@
 
 jeBegin
 
+class Level1;
 class Sprite;
 
 // Generic scene class

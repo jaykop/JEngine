@@ -1,0 +1,18 @@
+{
+	"Font": [
+
+	],
+
+	"Texture": [
+
+	],
+
+	"Audio": [
+
+	],
+
+	"Background": [ 0.7, 0.7, 0.7, 1 ],
+	"Screen": [ 1.0, 1.0, 1.0, 1.0 ],
+	"Effect": { "Type": "None" },
+	"Object": [	]
+}

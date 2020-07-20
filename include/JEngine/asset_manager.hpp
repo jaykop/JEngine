@@ -41,7 +41,7 @@ public:
 	static void	set_archetype_directory(const char* dir);
 
 	static Font* get_font(const char* key);
-	static Scene* get_scene(const char* key);
+	// static Scene* get_scene(const char* key);
 	static FMOD::Sound* get_audio(const char* key);
 	static unsigned	get_texture(const char* key);
 	static Archetype* get_archetype(const char* key);
@@ -69,7 +69,7 @@ private:
 
 	static FontMap fontMap_;
 	static AudioMap	audioMap_;
-	static SceneMap	sceneMap_;
+	// static SceneMap	sceneMap_;
 	static TextureMap textureMap_;
 	static ArchetypeMap	archetypeMap_;
 

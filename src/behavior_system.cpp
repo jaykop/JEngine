@@ -15,6 +15,7 @@ Contains the methods of BehaviorSystem class
 
 jeBegin
 
+std::stack<BehaviorSystem::Behaviors> BehaviorSystem::componentStack_;
 BehaviorSystem::Behaviors BehaviorSystem::behaviors_;
 
 void BehaviorSystem::add_behavior(Behavior* behavior)
@@ -52,6 +53,21 @@ void BehaviorSystem::close()
 		b->close();
 
 	behaviors_.clear();
+}
+
+void BehaviorSystem::pause()
+{
+	componentStack_.emplace(behaviors_);
+	behaviors_.clear();
+}
+
+void BehaviorSystem::resume()
+{
+	if (!componentStack_.empty())
+	{
+		behaviors_ = componentStack_.top();
+		componentStack_.pop();
+	}
 }
 
 jeEnd

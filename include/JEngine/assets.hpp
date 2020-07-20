@@ -33,7 +33,6 @@ using ObjectMap = std::unordered_map<std::string, Object*>;
 using MeshMap = std::unordered_map<std::string, Mesh*>;
 using FontMap = std::unordered_map<std::string, Font*>;
 using AudioMap = std::unordered_map<std::string, FMOD::Sound*>;
-using SceneMap = std::unordered_map<std::string, Scene*>;
 using TextureMap = std::unordered_map<std::string, unsigned>;
 using ArchetypeMap = std::unordered_map<std::string, Archetype*>;
 

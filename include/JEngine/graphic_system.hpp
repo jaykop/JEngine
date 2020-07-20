@@ -11,6 +11,7 @@ Contains the definition of GraphicSystem class
 /******************************************************************************/
 
 #pragma once
+#include <stack>
 #include <macros.hpp>
 #include <vector>
 #include <vec4.hpp>
@@ -43,6 +44,7 @@ class GraphicSystem {
 	struct Grid
 	{
 		vec3 color = vec3::one;
+		bool render = false;
 		unsigned size = 10000;
 		Renderer::ProjectType prjType = Renderer::ProjectType::PERSPECTIVE;
 
@@ -58,7 +60,6 @@ public:
 
 	static Grid grid;
 	static vec4 backgroundColor, screenColor;
-	static bool renderGrid;
 
 private:
 
@@ -75,13 +76,25 @@ private:
 	//void add_light(Light* pLight);
 	//void remove_light(Light* pLight);
 
-	static void update_pipelines(float dt);
 	static void render_grid();
 
+	static void pause();
+	static void resume();
+
+	static Camera* mainCamera_;
 	static Renderers renderers_;
 	static Cameras cameras_;
-	
-	static Camera* mainCamera_;
+
+	struct Graphic
+	{
+		Grid grid;
+		vec4 backgroundColor, screenColor;
+		Camera* mainCamera;
+		Renderers renderers;
+		Cameras cameras;
+	};
+
+	static std::stack<Graphic> graphicStack_;
 };
 
 jeEnd

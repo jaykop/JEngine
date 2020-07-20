@@ -4,6 +4,7 @@
 
 #include "components.hpp"
 #include "colors.hpp"
+#include "level1.h"
 
 jeBegin
 
@@ -55,7 +56,7 @@ void License::update(float dt)
 		break;
 	case 3:
 		// next scene
-		SceneManager::set_next_scene("level1");
+		SceneManager::set_next_scene<Level1>();
 		break;
 	}
 

@@ -29,9 +29,8 @@ int SceneManager::frames_ = 0;
 float SceneManager::frameTime_ = 0.f;
 SDL_Window* SceneManager::window_ = nullptr;
 Scene* SceneManager::currentScene_ = nullptr;
-SceneManager::Status SceneManager::status_ = SceneManager::Status::CHANGE;
-Scenes SceneManager::scenes_;
-std::string	SceneManager::firstScene_;
+SceneManager::Status SceneManager::status_ = SceneManager::Status::RESTART;
+SceneMap SceneManager::scenes_;
 Scene* SceneManager::nextScene_ = nullptr;
 
 bool SceneManager::initialize(SDL_Window* window)
@@ -89,28 +88,101 @@ void SceneManager::update(SDL_Event* event)
 		InputHandler::lock_triggered_keys();
 	}
 
+	warp_up_scene();
+}
+
+void SceneManager::close()
+{
+	clear_scenes();
+}
+
+void SceneManager::change_scene()
+{
+	switch (status_)
+	{
+	case Status::CHANGE:
+	{
+		delete currentScene_;
+		currentScene_ = nextScene_;
+		currentScene_->load();
+		currentScene_->initialize();
+		break;
+	}
+	case Status::PAUSE:
+	{
+		// save the scene to retusm
+		Scene* toResume = currentScene_;
+		currentScene_ = nextScene_; // move to the next scene
+		currentScene_->prevScene_ = toResume; // save the last scene to resume
+		currentScene_->load();
+		currentScene_->initialize();
+		break;
+	}
+	case Status::RESTART:
+	{
+		// simply refresh
+		currentScene_->load();
+		currentScene_->initialize();
+		break;
+	}
+	case Status::RESUME:
+	{
+		Scene* toRelease = currentScene_;
+		// Set the current, next, and the last scene to same
+		currentScene_ = nextScene_ = currentScene_->prevScene_;
+		// initialize the last scene
+		delete toRelease;
+		break;
+	}
+	case Status::RESUME_AND_CHANGE:
+	{
+		Scene* toRelease = currentScene_;
+		// resume to the last scene
+		currentScene_ = currentScene_->prevScene_;
+		// initialize the last scene
+		toRelease->prevScene_ = nullptr;
+		// change the status
+		status_ = Status::CHANGE;
+		break;
+	}
+	}
+
+	// if the current and the next scene are the same,
+	// update the status to normal
+	if (currentScene_ == nextScene_)
+		status_ = Status::NONE;
+}
+
+void SceneManager::warp_up_scene()
+{
 	switch (status_) {
 
 		// Pause process
 	case Status::PAUSE:
-		/*SYSTEM::Pause();*/
+
+		currentScene_->pause();
+
 		break;
 
 		// The case to quit app
 	case Status::QUIT:
 		while (currentScene_) {
-			Scene* last = currentScene_->prevScene_;
-			currentScene_->close();
-			currentScene_->unload();
-			currentScene_ = last;
+
+			Scene* toDelete = currentScene_;
+			currentScene_ = currentScene_->prevScene_;
+			toDelete->close();
+			toDelete->unload();
+			toDelete->resume();
+			delete toDelete;
+			toDelete = nullptr;
 		}
 		break;
 
 		// The case to resume to last state
 	case Status::RESUME:
-		/*currentScene_->close();
+		currentScene_->close();
 		currentScene_->unload();
-		SYSTEM::Resume();*/
+		currentScene_->resume();
 		break;
 
 		// The case to restart the current state
@@ -128,127 +200,6 @@ void SceneManager::update(SDL_Event* event)
 	default:
 		break;
 	}
-}
-
-void SceneManager::close()
-{
-	clear_scenes();
-}
-
-void SceneManager::change_scene()
-{
-	// If the status has changed
-	if (status_ == Status::CHANGE
-		|| status_ == Status::PAUSE
-		|| status_ == Status::RESTART) {
-
-		// save the scene to retusm
-		if (status_ == Status::PAUSE) {
-
-			Scene* toResume = currentScene_;
-			currentScene_ = nextScene_; // move to the next scene
-			currentScene_->prevScene_ = toResume; // save the last scene to resume
-		}
-
-		// Just change current state
-		else if (status_ == Status::CHANGE)
-			currentScene_ = nextScene_;
-
-		// Refresh the scene
-		// (Simply restart the current scene)
-		currentScene_->load();
-		currentScene_->initialize();
-	}
-
-	// Resume the scene
-	else if (status_ == Status::RESUME) {
-
-		Scene* toRelease = currentScene_;
-
-		// Set the current, next, and the last scene to same
-		currentScene_ = nextScene_ = currentScene_->prevScene_;
-
-		// initialize the last scene
-		toRelease->prevScene_ = nullptr;
-	}
-
-	// Resume and change
-	else if (status_ == Status::RESUME_AND_CHANGE) {
-
-		Scene* toRelease = currentScene_;
-
-		// resume to the last scene
-		currentScene_ = currentScene_->prevScene_;
-
-		// initialize the last scene
-		toRelease->prevScene_ = nullptr;
-
-		// change the status
-		status_ = Status::CHANGE;
-	}
-
-	// if the current and the next scene are the same,
-	// update the status to normal
-	if (currentScene_ == nextScene_)
-		status_ = Status::NONE;
-}
-
-void SceneManager::push_scene(const char* path, const char* stateName)
-{
-	for (auto it = scenes_.begin(); it != scenes_.end(); ++it)
-		DEBUG_ASSERT(strcmp((*it)->name_, stateName), "Trying to add an identical scene!");
-
-	// make a new scene as intended
-	Scene* newScene = new Scene(stateName, path);
-
-	// push to the vector
-	scenes_.emplace_back(newScene);
-}
-
-void SceneManager::push_scene(Scene* scene)
-{
-	for (auto it = scenes_.begin(); it != scenes_.end(); ++it)
-		// If there is already same one, 
-		DEBUG_ASSERT(strcmp((*it)->name_, scene->name_), "Trying to add an identical scene!");
-
-	// push to the vector
-	scenes_.emplace_back(scene);
-}
-
-void SceneManager::pop_scene(const char* stateName)
-{
-	// find the scene to delete
-	for (auto it = scenes_.begin(); it != scenes_.end(); ++it) {
-
-		// get the same scene with the name given 
-		if (!strcmp((*it)->name_, stateName)) {
-			delete (*it);		// return the memory
-			scenes_.erase(it);	// remove from the vector
-			break;
-		}
-	}
-}
-
-void SceneManager::set_first_scene(const char* stateName)
-{
-	if (firstScene_.empty())
-	{
-		firstScene_.assign(stateName);
-
-		// find the correct scene from the vector
-		for (auto it = scenes_.begin(); it != scenes_.end(); ++it)
-		{
-			if (!strcmp((*it)->name_, firstScene_.c_str()))
-			{
-				nextScene_ = currentScene_ = (*it);
-				break;
-			}
-		}
-	}
-
-	else
-		jeDebugPrint("The frist scene has been set already!\n");
-
 }
 
 void SceneManager::restart()
@@ -271,6 +222,18 @@ SceneManager::Status SceneManager::get_status(void)
 	return status_;
 }
 
+void SceneManager::set_first_scene(const char* stateName)
+{
+	auto found = scenes_.find(stateName);
+	if (found != scenes_.end())
+	{
+		nextScene_ = currentScene_ = new Scene(found->first, found->second);
+		return;
+	}
+
+	jeDebugPrint("No state to resume\n");
+}
+
 void SceneManager::set_next_scene(const char* nextState)
 {
 	// current state is the state
@@ -287,10 +250,14 @@ void SceneManager::set_next_scene(const char* nextState)
 		return;
 	}
 
-	if (has_scene(nextState)) {
-		nextScene_ = get_scene(nextState);
+	auto found = scenes_.find(nextState);
+	if (found != scenes_.end())
+	{
+		nextScene_ = new Scene(found->first, found->second);
 		status_ = Status::CHANGE;
+		return;
 	}
+	jeDebugPrint("No state to resume\n");
 }
 
 void SceneManager::pause(const char* nextState)
@@ -303,29 +270,35 @@ void SceneManager::pause(const char* nextState)
 	}
 
 	// set the pause state
-	if (has_scene(nextState)) {
-		nextScene_ = get_scene(nextState);
+	auto found = scenes_.find(nextState);
+	if (found != scenes_.end())
+	{
+		nextScene_ = new Scene(found->first, found->second);
 		status_ = Status::PAUSE;
+		return;
 	}
+	jeDebugPrint("No state to resume\n");
 }
 
 void SceneManager::resume()
 {
 	// Check state to resume
-	if (currentScene_->prevScene_ == nullptr)
+	if (currentScene_->prevScene_)
 	{
-		jeDebugPrint("No state to resume\n");
+		status_ = Status::RESUME;
 		return;
 	}
 
-	status_ = Status::RESUME;
+	jeDebugPrint("No state to resume\n");
 }
 
 void SceneManager::resume_and_next(const char* nextState)
 {
-	if (has_scene(nextState)) {
+	auto found = scenes_.find(nextState);
+	if (found != scenes_.end())
+	{
+		nextScene_ = new Scene(found->first, found->second);
 		status_ = Status::RESUME_AND_CHANGE;
-		nextScene_ = get_scene(nextState);
 	}
 }
 
@@ -334,29 +307,19 @@ Scene* SceneManager::get_current_scene(void)
 	return currentScene_;
 }
 
-Scene* SceneManager::get_scene(const char* stateName)
-{
-	// find the scene
-	for (auto it : scenes_)
-		if (!strcmp(stateName, it->name_))
-			return it;
-
-	// If there is no,
-	jeDebugPrint("No such name of scene\n");
-	return nullptr;
-}
-
 bool SceneManager::has_scene(const char* stateName)
 {
-	for (auto scene : scenes_) {
-
-		// If found the one,
-		if (!strcmp(stateName, scene->name_))
-			return true;
-	}
+	auto found = scenes_.find(stateName);
+	if (found != scenes_.end())
+		return true;
 
 	jeDebugPrint("No such name of scene\n");
 	return false;
+}
+
+void SceneManager::register_scene(const char* sceneName, const char* dir)
+{
+	scenes_.insert(SceneMap::value_type(sceneName, dir));
 }
 
 float SceneManager::get_elapsed_time()
@@ -376,10 +339,6 @@ float SceneManager::get_framerate()
 
 void SceneManager::clear_scenes()
 {
-	// Remove all states from the vector
-	for (auto& it : scenes_)
-		delete it;
-
 	scenes_.clear();
 }
 

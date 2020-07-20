@@ -18,6 +18,7 @@
 *Rippling effect  
 *Go over ai example and techniques  
 *Import assimp lib  
+*string to string_view  
 
 **Annoying**  
 *vector ostream + friend functions  

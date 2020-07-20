@@ -19,9 +19,6 @@ jeBegin
 class Component;
 class ComponentBuilder;
 
-using Directory = std::unordered_map<std::string, std::string>;
-using BuilderMap = std::unordered_map<std::string, ComponentBuilder*>;
-
 class ComponentManager {
 
 	// Prevent to clone this class
@@ -33,6 +30,9 @@ class ComponentManager {
 	friend class JEngine;
 	friend class Object;
 	friend class AssetManager;
+
+	using Directory = std::unordered_map<std::string, std::string>;
+	using BuilderMap = std::unordered_map<std::string, ComponentBuilder*>;
 
 private:
 

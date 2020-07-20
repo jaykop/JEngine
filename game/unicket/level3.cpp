@@ -68,7 +68,6 @@ void Level3::init_emitters()
 	emitter1->add_component<Emitter>();
 	auto* emi1 = emitter1->get_component<Emitter>();
 	auto* trans1 = emitter1->get_component<Transform>();
-	trans1->position.set(-50.f, 0.f, 0.f);
 	trans1->scale.set(1.f, 1.f, 0.f);
 	emi1->set_texture(AssetManager::get_texture("rect"));
 	emi1->set_colors(Color::yellow, Color::red);
@@ -85,7 +84,7 @@ void Level3::init_emitters()
 	emitter2->add_component<ExplodingParticleController>();
 	auto* emi2 = emitter2->get_component<Emitter>();
 	auto* trans2 = emitter2->get_component<Transform>();
-	trans2->position.set(-50.f, 25.f, 0.f);
+	trans2->position.set(0.f, 25.f, 0.f);
 	trans2->scale.set(1.f, 1.f, 0.f);
 	emi2->set_texture(AssetManager::get_texture("rect"));
 	emi2->set_colors(Color::white, Color::black);
@@ -101,7 +100,7 @@ void Level3::init_emitters()
 	emitter3->add_component<Emitter>();
 	auto* emi3 = emitter3->get_component<Emitter>();
 	auto* trans3 = emitter3->get_component<Transform>();
-	trans3->position.set(-50.f, -25.f, 0.f);
+	trans3->position.set(0.f, -25.f, 0.f);
 	trans3->scale.set(1.f, 1.f, 0.f);
 	emi3->set_texture(AssetManager::get_texture("rect"));
 	emi3->set_colors(Color::white, Color::blue);
