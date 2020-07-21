@@ -27,11 +27,13 @@ Sprite::~Sprite()
 	remove_from_system();
 }
 
-void Sprite::add_to_system() {
+void Sprite::add_to_system() 
+{
 	GraphicSystem::add_renderer(this);
 }
 
-void Sprite::remove_from_system() {
+void Sprite::remove_from_system() 
+{
 	GraphicSystem::remove_renderer(this);
 }
 
@@ -51,6 +53,7 @@ void Sprite::draw(float /*dt*/)
 	shader->set_matrix("m4_rotate", transform_->orientation.to_mat4());
 	shader->set_vec3("v3_cameraPosition", camera->position);
 	shader->set_bool("boolean_bilboard", (status & IS_BILBOARD) == IS_BILBOARD);
+	shader->set_bool("boolean_flip", (status & IS_FLIPPED) == IS_FLIPPED);
 	shader->set_vec4("v4_color", color);
 
 	if (prjType == ProjectType::PERSPECTIVE) {
@@ -73,14 +76,20 @@ void Sprite::draw(float /*dt*/)
 		shader->set_matrix("m4_projection", orthogonal);
 	}
 
-	// Send camera info to shader
-	// mat4 viewport = mat4::look_at(camera->position, camera->right_, camera->up_, camera->back_);
-	mat4 viewport = mat4::look_at(camera->position, camera->position + camera->back_, camera->up_);
-	shader->set_matrix("m4_viewport", viewport);
+	bool fixed = (status & IS_FIXED) == IS_FIXED;
+	shader->set_bool("boolean_fix", fixed);
 
-	//bool hasParent = (pModel->status_ & Model::IS_INHERITED) == Model::IS_INHERITED;
-	//glUniform1i(glGetUniformLocation(Shader::pCurrentShader_->programId_, "hasParent"), hasParent);
-	//if (hasParent)
+	if (!fixed)
+	{
+		// Send camera info to shader
+		// mat4 viewport = mat4::look_at(camera->position, camera->right_, camera->up_, camera->back_);
+		mat4 viewport = mat4::look_at(camera->position, camera->position + camera->back_, camera->up_);
+		shader->set_matrix("m4_viewport", viewport);
+	}
+
+	bool isHerited = parent_ != nullptr;
+	shader->set_bool("boolean_herited", isHerited);
+	//if (isHerited)
 	//	ParentPipeline(pModel->pInherited_);
 
 	//if (pModel->pMaterial_ && isLight_)
@@ -146,7 +155,6 @@ void Sprite::run_animation()
 		Shader* shader = GLManager::shader_[GLManager::NORMAL];
 		shader->use();
 
-		shader->set_bool("boolean_flip", (status & IS_FLIPPED) == IS_FLIPPED);
 		shader->set_matrix("m4_aniScale", mat4::scale(animation_->scale_));
 		shader->set_matrix("m4_aniTranslate", mat4::translate(animation_->translate_));
 	}

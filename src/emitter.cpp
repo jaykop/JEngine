@@ -20,10 +20,11 @@ const unsigned NUM_THREADS = 12;
 
 Emitter::Emitter(Object* owner)
 	: Renderer(owner), angle(vec2::zero), velocity(vec3::zero), range(vec3::zero),
-	life(1.f), rotationSpeed(0.f), colorSpeed(1.f), pointSize_(0.f), active(true), 
+	life(1.f), rotationSpeed(0.f), colorSpeed(1.f), pointSize_(0.f), active(true),
 	type(ParticleType::NORMAL), startColor_(vec3::zero), endColor_(vec3::zero), colorDiff_(vec3::zero),
 	deadCount_(0), size_(0), drawMode_(GL_TRIANGLES), texture_(0)
 {
+	status = status & IS_BILBOARD;
 	sfactor_ = GL_SRC_ALPHA;
 	dfactor_ = GL_ONE;
 }

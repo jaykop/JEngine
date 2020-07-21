@@ -21,7 +21,7 @@ mat4 mat4::scale(const vec3& vec)
 	toReturn.m[0][0] = vec.x;
 	toReturn.m[1][1] = vec.y;
 	toReturn.m[2][2] = vec.z;
-	toReturn.m[3][3] = 1.f;
+	//toReturn.m[3][3] = 1.f;
 
 	return toReturn;
 }
@@ -32,12 +32,12 @@ mat4 mat4::rotate_x(float radian)
 	float c = std::cosf(radian);
 	float s = std::sinf(radian);
 
-	rotation.m[0][0] = 1.f;
+	//rotation.m[0][0] = 1.f;
 	rotation.m[1][1] = c;
 	rotation.m[1][2] = -s;
 	rotation.m[2][1] = s;
 	rotation.m[2][2] = c;
-	rotation.m[3][3] = 1.f;
+	//rotation.m[3][3] = 1.f;
 
 	return rotation;
 }
@@ -49,11 +49,11 @@ mat4 mat4::rotate_y(float radian)
 	float s = std::sinf(radian);
 
 	rotation.m[0][0] = c;
-	rotation.m[1][1] = 1.f;
+	//rotation.m[1][1] = 1.f;
 	rotation.m[0][2] = s;
 	rotation.m[2][0] = -s;
 	rotation.m[2][2] = c;
-	rotation.m[3][3] = 1.f;
+	//rotation.m[3][3] = 1.f;
 
 	return rotation;
 }
@@ -68,8 +68,8 @@ mat4 mat4::rotate_z(float radian)
 	rotation.m[0][1] = -s;
 	rotation.m[1][0] = s;
 	rotation.m[1][1] = c;
-	rotation.m[2][2] = 1.f;
-	rotation.m[3][3] = 1.f;
+	//rotation.m[2][2] = 1.f;
+	//rotation.m[3][3] = 1.f;
 
 	return rotation;
 }
@@ -96,7 +96,7 @@ mat4 mat4::rotate(float radian, const vec3& vec)
 	toReturn.m[1][2] = offset.y * norm.z - norm.x * sine;
 	toReturn.m[2][2] = offset.z * norm.z + cosine;
 
-	toReturn.m[3][3] = 1.f;
+	//toReturn.m[3][3] = 1.f;
 
 	return toReturn;
 }
@@ -127,7 +127,7 @@ mat4 mat4::orthogonal(float left, float right, float bottom, float top, float zN
 	toReturn.m[0][3] = (right + left) / (left - right);
 	toReturn.m[1][3] = (top + bottom) / (bottom - top);
 	toReturn.m[2][3] = (zFar + zNear) / (zNear - zFar);
-	toReturn.m[3][3] = 1.f;
+	//toReturn.m[3][3] = 1.f;
 
 	return toReturn;
 }
@@ -138,10 +138,10 @@ mat4 mat4::orthogonal(float left, float right, float bottom, float top)
 
 	toReturn.m[0][0] = 2.f / (right - left);
 	toReturn.m[1][1] = 2.f / (top - bottom);
-	toReturn.m[2][2] = 1.f;
+	//toReturn.m[2][2] = 1.f;
 	toReturn.m[0][3] = (right + left) / (left - right);
 	toReturn.m[1][3] = (top + bottom) / (bottom - top);
-	toReturn.m[3][3] = 1.f;
+	//toReturn.m[3][3] = 1.f;
 	return toReturn;
 }
 
@@ -199,7 +199,20 @@ mat4 mat4::look_at(const vec3& pos,
 	toReturn.m[2][2] = -back.z;
 	toReturn.m[2][3] = (back).dot(pos);
 
-	toReturn.m[3][3] = 1.f;
+	//toReturn.m[3][3] = 1.f;
 
 	return toReturn;
 }
+//
+//mat4 mat4::screen(float half_width, float half_height, const vec3& position)
+//{
+//	mat4 toReturn;
+//
+//	toReturn.m[0][0] = half_width;
+//	toReturn.m[0][3] = half_width;
+//
+//	toReturn.m[1][0] = half_height;
+//	toReturn.m[1][3] = half_height;
+//
+//	return toReturn;
+//}

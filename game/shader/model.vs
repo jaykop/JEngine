@@ -22,11 +22,12 @@ uniform mat4 m4_aniScale;
 uniform mat4 m4_aniTranslate;
 uniform vec4 v4_lightColor[MAX_ARRAY];
 
+uniform bool boolean_fix;
 uniform bool boolean_flip;
 uniform bool boolean_light;
 uniform bool boolean_bilboard;
 
-uniform bool hasParent;
+uniform bool boolean_herited;
 uniform mat4 m4_parentTranslate,
 	m4_parentScale, m4_parentRotate;
 
@@ -65,12 +66,16 @@ void main() {
 void Transforming(vec4 _position, mat4 _model) {
 	
 	mat4 newModel = transpose(_model);
-	if (hasParent) 
+	if (boolean_herited) 
 		newModel = transpose(m4_parentScale * m4_parentRotate * m4_parentTranslate) * newModel;
 
 	// Calculate mvp transform matrix
-	mat4 modelview = transpose(m4_viewport) * newModel;
-
+	mat4 modelview;
+	if (!boolean_fix)
+		modelview = transpose(m4_viewport) * newModel;
+	else
+		modelview = newModel;
+		
 	if (boolean_bilboard) {
 		modelview[0][0]
 			= modelview[1][1]
@@ -94,13 +99,13 @@ void Mapping(vec4 _position, inout vec4 _texCoord) {
 	mat4 animation = m4_aniScale * m4_aniTranslate;
 	_texCoord = transpose(animation) * vec4(uvPosition, 0, 1);
 
-	// Check flipping
-	if (boolean_flip)
-		_texCoord.x = -_texCoord.x;
-
 }
 
 void SendToFrag(vec4 _position, vec4 _texCoord, mat4 _model) {
+
+	// Check flipping
+	if (boolean_flip)
+		_texCoord.x = -_texCoord.x;
 
 	// Texture coordinate
 	v2_outTexCoord = _texCoord.xy;

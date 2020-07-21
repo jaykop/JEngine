@@ -20,9 +20,10 @@ public:
 	enum class ProjectType { PERSPECTIVE, ORTHOGONAL };
 	enum class RenderType { NONE, POSITION, NORMAL };
 
-	const static int IS_FLIPPED = 0x100;
-	const static int IS_BILBOARD = 0x010;
-	const static int IS_INHERITED = 0x001;
+	const static int IS_FIXED = 0x1000;
+	const static int IS_FLIPPED = 0x0100;
+	const static int IS_BILBOARD = 0x0010;
+	const static int IS_INHERITED = 0x0001;
 
 	ProjectType prjType;
 	int status;
@@ -47,6 +48,7 @@ protected:
 	unsigned sfactor_, dfactor_;
 
 	Transform* transform_ = nullptr;
+	Renderer* parent_ = nullptr;
 
 	// static members
 	static bool renderObj_;
