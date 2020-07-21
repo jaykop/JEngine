@@ -11,6 +11,9 @@
 *debug coord  
 *physics + thread  
 *emitter explosion refresh  
+*DebugRenderer inherited  
+*integrate start_draw/enddraw
+*letterbox  
 
 **Nice to have** - 3D + a  
 *3D models + import CS350 works  

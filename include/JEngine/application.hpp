@@ -55,8 +55,6 @@ private:
 	static void update();
 	static void close();
 
-	static void rendering_thread();
-
 	// Private variables
 	static AppData data_;
 	static SDL_Window* window_;				// SDL window

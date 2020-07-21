@@ -35,7 +35,9 @@ public:
 	virtual void draw(float dt) = 0;
 
 	static void draw_lighting_effect(Light* light);
+	
 	bool picked() const;
+	Transform* get_transform() const { return transform_; }
 
 protected:
 
@@ -43,7 +45,8 @@ protected:
 	virtual void remove_from_system() = 0;
 	virtual void load(const rapidjson::Value& data) = 0;
 
-	// private members
+	void set_parent_renderer();
+
 	unsigned drawMode_;
 	unsigned sfactor_, dfactor_;
 

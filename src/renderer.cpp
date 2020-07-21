@@ -11,6 +11,12 @@
 #include <transform.hpp>
 #include <input_handler.hpp>
 
+#include <sprite.hpp>
+#include <model.hpp>
+#include <text.hpp>
+#include <light.hpp>
+#include <emitter.hpp>
+
 jeBegin
 
 using namespace Math;
@@ -82,6 +88,39 @@ bool Renderer::picked() const
 	bool in2 = InputHandler::ray_intersects_triangle(v3, v4, v1);
 
 	return in1 || in2;
+}
+
+void Renderer::set_parent_renderer()
+{
+	Object* parentObject = get_owner()->get_parent();
+	if (parentObject)
+	{
+		if (parentObject->has_component<Sprite>())
+		{
+			parent_ = parentObject->get_component<Sprite>();
+			return;
+		}
+		else if (parentObject->has_component<Text>())
+		{
+			parent_ = parentObject->get_component<Text>();
+			return;
+		}
+		else if (parentObject->has_component<Emitter>())
+		{
+			parent_ = parentObject->get_component<Emitter>();
+			return;
+		}
+		else if (parentObject->has_component<Light>())
+		{
+			parent_ = parentObject->get_component<Light>();
+			return;
+		}
+		else if (parentObject->has_component<Model>())
+		{
+			parent_ = parentObject->get_component<Model>();
+			return;
+		}
+	}
 }
 
 jeEnd

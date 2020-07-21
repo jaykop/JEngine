@@ -29,6 +29,7 @@ Sprite::~Sprite()
 
 void Sprite::add_to_system() 
 {
+	set_parent_renderer();
 	GraphicSystem::add_renderer(this);
 }
 
@@ -89,8 +90,13 @@ void Sprite::draw(float /*dt*/)
 
 	bool isHerited = parent_ != nullptr;
 	shader->set_bool("boolean_herited", isHerited);
-	//if (isHerited)
-	//	ParentPipeline(pModel->pInherited_);
+	if (isHerited)
+	{
+		Transform* pTransform = parent_->get_transform();
+		shader->set_matrix("m4_parentTranslate", mat4::translate(pTransform->position));
+		shader->set_matrix("m4_parentScale", mat4::scale(pTransform->scale));
+		shader->set_matrix("m4_parentRotate", pTransform->orientation.to_mat4());
+	}
 
 	//if (pModel->pMaterial_ && isLight_)
 	//	LightingEffectPipeline(pModel->pMaterial_);

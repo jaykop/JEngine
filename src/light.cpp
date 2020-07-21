@@ -78,6 +78,7 @@ void Light::draw(float /*dt*/)
 
 void Light::add_to_system()
 {
+	set_parent_renderer();
 	GraphicSystem::add_light(this);
 }
 

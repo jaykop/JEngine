@@ -64,23 +64,23 @@ void Camera::set_pitch(float rad)
 	up_ = (-back_).cross(right_).normalized();
 }
 
-// todo:
-void Camera::set_roll(float rad)
-{
-	roll_ = rad;
-
-	vec4 right = mat4::rotate(roll_, -back_) * vec4(right_, 1.f);
-	right_.set(right.x, right.y, right.z);
-	right_.normalize();
-
-	up_ = (-back_).cross(right_).normalized();
-}
-
 float Camera::get_yaw() const { return yaw_; }
 
 float Camera::get_pitch() const { return pitch_; }
 
-float Camera::get_roll() const { return roll_; }
+// todo:
+//void Camera::set_roll(float rad)
+//{
+//	roll_ = rad;
+//
+//	vec4 right = mat4::rotate(roll_, -back_) * vec4(right_, 1.f);
+//	right_.set(right.x, right.y, right.z);
+//	right_.normalize();
+//
+//	up_ = (-back_).cross(right_).normalized();
+//}
+
+// float Camera::get_roll() const { return roll_; }
 
 const vec3& Camera::get_viewgeometry() const
 {

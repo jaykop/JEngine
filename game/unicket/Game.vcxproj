@@ -212,7 +212,6 @@ xcopy /y /s /i "$(ProjectDir)..\default" "$(TargetDir)..\default"</Command>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="camera_controller.cpp" />
-    <ClCompile Include="is_ui.cpp" />
     <ClCompile Include="JEngine.cpp" />
     <ClCompile Include="level1.cpp" />
     <ClCompile Include="level2.cpp" />
@@ -228,7 +227,6 @@ xcopy /y /s /i "$(ProjectDir)..\default" "$(TargetDir)..\default"</Command>
     <ClInclude Include="camera_controller.h" />
     <ClInclude Include="game_logics.h" />
     <ClInclude Include="game_scenes.h" />
-    <ClInclude Include="is_ui.h" />
     <ClInclude Include="JEngine.h" />
     <ClInclude Include="level1.h" />
     <ClInclude Include="level2.h" />

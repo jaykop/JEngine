@@ -55,6 +55,7 @@ void Emitter::add_to_system() {
 	else
 		jeDebugPrint("!Emitter - Already allocated.\n");
 
+	set_parent_renderer();
 	GraphicSystem::add_renderer(this);
 }
 

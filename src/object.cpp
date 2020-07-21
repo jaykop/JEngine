@@ -109,8 +109,8 @@ Object* Object::get_child(const char* name)
 
 void Object::clear_children()
 {
-	for (auto child : children_)
-		ObjectManager::remove_object(child.second);
+	//for (auto child : children_)
+	//	ObjectManager::remove_object(child.second);
 
 	children_.clear();
 }

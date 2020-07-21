@@ -25,11 +25,15 @@ DebugRenderer::~DebugRenderer(void)
 {
 }
 
-void DebugRenderer::add_to_system() {
+void DebugRenderer::add_to_system() 
+{
+	// todo: change this to happen all the time
+	set_parent_renderer();
 	GraphicSystem::add_renderer(this);
 }
 
-void DebugRenderer::remove_from_system() {
+void DebugRenderer::remove_from_system() 
+{
 	GraphicSystem::remove_renderer(this);
 }
 

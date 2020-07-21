@@ -26,9 +26,9 @@ void CameraController::update(float dt)
 	if (InputHandler::key_triggered(KEY::MOUSE_MIDDLE))
 	{
 		camera->set_pitch(Math::deg_to_rad(0.f));
-		camera->set_roll(Math::deg_to_rad(0.f));
 		camera->set_yaw(Math::deg_to_rad(-90.f));
 		camera->position.set(0.f, 0.f, 100.f);
+		camera->zoom = 0.f;
 	}
 
 	if (!camera_2d)

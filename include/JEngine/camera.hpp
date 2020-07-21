@@ -37,11 +37,11 @@ public:
 
 	void set_yaw(float degree);
 	void set_pitch(float degree);
-	void set_roll(float degree);
+	// void set_roll(float degree);
 
 	float get_yaw() const;
 	float get_pitch() const;
-	float get_roll() const;
+	// float get_roll() const;
 
 protected:
 

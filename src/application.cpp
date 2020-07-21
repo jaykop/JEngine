@@ -179,4 +179,10 @@ void Application::quit()
 	SceneManager::status_ = SceneManager::Status::QUIT;
 }
 
+void Application::set_fullscreen(bool fullscreen)
+{
+	data_.isFullscreen = fullscreen;
+	SDL_SetWindowFullscreen(window_, data_.isFullscreen);
+}
+
 jeEnd

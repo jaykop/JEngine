@@ -23,6 +23,9 @@ void SceneController::init()
 
 void SceneController::update(float /*dt*/)
 {
+	if (InputHandler::key_triggered(KEY::TAB))
+		Application::set_fullscreen(!Application::get_appdata().isFullscreen);
+
 	if (InputHandler::key_triggered(KEY::NUM_0))
 		SceneManager::restart();
 

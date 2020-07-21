@@ -56,11 +56,14 @@ Text::~Text()
 	glDeleteBuffers(1, &vbo_);
 	glDeleteBuffers(1, &ebo_);
 }
-void Text::add_to_system() {
+void Text::add_to_system() 
+{
+	set_parent_renderer();
 	GraphicSystem::add_renderer(this);
 }
 
-void Text::remove_from_system() {
+void Text::remove_from_system() 
+{
 	GraphicSystem::remove_renderer(this);
 }
 
