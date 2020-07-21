@@ -80,6 +80,7 @@ struct mat4
 	static mat4 rotate(float radian, const vec3& vec);
 	static mat4 perspective(float fovy, float aspect, float zNear, float zFar);
 	static mat4 look_at(const vec3& eye, const vec3& target, const vec3& up);
+	static mat4 look_at(const vec3& pos, const vec3& right, const vec3& up, const vec3& back);
 	static mat4 orthogonal(float left, float right, float bottom, float top);
 	static mat4 orthogonal(float left, float right, float bottom, float top, float zNear, float zFar);
 

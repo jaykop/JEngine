@@ -1,5 +1,7 @@
 #include "level3.h"
-#include "game_logics.h"
+#include "scene_controller.h"
+#include "camera_controller.h"
+#include "particle_conrtoller.h"
 #include "pch.h"
 
 #include "components.hpp"

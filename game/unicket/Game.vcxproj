@@ -102,7 +102,7 @@
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\include\JEngine;$(ProjectDir)..\..\include\SDL2;$(ProjectDir)..\..\include;$(ProjectDir)..\..\include\rapidjson;$(ProjectDir)..\..\include\freetype2;$(ProjectDir)..\..\include\fmod</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\include\JEngine;$(ProjectDir)..\..\include\SDL2;$(ProjectDir)..\..\include;$(ProjectDir)..\..\include\rapidjson;$(ProjectDir)..\..\include\freetype2;$(ProjectDir)..\..\include\fmod;$(ProjectDir)..\..\include\GL</AdditionalIncludeDirectories>
       <LanguageStandard>Default</LanguageStandard>
       <PreprocessorDefinitions>_SILENCE_CXX17_ITERATOR_BASE_CLASS_DEPRECATION_WARNING;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
@@ -127,7 +127,7 @@ xcopy /y /s /i "$(ProjectDir)..\default" "$(TargetDir)..\default"</Command>
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\include\JEngine;$(ProjectDir)..\..\include\SDL2;$(ProjectDir)..\..\include;$(ProjectDir)..\..\include\rapidjson;$(ProjectDir)..\..\include\freetype2;$(ProjectDir)..\..\include\fmod</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\include\JEngine;$(ProjectDir)..\..\include\SDL2;$(ProjectDir)..\..\include;$(ProjectDir)..\..\include\rapidjson;$(ProjectDir)..\..\include\freetype2;$(ProjectDir)..\..\include\fmod;$(ProjectDir)..\..\include\GL</AdditionalIncludeDirectories>
       <LanguageStandard>Default</LanguageStandard>
       <PreprocessorDefinitions>_SILENCE_CXX17_ITERATOR_BASE_CLASS_DEPRECATION_WARNING;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
@@ -154,7 +154,7 @@ xcopy /y /s /i "$(ProjectDir)..\default" "$(TargetDir)..\default"</Command>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\include\JEngine;$(ProjectDir)..\..\include\SDL2;$(ProjectDir)..\..\include;$(ProjectDir)..\..\include\rapidjson;$(ProjectDir)..\..\include\freetype2;$(ProjectDir)..\..\include\fmod</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\include\JEngine;$(ProjectDir)..\..\include\SDL2;$(ProjectDir)..\..\include;$(ProjectDir)..\..\include\rapidjson;$(ProjectDir)..\..\include\freetype2;$(ProjectDir)..\..\include\fmod;$(ProjectDir)..\..\include\GL</AdditionalIncludeDirectories>
       <LanguageStandard>Default</LanguageStandard>
       <PreprocessorDefinitions>_SILENCE_CXX17_ITERATOR_BASE_CLASS_DEPRECATION_WARNING;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
@@ -183,7 +183,7 @@ xcopy /y /s /i "$(ProjectDir)..\default" "$(TargetDir)..\default"</Command>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\include\JEngine;$(ProjectDir)..\..\include\SDL2;$(ProjectDir)..\..\include;$(ProjectDir)..\..\include\rapidjson;$(ProjectDir)..\..\include\freetype2;$(ProjectDir)..\..\include\fmod</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\include\JEngine;$(ProjectDir)..\..\include\SDL2;$(ProjectDir)..\..\include;$(ProjectDir)..\..\include\rapidjson;$(ProjectDir)..\..\include\freetype2;$(ProjectDir)..\..\include\fmod;$(ProjectDir)..\..\include\GL</AdditionalIncludeDirectories>
       <LanguageStandard>Default</LanguageStandard>
       <PreprocessorDefinitions>_SILENCE_CXX17_ITERATOR_BASE_CLASS_DEPRECATION_WARNING;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>

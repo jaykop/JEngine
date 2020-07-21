@@ -1,5 +1,8 @@
 #include "level1.h"
-#include "game_logics.h"
+#include "is_ui.h"
+#include "scene_controller.h"
+#include "camera_controller.h"
+#include "topdown_controller.h"
 #include "pch.h"
 
 #include "components.hpp"

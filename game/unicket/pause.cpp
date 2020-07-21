@@ -1,5 +1,6 @@
 #include "pause.h"
-#include "game_logics.h"
+#include "scene_controller.h"
+#include "camera_controller.h"
 #include "pch.h"
 
 #include "components.hpp"

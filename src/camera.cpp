@@ -24,76 +24,63 @@ void Camera::load(const rapidjson::Value& /*data*/) {
 
 Camera::Camera(Object* owner) 
 	: Component(owner), position(vec3::zero), near_(.1f), far_(1000.f),
-	up_(vec3(0, 1, 0)), right_(vec3::zero), back_(vec3::zero), target(vec3::zero), 
+	up_(vec3(0, 1, 0)), right_(vec3(1, 0, 0)), back_(vec3(0, 0, -1)),
 	distance_(1.f), fovy_(45.f), zoom(0.f),
-	yaw_(-90.f), roll_(0.f), pitch_(0.f), width_(2 * tanf(.5f * fovy_)), height_(width_ / aspect_),
+	yaw_(Math::deg_to_rad(-90.f)), roll_(0.f), pitch_(0.f), width_(2 * tanf(.5f * fovy_)), height_(width_ / aspect_),
 	aspect_(GLManager::get_width() / GLManager::get_height())
 {
 	viewgeometry_.set(width_, height_, distance_);
 }
 
-void Camera::update()
+void Camera::update(float /*dt*/)
 {
 	aspect_ = GLManager::get_width() / GLManager::get_height();
 	width_ = 2 * tanf(.5f * fovy_);
 	height_ = width_ / aspect_;
-
 	viewgeometry_.set(width_, height_, distance_);
-
-	back_ = (target-position).normalized();
-	right_ = vec3::cross(-back_, up_).normalized();
-	up_ = vec3::cross(right_, -back_).normalized();
-
-	vec3 v = -back_;
-	vec3 vp(v.x, v.y, 0.f);
-	yaw_ = acosf(v.dot(vp) / (vec3::abs(v).dot(vec3::abs(vp))));
-	vec3 vpp(0.f, v.y, 0.f);
-	pitch_ = acosf(vp.dot(vpp) / (vec3::abs(vp).dot(vec3::abs(vp))));
 }
 
-void Camera::yaw(float degree)
+void Camera::set_yaw(float rad)
 {
-	yaw_ = degree;
-	mat4 rotate = mat4::rotate(Math::deg_to_rad(yaw_), up_);
+	yaw_ = rad;
 
-	vec4 right(right_.x, right_.y, right_.z, 1.f);
-	right = rotate * right;
+	back_.x = cosf(yaw_) * cosf(pitch_);
+	back_.y = sinf(pitch_);
+	back_.z = sinf(yaw_) * cosf(pitch_);
+	back_.normalize();
+
+	up_ = (-back_).cross(right_).normalized();
+}
+
+void Camera::set_pitch(float rad)
+{
+	pitch_ = rad;
+
+	back_.x = cosf(yaw_) * cosf(pitch_);
+	back_.y = sinf(pitch_);
+	back_.z = sinf(yaw_) * cosf(pitch_);
+	back_.normalize();
+
+	up_ = (-back_).cross(right_).normalized();
+}
+
+// todo:
+void Camera::set_roll(float rad)
+{
+	roll_ = rad;
+
+	vec4 right = mat4::rotate(roll_, -back_) * vec4(right_, 1.f);
 	right_.set(right.x, right.y, right.z);
+	right_.normalize();
 
-	vec4 back(back_.x, back_.y, back_.z, 1.f);
-	back = rotate * back;
-	back_.set(back.x, back.y, back.z);
-	target = (-back_).normalized();
+	up_ = (-back_).cross(right_).normalized();
 }
 
-void Camera::pitch(float degree)
-{
-	pitch_ = degree;
-	mat4 rotate = mat4::rotate(Math::deg_to_rad(pitch_), right_);
+float Camera::get_yaw() const { return yaw_; }
 
-	vec4 up(up_.x, up_.y, up_.z, 1.f);
-	up = rotate * up;
-	up_.set(up.x, up.y, up.z);
+float Camera::get_pitch() const { return pitch_; }
 
-	vec4 back(back_.x, back_.y, back_.z, 1.f);
-	back = rotate * back;
-	back_.set(back.x, back.y, back.z);
-	target = (-back_).normalized();
-}
-
-void Camera::roll(float degree)
-{
-	roll_ = degree;
-	mat4 rotate = mat4::rotate(Math::deg_to_rad(roll_), back_);
-
-	vec4 right(right_.x, right_.y, right_.z, 1.f);
-	right = rotate * right;
-	right_.set(right.x, right.y, right.z);
-
-	vec4 up(up_.x, up_.y, up_.z, 1.f);
-	up = rotate * up;
-	up_.set(up.x, up.y, up.z);
-}
+float Camera::get_roll() const { return roll_; }
 
 const vec3& Camera::get_viewgeometry() const
 {

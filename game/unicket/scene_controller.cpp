@@ -25,12 +25,16 @@ void SceneController::update(float /*dt*/)
 {
 	if (InputHandler::key_triggered(KEY::NUM_0))
 		SceneManager::restart();
+
 	if (InputHandler::key_triggered(KEY::NUM_1))
 		SceneManager::set_next_scene<Level1>();
+
 	if (InputHandler::key_triggered(KEY::NUM_2))
 		SceneManager::set_next_scene<Level2>();
+
 	if (InputHandler::key_triggered(KEY::NUM_3))
 		SceneManager::set_next_scene<Level3>();
+
 	if (InputHandler::key_triggered(KEY::BACK))
 	{
 		if (SceneManager::is_paused())
@@ -43,15 +47,9 @@ void SceneController::update(float /*dt*/)
 		auto pos = InputHandler::get_position();
 		std::cout << pos.x << " " << pos.y << " " << pos.z << "\n";
 	}
-
-	if (InputHandler::key_pressed(KEY::MOUSE_RIGHT))
-		std::cout << "MOUSE_RIGHT\n";
-	
+		
 	if (InputHandler::key_triggered(KEY::ENTER))
-	{
-		std::cout << "ENTER\n";
 		AssetManager::generate_screenshot("resource/screenshot/");
-	}
 
 	if (InputHandler::key_triggered(KEY::SPACE))
 		GraphicSystem::grid.render = !GraphicSystem::grid.render;

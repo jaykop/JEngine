@@ -66,7 +66,7 @@ void GraphicSystem::initialize() {
 void GraphicSystem::update(float dt) {
 
 	// update main camera
-	mainCamera_->update();
+	mainCamera_->update(dt);
 
 	// get current scene color
 	backgroundColor = SceneManager::get_current_scene()->background;

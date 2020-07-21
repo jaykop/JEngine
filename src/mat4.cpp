@@ -264,7 +264,8 @@ mat4& mat4::operator*=(const mat4& rhs)
 
 vec4 mat4::operator*(const vec4& rhs) const
 {
-	return vec4(m00 * rhs.x + m01 * rhs.y + m02 * rhs.z + m03 * rhs.w,
+	return vec4(
+		m00 * rhs.x + m01 * rhs.y + m02 * rhs.z + m03 * rhs.w,
 		m10 * rhs.x + m11 * rhs.y + m12 * rhs.z + m13 * rhs.w,
 		m20 * rhs.x + m21 * rhs.y + m22 * rhs.z + m23 * rhs.w,
 		m30 * rhs.x + m31 * rhs.y + m32 * rhs.z + m33 * rhs.w);

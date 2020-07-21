@@ -26,6 +26,13 @@ protected:
 
 private:
 
+	void move(float dt);
+	void rotate(float dt);
+
+	bool firstMouse = true, camera_2d = true;
+	float lastX, lastY;
+	float sensitivity = .1f;
+
 };
 
 jeEnd

@@ -48,7 +48,7 @@ public:
 
 	// mouse position
 	static vec3 get_position();
-
+	static vec3 get_ray_direction();
 	static bool ray_intersects_triangle(const vec3& v0, const vec3& v1, const vec3& v2);
 
 private:

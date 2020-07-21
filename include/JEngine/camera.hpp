@@ -23,7 +23,7 @@ class Camera : public Component
 
 public:
 
-	vec3 position, target;
+	vec3 position;
 	float zoom;
 
 	const vec3& get_viewgeometry() const;
@@ -35,9 +35,13 @@ public:
 	const vec3& get_right() const;
 	const vec3& get_back() const;
 
-	void yaw(float degree);
-	void pitch(float degree);
-	void roll(float degree);
+	void set_yaw(float degree);
+	void set_pitch(float degree);
+	void set_roll(float degree);
+
+	float get_yaw() const;
+	float get_pitch() const;
+	float get_roll() const;
 
 protected:
 
@@ -47,7 +51,7 @@ protected:
 
 private:
 
-	void update();
+	void update(float dt);
 
 	static vec3 worldUp_;
 

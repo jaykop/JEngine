@@ -178,3 +178,28 @@ mat4 mat4::look_at(const vec3& eye, const vec3& target, const vec3& up)
 
 	return toReturn;
 }
+
+mat4 mat4::look_at(const vec3& pos, 
+	const vec3& right, const vec3& up, const vec3& back)
+{
+	mat4 toReturn;
+
+	toReturn.m[0][0] = right.x;
+	toReturn.m[0][1] = right.y;
+	toReturn.m[0][2] = right.z;
+	toReturn.m[0][3] = (-right).dot(pos);
+
+	toReturn.m[1][0] = up.x;
+	toReturn.m[1][1] = up.y;
+	toReturn.m[1][2] = up.z;
+	toReturn.m[1][3] = (-up).dot(pos);
+
+	toReturn.m[2][0] = -back.x;
+	toReturn.m[2][1] = -back.y;
+	toReturn.m[2][2] = -back.z;
+	toReturn.m[2][3] = (back).dot(pos);
+
+	toReturn.m[3][3] = 1.f;
+
+	return toReturn;
+}

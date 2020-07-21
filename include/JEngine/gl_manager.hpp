@@ -10,7 +10,6 @@ Contains the definition of GLManager class
 */
 /******************************************************************************/
 #pragma once
-
 #include <glew.h>
 #define GLEW_STATIC
 #include <macros.hpp>

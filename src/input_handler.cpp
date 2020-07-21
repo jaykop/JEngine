@@ -235,8 +235,8 @@ vec3 InputHandler::get_position()
 	return position_;
 }
 
-bool InputHandler::ray_intersects_triangle(const vec3& v0, const vec3& v1, const vec3& v2) {
-
+vec3 InputHandler::get_ray_direction()
+{
 	float x = (2.0f * position_.x) / GLManager::get_width() - 1.0f;
 	float y = 1.0f - (2.0f * position_.y) / GLManager::get_height();
 	float z = 1.0f;
@@ -246,7 +246,7 @@ bool InputHandler::ray_intersects_triangle(const vec3& v0, const vec3& v1, const
 	Camera* camera = GraphicSystem::get_camera();
 	mat4 viewport = mat4::look_at(camera->position, camera->position + camera->back_, camera->up_);
 	mat4 perspective = mat4::perspective(
-		camera->fovy_ * camera->zoom, camera->aspect_,
+		camera->fovy_ + camera->zoom, camera->aspect_,
 		camera->near_, camera->far_);
 
 	vec4 ray_eye = perspective.inverted() * ray_clip;
@@ -256,7 +256,13 @@ bool InputHandler::ray_intersects_triangle(const vec3& v0, const vec3& v1, const
 	// don't forget to normalise the vector at some point
 	ray_wor.normalize();
 
-	const vec3& d = ray_wor;
+	return ray_wor;
+}
+
+bool InputHandler::ray_intersects_triangle(const vec3& v0, const vec3& v1, const vec3& v2) {
+
+	Camera* camera = GraphicSystem::get_camera();
+	const vec3& d = get_ray_direction();
 	const vec3& p = camera->position;
 
 	vec3 e1, e2, h, s, q;
