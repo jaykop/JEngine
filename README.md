@@ -3,7 +3,6 @@
 ===========================================
 
 **Next goals** - 2D  
-*warpig mouse with camera
 *resume and next  
 *License  
 *FMOD Lib  
