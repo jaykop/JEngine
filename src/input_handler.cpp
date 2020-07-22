@@ -110,7 +110,19 @@ KEY InputHandler::key_translator(const SDL_Event& event)
 	case SDLK_x: return KEY::X;	
 	case SDLK_y: return KEY::Y;	
 	case SDLK_z: return KEY::Z;	
-	//case SDLK_CAPSLOCK: return JE_CAPSLOCK; break;
+	case SDLK_CAPSLOCK: return KEY::CAPSLOCK; break;
+	case SDLK_F1: return KEY::F1; break;
+	case SDLK_F2: return KEY::F2; break;
+	case SDLK_F3: return KEY::F3; break;
+	case SDLK_F4: return KEY::F4; break;
+	case SDLK_F5: return KEY::F5; break;
+	case SDLK_F6: return KEY::F6; break;
+	case SDLK_F7: return KEY::F7; break;
+	case SDLK_F8: return KEY::F8; break;
+	case SDLK_F9: return KEY::F9; break;
+	case SDLK_F10: return KEY::F10; break;
+	case SDLK_F11: return KEY::F11; break;
+	case SDLK_F12: return KEY::F12; break;
 	}
 
 	return KEY::NONE;

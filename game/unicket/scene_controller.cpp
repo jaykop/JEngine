@@ -51,7 +51,7 @@ void SceneController::update(float /*dt*/)
 		std::cout << pos.x << " " << pos.y << " " << pos.z << "\n";
 	}
 		
-	if (InputHandler::key_triggered(KEY::ENTER))
+	if (InputHandler::key_triggered(KEY::F12))
 		AssetManager::generate_screenshot("resource/screenshot/");
 
 	if (InputHandler::key_triggered(KEY::SPACE))

@@ -13,10 +13,10 @@ Contains the methods of asset_manager class
 #include <thread>
 #include <lodepng.h>
 
+#include <application.hpp>
 #include <debug_tools.hpp>
 #include <scene_manager.hpp>
 #include <asset_manager.hpp>
-#include <gl_manager.hpp>
 #include <shader.hpp>
 #include <scene.hpp>
 #include <component_manager.hpp>
@@ -322,10 +322,13 @@ Mesh* AssetManager::load_object(const char* /*path*/)
 
 void AssetManager::generate_screenshot(const char* directory)
 {
+	bool isFullscreen = Application::get_appdata().isFullscreen;
+
 	// Get the total size of image
-	unsigned width = unsigned(GLManager::get_width()), 
-		height = unsigned(GLManager::get_height()), 
-		size = width * height * 4;
+	unsigned width = 0, height = 0;
+	width = isFullscreen ? unsigned(Application::get_appdata().displayWidth) : unsigned(Application::get_appdata().width);
+	height = isFullscreen ? unsigned(Application::get_appdata().displayHeight) : unsigned(Application::get_appdata().height);
+	unsigned size = width * height * 4;
 
 	// Send the pixel info to the image vector
 	std::vector<unsigned char> image;
