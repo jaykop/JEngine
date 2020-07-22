@@ -7,7 +7,7 @@ jeBegin
 
 using namespace Math;
 
-Mesh::BVType Mesh::bvType_ = Mesh::BVType::BV_NONE;
+Mesh::BVType Mesh::bvType_ = Mesh::BVType::NONE;
 
 Mesh::Mesh()
 	: rotation(0.f), setNormals(true), activate(true), absMax(0.f),

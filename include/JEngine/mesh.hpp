@@ -20,11 +20,11 @@ class Mesh
 
 public:
 
-	enum BVType {
-		BV_NONE, BV_AABB, BV_OBB,
-		BV_SPHERE_CENTEROID, BV_SPHERE_RITTER,
-		BV_SPHERE_LARSSON, BV_SPHERE_PCA,
-		BV_ELLIPSOID_PCA
+	enum class BVType {
+		NONE, AABB, OBB,
+		SPHERE_CENTEROID, SPHERE_RITTER,
+		SPHERE_LARSSON, SPHERE_PCA,
+		ELLIPSOID_PCA
 	};
 
 	static void points_along_direction(const vec3& dir, const std::vector<vec3>& vertices,

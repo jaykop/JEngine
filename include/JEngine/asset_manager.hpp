@@ -73,7 +73,6 @@ private:
 	// static std::string parse_name(const char* name);
 	static void clear_meshes();
 	static void update_max_min(const vec3& v, vec3& maxPoint, vec3& minPoint);
-	static void convert_mesh(Mesh** mesh, vec3& maxPoint, vec3& minPoint);
 	static void parse_vertex(const std::string& data, Mesh** mesh, vec3& maxPoint, vec3& minPoint);
 	static void read_vertex(const std::string& file_data, unsigned pos, std::vector<vec3>& points, vec3& maxPoint, vec3& minPoint);
 	static void read_face(const std::string& file_data, unsigned pos, std::vector<unsigned>& indice, unsigned vertice_size);

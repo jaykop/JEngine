@@ -36,13 +36,10 @@ bool AssetManager::load_obj(const char* path, const char* meshKey, MeshMap* mMap
 		newMesh->setNormals = true;
 		newMesh->key = meshKey;
 
-		vec3 minPoint(min_float, min_float, min_float),
-			maxPoint(max_float, max_float, max_float);
+		vec3 minPoint(max_float, max_float, max_float),
+			maxPoint(min_float, min_float, min_float);
 
 		parse_vertex(buffer.str(), &newMesh, maxPoint, minPoint);
-		convert_mesh(&newMesh, maxPoint, minPoint);
-
-		newMesh->hEdgeMesh = new HalfEdgeMesh(newMesh->vertices_, newMesh->indices_);
 		calculate_normals(&newMesh);
 		initialize_mesh(newMesh);
 
@@ -190,9 +187,29 @@ void AssetManager::update_max_min(const vec3& v,
 		maxPoint.z = v.z;
 }
 
-void AssetManager::convert_mesh(Mesh** mesh,
+void AssetManager::parse_vertex(const std::string& data, Mesh** mesh,
 	vec3& maxPoint, vec3& minPoint)
 {
+	// skip any leading white space
+	unsigned it = unsigned(data.find_first_not_of("\n\r\0 "));
+	unsigned size = unsigned((*mesh)->points_.size());
+
+	while (it != max_unsinged)
+	{
+		// extract vertex data
+		if (data[it] == 'v')
+			read_vertex(data, it + 1, (*mesh)->points_, maxPoint, minPoint);
+
+		// extract face data
+		if (data[it] == 'f')
+			read_face(data, it + 1, (*mesh)->indices_, size);
+
+		// skip to next line
+		it = unsigned(data.find_first_of("\n\r\0 ", it));
+		it = unsigned(data.find_first_not_of("\n\r\0 ", it));
+	}
+
+	// normalize the scale and position
 	// Assign the min and max
 	(*mesh)->min = minPoint;
 	(*mesh)->max = maxPoint;
@@ -216,9 +233,10 @@ void AssetManager::convert_mesh(Mesh** mesh,
 	(*mesh)->min -= (*mesh)->centerOffset;
 	(*mesh)->max -= (*mesh)->centerOffset;
 
-	unsigned size = unsigned((*mesh)->points_.size());
 	vec3 centerOffset = (*mesh)->centerOffset;
 	float absMax = (*mesh)->absMax;
+
+	size = unsigned((*mesh)->points_.size());
 
 	// Set vertex container
 	for (unsigned i = 0; i < size; i++) {
@@ -230,29 +248,6 @@ void AssetManager::convert_mesh(Mesh** mesh,
 		// Normal vertexes
 		(*mesh)->vertices_.push_back(Vertex{ convertedPos, vec3::zero , vec2::zero, vec4::one });
 		(*mesh)->vPoints_.push_back(convertedPos);
-	}
-}
-
-void AssetManager::parse_vertex(const std::string& data, Mesh** mesh,
-	vec3& maxPoint, vec3& minPoint)
-{
-	// skip any leading white space
-	unsigned it = unsigned(data.find_first_not_of("\n\r\0 "));
-	unsigned size = unsigned((*mesh)->points_.size());
-
-	while (it != max_unsinged)
-	{
-		// extract vertex data
-		if (data[it] == 'v')
-			read_vertex(data, it + 1, (*mesh)->points_, maxPoint, minPoint);
-
-		// extract face data
-		if (data[it] == 'f')
-			read_face(data, it + 1, (*mesh)->indices_, size);
-
-		// skip to next line
-		it = unsigned(data.find_first_of("\n\r\0 ", it));
-		it = unsigned(data.find_first_not_of("\n\r\0 ", it));
 	}
 }
 
@@ -316,6 +311,9 @@ unsigned AssetManager::get_next_elements(const std::string& file_data, unsigned 
 
 void AssetManager::calculate_normals(Mesh** mesh)
 {
+	// generate an half edge mesh
+	(*mesh)->hEdgeMesh = new HalfEdgeMesh((*mesh)->vertices_, (*mesh)->indices_);
+
 	std::vector<Vertex>& vertices = (*mesh)->vertices_;
 	std::vector<Vertex>& fNormals = (*mesh)->faceNormalsDraw;
 	std::vector<Vertex>& vNormals = (*mesh)->vertexNormalsDraw;

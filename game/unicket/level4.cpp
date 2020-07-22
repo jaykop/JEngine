@@ -10,7 +10,7 @@ jeBegin
 void Level4::initialize()
 {
 	init_basic();
-	// init_models();
+	init_models();
 
 	// base init
 	Scene::initialize();
