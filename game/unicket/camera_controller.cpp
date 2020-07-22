@@ -1,8 +1,6 @@
 #include "gl_manager.hpp"
-#include <iostream>
 #include "transform.hpp"
 #include "camera.hpp"
-#include "application.hpp"
 #include "camera_controller.h"
 
 jeBegin

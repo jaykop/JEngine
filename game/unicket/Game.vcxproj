@@ -216,6 +216,7 @@ xcopy /y /s /i "$(ProjectDir)..\default" "$(TargetDir)..\default"</Command>
     <ClCompile Include="level1.cpp" />
     <ClCompile Include="level2.cpp" />
     <ClCompile Include="level3.cpp" />
+    <ClCompile Include="level4.cpp" />
     <ClCompile Include="license.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="pause.cpp" />
@@ -231,6 +232,7 @@ xcopy /y /s /i "$(ProjectDir)..\default" "$(TargetDir)..\default"</Command>
     <ClInclude Include="level1.h" />
     <ClInclude Include="level2.h" />
     <ClInclude Include="level3.h" />
+    <ClInclude Include="level4.h" />
     <ClInclude Include="license.h" />
     <ClInclude Include="pause.h" />
     <ClInclude Include="pch.h" />

@@ -56,6 +56,7 @@ protected:
 	ObjectMap objects_;
 
 	// asset containers
+	MeshMap meshes_;
 	FontMap fonts_;
 	AudioMap audios_;
 	TextureMap textures_;

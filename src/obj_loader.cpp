@@ -5,75 +5,163 @@
 #include <math_util.hpp>
 #include <colors.hpp>
 #include <asset_manager.hpp>
+#include <scene_manager.hpp>
+#include <scene.hpp>
+#include <gl_manager.hpp>
 
 using namespace Math;
 
 jeBegin
 
+int MAX_POINTS = -1;
 static const float normScale = 0.05f;
 static const unsigned max_unsinged = (std::numeric_limits<unsigned>::max)();
 
 MeshMap AssetManager::meshMap_;
 vec3 AssetManager::maxPoint, AssetManager::minPoint;
 
-bool AssetManager::load_obj(const char* path)
+bool AssetManager::load_obj(const char* path, const char* meshKey, MeshMap* mMap)
 {
-	std::string parsed_key = parse_name(path);
-
-	if (meshMap_.find(parsed_key.c_str()) == meshMap_.end()) {
+	if (mMap->find(meshKey) == mMap->end()) {
 
 		std::ifstream obj(path, std::ios::in);
 		std::stringstream buffer;
 		buffer << obj.rdbuf();
 
 		// Check if obj file is valid 
-		if (!obj) return false;
-
+		if (!obj)
+		{
+			jeDebugPrint("AssetManager - Failed to load the obj file: %s", path);
+			return false;
+		}
+		
 		Mesh* newMesh = new Mesh();
 		newMesh->setNormals = true;
-		newMesh->key = parsed_key;
+		newMesh->key = meshKey;
 
-		// Initialize checkers
 		minPoint.set(max_float), maxPoint.set(min_float);
 
 		parse_vertex(buffer.str(), &newMesh);
 		convert_mesh(&newMesh);
 		newMesh->hEdgeMesh = new HalfEdgeMesh(newMesh->vertices_, newMesh->indices_);
 		calculate_normals(&newMesh);
-		Mesh::describe_mesh_attribs(newMesh);
+		initialize_mesh(newMesh);
 
-		meshMap_.insert({ parsed_key.c_str(), newMesh });
+		mMap->insert({ meshKey, newMesh });
 	}
 
-	// todo: would make some problem
-	// key = parsed_key;
 	return true;
 }
 
-Mesh* AssetManager::get_mesh(const char* name)
+void AssetManager::initialize_mesh(Mesh* mesh)
 {
-	auto found = meshMap_.find(name);
+	// Check either if all the objects are initialized
+	// and if not, generate them
+	if (!mesh->vao_) {
+		glGenVertexArrays(1, &mesh->vao_);
+		glBindVertexArray(mesh->vao_);
+	}
+	if (!mesh->vnVao_) {
+		glGenVertexArrays(1, &mesh->vnVao_);
+		glBindVertexArray(mesh->vnVao_);
+	}
+	if (!mesh->fnVao_) {
+		glGenVertexArrays(1, &mesh->fnVao_);
+		glBindVertexArray(mesh->fnVao_);
+	}
+	if (!mesh->vbo_) {
+		glGenBuffers(1, &mesh->vbo_);
+		glBindBuffer(GL_ARRAY_BUFFER, mesh->vbo_);
+	}
+	if (!mesh->ebo_) {
+		glGenBuffers(1, &mesh->ebo_);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->ebo_);
+	}
+	if (!mesh->vnVbo_) {
+		glGenBuffers(1, &mesh->vnVbo_);
+		glBindBuffer(GL_ARRAY_BUFFER, mesh->vnVbo_);
+	}
+	if (!mesh->fnVbo_) {
+		glGenBuffers(1, &mesh->fnVbo_);
+		glBindBuffer(GL_ARRAY_BUFFER, mesh->fnVbo_);
+	}
+
+	int size = int(mesh->vertices_.size());
+	if (MAX_POINTS < size)
+		MAX_POINTS = size;
+
+	// Decribe the format of vertex and indice
+	glBindVertexArray(mesh->vao_);
+	glBindBuffer(GL_ARRAY_BUFFER, mesh->vbo_);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * mesh->vertices_.size(), &mesh->vertices_[0], GL_STATIC_DRAW);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
+		reinterpret_cast<void*>(offsetof(Vertex, Vertex::position)));
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
+		reinterpret_cast<void*>(offsetof(Vertex, Vertex::normal)));
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex),
+		reinterpret_cast<void*>(offsetof(Vertex, Vertex::texCoords)));
+	glEnableVertexAttribArray(2);
+	glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex),
+		reinterpret_cast<void*>(offsetof(Vertex, Vertex::color)));
+	glEnableVertexAttribArray(3);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->ebo_);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(int) * mesh->indices_.size(), &mesh->indices_[0], GL_STATIC_DRAW);
+
+	if (mesh->setNormals) {
+
+		// Bind vertex normal buffer object
+		glBindVertexArray(mesh->vnVao_);
+		glBindBuffer(GL_ARRAY_BUFFER, mesh->vnVbo_);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * mesh->vertexNormalsDraw.size(), &mesh->vertexNormalsDraw[0], GL_STATIC_DRAW);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
+			reinterpret_cast<void*>(offsetof(Vertex, Vertex::position)));
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
+			reinterpret_cast<void*>(offsetof(Vertex, Vertex::normal)));
+		glEnableVertexAttribArray(1);
+		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex),
+			reinterpret_cast<void*>(offsetof(Vertex, Vertex::texCoords)));
+		glEnableVertexAttribArray(2);
+		glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex),
+			reinterpret_cast<void*>(offsetof(Vertex, Vertex::color)));
+		glEnableVertexAttribArray(3);
+
+		// Bind face normal buffer object
+		glBindVertexArray(mesh->fnVao_);
+		glBindBuffer(GL_ARRAY_BUFFER, mesh->fnVbo_);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * mesh->faceNormalsDraw.size(), &mesh->faceNormalsDraw[0], GL_STATIC_DRAW);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
+			reinterpret_cast<void*>(offsetof(Vertex, Vertex::position)));
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
+			reinterpret_cast<void*>(offsetof(Vertex, Vertex::normal)));
+		glEnableVertexAttribArray(1);
+		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex),
+			reinterpret_cast<void*>(offsetof(Vertex, Vertex::texCoords)));
+		glEnableVertexAttribArray(2);
+		glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex),
+			reinterpret_cast<void*>(offsetof(Vertex, Vertex::color)));
+		glEnableVertexAttribArray(3);
+	}
+
+	glBindVertexArray(0);
+}
+
+Mesh* AssetManager::get_mesh(const char* key)
+{
+	auto found = meshMap_.find(key);
 	if (found != meshMap_.end())
 		return found->second;
 
+	found = SceneManager::currentScene_->meshes_.find(key);
+	if (found != SceneManager::currentScene_->meshes_.end())
+		return found->second;
+
+	jeDebugPrint("!AssetManager - Cannot find such name of mesh resource: %s.\n", key);
 	return nullptr;
-}
-
-std::string AssetManager::parse_name(const char* name)
-{
-	std::string res;
-
-	for (int i = 0; name[i] != '\0'; i++) {
-
-		res += name[i];
-
-		if (name[i] == '/')
-			res.clear();
-	}
-
-	res.erase(res.size() - 4);
-
-	return res;
 }
 
 void AssetManager::clear_meshes()
@@ -301,5 +389,22 @@ vec3 AssetManager::get_converted_position(
 {
 	return position / absMax - centerOffset;
 }
+
+//std::string AssetManager::parse_name(const char* name)
+//{
+//	std::string res;
+//
+//	for (int i = 0; name[i] != '\0'; i++) {
+//
+//		res += name[i];
+//
+//		if (name[i] == '/')
+//			res.clear();
+//	}
+//
+//	res.erase(res.size() - 4);
+//
+//	return res;
+//}
 
 jeEnd

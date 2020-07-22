@@ -29,11 +29,11 @@ jeBegin
 std::string	AssetManager::initDirectory_, AssetManager::assetDirectory_, 
 AssetManager::stateDirectory_, AssetManager::archeDirectory_;
 
+MeshMap AssetManager::meshMap_; 
 FontMap	AssetManager::fontMap_;
 AudioMap AssetManager::audioMap_;
 TextureMap AssetManager::textureMap_;
 ArchetypeMap AssetManager::archetypeMap_;
-// SceneMap AssetManager::sceneMap_;
 
 bool AssetManager::set_bulit_in_components()
 {
@@ -41,7 +41,7 @@ bool AssetManager::set_bulit_in_components()
 
 	// Graphic components
 	// jeRegisterComponent(Renderer);
-	// jeRegisterComponent(Model);
+	jeRegisterComponent(Model);
 	jeRegisterComponent(Sprite);
 	jeRegisterComponent(Camera);
 	jeRegisterComponent(Animation2D);
@@ -148,13 +148,22 @@ void AssetManager::unload_assets()
 			glDeleteTextures(1, &tex.second);
 	}
 
+	// clear texture memory
+	for (auto& m : meshMap_)
+	{
+		if (m.second)
+			glDeleteTextures(1, &m.second->texture_);
+
+		delete m.second;
+		m.second = nullptr;
+	}
+
+	meshMap_.clear();
 	fontMap_.clear();
 	textureMap_.clear();
 	audioMap_.clear();
 	archetypeMap_.clear();
 
-	//// memory to be release by scene manager
-	//sceneMap_.clear();
 }
 
 void AssetManager::load_texture(const char* path, const char* textureKey, TextureMap* tMap)
@@ -314,12 +323,6 @@ void AssetManager::load_archetype(const char* /*path*/, const char* /*_archetype
 	// load archetpye assets
 }
 
-Mesh* AssetManager::load_object(const char* /*path*/)
-{
-	// todo!
-	return nullptr;
-}
-
 void AssetManager::generate_screenshot(const char* directory)
 {
 	bool isFullscreen = Application::get_appdata().isFullscreen;
@@ -456,16 +459,6 @@ Archetype* AssetManager::get_archetype(const char* key)
 	jeDebugPrint("!AssetManager: Cannot find such name of archetype resource: %s.\n", key);
 	return nullptr;
 }
-
-//Scene* AssetManager::get_scene(const char* key)
-//{
-//	/*auto found = sceneMap_.find(key);
-//	if (found != sceneMap_.end())
-//		return found->second;*/
-//
-//	jeDebugPrint("!AssetManager - Cannot find such name of state resource: %s.\n", key);
-//	return nullptr;
-//}
 
 void AssetManager::set_initdata_directory(const char* dir) { initDirectory_.assign(dir); }
 

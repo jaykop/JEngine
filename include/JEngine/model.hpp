@@ -11,7 +11,6 @@ class Model : public Renderer
 {
 	jeBaseFriends(Model);
 	friend class GraphicSystem;
-
 	using Meshes = std::vector<Mesh*>;
 
 public:
@@ -19,11 +18,10 @@ public:
 	Model(Object* owner);
 	virtual ~Model();
 
-	void set_mesh(const char* name);
+	void add_mesh(Mesh* mesh);
 	const Meshes& get_meshes(void) const;
 
 	void draw(float dt) override;
-
 	void draw_normals();
 	void draw_debug_info();
 
@@ -34,6 +32,7 @@ private:
 		renderVertexNormals_;
 	bool h_;
 	Meshes meshes_;
+
 	//AABB aabb_;
 	//OBB obb_;
 	//BoundingEllipsoid ellipse_;

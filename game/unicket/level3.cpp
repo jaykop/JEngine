@@ -3,11 +3,8 @@
 #include "camera_controller.h"
 #include "particle_conrtoller.h"
 #include "pch.h"
-
-#include "components.hpp"
-
+#include "emitter.hpp"
 #include "colors.hpp"
-#include <iostream>
 
 jeBegin
 
@@ -15,9 +12,6 @@ void Level3::initialize()
 {
 	init_basic();
 	init_emitters();
-
-	// set screen color
-	background.set(0.1f, 0.1f, 0.1f, 1.f);
 
 	// base init
 	Scene::initialize();

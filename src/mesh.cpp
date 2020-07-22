@@ -6,8 +6,6 @@ jeBegin
 
 using namespace Math;
 
-int MAX_POINTS = -1;
-
 Mesh::BVType Mesh::bvType_ = Mesh::BVType::BV_NONE;
 
 Mesh::Mesh()
@@ -132,102 +130,6 @@ void Mesh::initialize(const std::vector<Vertex>& vertices,
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-}
-void Mesh::describe_mesh_attribs(Mesh* pMesh)
-{
-	// Check either if all the objects are initialized
-	// and if not, generate them
-	if (!pMesh->vao_) {
-		glGenVertexArrays(1, &pMesh->vao_);
-		glBindVertexArray(pMesh->vao_);
-	}
-	if (!pMesh->vnVao_) {
-		glGenVertexArrays(1, &pMesh->vnVao_);
-		glBindVertexArray(pMesh->vnVao_);
-	}
-	if (!pMesh->fnVao_) {
-		glGenVertexArrays(1, &pMesh->fnVao_);
-		glBindVertexArray(pMesh->fnVao_);
-	}
-	if (!pMesh->vbo_) {
-		glGenBuffers(1, &pMesh->vbo_);
-		glBindBuffer(GL_ARRAY_BUFFER, pMesh->vbo_);
-	}
-	if (!pMesh->ebo_) {
-		glGenBuffers(1, &pMesh->ebo_);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, pMesh->ebo_);
-	}
-	if (!pMesh->vnVbo_) {
-		glGenBuffers(1, &pMesh->vnVbo_);
-		glBindBuffer(GL_ARRAY_BUFFER, pMesh->vnVbo_);
-	}
-	if (!pMesh->fnVbo_) {
-		glGenBuffers(1, &pMesh->fnVbo_);
-		glBindBuffer(GL_ARRAY_BUFFER, pMesh->fnVbo_);
-	}
-
-	int size = int(pMesh->vertices_.size());
-	if (MAX_POINTS < size)
-		MAX_POINTS = size;
-
-	// Decribe the format of vertex and indice
-	glBindVertexArray(pMesh->vao_);
-	glBindBuffer(GL_ARRAY_BUFFER, pMesh->vbo_);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * pMesh->vertices_.size(), &pMesh->vertices_[0], GL_STATIC_DRAW);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
-		reinterpret_cast<void*>(offsetof(Vertex, Vertex::position)));
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
-		reinterpret_cast<void*>(offsetof(Vertex, Vertex::normal)));
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex),
-		reinterpret_cast<void*>(offsetof(Vertex, Vertex::texCoords)));
-	glEnableVertexAttribArray(2);
-	glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex),
-		reinterpret_cast<void*>(offsetof(Vertex, Vertex::color)));
-	glEnableVertexAttribArray(3);
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, pMesh->ebo_);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(int) * pMesh->indices_.size(), &pMesh->indices_[0], GL_STATIC_DRAW);
-
-	if (pMesh->setNormals) {
-
-		// Bind vertex normal buffer object
-		glBindVertexArray(pMesh->vnVao_);
-		glBindBuffer(GL_ARRAY_BUFFER, pMesh->vnVbo_);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * pMesh->vertexNormalsDraw.size(), &pMesh->vertexNormalsDraw[0], GL_STATIC_DRAW);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
-			reinterpret_cast<void*>(offsetof(Vertex, Vertex::position)));
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
-			reinterpret_cast<void*>(offsetof(Vertex, Vertex::normal)));
-		glEnableVertexAttribArray(1);
-		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex),
-			reinterpret_cast<void*>(offsetof(Vertex, Vertex::texCoords)));
-		glEnableVertexAttribArray(2);
-		glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex),
-			reinterpret_cast<void*>(offsetof(Vertex, Vertex::color)));
-		glEnableVertexAttribArray(3);
-
-		// Bind face normal buffer object
-		glBindVertexArray(pMesh->fnVao_);
-		glBindBuffer(GL_ARRAY_BUFFER, pMesh->fnVbo_);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * pMesh->faceNormalsDraw.size(), &pMesh->faceNormalsDraw[0], GL_STATIC_DRAW);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
-			reinterpret_cast<void*>(offsetof(Vertex, Vertex::position)));
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
-			reinterpret_cast<void*>(offsetof(Vertex, Vertex::normal)));
-		glEnableVertexAttribArray(1);
-		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex),
-			reinterpret_cast<void*>(offsetof(Vertex, Vertex::texCoords)));
-		glEnableVertexAttribArray(2);
-		glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex),
-			reinterpret_cast<void*>(offsetof(Vertex, Vertex::color)));
-		glEnableVertexAttribArray(3);
-	}
-
-	glBindVertexArray(0);
 }
 
 jeEnd

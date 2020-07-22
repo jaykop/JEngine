@@ -3,7 +3,6 @@
 =================================
 
 **Next goals** - 2D  
-*resume and next  
 *FMOD Lib  
 *light  
 *polish grid  

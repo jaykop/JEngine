@@ -1,5 +1,4 @@
 #pragma once
-#include <macros.hpp>
 #include <vector>
 #include <map>
 #include <string>
@@ -13,6 +12,7 @@ class HalfEdgeMesh;
 
 class Mesh
 {
+	friend class Scene;
 	friend class Sprite;
 	friend class Model;
 	friend class AssetManager; 
@@ -30,30 +30,6 @@ public:
 	static void points_along_direction(const vec3& dir, const std::vector<vec3>& vertices,
 		int& min_index, int& max_index);
 	void initialize(const std::vector<Vertex>& vertices, const std::vector<unsigned>& indices);
-
-protected:
-
-	static BVType bvType_;
-	Transform* transform = nullptr;
-
-	float rotation, absMax;
-	vec3 min, max, centerOffset;
-	bool setNormals, activate;
-
-	HalfEdgeMesh* hEdgeMesh;
-
-	std::vector<Vertex> vertices_, vertexNormalsDraw, faceNormalsDraw;
-	std::string key;
-
-	unsigned vao_, vbo_, ebo_, 
-		vnVao_, vnVbo_, fnVao_, fnVbo_;
-
-	std::vector<unsigned> indices_;
-	std::vector<vec3> points_, faceNormals_, vertexNormals_, centers_, vPoints_;
-
-	unsigned texture_;
-
-public:
 
 	static void describe_mesh_attribs(Mesh* pMesh);
 
@@ -76,6 +52,25 @@ public:
 
 	void set_texture(unsigned int texture_id);
 	unsigned get_texture() const;
+
+private:
+
+	static BVType bvType_;
+
+	vec3 min, max, centerOffset;
+
+	Transform* transform = nullptr;
+	HalfEdgeMesh* hEdgeMesh = nullptr;
+
+	float rotation, absMax;
+	bool setNormals, activate;
+	unsigned texture_;
+	unsigned vao_, vbo_, ebo_, 	vnVao_, vnVbo_, fnVao_, fnVbo_;
+
+	std::string key;
+	std::vector<Vertex> vertices_, vertexNormalsDraw, faceNormalsDraw;
+	std::vector<unsigned> indices_;
+	std::vector<vec3> points_, faceNormals_, vertexNormals_, centers_, vPoints_;
 };
 
 jeEnd

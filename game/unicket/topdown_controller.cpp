@@ -1,4 +1,3 @@
-#include <iostream>
 #include "transform.hpp"
 #include "application.hpp"
 #include "topdown_controller.h"

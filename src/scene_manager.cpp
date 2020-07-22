@@ -319,7 +319,7 @@ bool SceneManager::has_scene(const char* stateName)
 	return false;
 }
 
-void SceneManager::register_scene(const char* sceneName, const char* dir)
+void SceneManager::register_scene(const char* dir, const char* sceneName)
 {
 	scenes_.insert(SceneMap::value_type(sceneName, dir));
 }

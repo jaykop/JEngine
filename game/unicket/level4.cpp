@@ -1,33 +1,33 @@
-#include "pause.h"
+#include "level4.h"
 #include "scene_controller.h"
 #include "camera_controller.h"
 #include "pch.h"
-#include "text.hpp"
+#include "model.hpp"
 
 jeBegin
 
-void Pause::initialize()
+void Level4::initialize()
 {
 	init_basic();
-	init_text();
+	init_models();
 
 	// base init
 	Scene::initialize();
 }
 
-void Pause::update(float dt)
+void Level4::update(float dt)
 {
 	// base update
 	Scene::update(dt);
 }
 
-void Pause::close()
+void Level4::close()
 {
 	// base close
 	Scene::close();
 }
 
-void Pause::init_basic()
+void Level4::init_basic()
 {
 	// add camera
 	Object* camera = ObjectManager::create_object("main_camera");
@@ -44,18 +44,14 @@ void Pause::init_basic()
 	register_object(controller);
 }
 
-void Pause::init_text()
+void Level4::init_models()
 {
-	// testing text
-	Object* text = ObjectManager::create_object("text");
-	text->add_component<Text>();
-	auto* text_component = text->get_component<Text>();
-	auto* trans = text->get_component<Transform>();
-	//text_component->set_font();
-	text_component->set_text(L"정지 화면 - Paused\n");
-	trans->scale.set(.25f, .25f, 0.f);
-	trans->position.set(-40.f, 0.f, 0.f);
-	register_object(text);
+	model1 = ObjectManager::create_object("cube");
+	model1->add_component<Model>();
+	auto* md = model1->get_component<Model>();
+	// md->add_mesh(AssetManager::get_mesh());
+	register_object(model1);
+	// model2 = ObjectManager::create_object("sphere");
 }
 
 jeEnd

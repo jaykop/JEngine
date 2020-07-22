@@ -34,10 +34,10 @@ void Model::load(const rapidjson::Value& /*data*/) {
 
 }
 
-void Model::set_mesh(const char* name)
+void Model::add_mesh(Mesh* mesh)
 {
 	// get new mesh
-	Mesh* newMesh = AssetManager::get_mesh(name);
+	Mesh* newMesh = mesh;
 
 	// add to the mesh
 	meshes_.emplace_back(newMesh);
@@ -61,63 +61,82 @@ void Model::draw_debug_info()
 
 void Model::draw(float /*dt*/)
 {
-	// Camera* camera = GraphicSystem::get_camera();
+	Camera* camera = GraphicSystem::get_camera();
+	Shader* shader = GLManager::shader_[GLManager::NORMAL];
+	shader->use();
 
-	//Shader* shader = GLManager::shader_[GLManager::NORMAL];
-	//shader->use();
+	shader->set_matrix("m4_translate", mat4::translate(transform_->position));
+	shader->set_matrix("m4_scale", mat4::scale(transform_->scale));
+	shader->set_matrix("m4_rotate", transform_->orientation.to_mat4());
+	shader->set_vec3("v3_cameraPosition", camera->position);
+	shader->set_bool("boolean_bilboard", (status & IS_BILBOARD) == IS_BILBOARD);
+	shader->set_bool("boolean_flip", (status & IS_FLIPPED) == IS_FLIPPED);
+	// shader->set_vec4("v4_color", color);
 
-	//shader->set_matrix("m4_translate", mat4::translate(transform_->position));
-	//shader->set_matrix("m4_scale", mat4::scale(transform_->scale));
-	//shader->set_matrix("m4_rotate", transform_->orientation.to_mat4());
-	//shader->set_vec3("v3_cameraPosition", camera->position_);
-	//shader->set_bool("boolean_bilboard", (status_ & IS_BILBOARD) == IS_BILBOARD);
-	//// shader->set_vec4("v4_color", color);
+	switch (prjType)
+	{
+	case ProjectType::PERSPECTIVE:
+	{
 
-	//mat4 viewport;
+		mat4 perspective = mat4::perspective(
+			camera->fovy_ + camera->zoom, camera->aspect_,
+			camera->near_, camera->far_);
 
-	//if (prjType_ == ProjectType::PERSPECTIVE) {
+		shader->set_matrix("m4_projection", perspective);
+		break;
+	}
 
-	//	shader->set_matrix("m4_projection", perspective);
-	//	viewport = mat4::look_at(camera->position_, camera->target_, camera->up_);
-	//}
+	case ProjectType::ORTHOGONAL:
+	default:
+	{
+		float right_ = GLManager::get_width() * GLManager::resScaler_.x;
+		float left_ = -right_;
+		float top_ = GLManager::get_height() * GLManager::resScaler_.y;
+		float bottom_ = -top_;
 
-	//else {
-	//	float right_ = GLManager::get_width() * .5f;
-	//	float left_ = -right_;
-	//	float top_ = GLManager::get_height() * .5f;
-	//	float bottom_ = -top_;
+		mat4 orthogonal = mat4::orthogonal(left_, right_, bottom_, top_, camera->near_, camera->far_);
+		shader->set_matrix("m4_projection", orthogonal);
+		break;
+	}
+	}
 
-	//	mat4 orthogonal = mat4::orthogonal(left_, right_, bottom_, top_, camera->near_, camera->far_);
+	bool fixed = (status & IS_FIXED) == IS_FIXED;
+	shader->set_bool("boolean_fix", fixed);
 
-	//	shader->set_matrix("m4_projection", orthogonal);
+	if (!fixed)
+	{
+		// Send camera info to shader
+		// mat4 viewport = mat4::look_at(camera->position, camera->right_, camera->up_, camera->back_);
+		mat4 viewport = mat4::look_at(camera->position, camera->position + camera->back_, camera->up_);
+		shader->set_matrix("m4_viewport", viewport);
+	}
 
-	//	viewport = mat4::scale(resScalar);
-	//}
+	bool isHerited = parent_ != nullptr;
+	shader->set_bool("boolean_herited", isHerited);
+	if (isHerited)
+	{
+		Transform* pTransform = parent_->get_transform();
+		shader->set_matrix("m4_parentTranslate", mat4::translate(pTransform->position));
+		shader->set_matrix("m4_parentScale", mat4::scale(pTransform->scale));
+		shader->set_matrix("m4_parentRotate", pTransform->orientation.to_mat4());
+	}
 
-	//// Send camera info to shader
-	//shader->set_matrix("m4_viewport", viewport);
+	//if (pModel->pMaterial_ && isLight_)
+	//	LightingEffectPipeline(pModel->pMaterial_);
 
-	////bool hasParent = (pModel->status_ & Model::IS_INHERITED) == Model::IS_INHERITED;
-	////glUniform1i(glGetUniformLocation(Shader::pCurrentShader_->programId_, "hasParent"), hasParent);
-	////if (hasParent)
-	////	ParentPipeline(pModel->pInherited_);
+	glEnable(GL_BLEND);
+	glEnable(GL_DEPTH_TEST);
+	glBlendFunc(sfactor_, dfactor_);
 
-	////if (pModel->pMaterial_ && isLight_)
-	////	LightingEffectPipeline(pModel->pMaterial_);
-
-	//glEnable(GL_BLEND);
-	//glEnable(GL_DEPTH_TEST);
-	//glBlendFunc(sfactor_, dfactor_);
-
-	for (auto mesh : meshes_)
+	for (const auto& mesh : meshes_)
 	{
 		glBindVertexArray(mesh->vao_);
 		glDrawElements(drawMode_, mesh->get_indice_count(), GL_UNSIGNED_INT, nullptr);
 		glBindVertexArray(0);
 	}
 
-	//glDisable(GL_DEPTH_TEST);
-	//glDisable(GL_BLEND);
+	glDisable(GL_DEPTH_TEST);
+	glDisable(GL_BLEND);
 }
 
 void Model::draw_normals()

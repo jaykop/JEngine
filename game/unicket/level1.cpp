@@ -3,10 +3,10 @@
 #include "camera_controller.h"
 #include "topdown_controller.h"
 #include "pch.h"
+#include "sprite.hpp"
+#include "animation_2d.hpp"
+#include "debug_renderer.hpp"
 
-#include "components.hpp"
-
-#include "colors.hpp"
 #include <iostream>
 
 jeBegin
@@ -16,9 +16,6 @@ void Level1::initialize()
 	init_basic();
 	init_sprite();
 	init_ui();
-
-	// set screen color
-	background.set(0.1f, 0.1f, 0.1f, 1.f);
 
 	// base init
 	Scene::initialize();

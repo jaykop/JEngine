@@ -22,6 +22,7 @@ Contains the methods of scene class
 
 #include <gl_manager.hpp>
 #include <text.hpp>
+#include <mesh.hpp>
 
 jeBegin
 
@@ -131,6 +132,17 @@ void Scene::unload()
 			glDeleteTextures(1, &tex.second);
 	}
 
+	// clear texture memory
+	for (auto& m : meshes_)
+	{
+		if (m.second)
+			glDeleteTextures(1, &m.second->texture_);
+
+		delete m.second;
+		m.second = nullptr;
+	}
+
+	meshes_.clear();
 	fonts_.clear();
 	textures_.clear();
 	audios_.clear();

@@ -1,8 +1,6 @@
 #include "license.h"
 #include "pch.h"
-
-#include "components.hpp"
-#include "colors.hpp"
+#include "sprite.hpp"
 #include "level1.h"
 
 jeBegin

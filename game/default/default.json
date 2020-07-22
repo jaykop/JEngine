@@ -10,18 +10,16 @@
 	
 	"Texture" : [
 
-		{
-			"Key": "rect",
-			"Directory": "../default/rect.png"
-		},
-		{
-			"Key": "grid",
-			"Directory": "../default/box_line.png"
-		},
-		{
-			"Key": "particle",
-			"Directory": "../default/particle.png"
-		}
+		{	"Key": "rect",	"Directory": "../default/rect.png"	},
+		{	"Key": "grid",	"Directory": "../default/box_line.png"	},
+		{	"Key": "particle",	"Directory": "../default/particle.png"	}
+	
+	],
+	
+	"Model" : [
+	
+		{	"Key": "cube",	"Directory": "../default/cube.obj"	},
+		{	"Key": "sphere",	"Directory": "../default/sphere.obj"	}
 	
 	],
 	

@@ -1,9 +1,9 @@
-#include <iostream>
 #include "application.hpp"
 #include "scene_controller.h"
-
 #include "game_scenes.h"
 #include "colors.hpp"
+
+#include <iostream>
 
 jeBegin
 
@@ -51,6 +51,14 @@ void SceneController::update(float /*dt*/)
 			SceneManager::resume_and_next<Level3>();
 		else
 			SceneManager::set_next_scene<Level3>();
+	}
+
+	if (InputHandler::key_triggered(KEY::NUM_4))
+	{
+		if (SceneManager::is_paused())
+			SceneManager::resume_and_next<Level4>();
+		else
+			SceneManager::set_next_scene<Level4>();
 	}
 
 	if (InputHandler::key_triggered(KEY::BACK))

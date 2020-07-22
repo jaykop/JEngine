@@ -2,11 +2,7 @@
 #include "scene_controller.h"
 #include "camera_controller.h"
 #include "pch.h"
-
-#include "components.hpp"
-
-#include "colors.hpp"
-#include <iostream>
+#include "text.hpp"
 
 jeBegin
 
@@ -14,9 +10,6 @@ void Level2::initialize()
 {
 	init_basic();
 	init_text();
-
-	// set screen color
-	background.set(0.1f, 0.1f, 0.1f, 1.f);
 
 	// base init
 	Scene::initialize();

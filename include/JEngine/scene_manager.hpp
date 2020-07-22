@@ -59,7 +59,7 @@ public:
 	static void resume();
 	static bool is_paused();
 	static void pause(const char* nextState);
-	static void register_scene(const char* sceneName, const char* dir);
+	static void register_scene(const char* dir, const char* sceneName);
 	static void set_next_scene(const char* nextState);
 	static void resume_and_next(const char* nextState);
 	static void set_first_scene(const char* stateName);

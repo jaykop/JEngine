@@ -5,8 +5,6 @@
 #include <math_util.hpp>
 #include <graphic_system.hpp>
 
-#include <iostream>
-
 jeBegin
 
 vec3 Camera::worldUp_ = vec3(0.f, 1.f, 0.f);
