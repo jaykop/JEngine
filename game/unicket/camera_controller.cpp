@@ -68,27 +68,27 @@ void CameraController::move(float dt)
 	{
 		if (InputHandler::key_pressed(KEY::W))
 		{
-			vec3 dis = vec3(0.f, 0.f, -1.f) * offset;
-			camera->position += dis;
+			vec3 dis = vec3(0.f, 0.f, 1.f) * offset;
+			camera->position += camera->get_back() * dis;
 		}
 
 		if (InputHandler::key_pressed(KEY::S))
 		{
-			vec3 dis = vec3(0.f, 0.f, 1.f) * offset;
-			camera->position += dis;
+			vec3 dis = vec3(0.f, 0.f, -1.f) * offset;
+			camera->position += camera->get_back() * dis;
 		}
 	}
 
 	if (InputHandler::key_pressed(KEY::A))
 	{
 		vec3 dis = vec3(-1.f, 0.f, 0.f) * offset;
-		camera->position += dis;
+		camera->position += camera->get_right() * dis;
 	}
 
 	if (InputHandler::key_pressed(KEY::D))
 	{
 		vec3 dis = vec3(1.f, 0.f, 0.f) * offset;
-		camera->position += dis;
+		camera->position += camera->get_right() * dis;
 	}
 }
 
