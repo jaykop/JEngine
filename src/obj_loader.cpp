@@ -39,9 +39,8 @@ bool AssetManager::load_obj(const char* path, const char* meshKey, MeshMap* mMap
 		vec3 minPoint(max_float, max_float, max_float),
 			maxPoint(min_float, min_float, min_float);
 
-		parse_vertex(buffer.str(), &newMesh, maxPoint, minPoint);
-		calculate_normals(&newMesh);
-		initialize_mesh(newMesh);
+		parse(buffer.str(), &newMesh, maxPoint, minPoint);
+		initialize_mesh_buffer(newMesh);
 
 		mMap->insert({ meshKey, newMesh });
 	}
@@ -49,7 +48,7 @@ bool AssetManager::load_obj(const char* path, const char* meshKey, MeshMap* mMap
 	return true;
 }
 
-void AssetManager::initialize_mesh(Mesh* mesh)
+void AssetManager::initialize_mesh_buffer(Mesh* mesh)
 {
 	// Check either if all the objects are initialized
 	// and if not, generate them
@@ -168,26 +167,7 @@ void AssetManager::clear_meshes()
 	}
 }
 
-void AssetManager::update_max_min(const vec3& v,
-	vec3& maxPoint, vec3& minPoint)
-{
-	if (v.x < minPoint.x)
-		minPoint.x = v.x;
-	else
-		maxPoint.x = v.x;
-
-	if (v.y < minPoint.y)
-		minPoint.y = v.y;
-	else
-		maxPoint.y = v.y;
-
-	if (v.z < minPoint.z)
-		minPoint.z = v.z;
-	else
-		maxPoint.z = v.z;
-}
-
-void AssetManager::parse_vertex(const std::string& data, Mesh** mesh,
+void AssetManager::parse(const std::string& data, Mesh** mesh,
 	vec3& maxPoint, vec3& minPoint)
 {
 	// skip any leading white space
@@ -242,78 +222,17 @@ void AssetManager::parse_vertex(const std::string& data, Mesh** mesh,
 	for (unsigned i = 0; i < size; i++) {
 
 		// convert normal
-		vec3 convertedPos = get_converted_position((*mesh)->points_[i],
-			centerOffset, absMax);
+		vec3 convertedPos = (*mesh)->points_[i] / absMax - centerOffset;
 
 		// Normal vertexes
 		(*mesh)->vertices_.push_back(Vertex{ convertedPos, vec3::zero , vec2::zero, vec4::one });
 		(*mesh)->vPoints_.push_back(convertedPos);
 	}
-}
 
-void AssetManager::read_vertex(const std::string& file_data, unsigned pos,
-	std::vector<vec3>& points, vec3& maxPoint, vec3& minPoint)
-{
-	vec3 p;
-	const char* c_data = file_data.c_str();
-
-	// Read vertex positions
-	pos = get_next_elements(file_data, pos);
-	p.x = static_cast<float>(atof(c_data + pos));
-
-	pos = get_next_elements(file_data, pos);
-	p.y = static_cast<float>(atof(c_data + pos));
-
-	pos = get_next_elements(file_data, pos);
-	p.z = static_cast<float>(atof(c_data + pos));
-
-	// Check absolute max value from vertex
-	update_max_min(p, maxPoint, minPoint);
-
-	points.push_back(p);
-}
-
-void AssetManager::read_face(const std::string& file_data, unsigned pos,
-	std::vector<unsigned>& indice, unsigned vertice_size)
-{
-	const char* c_data = file_data.c_str();
-
-	// read face indices
-	pos = get_next_elements(file_data, pos);
-	indice.push_back(read_index(c_data + pos, vertice_size));
-
-	pos = get_next_elements(file_data, pos);
-	indice.push_back(read_index(c_data + pos, vertice_size));
-
-	pos = get_next_elements(file_data, pos);
-	indice.push_back(read_index(c_data + pos, vertice_size));
-}
-
-unsigned AssetManager::read_index(const char* data, unsigned vertice_size)
-{
-	int index = atoi(data);
-
-	// wrap index if needed
-	if (index < 0)
-		return unsigned(index + vertice_size);
-
-	return unsigned(index - 1);
-}
-
-unsigned AssetManager::get_next_elements(const std::string& file_data, unsigned pos)
-{
-	// skip past current element
-	pos = unsigned(file_data.find_first_of(" ", pos));
-
-	// skip past white space
-	return unsigned(file_data.find_first_not_of(" ", pos));
-}
-
-void AssetManager::calculate_normals(Mesh** mesh)
-{
 	// generate an half edge mesh
 	(*mesh)->hEdgeMesh = new HalfEdgeMesh((*mesh)->vertices_, (*mesh)->indices_);
 
+	// calculate normals
 	std::vector<Vertex>& vertices = (*mesh)->vertices_;
 	std::vector<Vertex>& fNormals = (*mesh)->faceNormalsDraw;
 	std::vector<Vertex>& vNormals = (*mesh)->vertexNormalsDraw;
@@ -356,9 +275,6 @@ void AssetManager::calculate_normals(Mesh** mesh)
 		}
 	}
 
-	vec3 centerOffset = (*mesh)->centerOffset;
-	float absMax = (*mesh)->absMax;
-
 	auto faces = h_mesh->get_faces();
 
 	for (auto& f : faces)
@@ -372,11 +288,8 @@ void AssetManager::calculate_normals(Mesh** mesh)
 		vec3 face_normal = vec3::cross(p2 - p1, p3 - p2);
 		vec3 center((p1 + p2 + p3) / 3.f);
 
-		vec3 c_center = get_converted_position(center,
-			centerOffset, absMax);
-
-		vec3 c_fnorm = get_converted_position(face_normal,
-			centerOffset, absMax);
+		vec3 c_center = center / absMax - centerOffset; 
+		vec3 c_fnorm = face_normal / absMax - centerOffset;  
 
 		fNormals.push_back(Vertex{ center, vec3::zero, vec2::zero });
 		fNormals.push_back(Vertex{ center + face_normal.normalized() * normScale , 
@@ -384,27 +297,75 @@ void AssetManager::calculate_normals(Mesh** mesh)
 	}
 }
 
-vec3 AssetManager::get_converted_position(
-	const vec3& position, const vec3& centerOffset, float absMax)
+void AssetManager::read_vertex(const std::string& file_data, unsigned pos,
+	std::vector<vec3>& points, vec3& maxPoint, vec3& minPoint)
 {
-	return position / absMax - centerOffset;
+	vec3 p;
+	const char* c_data = file_data.c_str();
+
+	// Read vertex positions
+	pos = get_next_elements(file_data, pos);
+	p.x = static_cast<float>(atof(c_data + pos));
+
+	pos = get_next_elements(file_data, pos);
+	p.y = static_cast<float>(atof(c_data + pos));
+
+	pos = get_next_elements(file_data, pos);
+	p.z = static_cast<float>(atof(c_data + pos));
+
+	// Check absolute max value from vertex
+	if (p.x < minPoint.x)
+		minPoint.x = p.x;
+	else
+		maxPoint.x = p.x;
+
+	if (p.y < minPoint.y)
+		minPoint.y = p.y;
+	else
+		maxPoint.y = p.y;
+
+	if (p.z < minPoint.z)
+		minPoint.z = p.z;
+	else
+		maxPoint.z = p.z;
+
+	points.push_back(p);
 }
 
-//std::string AssetManager::parse_name(const char* name)
-//{
-//	std::string res;
-//
-//	for (int i = 0; name[i] != '\0'; i++) {
-//
-//		res += name[i];
-//
-//		if (name[i] == '/')
-//			res.clear();
-//	}
-//
-//	res.erase(res.size() - 4);
-//
-//	return res;
-//}
+void AssetManager::read_face(const std::string& file_data, unsigned pos,
+	std::vector<unsigned>& indice, unsigned vertice_size)
+{
+	const char* c_data = file_data.c_str();
+
+	// read face indices
+	pos = get_next_elements(file_data, pos);
+	indice.push_back(read_index(c_data + pos, vertice_size));
+
+	pos = get_next_elements(file_data, pos);
+	indice.push_back(read_index(c_data + pos, vertice_size));
+
+	pos = get_next_elements(file_data, pos);
+	indice.push_back(read_index(c_data + pos, vertice_size));
+}
+
+unsigned AssetManager::read_index(const char* data, unsigned vertice_size)
+{
+	int index = atoi(data);
+
+	// wrap index if needed
+	if (index < 0)
+		return unsigned(index + vertice_size);
+
+	return unsigned(index - 1);
+}
+
+unsigned AssetManager::get_next_elements(const std::string& file_data, unsigned pos)
+{
+	// skip past current element
+	pos = unsigned(file_data.find_first_of(" ", pos));
+
+	// skip past white space
+	return unsigned(file_data.find_first_not_of(" ", pos));
+}
 
 jeEnd
