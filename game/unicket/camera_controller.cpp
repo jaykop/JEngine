@@ -28,11 +28,6 @@ void CameraController::update(float dt)
 		camera->set_pitch(Math::deg_to_rad(0.f));
 		camera->set_yaw(Math::deg_to_rad(-90.f));
 		camera->position.set(0.f, 0.f, 100.f);
-
-		auto b = camera->get_back();
-		auto r = camera->get_right();
-		auto u = camera->get_up();
-
 		camera->zoom = 0.f;
 	}
 
@@ -73,26 +68,22 @@ void CameraController::move(float dt)
 	{
 		if (InputHandler::key_pressed(KEY::W))
 		{
-			//vec3 dis = vec3(0.f, 0.f, 1.f) * offset;
 			camera->position += camera->get_back() * offset;
 		}
 
 		if (InputHandler::key_pressed(KEY::S))
 		{
-			//vec3 dis = vec3(0.f, 0.f, -1.f) * offset;
 			camera->position -= camera->get_back() * offset;
 		}
 	}
 
 	if (InputHandler::key_pressed(KEY::A))
 	{
-		//vec3 dis = vec3(-1.f, 0.f, 0.f) * offset;
 		camera->position -= camera->get_right() * offset;
 	}
 
 	if (InputHandler::key_pressed(KEY::D))
 	{
-		//vec3 dis = vec3(1.f, 0.f, 0.f) * offset;
 		camera->position += camera->get_right() * offset;
 	}
 }
@@ -109,11 +100,15 @@ void CameraController::rotate(float dt)
 
 	float xoffset = InputHandler::get_position().x - lastX;
 	float yoffset = lastY - InputHandler::get_position().y;
+
 	lastX = InputHandler::get_position().x;
 	lastY = InputHandler::get_position().y;
 
 	float dx = sensitivity * dt * std::fabsf(xoffset);
 	float dy = sensitivity * dt * std::fabsf(yoffset);
+	if (dx > maxOffset) dx = dt;
+	if (dy > maxOffset) dy = dt;
+
 	if (xoffset > 0)
 		camera->set_yaw(camera->get_yaw() + dx);
 	else if (xoffset < 0)
@@ -122,12 +117,16 @@ void CameraController::rotate(float dt)
 		camera->set_pitch(camera->get_pitch() + dy);
 	else if (yoffset < 0)
 		camera->set_pitch(camera->get_pitch() - dy);
-	
 
-	//if (camera->get_pitch() > 89.0f)
-	//	camera->set_pitch(Math::deg_to_rad(89.0f));
-	//else if (camera->get_pitch() < -89.0f)
-	//	camera->set_pitch(Math::deg_to_rad(-89.0f));
+	if (Math::rad_to_deg(camera->get_pitch()) > 89.0f)
+		camera->set_pitch(Math::deg_to_rad(89.0f));
+	else if (Math::rad_to_deg(camera->get_pitch()) < -89.0f)
+		camera->set_pitch(Math::deg_to_rad(-89.0f));
+
+	//if (Math::rad_to_deg(camera->get_yaw()) > 89.0f)
+	//	camera->set_yaw(Math::deg_to_rad(89.0f));
+	//else if (Math::rad_to_deg(camera->get_yaw()) < -89.0f)
+	//	camera->set_yaw(Math::deg_to_rad(-89.0f));
 }
 
 jeEnd
