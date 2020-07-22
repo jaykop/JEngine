@@ -55,12 +55,10 @@ private:
 
 	static BVType bvType_;
 
-	vec3 min, max, centerOffset;
-
 	Transform* transform = nullptr;
 	HalfEdgeMesh* hEdgeMesh = nullptr;
 
-	float rotation, absMax;
+	float rotation;
 	bool setNormals, activate;
 	unsigned texture_;
 	unsigned vao_, vbo_, ebo_, 	vnVao_, vnVbo_, fnVao_, fnVbo_;

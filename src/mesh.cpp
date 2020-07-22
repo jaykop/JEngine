@@ -10,14 +10,11 @@ using namespace Math;
 Mesh::BVType Mesh::bvType_ = Mesh::BVType::NONE;
 
 Mesh::Mesh()
-	: rotation(0.f), setNormals(true), activate(true), absMax(0.f),
-	min(vec3(1.f, 1.f, 1.f)), max(vec3(1.f, 1.f, 1.f)), centerOffset(vec3(0.f, 0.f, 0.f))
+	: rotation(0.f), setNormals(true), activate(true)
 {}
 
 Mesh::Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned>& indices, HalfEdgeMesh* hedge_mesh)
-	: rotation(0.f), setNormals(true), activate(true), absMax(0.f),
-	min(vec3(1.f, 1.f, 1.f)), max(vec3(1.f, 1.f, 1.f)), centerOffset(vec3(0.f, 0.f, 0.f)),
-	hEdgeMesh(hedge_mesh)
+	: rotation(0.f), setNormals(true), activate(true),	hEdgeMesh(hedge_mesh)
 {
 	initialize(vertices, indices);
 }
@@ -53,9 +50,9 @@ std::vector<unsigned> Mesh::get_indices(void) const { return indices_; }
 
 unsigned Mesh::get_indice(unsigned index) const { return indices_.at(index); }
 
-void Mesh::add_point(vec3 point) { points_.push_back(point); }
+void Mesh::add_point(vec3 point) { points_.emplace_back(point); }
 
-void Mesh::add_indice(unsigned indice) { indices_.push_back(indice); }
+void Mesh::add_indice(unsigned indice) { indices_.emplace_back(indice); }
 
 void Mesh::points_along_direction(const vec3& dir, const std::vector<vec3>& vertices, int& min_index, int& max_index)
 {
@@ -97,7 +94,7 @@ void Mesh::initialize(const std::vector<Vertex>& vertices,
 
 	// copy points
 	for (const auto& v : vertices_)
-		vPoints_.push_back(v.position);
+		vPoints_.emplace_back(v.position);
 
 	// generate vertex array
 	glGenVertexArrays(1, &vao_);

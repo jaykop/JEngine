@@ -59,6 +59,11 @@ void Model::draw_debug_info()
 	//pDDrawer_->render_meshes(pShader);
 }
 
+void Model::set_draw_mode(unsigned mode)
+{
+	drawMode_ = mode;
+}
+
 void Model::draw(float /*dt*/)
 {
 	Camera* camera = GraphicSystem::get_camera();
@@ -128,13 +133,21 @@ void Model::draw(float /*dt*/)
 	glEnable(GL_DEPTH_TEST);
 	glBlendFunc(sfactor_, dfactor_);
 
+
+	// save polygon mode
+	GLint polygon_mode[2];
+	//glGetIntegerv(GL_POLYGON_MODE, polygon_mode);
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
 	for (const auto& mesh : meshes_)
 	{
 		glBindVertexArray(mesh->vao_);
-		glDrawElements(drawMode_, mesh->get_indice_count(), GL_UNSIGNED_INT, nullptr);
+		//glDrawArrays(GL_TRIANGLE_STRIP, 0, mesh->get_point_count());
+		glDrawElements(GL_TRIANGLE_STRIP, mesh->get_indice_count(), GL_UNSIGNED_INT, nullptr);
 		glBindVertexArray(0);
 	}
 
+	//glPolygonMode(GL_FRONT_AND_BACK, polygon_mode[0]); 
 	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_BLEND);
 }

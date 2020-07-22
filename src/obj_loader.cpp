@@ -36,10 +36,7 @@ bool AssetManager::load_obj(const char* path, const char* meshKey, MeshMap* mMap
 		newMesh->setNormals = true;
 		newMesh->key = meshKey;
 
-		vec3 minPoint(max_float, max_float, max_float),
-			maxPoint(min_float, min_float, min_float);
-
-		parse(buffer.str(), &newMesh, maxPoint, minPoint);
+		parse(buffer.str(), &newMesh);
 		initialize_mesh_buffer(newMesh);
 
 		mMap->insert({ meshKey, newMesh });
@@ -167,9 +164,13 @@ void AssetManager::clear_meshes()
 	}
 }
 
-void AssetManager::parse(const std::string& data, Mesh** mesh,
-	vec3& maxPoint, vec3& minPoint)
+void AssetManager::parse(const std::string& data, Mesh** mesh)
 {
+	vec3 minPoint(max_float, max_float, max_float),
+		maxPoint(min_float, min_float, min_float),
+		centerOffset;
+	float absMax = 0.f;
+
 	// skip any leading white space
 	unsigned it = unsigned(data.find_first_not_of("\n\r\0 "));
 	unsigned size = unsigned((*mesh)->points_.size());
@@ -190,31 +191,24 @@ void AssetManager::parse(const std::string& data, Mesh** mesh,
 	}
 
 	// normalize the scale and position
-	// Assign the min and max
-	(*mesh)->min = minPoint;
-	(*mesh)->max = maxPoint;
-
-	vec3 sum = { (*mesh)->max.x - (*mesh)->min.x,
-		(*mesh)->max.y - (*mesh)->min.y,
-		(*mesh)->max.z - (*mesh)->min.z };
+	vec3 sum = { maxPoint.x - minPoint.x,
+		maxPoint.y - minPoint.y,
+		maxPoint.z - minPoint.z };
 
 	sum *= .5f;
 
-	if ((*mesh)->absMax < sum.x)
-		(*mesh)->absMax = sum.x;
-	if ((*mesh)->absMax < sum.y)
-		(*mesh)->absMax = sum.y;
-	if ((*mesh)->absMax < sum.z)
-		(*mesh)->absMax = sum.z;
+	if (absMax < sum.x)
+		absMax = sum.x;
+	if (absMax < sum.y)
+		absMax = sum.y;
+	if (absMax < sum.z)
+		absMax = sum.z;
 
-	(*mesh)->max /= (*mesh)->absMax;
-	(*mesh)->min /= (*mesh)->absMax;
-	(*mesh)->centerOffset = (((*mesh)->max + (*mesh)->min) * .5f);
-	(*mesh)->min -= (*mesh)->centerOffset;
-	(*mesh)->max -= (*mesh)->centerOffset;
-
-	vec3 centerOffset = (*mesh)->centerOffset;
-	float absMax = (*mesh)->absMax;
+	maxPoint /= absMax;
+	minPoint /= absMax;
+	centerOffset = ((maxPoint + minPoint) * .5f);
+	minPoint -= centerOffset;
+	maxPoint -= centerOffset;
 
 	size = unsigned((*mesh)->points_.size());
 
@@ -225,8 +219,8 @@ void AssetManager::parse(const std::string& data, Mesh** mesh,
 		vec3 convertedPos = (*mesh)->points_[i] / absMax - centerOffset;
 
 		// Normal vertexes
-		(*mesh)->vertices_.push_back(Vertex{ convertedPos, vec3::zero , vec2::zero, vec4::one });
-		(*mesh)->vPoints_.push_back(convertedPos);
+		(*mesh)->vertices_.emplace_back(Vertex{ convertedPos, vec3::zero , vec2::zero, vec4::one });
+		(*mesh)->vPoints_.emplace_back(convertedPos);
 	}
 
 	// generate an half edge mesh
@@ -269,8 +263,8 @@ void AssetManager::parse(const std::string& data, Mesh** mesh,
 		if (len > 0.0f) {
 			vert.normal /= len;
 
-			vNormals.push_back(Vertex{ vertices[i].position, vec3::zero, vec2::zero });
-			vNormals.push_back(Vertex{ vertices[i].position + vert.normal * normScale,
+			vNormals.emplace_back(Vertex{ vertices[i].position, vec3::zero, vec2::zero });
+			vNormals.emplace_back(Vertex{ vertices[i].position + vert.normal * normScale,
 				vec3::zero, vec2::zero });
 		}
 	}
@@ -291,8 +285,8 @@ void AssetManager::parse(const std::string& data, Mesh** mesh,
 		vec3 c_center = center / absMax - centerOffset; 
 		vec3 c_fnorm = face_normal / absMax - centerOffset;  
 
-		fNormals.push_back(Vertex{ center, vec3::zero, vec2::zero });
-		fNormals.push_back(Vertex{ center + face_normal.normalized() * normScale , 
+		fNormals.emplace_back(Vertex{ center, vec3::zero, vec2::zero });
+		fNormals.emplace_back(Vertex{ center + face_normal.normalized() * normScale, 
 			vec3::zero, vec2::zero });
 	}
 }
@@ -329,7 +323,7 @@ void AssetManager::read_vertex(const std::string& file_data, unsigned pos,
 	else
 		maxPoint.z = p.z;
 
-	points.push_back(p);
+	points.emplace_back(p);
 }
 
 void AssetManager::read_face(const std::string& file_data, unsigned pos,
@@ -339,13 +333,13 @@ void AssetManager::read_face(const std::string& file_data, unsigned pos,
 
 	// read face indices
 	pos = get_next_elements(file_data, pos);
-	indice.push_back(read_index(c_data + pos, vertice_size));
+	indice.emplace_back(read_index(c_data + pos, vertice_size));
 
 	pos = get_next_elements(file_data, pos);
-	indice.push_back(read_index(c_data + pos, vertice_size));
+	indice.emplace_back(read_index(c_data + pos, vertice_size));
 
 	pos = get_next_elements(file_data, pos);
-	indice.push_back(read_index(c_data + pos, vertice_size));
+	indice.emplace_back(read_index(c_data + pos, vertice_size));
 }
 
 unsigned AssetManager::read_index(const char* data, unsigned vertice_size)

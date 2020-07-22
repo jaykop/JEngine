@@ -21,6 +21,7 @@ public:
 	void add_mesh(Mesh* mesh);
 	const Meshes& get_meshes(void) const;
 
+	void set_draw_mode(unsigned mode);
 	void draw(float dt) override;
 	void draw_normals();
 	void draw_debug_info();

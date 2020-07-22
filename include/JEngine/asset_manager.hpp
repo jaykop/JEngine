@@ -71,7 +71,7 @@ private:
 		MeshMap* mMap = &meshMap_);
 	static void initialize_mesh_buffer(Mesh* mesh);
 	static void clear_meshes();
-	static void parse(const std::string& data, Mesh** mesh, vec3& maxPoint, vec3& minPoint);
+	static void parse(const std::string& data, Mesh** mesh);
 	static void read_vertex(const std::string& file_data, unsigned pos, std::vector<vec3>& points, vec3& maxPoint, vec3& minPoint);
 	static void read_face(const std::string& file_data, unsigned pos, std::vector<unsigned>& indice, unsigned vertice_size);
 	static unsigned read_index(const char* data, unsigned vertice_size);
