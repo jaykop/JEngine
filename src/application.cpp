@@ -18,7 +18,7 @@ SDL_Event Application::event_;
 SDL_Window* Application::window_ = nullptr;
 SDL_Surface	*Application::surface_ = nullptr, *Application::icon_= nullptr;
 SDL_GLContext Application::context_ = nullptr;
-Application::AppData Application::data_ = { "demo", "resource/ico/main.ico", false, 800, 600 };
+Application::AppData Application::data_ = { "demo", "resource/ico/main.ico", false, 800, 600, 0, 0 };
 
 void Application::run()
 {
@@ -79,7 +79,6 @@ bool Application::initialize()
 		return false;
 	}
 
-
 	// Initialize png loading
 	if (!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG))
 	{
@@ -117,9 +116,24 @@ bool Application::initialize()
 	// Set window icon
 	icon_ = IMG_Load(data_.icon.c_str());
 	SDL_SetWindowIcon(window_, icon_);
-	SDL_SetWindowFullscreen(window_, data_.isFullscreen);
 
-	// Get window surface
+	SDL_SetWindowFullscreen(window_, data_.isFullscreen);
+	if (data_.isFullscreen)
+	{
+		SDL_DisplayMode display;
+		SDL_GetCurrentDisplayMode(0, &display);
+		data_.displayWidth = display.w;
+		data_.displayHeight = display.h;
+
+		SDL_SetWindowSize(window_, data_.displayWidth, data_.displayHeight);
+		GLManager::widthStart_ = data_.displayWidth / 2 - data_.width / 2;
+		GLManager::heightStart_ = data_.displayHeight / 2 - data_.height / 2;
+	}
+
+	// set hints
+	SDL_SetHint("SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS", "0");
+
+	// Get window surface								
 	surface_ = SDL_GetWindowSurface(window_);
 
 	// Fill the surface white
@@ -181,8 +195,21 @@ void Application::quit()
 
 void Application::set_fullscreen(bool fullscreen)
 {
+	if (fullscreen)
+	{
+		SDL_SetWindowSize(window_, data_.displayWidth, data_.displayHeight);
+		GLManager::widthStart_ = data_.displayWidth / 2 - data_.width / 2;
+		GLManager::heightStart_ = data_.displayHeight / 2 - data_.height / 2;
+	}
+
+	else
+	{
+		SDL_SetWindowSize(window_, data_.width, data_.height);
+		GLManager::widthStart_ = GLManager::heightStart_ = 0;
+	}
+
+	SDL_SetWindowFullscreen(window_, fullscreen);
 	data_.isFullscreen = fullscreen;
-	SDL_SetWindowFullscreen(window_, data_.isFullscreen);
 }
 
 jeEnd

@@ -32,6 +32,7 @@ const vec3 stdResolution(1.f / 800.f, 1.f / 600.f, 1.f);
 
 vec3 GLManager::resScaler_;
 GLManager::Shaders GLManager::shader_;
+int GLManager::widthStart_ = 0, GLManager::heightStart_ = 0;
 float GLManager::width_ = 0.f, GLManager::height_ = 0.f;
 GLint GLManager::buffers_, GLManager::samples_, GLManager::attributes_;
 unsigned GLManager::quadVao_ = 0, GLManager::quadVbo_ = 0, GLManager::quadEbo_ = 0,
@@ -100,8 +101,17 @@ void GLManager::update(SDL_Window* window, const SDL_Event& event)
 	else if (event.type == SDL_WINDOWEVENT_CLOSE) {
 		// TODO
 	}
-
-	glViewport(0, 0, (GLsizei)width_, (GLsizei)height_);
+	
+	// update the viewport
+	glEnable(GL_SCISSOR_TEST);
+	glScissor(static_cast<GLint>(widthStart_),
+		static_cast<GLint>(heightStart_),
+		static_cast<GLsizei>(width_),
+		static_cast<GLsizei>(height_));
+	glViewport(static_cast<GLint>(widthStart_), 
+		static_cast<GLint>(heightStart_),
+		static_cast<GLsizei>(width_), 
+		static_cast<GLsizei>(height_));
 	
 }
 

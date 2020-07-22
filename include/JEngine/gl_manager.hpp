@@ -64,6 +64,7 @@ private:
 
 	static vec3 resScaler_;
 	static float width_, height_;
+	static int widthStart_, heightStart_;
 	static GLint buffers_, samples_, attributes_;
 	static unsigned quadVao_, quadVbo_, quadEbo_,
 		drVao_, drVbo_,

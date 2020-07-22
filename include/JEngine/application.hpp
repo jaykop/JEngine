@@ -34,8 +34,8 @@ class Application {
 		std::string	title;	// window title
 		std::string icon;	// app icon directory
 		bool isFullscreen = false;
-		int	width = 800;
-		int	height = 600;
+		int	width = 800, displayWidth = 0;
+		int	height = 600, displayHeight = 0;
 	};
 
 public:

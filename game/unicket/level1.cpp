@@ -77,7 +77,7 @@ void Level1::init_sprite()
 	auto* trans = renderer_2d->get_component<Transform>();
 	renderer->set_texture(AssetManager::get_texture("testAnimation"));
 	renderer->prjType = Renderer::ProjectType::PERSPECTIVE;
-	// renderer->status += Renderer::IS_BILBOARD;
+	// renderer->status |= Renderer::IS_BILBOARD;
 	animation->activate(true);
 	animation->set_frame(8);
 	animation->set_speed(10.f);
@@ -111,8 +111,8 @@ void Level1::init_ui()
 	rd1->set_texture(AssetManager::get_texture("rect"));
 	rd1->prjType = Renderer::ProjectType::ORTHOGONAL;
 	rd1->color.set(1.f, 1.f, 0.f, 1.f);
-	//rd1->status += Renderer::IS_BILBOARD;
-	rd1->status += Renderer::IS_FIXED;
+	//rd1->status |= Renderer::IS_BILBOARD;
+	rd1->status |= Renderer::IS_FIXED;
 	trans1->scale.set(5, 5, 0.f);
 	trans1->position.set(0, 0, -100.f);
 	register_object(ui1);
