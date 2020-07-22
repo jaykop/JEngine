@@ -57,24 +57,31 @@ void Sprite::draw(float /*dt*/)
 	shader->set_bool("boolean_flip", (status & IS_FLIPPED) == IS_FLIPPED);
 	shader->set_vec4("v4_color", color);
 
-	if (prjType == ProjectType::PERSPECTIVE) {
+	switch (prjType)
+	{
+	case ProjectType::PERSPECTIVE:
+	{
 
 		mat4 perspective = mat4::perspective(
 			camera->fovy_ + camera->zoom, camera->aspect_,
 			camera->near_, camera->far_);
 
 		shader->set_matrix("m4_projection", perspective);
+		break;
 	}
 
-	else {
-		
-		float right_ = GLManager::get_width() * GLManager::resScaler_.x;
-		float left_ = -right_;
-		float top_ = GLManager::get_height() * GLManager::resScaler_.y;
-		float bottom_ = -top_;
+	case ProjectType::ORTHOGONAL:
+	default:
+	{
+	float right_ = GLManager::get_width() * GLManager::resScaler_.x;
+	float left_ = -right_;
+	float top_ = GLManager::get_height() * GLManager::resScaler_.y;
+	float bottom_ = -top_;
 
-		mat4 orthogonal = mat4::orthogonal(left_, right_, bottom_, top_, camera->near_, camera->far_);
-		shader->set_matrix("m4_projection", orthogonal);
+	mat4 orthogonal = mat4::orthogonal(left_, right_, bottom_, top_, camera->near_, camera->far_);
+	shader->set_matrix("m4_projection", orthogonal);
+	break;
+	}
 	}
 
 	bool fixed = (status & IS_FIXED) == IS_FIXED;

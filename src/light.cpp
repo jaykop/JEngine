@@ -31,19 +31,27 @@ void Light::draw(float /*dt*/)
 	shader->set_matrix("m4_translate", mat4::translate(transform_->position));
 	shader->set_matrix("m4_scale", mat4::scale(transform_->scale));
 	shader->set_matrix("m4_rotate", transform_->orientation.to_mat4());
+	shader->set_vec3("v3_cameraPosition", camera->position);
+	shader->set_bool("boolean_bilboard", (status & IS_BILBOARD) == IS_BILBOARD);
+	shader->set_bool("boolean_flip", (status & IS_FLIPPED) == IS_FLIPPED);
 	shader->set_vec3("v3_color", diffuse);
 
-	if (prjType == ProjectType::PERSPECTIVE) {
+	switch (prjType)
+	{
+	case ProjectType::PERSPECTIVE:
+	{
 
 		mat4 perspective = mat4::perspective(
 			camera->fovy_ + camera->zoom, camera->aspect_,
 			camera->near_, camera->far_);
 
 		shader->set_matrix("m4_projection", perspective);
+		break;
 	}
 
-	else {
-
+	case ProjectType::ORTHOGONAL:
+	default:
+	{
 		float right_ = GLManager::get_width() * GLManager::resScaler_.x;
 		float left_ = -right_;
 		float top_ = GLManager::get_height() * GLManager::resScaler_.y;
@@ -51,11 +59,30 @@ void Light::draw(float /*dt*/)
 
 		mat4 orthogonal = mat4::orthogonal(left_, right_, bottom_, top_, camera->near_, camera->far_);
 		shader->set_matrix("m4_projection", orthogonal);
+		break;
+	}
 	}
 
-	// Send camera info to shader
-	mat4 viewport = mat4::look_at(camera->position, camera->position + camera->back_, camera->up_);
-	shader->set_matrix("m4_viewport", viewport);
+	bool fixed = (status & IS_FIXED) == IS_FIXED;
+	shader->set_bool("boolean_fix", fixed);
+
+	if (!fixed)
+	{
+		// Send camera info to shader
+		// mat4 viewport = mat4::look_at(camera->position, camera->right_, camera->up_, camera->back_);
+		mat4 viewport = mat4::look_at(camera->position, camera->position + camera->back_, camera->up_);
+		shader->set_matrix("m4_viewport", viewport);
+	}
+
+	bool isHerited = parent_ != nullptr;
+	shader->set_bool("boolean_herited", isHerited);
+	if (isHerited)
+	{
+		Transform* pTransform = parent_->get_transform();
+		shader->set_matrix("m4_parentTranslate", mat4::translate(pTransform->position));
+		shader->set_matrix("m4_parentScale", mat4::scale(pTransform->scale));
+		shader->set_matrix("m4_parentRotate", pTransform->orientation.to_mat4());
+	}
 
 	glEnable(GL_BLEND);
 	glEnable(GL_DEPTH_TEST);
