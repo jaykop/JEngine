@@ -18,7 +18,7 @@ SDL_Event Application::event_;
 SDL_Window* Application::window_ = nullptr;
 SDL_Surface	*Application::surface_ = nullptr, *Application::icon_= nullptr;
 SDL_GLContext Application::context_ = nullptr;
-Application::AppData Application::data_ = { "demo", "resource/ico/main.ico", false, 800, 600, 0, 0 };
+Application::AppData Application::data_ = { "demo", "resource/ico/main.ico", false, false, 800, 600, 0, 0 };
 
 void Application::run()
 {
@@ -41,6 +41,11 @@ void Application::run()
 void Application::activate_vsync(bool on)
 {
 	SDL_GL_SetSwapInterval(on);
+}
+
+bool Application::cursor_hidden()
+{
+	return data_.cursorHidden;
 }
 
 SDL_Window* Application::get_window()
@@ -229,8 +234,10 @@ void Application::set_fullscreen(bool fullscreen)
 
 void Application::hide_cursor(bool hide)
 {
-	SDL_bool enable = hide ? SDL_TRUE : SDL_FALSE;
-	SDL_SetRelativeMouseMode(enable);
+	data_.cursorHidden = hide;
+	SDL_bool enable = hide ? SDL_FALSE : SDL_TRUE;
+	// SDL_SetRelativeMouseMode(enable);
+	SDL_ShowCursor(enable);
 }
 
 jeEnd

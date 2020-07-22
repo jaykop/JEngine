@@ -215,24 +215,38 @@ void InputHandler::update(const SDL_Event& event)
 
 	case SDL_MOUSEMOTION:
 
-		// todo:
+		if (Application::cursor_hidden())
+		{
+			bool isFullscreen = Application::get_appdata().isFullscreen;
 
-		float halfW = static_cast<float>(Application::get_appdata().displayWidth);
-		float halfH = static_cast<float>(Application::get_appdata().displayHeight);
+			float top = 0;
+			float right = 0;
 
-		if (position_.x > halfW - 2)
-			position_.x = 0;
-		else if (position_.x < 1)
-			position_.x = halfW;
+			if (isFullscreen)
+			{
+				right = static_cast<float>(Application::get_appdata().displayWidth);
+				top = static_cast<float>(Application::get_appdata().displayHeight);
+			}
+			else
+			{
+				right = static_cast<float>(Application::get_appdata().width);
+				top = static_cast<float>(Application::get_appdata().height);
+			}
 
-		if (position_.y > halfH - 2)
-			position_.y = 0;
-		else if (position_.y < 1)
-			position_.y = halfH;
+			if (position_.x > right- 2)
+				position_.x = 0;
+			else if (position_.x < 1)
+				position_.x = right;
 
-		SDL_WarpMouseInWindow(Application::get_window() , 
-			static_cast<int>(position_.x), 
-			static_cast<int>(position_.y));
+			if (position_.y > top - 2)
+				position_.y = 0;
+			else if (position_.y < 1)
+				position_.y = top;
+
+			SDL_WarpMouseInWindow(Application::get_window(),
+				static_cast<int>(position_.x),
+				static_cast<int>(position_.y));
+		}
 	}
 
 }

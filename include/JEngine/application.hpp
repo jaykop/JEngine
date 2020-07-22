@@ -33,8 +33,9 @@ class Application {
 		std::string	title;	// window title
 		std::string icon;	// app icon directory
 		bool isFullscreen = false;
-		int	width = 800, displayWidth = 0;
-		int	height = 600, displayHeight = 0;
+		bool cursorHidden = false;
+		int	width = 800, height = 600;
+		int	displayWidth = 0, displayHeight = 0;
 	};
 
 public:
@@ -42,8 +43,10 @@ public:
 	static void run();
 	static void quit();
 
+	static bool cursor_hidden();
 	static SDL_Window* get_window();
 	static AppData get_appdata();
+
 	static void set_screensize(int w, int h);
 	static void set_title(const char* title);
 	static void set_fullscreen(bool isFullScreen);
