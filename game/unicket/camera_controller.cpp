@@ -107,16 +107,22 @@ void CameraController::rotate(float dt)
 	lastX = InputHandler::get_position().x;
 	lastY = InputHandler::get_position().y;
 
-	xoffset *= sensitivity * dt;
-	yoffset *= sensitivity * dt;
+	float dx = sensitivity * dt * std::fabsf(xoffset);
+	float dy = sensitivity * dt * std::fabsf(yoffset);
+	if (xoffset > 0)
+		camera->set_yaw(camera->get_yaw() + dx);
+	else if (xoffset < 0)
+		camera->set_yaw(camera->get_yaw() - dx);
+	if (yoffset > 0)
+		camera->set_pitch(camera->get_pitch() + dy);
+	else if (yoffset < 0)
+		camera->set_pitch(camera->get_pitch() - dy);
+	
 
-	camera->set_yaw(camera->get_yaw() + xoffset);
-	camera->set_pitch(camera->get_pitch() + yoffset);
-
-	if (camera->get_pitch() > 89.0f)
-		camera->set_pitch(Math::deg_to_rad(89.0f));
-	else if (camera->get_pitch() < -89.0f)
-		camera->set_pitch(Math::deg_to_rad(-89.0f));
+	//if (camera->get_pitch() > 89.0f)
+	//	camera->set_pitch(Math::deg_to_rad(89.0f));
+	//else if (camera->get_pitch() < -89.0f)
+	//	camera->set_pitch(Math::deg_to_rad(-89.0f));
 }
 
 jeEnd
