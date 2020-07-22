@@ -3,13 +3,14 @@
 #include "camera_controller.h"
 #include "pch.h"
 #include "model.hpp"
+#include "mesh.hpp"
 
 jeBegin
 
 void Level4::initialize()
 {
 	init_basic();
-	init_models();
+	// init_models();
 
 	// base init
 	Scene::initialize();
@@ -49,7 +50,7 @@ void Level4::init_models()
 	model1 = ObjectManager::create_object("cube");
 	model1->add_component<Model>();
 	auto* md = model1->get_component<Model>();
-	// md->add_mesh(AssetManager::get_mesh());
+	md->add_mesh(AssetManager::get_mesh("cube"));
 	register_object(model1);
 	// model2 = ObjectManager::create_object("sphere");
 }

@@ -1,6 +1,7 @@
 #include <glew.h>
 #include <mesh.hpp>
 #include <math_util.hpp>
+#include <half_edge_mesh.hpp>
 
 jeBegin
 
@@ -23,6 +24,9 @@ Mesh::Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned>& ind
 
 Mesh::~Mesh()
 {
+	delete hEdgeMesh;
+	hEdgeMesh = nullptr;
+
 	// Delete vao, vbos, ebo
 	glDeleteVertexArrays(1, &vao_);
 	glDeleteVertexArrays(1, &vnVao_);

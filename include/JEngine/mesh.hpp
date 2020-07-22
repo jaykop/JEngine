@@ -31,8 +31,6 @@ public:
 		int& min_index, int& max_index);
 	void initialize(const std::vector<Vertex>& vertices, const std::vector<unsigned>& indices);
 
-	static void describe_mesh_attribs(Mesh* pMesh);
-
 	Mesh();
 	Mesh(const std::vector<Vertex>& vertices,
 		const std::vector<unsigned>& indices,

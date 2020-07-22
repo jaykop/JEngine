@@ -1,4 +1,6 @@
 #pragma warning (disable : 6011)
+#pragma warning (disable : 6262)
+#pragma warning (disable : 6308)
 #pragma warning (disable : 6385)
 #pragma warning (disable : 26451)
 

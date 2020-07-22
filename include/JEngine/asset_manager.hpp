@@ -42,6 +42,7 @@ public:
 	static FMOD::Sound* get_audio(const char* key);
 	static unsigned	get_texture(const char* key);
 	static Archetype* get_archetype(const char* key);
+	static Mesh* get_mesh(const char* name);
 
 private:
 
@@ -70,19 +71,17 @@ private:
 		MeshMap* mMap = &meshMap_);
 	static void initialize_mesh(Mesh* mesh);
 	// static std::string parse_name(const char* name);
-	static Mesh* get_mesh(const char* name);
 	static void clear_meshes();
-	static void update_max_min(const vec3& v);
-	static void convert_mesh(Mesh** mesh);
-	static void parse_vertex(const std::string& data, Mesh** pMesh);
-	static void read_vertex(const std::string& file_data, unsigned pos, std::vector<vec3>& vertices);
+	static void update_max_min(const vec3& v, vec3& maxPoint, vec3& minPoint);
+	static void convert_mesh(Mesh** mesh, vec3& maxPoint, vec3& minPoint);
+	static void parse_vertex(const std::string& data, Mesh** mesh, vec3& maxPoint, vec3& minPoint);
+	static void read_vertex(const std::string& file_data, unsigned pos, std::vector<vec3>& points, vec3& maxPoint, vec3& minPoint);
 	static void read_face(const std::string& file_data, unsigned pos, std::vector<unsigned>& indice, unsigned vertice_size);
 	static unsigned read_index(const char* data, unsigned vertice_size);
 	static unsigned get_next_elements(const std::string& file_data, unsigned pos);
 	static void calculate_normals(Mesh** pMesh);
 	static vec3 get_converted_position(const vec3& position, const vec3& centerOffset, float absMax);
 
-	static vec3 maxPoint, minPoint;
 	static MeshMap meshMap_;
 	static FontMap fontMap_;
 	static AudioMap	audioMap_;

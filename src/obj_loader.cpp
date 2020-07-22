@@ -17,9 +17,6 @@ int MAX_POINTS = -1;
 static const float normScale = 0.05f;
 static const unsigned max_unsinged = (std::numeric_limits<unsigned>::max)();
 
-MeshMap AssetManager::meshMap_;
-vec3 AssetManager::maxPoint, AssetManager::minPoint;
-
 bool AssetManager::load_obj(const char* path, const char* meshKey, MeshMap* mMap)
 {
 	if (mMap->find(meshKey) == mMap->end()) {
@@ -39,10 +36,12 @@ bool AssetManager::load_obj(const char* path, const char* meshKey, MeshMap* mMap
 		newMesh->setNormals = true;
 		newMesh->key = meshKey;
 
-		minPoint.set(max_float), maxPoint.set(min_float);
+		vec3 minPoint(min_float, min_float, min_float),
+			maxPoint(max_float, max_float, max_float);
 
-		parse_vertex(buffer.str(), &newMesh);
-		convert_mesh(&newMesh);
+		parse_vertex(buffer.str(), &newMesh, maxPoint, minPoint);
+		convert_mesh(&newMesh, maxPoint, minPoint);
+
 		newMesh->hEdgeMesh = new HalfEdgeMesh(newMesh->vertices_, newMesh->indices_);
 		calculate_normals(&newMesh);
 		initialize_mesh(newMesh);
@@ -172,7 +171,8 @@ void AssetManager::clear_meshes()
 	}
 }
 
-void AssetManager::update_max_min(const vec3& v)
+void AssetManager::update_max_min(const vec3& v,
+	vec3& maxPoint, vec3& minPoint)
 {
 	if (v.x < minPoint.x)
 		minPoint.x = v.x;
@@ -190,7 +190,8 @@ void AssetManager::update_max_min(const vec3& v)
 		maxPoint.z = v.z;
 }
 
-void AssetManager::convert_mesh(Mesh** mesh)
+void AssetManager::convert_mesh(Mesh** mesh,
+	vec3& maxPoint, vec3& minPoint)
 {
 	// Assign the min and max
 	(*mesh)->min = minPoint;
@@ -232,7 +233,8 @@ void AssetManager::convert_mesh(Mesh** mesh)
 	}
 }
 
-void AssetManager::parse_vertex(const std::string& data, Mesh** mesh)
+void AssetManager::parse_vertex(const std::string& data, Mesh** mesh,
+	vec3& maxPoint, vec3& minPoint)
 {
 	// skip any leading white space
 	unsigned it = unsigned(data.find_first_not_of("\n\r\0 "));
@@ -242,7 +244,7 @@ void AssetManager::parse_vertex(const std::string& data, Mesh** mesh)
 	{
 		// extract vertex data
 		if (data[it] == 'v')
-			read_vertex(data, it + 1, (*mesh)->points_);
+			read_vertex(data, it + 1, (*mesh)->points_, maxPoint, minPoint);
 
 		// extract face data
 		if (data[it] == 'f')
@@ -255,7 +257,7 @@ void AssetManager::parse_vertex(const std::string& data, Mesh** mesh)
 }
 
 void AssetManager::read_vertex(const std::string& file_data, unsigned pos,
-	std::vector<vec3>& points)
+	std::vector<vec3>& points, vec3& maxPoint, vec3& minPoint)
 {
 	vec3 p;
 	const char* c_data = file_data.c_str();
@@ -271,7 +273,7 @@ void AssetManager::read_vertex(const std::string& file_data, unsigned pos,
 	p.z = static_cast<float>(atof(c_data + pos));
 
 	// Check absolute max value from vertex
-	update_max_min(p);
+	update_max_min(p, maxPoint, minPoint);
 
 	points.push_back(p);
 }

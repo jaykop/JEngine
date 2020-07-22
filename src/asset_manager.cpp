@@ -9,7 +9,6 @@
 Contains the methods of asset_manager class
 */
 /******************************************************************************/
-
 #include <thread>
 #include <lodepng.h>
 
@@ -103,6 +102,13 @@ void AssetManager::load_assets()
 		jeDebugPrint("*AssetManager - Loaded image: %s.\n", textures[i]["Directory"].GetString());
 	}
 	
+	// Load obj 
+	const rapidjson::Value& models = JsonParser::get_document()["Model"];
+	for (rapidjson::SizeType i = 0; i < models.Size(); ++i) {
+		load_obj(models[i]["Directory"].GetString(), models[i]["Key"].GetString());
+		jeDebugPrint("*AssetManager - Loaded obj: %s.\n", models[i]["Directory"].GetString());
+	}
+
 	// Load font
 	const rapidjson::Value& fonts = JsonParser::get_document()["Font"];
 	for (rapidjson::SizeType i = 0; i < fonts.Size(); ++i) {
