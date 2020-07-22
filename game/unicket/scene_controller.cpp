@@ -30,13 +30,28 @@ void SceneController::update(float /*dt*/)
 		SceneManager::restart();
 
 	if (InputHandler::key_triggered(KEY::NUM_1))
-		SceneManager::set_next_scene<Level1>();
+	{
+		if (SceneManager::is_paused())
+			SceneManager::resume_and_next<Level1>();
+		else
+			SceneManager::set_next_scene<Level1>();
+	}
 
 	if (InputHandler::key_triggered(KEY::NUM_2))
-		SceneManager::set_next_scene<Level2>();
+	{
+		if (SceneManager::is_paused())
+			SceneManager::resume_and_next<Level2>();
+		else
+			SceneManager::set_next_scene<Level2>();
+	}
 
 	if (InputHandler::key_triggered(KEY::NUM_3))
-		SceneManager::set_next_scene<Level3>();
+	{
+		if (SceneManager::is_paused())
+			SceneManager::resume_and_next<Level3>();
+		else
+			SceneManager::set_next_scene<Level3>();
+	}
 
 	if (InputHandler::key_triggered(KEY::BACK))
 	{
@@ -45,6 +60,7 @@ void SceneController::update(float /*dt*/)
 		else 
 			SceneManager::pause<Pause>();
 	}
+
 	if (InputHandler::key_triggered(KEY::MOUSE_LEFT))
 	{
 		static bool hide = false;

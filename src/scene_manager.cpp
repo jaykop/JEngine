@@ -145,6 +145,8 @@ void SceneManager::change_scene()
 		currentScene_ = currentScene_->prevScene_;
 		// initialize the last scene
 		toRelease->prevScene_ = nullptr;
+		// initialize the last scene
+		delete toRelease;
 		// change the status
 		status_ = Status::CHANGE;
 		break;
@@ -180,6 +182,7 @@ void SceneManager::warp_up_scene()
 
 		// The case to resume to last state
 	case Status::RESUME:
+	case Status::RESUME_AND_CHANGE:
 		currentScene_->close();
 		currentScene_->unload();
 		currentScene_->resume();
@@ -190,7 +193,6 @@ void SceneManager::warp_up_scene()
 		// The case to resume and change
 	case Status::RESTART:
 	case Status::CHANGE:
-	case Status::RESUME_AND_CHANGE:
 		currentScene_->close();
 		currentScene_->unload();
 		break;

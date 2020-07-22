@@ -122,11 +122,6 @@ void CameraController::rotate(float dt)
 		camera->set_pitch(Math::deg_to_rad(89.0f));
 	else if (Math::rad_to_deg(camera->get_pitch()) < -89.0f)
 		camera->set_pitch(Math::deg_to_rad(-89.0f));
-
-	//if (Math::rad_to_deg(camera->get_yaw()) > 89.0f)
-	//	camera->set_yaw(Math::deg_to_rad(89.0f));
-	//else if (Math::rad_to_deg(camera->get_yaw()) < -89.0f)
-	//	camera->set_yaw(Math::deg_to_rad(-89.0f));
 }
 
 jeEnd
