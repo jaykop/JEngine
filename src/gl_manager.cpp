@@ -17,6 +17,8 @@ Contains the methods of GLManager class
 #include <shader.hpp>
 #include <vertex.hpp>
 
+#include <application.hpp>
+
 jeBegin
 
 const std::vector<float> quadVertices =
@@ -85,34 +87,53 @@ void GLManager::initialize(float w, float h)
 
 void GLManager::update(SDL_Window* window, const SDL_Event& event)
 {
-	if (event.type == SDL_WINDOWEVENT_RESIZED) {
+	switch (event.type)
+	{
+	case SDL_WINDOWEVENT_RESIZED:
+	{
+		//int w, h;
 
-		int w, h;
+		//SDL_GetWindowSize(window, &w, &h);
+		//auto& appData = Application::get_appdata();
 
-		SDL_GetWindowSize(window, &w, &h);
-		width_ = float(w), height_ = float(h);
+		//appData.width = w;
+		//appData.width = h;
 
-		// Update the projection size by window screen size
-		vec3 windowSize(width_, height_, 1.f);
-		resScaler_ = windowSize * stdResolution;
-		resScaler_.set(0.5f / resScaler_.x, 0.5f / resScaler_.y, 1.f);
+		//if (appData.isFullscreen)
+		//{
+		//	GLManager::widthStart_ = appData.displayWidth / 2 - appData.width / 2;
+		//	GLManager::heightStart_ = appData.displayHeight / 2 - appData.height / 2;
+		//}
+
+		//else
+		//{
+		//	GLManager::widthStart_ = GLManager::heightStart_ = 0;
+		//}
+
+		//// Update the projection size by window screen size
+		//width_ = float(w), height_ = float(h);
+		//vec3 windowSize(width_, height_, 1.f);
+		//resScaler_ = windowSize * stdResolution;
+		//resScaler_.set(0.5f / resScaler_.x, 0.5f / resScaler_.y, 1.f);
+
+		break;
 	}
-
-	else if (event.type == SDL_WINDOWEVENT_CLOSE) {
+	case SDL_WINDOWEVENT_CLOSE:
+	{
 		// TODO
+		break;
 	}
-	
-	// update the viewport
-	glEnable(GL_SCISSOR_TEST);
-	glScissor(static_cast<GLint>(widthStart_),
-		static_cast<GLint>(heightStart_),
-		static_cast<GLsizei>(width_),
-		static_cast<GLsizei>(height_));
-	glViewport(static_cast<GLint>(widthStart_), 
-		static_cast<GLint>(heightStart_),
-		static_cast<GLsizei>(width_), 
-		static_cast<GLsizei>(height_));
-	
+	case SDL_WINDOWEVENT_MOVED:
+	{
+		SDL_GetWindowPosition(window, &widthStart_, &heightStart_);
+
+		break;
+	}
+	}	
+
+	vec3 windowSize(width_, height_, 1.f);
+	resScaler_ = windowSize * stdResolution;
+	resScaler_.set(0.5f / resScaler_.x, 0.5f / resScaler_.y, 1.f);
 }
 
 void GLManager::close()

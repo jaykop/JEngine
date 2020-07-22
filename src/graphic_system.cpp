@@ -71,6 +71,11 @@ void GraphicSystem::update(float dt) {
 	// get current scene color
 	backgroundColor = SceneManager::get_current_scene()->background;
 
+	// scissor out the letterbox area
+	glEnable(GL_SCISSOR_TEST);
+	glScissor(GLManager::widthStart_, GLManager::heightStart_,
+		static_cast<GLsizei>(GLManager::width_), static_cast<GLsizei>(GLManager::height_));
+
 	// clear buffers
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(
@@ -78,6 +83,10 @@ void GraphicSystem::update(float dt) {
 		backgroundColor.g,
 		backgroundColor.b,
 		backgroundColor.a);
+
+	// update the viewport
+	glViewport(GLManager::widthStart_, GLManager::heightStart_,
+		static_cast<GLsizei>(GLManager::width_), static_cast<GLsizei>(GLManager::height_));
 
 	// render grid
 	if (grid.render)
@@ -89,6 +98,8 @@ void GraphicSystem::update(float dt) {
 	// update renderers
 	for (auto& r : renderers_)
 		r->draw(dt);
+
+	glDisable(GL_SCISSOR_TEST);
 }
 
 void GraphicSystem::close() {
@@ -270,7 +281,7 @@ void GraphicSystem::update_lights(float dt)
 //	glBindFramebuffer(GL_FRAMEBUFFER, GLM::fbo_);
 //	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 //	glClearColor(0.f, 0.f, 0.f, 0.f);
-//	glViewport(0, 0, GLint(width_), GLint(height_));
+//	//glViewport(0, 0, GLint(width_), GLint(height_));
 //
 //	// Backface culling
 //	glEnable(GL_CULL_FACE);

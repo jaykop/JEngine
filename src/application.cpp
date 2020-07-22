@@ -103,7 +103,7 @@ bool Application::initialize()
 	//Create window
 	window_ = SDL_CreateWindow(data_.title.c_str(), 
 		SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-		data_.width, data_.height, SDL_WINDOW_OPENGL);
+		data_.displayWidth, data_.displayHeight, SDL_WINDOW_OPENGL);
 
 	if (!window_) {
 		jeDebugPrint("!Application - Window could not be created. SDL_Error: %s\n", SDL_GetError());
@@ -117,21 +117,26 @@ bool Application::initialize()
 	icon_ = IMG_Load(data_.icon.c_str());
 	SDL_SetWindowIcon(window_, icon_);
 
-	SDL_SetWindowFullscreen(window_, data_.isFullscreen);
+	//TODO: SDL FULLSCREEN ISSUE
+	//SDL_SetWindowFullscreen(window_, data_.isFullscreen);
+	SDL_DisplayMode display;
+	SDL_GetCurrentDisplayMode(0, &display);
+	data_.displayWidth = display.w;
+	data_.displayHeight = display.h;
+	
 	if (data_.isFullscreen)
 	{
-		SDL_DisplayMode display;
-		SDL_GetCurrentDisplayMode(0, &display);
-		data_.displayWidth = display.w;
-		data_.displayHeight = display.h;
-
+		SDL_SetWindowPosition(window_, 0, 0);
 		SDL_SetWindowSize(window_, data_.displayWidth, data_.displayHeight);
 		GLManager::widthStart_ = data_.displayWidth / 2 - data_.width / 2;
 		GLManager::heightStart_ = data_.displayHeight / 2 - data_.height / 2;
 	}
 
-	// set hints
-	SDL_SetHint("SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS", "0");
+	else
+	{
+		SDL_SetWindowSize(window_, data_.width, data_.height);
+		SDL_SetWindowPosition(window_, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
+	}
 
 	// Get window surface								
 	surface_ = SDL_GetWindowSurface(window_);
@@ -193,22 +198,27 @@ void Application::quit()
 	SceneManager::status_ = SceneManager::Status::QUIT;
 }
 
+//TODO: SDL FULLSCREEN ISSUE
 void Application::set_fullscreen(bool fullscreen)
 {
 	if (fullscreen)
 	{
+		SDL_SetWindowPosition(window_, 0, 0);
 		SDL_SetWindowSize(window_, data_.displayWidth, data_.displayHeight);
 		GLManager::widthStart_ = data_.displayWidth / 2 - data_.width / 2;
 		GLManager::heightStart_ = data_.displayHeight / 2 - data_.height / 2;
+
 	}
 
 	else
 	{
+		SDL_SetWindowPosition(window_, GLManager::widthStart_, GLManager::heightStart_);
 		SDL_SetWindowSize(window_, data_.width, data_.height);
 		GLManager::widthStart_ = GLManager::heightStart_ = 0;
 	}
 
-	SDL_SetWindowFullscreen(window_, fullscreen);
+
+	//SDL_SetWindowFullscreen(window_, fullscreen);
 	data_.isFullscreen = fullscreen;
 }
 
