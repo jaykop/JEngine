@@ -107,7 +107,7 @@
       <PreprocessorDefinitions>_SILENCE_CXX17_ITERATOR_BASE_CLASS_DEPRECATION_WARNING;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>JEngine_d.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;freetype.lib;opengl32.lib;glew32.lib;assimp-vc142-mtd.lib;fmod_vc.lib</AdditionalDependencies>
+      <AdditionalDependencies>SDL2main.lib;SDL2.lib;SDL2_image.lib;JEngine_d.lib;freetype.lib;opengl32.lib;glew32.lib;assimp-vc142-mtd.lib;fmod_vc.lib;shell32.lib</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
       <AdditionalLibraryDirectories>$(ProjectDir)..\..\lib\SDL2\$(Platform);$(ProjectDir)..\..\lib\GL\$(Platform);$(ProjectDir)..\..\lib\assimp\$(Configuration)\$(Platform);$(ProjectDir)..\..\lib\jengine\$(Configuration)\$(Platform);$(ProjectDir)..\..\lib\freetype\$(Platform);$(ProjectDir)..\..\lib\fmod\$(Platform);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
@@ -132,7 +132,7 @@ xcopy /y /s /i "$(ProjectDir)..\default" "$(TargetDir)..\default"</Command>
       <PreprocessorDefinitions>_SILENCE_CXX17_ITERATOR_BASE_CLASS_DEPRECATION_WARNING;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>JEngine_d.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;freetype.lib;opengl32.lib;glew32.lib;assimp-vc142-mtd.lib;fmod_vc.lib</AdditionalDependencies>
+      <AdditionalDependencies>SDL2main.lib;SDL2.lib;SDL2_image.lib;JEngine_d.lib;freetype.lib;opengl32.lib;glew32.lib;assimp-vc142-mtd.lib;fmod_vc.lib;shell32.lib</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
       <AdditionalLibraryDirectories>$(ProjectDir)..\..\lib\SDL2\$(Platform);$(ProjectDir)..\..\lib\GL\$(Platform);$(ProjectDir)..\..\lib\assimp\$(Configuration)\$(Platform);$(ProjectDir)..\..\lib\jengine\$(Configuration)\$(Platform);$(ProjectDir)..\..\lib\freetype\$(Platform);$(ProjectDir)..\..\lib\fmod\$(Platform);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
@@ -161,7 +161,7 @@ xcopy /y /s /i "$(ProjectDir)..\default" "$(TargetDir)..\default"</Command>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>JEngine.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;freetype.lib;opengl32.lib;glew32.lib;assimp-vc142-mt.lib;fmod_vc.lib</AdditionalDependencies>
+      <AdditionalDependencies>SDL2main.lib;SDL2.lib;SDL2_image.lib;JEngine.lib;freetype.lib;opengl32.lib;glew32.lib;assimp-vc142-mt.lib;fmod_vc.lib;shell32.lib</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
       <AdditionalLibraryDirectories>$(ProjectDir)..\..\lib\SDL2\$(Platform);$(ProjectDir)..\..\lib\GL\$(Platform);$(ProjectDir)..\..\lib\assimp\$(Configuration)\$(Platform);$(ProjectDir)..\..\lib\jengine\$(Configuration)\$(Platform);$(ProjectDir)..\..\lib\freetype\$(Platform);$(ProjectDir)..\..\lib\fmod\$(Platform);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
@@ -190,7 +190,7 @@ xcopy /y /s /i "$(ProjectDir)..\default" "$(TargetDir)..\default"</Command>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>JEngine.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;freetype.lib;opengl32.lib;glew32.lib;assimp-vc142-mt.lib;fmod_vc.lib</AdditionalDependencies>
+      <AdditionalDependencies>SDL2main.lib;SDL2.lib;SDL2_image.lib;JEngine.lib;freetype.lib;opengl32.lib;glew32.lib;assimp-vc142-mt.lib;fmod_vc.lib;shell32.lib</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
       <AdditionalLibraryDirectories>$(ProjectDir)..\..\lib\SDL2\$(Platform);$(ProjectDir)..\..\lib\GL\$(Platform);$(ProjectDir)..\..\lib\assimp\$(Configuration)\$(Platform);$(ProjectDir)..\..\lib\jengine\$(Configuration)\$(Platform);$(ProjectDir)..\..\lib\freetype\$(Platform);$(ProjectDir)..\..\lib\fmod\$(Platform);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>

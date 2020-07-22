@@ -10,7 +10,6 @@ Contains the definition of application class
 */
 /******************************************************************************/
 #pragma once
-
 #include <SDL.h>
 #include <macros.hpp>
 #include <string>
