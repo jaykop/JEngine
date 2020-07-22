@@ -15,6 +15,7 @@ Contains the methods of InputHandler class
 #include <input_handler.hpp>
 
 #include <camera.hpp>
+#include <application.hpp>
 #include <gl_manager.hpp>
 #include <graphic_system.hpp>
 #include <mat4.hpp>
@@ -211,6 +212,27 @@ void InputHandler::update(const SDL_Event& event)
 
 		break;
 	}
+
+	case SDL_MOUSEMOTION:
+
+		// todo:
+
+		float halfW = static_cast<float>(Application::get_appdata().displayWidth);
+		float halfH = static_cast<float>(Application::get_appdata().displayHeight);
+
+		if (position_.x > halfW - 2)
+			position_.x = 0;
+		else if (position_.x < 1)
+			position_.x = halfW;
+
+		if (position_.y > halfH - 2)
+			position_.y = 0;
+		else if (position_.y < 1)
+			position_.y = halfH;
+
+		SDL_WarpMouseInWindow(Application::get_window() , 
+			static_cast<int>(position_.x), 
+			static_cast<int>(position_.y));
 	}
 
 }

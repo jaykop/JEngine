@@ -25,7 +25,7 @@ Light::~Light()
 void Light::draw(float /*dt*/)
 {
 	Camera* camera = GraphicSystem::get_camera();
-	Shader* shader = GLManager::shader_[GLManager::NORMAL];
+	Shader* shader = GLManager::shader_[GLManager::LIGHT];
 	shader->use();
 
 	shader->set_matrix("m4_translate", mat4::translate(transform_->position));

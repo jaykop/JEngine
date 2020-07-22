@@ -50,7 +50,7 @@ void DebugRenderer::draw(float /*dt*/)
 	shader->set_matrix("m4_translate", mat4::translate(transform_->position));
 	shader->set_matrix("m4_scale", mat4::scale(transform_->scale));
 	shader->set_matrix("m4_rotate", transform_->orientation.to_mat4());
-	shader->set_vec3("v3_cameraPosition", camera->position);
+	//shader->set_vec3("v3_cameraPosition", camera->position);
 	shader->set_bool("boolean_bilboard", (status & IS_BILBOARD) == IS_BILBOARD);
 	//shader->set_bool("boolean_flip", (status & IS_FLIPPED) == IS_FLIPPED);
 	//shader->set_vec4("v4_color", color);

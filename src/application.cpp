@@ -43,6 +43,11 @@ void Application::activate_vsync(bool on)
 	SDL_GL_SetSwapInterval(on);
 }
 
+SDL_Window* Application::get_window()
+{
+	return window_;
+}
+
 Application::AppData Application::get_appdata()
 {
 	return data_;
@@ -220,6 +225,12 @@ void Application::set_fullscreen(bool fullscreen)
 
 	//SDL_SetWindowFullscreen(window_, fullscreen);
 	data_.isFullscreen = fullscreen;
+}
+
+void Application::hide_cursor(bool hide)
+{
+	SDL_bool enable = hide ? SDL_TRUE : SDL_FALSE;
+	SDL_SetRelativeMouseMode(enable);
 }
 
 jeEnd

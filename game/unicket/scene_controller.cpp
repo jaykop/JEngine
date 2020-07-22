@@ -47,6 +47,8 @@ void SceneController::update(float /*dt*/)
 	}
 	if (InputHandler::key_triggered(KEY::MOUSE_LEFT))
 	{
+		static bool hide = false;
+		Application::hide_cursor(hide = !hide);
 		auto pos = InputHandler::get_position();
 		std::cout << pos.x << " " << pos.y << " " << pos.z << "\n";
 	}

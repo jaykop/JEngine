@@ -42,10 +42,12 @@ public:
 	static void run();
 	static void quit();
 
+	static SDL_Window* get_window();
 	static AppData get_appdata();
 	static void set_screensize(int w, int h);
 	static void set_title(const char* title);
 	static void set_fullscreen(bool isFullScreen);
+	static void hide_cursor(bool hide);
 	static void activate_vsync(bool on);
 
 private:
