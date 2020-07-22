@@ -5,6 +5,8 @@
 #include <math_util.hpp>
 #include <graphic_system.hpp>
 
+#include <iostream>
+
 jeBegin
 
 vec3 Camera::worldUp_ = vec3(0.f, 1.f, 0.f);
@@ -49,7 +51,8 @@ void Camera::set_yaw(float rad)
 	back_.z = sinf(yaw_) * cosf(pitch_);
 	back_.normalize();
 
-	up_ = (-back_).cross(right_).normalized();
+	// worldUp_ or up?
+	right_ = (worldUp_).cross(-back_).normalized();
 }
 
 void Camera::set_pitch(float rad)
