@@ -41,10 +41,8 @@ unsigned GLManager::quadVao_ = 0, GLManager::quadVbo_ = 0, GLManager::quadEbo_ =
 GLManager::drVao_ = 0, GLManager::drVbo_ = 0,
 GLManager::quadIndicesSize_ = 6, GLManager::gridVerticeSize_ = 48;
 
-void GLManager::initialize(float w, float h)
+void GLManager::initialize()
 {
-	width_ = w, height_ = h;
-
 	// force GLEW to use a modern OpenGL method
 	glewExperimental = GL_TRUE;
 
@@ -80,9 +78,6 @@ void GLManager::initialize(float w, float h)
 	initialize_shaders();
 	initialize_buffers();
 
-	vec3 windowSize(width_, height_, 1.f);
-	resScaler_ = windowSize * stdResolution;
-	resScaler_.set(0.5f / resScaler_.x, 0.5f / resScaler_.y, 1.f);
 }
 
 void GLManager::update(SDL_Window* window, const SDL_Event& event)
@@ -131,9 +126,10 @@ void GLManager::update(SDL_Window* window, const SDL_Event& event)
 	}
 	}	
 
-	vec3 windowSize(width_, height_, 1.f);
+	vec3 windowSize(static_cast<float>(Application::get_appdata().width), 
+		static_cast<float>(Application::get_appdata().height), 1.f);
 	resScaler_ = windowSize * stdResolution;
-	resScaler_.set(0.5f / resScaler_.x, 0.5f / resScaler_.y, 1.f);
+	resScaler_.set(0.5f / GLManager::resScaler_.x, 0.5f / GLManager::resScaler_.y, 1.f);
 }
 
 void GLManager::close()

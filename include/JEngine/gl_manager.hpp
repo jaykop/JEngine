@@ -53,7 +53,7 @@ public:
 
 private:
 
-	static void initialize(float w, float h);
+	static void initialize();
 	static void update(SDL_Window* window, const SDL_Event& event);
 	static void close();
 

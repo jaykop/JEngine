@@ -110,6 +110,11 @@ bool Application::initialize()
 	SDL_DisplayMode current;
 	SDL_GetCurrentDisplayMode(0, &current);
 
+	SDL_DisplayMode display;
+	SDL_GetCurrentDisplayMode(0, &display);
+	data_.displayWidth = display.w;
+	data_.displayHeight = display.h;
+
 	//Create window
 	window_ = SDL_CreateWindow(data_.title.c_str(), 
 		SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
@@ -129,24 +134,7 @@ bool Application::initialize()
 
 	//TODO: SDL FULLSCREEN ISSUE
 	//SDL_SetWindowFullscreen(window_, data_.isFullscreen);
-	SDL_DisplayMode display;
-	SDL_GetCurrentDisplayMode(0, &display);
-	data_.displayWidth = display.w;
-	data_.displayHeight = display.h;
-	
-	if (data_.isFullscreen)
-	{
-		SDL_SetWindowPosition(window_, 0, 0);
-		SDL_SetWindowSize(window_, data_.displayWidth, data_.displayHeight);
-		GLManager::widthStart_ = data_.displayWidth / 2 - data_.width / 2;
-		GLManager::heightStart_ = data_.displayHeight / 2 - data_.height / 2;
-	}
-
-	else
-	{
-		SDL_SetWindowSize(window_, data_.width, data_.height);
-		SDL_SetWindowPosition(window_, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
-	}
+	set_fullscreen(data_.isFullscreen);
 
 	// Get window surface								
 	surface_ = SDL_GetWindowSurface(window_);
@@ -155,7 +143,7 @@ bool Application::initialize()
 	SDL_FillRect(surface_, nullptr, SDL_MapRGB(surface_->format, 0xFF, 0xFF, 0xFF));
 
 	AssetManager::load_shaders();
-	GLManager::initialize(float(data_.width), float(data_.height));
+	GLManager::initialize();
 
 	// initialize components and assets
 	AssetManager::set_bulit_in_components();
@@ -215,20 +203,30 @@ void Application::set_fullscreen(bool fullscreen)
 	{
 		SDL_SetWindowPosition(window_, 0, 0);
 		SDL_SetWindowSize(window_, data_.displayWidth, data_.displayHeight);
-		GLManager::widthStart_ = data_.displayWidth / 2 - data_.width / 2;
-		GLManager::heightStart_ = data_.displayHeight / 2 - data_.height / 2;
+
+		float offset = static_cast<float>(data_.displayHeight) / data_.height;
+		int iWidth = static_cast<int>(offset * static_cast<float>(data_.width));
+
+		GLManager::widthStart_ = data_.displayWidth / 2 - iWidth / 2;
+		GLManager::heightStart_ = 0;
+		GLManager::width_ = static_cast<float>(iWidth);
+		GLManager::height_ = static_cast<float>(data_.displayHeight);
 
 	}
 
 	else
 	{
-		SDL_SetWindowPosition(window_, GLManager::widthStart_, GLManager::heightStart_);
+		SDL_SetWindowPosition(window_, 
+			data_.displayWidth /2 - data_.width / 2,
+			data_.displayHeight / 2 - data_.height / 2);
 		SDL_SetWindowSize(window_, data_.width, data_.height);
+
+		GLManager::width_ = static_cast<float>(data_.width);
+		GLManager::height_ = static_cast<float>(data_.height);
+
 		GLManager::widthStart_ = GLManager::heightStart_ = 0;
 	}
 
-
-	//SDL_SetWindowFullscreen(window_, fullscreen);
 	data_.isFullscreen = fullscreen;
 }
 
