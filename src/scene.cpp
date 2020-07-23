@@ -20,9 +20,10 @@ Contains the methods of scene class
 #include <graphic_system.hpp>
 #include <behavior_system.hpp>
 
-#include <gl_manager.hpp>
 #include <text.hpp>
 #include <mesh.hpp>
+
+#include <glew.h>
 
 jeBegin
 

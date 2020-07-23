@@ -35,7 +35,6 @@
     <ClCompile Include="..\src\debug_tools.cpp" />
     <ClCompile Include="..\src\eigen.cpp" />
     <ClCompile Include="..\src\emitter.cpp" />
-    <ClCompile Include="..\src\gl_manager.cpp" />
     <ClCompile Include="..\src\graphic_system.cpp" />
     <ClCompile Include="..\src\input_handler.cpp" />
     <ClCompile Include="..\src\json_parser.cpp" />
@@ -97,7 +96,6 @@
     <ClInclude Include="..\include\JEngine\eigen.hpp" />
     <ClInclude Include="..\include\JEngine\emitter.hpp" />
     <ClInclude Include="..\include\JEngine\face.hpp" />
-    <ClInclude Include="..\include\JEngine\gl_manager.hpp" />
     <ClInclude Include="..\include\JEngine\graphic_system.hpp" />
     <ClInclude Include="..\include\JEngine\half_edge.hpp" />
     <ClInclude Include="..\include\JEngine\half_edge_mesh.hpp" />

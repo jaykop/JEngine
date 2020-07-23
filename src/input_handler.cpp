@@ -16,7 +16,6 @@ Contains the methods of InputHandler class
 
 #include <camera.hpp>
 #include <application.hpp>
-#include <gl_manager.hpp>
 #include <graphic_system.hpp>
 #include <mat4.hpp>
 
@@ -285,8 +284,8 @@ vec3 InputHandler::get_position()
 
 vec3 InputHandler::get_ray_direction()
 {
-	float x = (2.0f * position_.x) / GLManager::get_width() - 1.0f;
-	float y = 1.0f - (2.0f * position_.y) / GLManager::get_height();
+	float x = (2.0f * position_.x) / GraphicSystem::get_width() - 1.0f;
+	float y = 1.0f - (2.0f * position_.y) / GraphicSystem::get_height();
 	float z = 1.0f;
 	vec3 ray_nds = vec3(x, y, z);
 	vec4 ray_clip = vec4(x, y, -1.0, 1.0);

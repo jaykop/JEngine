@@ -24,7 +24,6 @@ jeBegin
 
 class Shader {
 
-	friend class GLManager;
 	friend class GraphicSystem;
 	friend class AssetManager;
 

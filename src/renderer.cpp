@@ -2,7 +2,6 @@
 #include <stb_image.h>
 #include <renderer.hpp>
 #include <graphic_system.hpp>
-#include <gl_manager.hpp>
 #include <object.hpp>
 #include <asset_manager.hpp>
 
@@ -16,6 +15,8 @@
 #include <text.hpp>
 #include <light.hpp>
 #include <emitter.hpp>
+
+#include <glew.h>
 
 jeBegin
 

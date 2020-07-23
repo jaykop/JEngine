@@ -7,7 +7,7 @@
 #include <asset_manager.hpp>
 #include <scene_manager.hpp>
 #include <scene.hpp>
-#include <gl_manager.hpp>
+#include <glew.h>
 
 using namespace Math;
 

@@ -44,10 +44,7 @@ class GLManager
 	friend class SceneManager;
 	friend class GraphicSystem;
 
-	using Shaders = std::vector<Shader*>;
 
-	// enum class Target { SCREEN, TEXT, END };
-	enum Pipeline { SPRITE, TEXT, PARTICLE, MODEL, LIGHT, DEBUG, GRID, SCREEN, END };
 
 public:
 
@@ -57,7 +54,6 @@ public:
 private:
 
 	static void initialize();
-	static void update(SDL_Window* window, const SDL_Event& event);
 	static void close();
 
 	static void initialize_shaders();
@@ -65,15 +61,6 @@ private:
 	static void initialize_framebuffer(); 
 	static void delete_buffers();
 
-	static vec3 resScaler_;
-	static float width_, height_;
-	static int widthStart_, heightStart_;
-	static GLint buffers_, samples_, attributes_;
-	static unsigned quadVao_, quadVbo_, quadEbo_,
-		drVao_, drVbo_,
-		quadIndicesSize_,
-		gridVerticeSize_;
-	static Shaders shader_;
 };
 
 jeEnd

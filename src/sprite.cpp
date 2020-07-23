@@ -2,7 +2,6 @@
 #include <shader.hpp>
 #include <animation_2d.hpp>
 #include <graphic_system.hpp>
-#include <gl_manager.hpp>
 #include <object.hpp>
 
 #include <camera.hpp>
@@ -46,7 +45,7 @@ void Sprite::load(const rapidjson::Value& /*data*/) {
 void Sprite::draw(float /*dt*/)
 {
 	Camera* camera = GraphicSystem::get_camera();
-	Shader* shader = GLManager::shader_[GLManager::SPRITE];
+	Shader* shader = GraphicSystem::shader_[GraphicSystem::SPRITE];
 	shader->use();
 
 	shader->set_matrix("m4_translate", mat4::translate(transform_->position));
@@ -73,9 +72,9 @@ void Sprite::draw(float /*dt*/)
 	case ProjectType::ORTHOGONAL:
 	default:
 	{
-	float right_ = GLManager::get_width() * GLManager::resScaler_.x;
+	float right_ = GraphicSystem::width_ * GraphicSystem::resScaler_.x;
 	float left_ = -right_;
-	float top_ = GLManager::get_height() * GLManager::resScaler_.y;
+	float top_ = GraphicSystem::height_ * GraphicSystem::resScaler_.y;
 	float bottom_ = -top_;
 
 	mat4 orthogonal = mat4::orthogonal(left_, right_, bottom_, top_, camera->near_, camera->far_);
@@ -114,11 +113,11 @@ void Sprite::draw(float /*dt*/)
 
 	run_animation();
 
-	glBindVertexArray(GLManager::quadVao_);
-	glBindBuffer(GL_ARRAY_BUFFER, GLManager::quadVbo_);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, GLManager::quadEbo_);
+	glBindVertexArray(GraphicSystem::quadVao_);
+	glBindBuffer(GL_ARRAY_BUFFER, GraphicSystem::quadVbo_);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, GraphicSystem::quadEbo_);
 	glBindTexture(GL_TEXTURE_2D, texture_);
-	glDrawElements(GL_TRIANGLES, GLManager::quadIndicesSize_, GL_UNSIGNED_INT, nullptr);
+	glDrawElements(GL_TRIANGLES, GraphicSystem::quadIndicesSize_, GL_UNSIGNED_INT, nullptr);
 	
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -165,7 +164,7 @@ void Sprite::run_animation()
 		}
 
 		// Send color info to shader
-		Shader* shader = GLManager::shader_[GLManager::SPRITE];
+		Shader* shader = GraphicSystem::shader_[GraphicSystem::SPRITE];
 		shader->use();
 
 		shader->set_matrix("m4_aniScale", mat4::scale(animation_->scale_));

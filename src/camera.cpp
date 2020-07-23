@@ -1,5 +1,4 @@
 #include <camera.hpp>
-#include <gl_manager.hpp>
 #include <vec4.hpp>
 #include <mat4.hpp>
 #include <math_util.hpp>
@@ -27,14 +26,14 @@ Camera::Camera(Object* owner)
 	up_(vec3(0, 1, 0)), right_(vec3(1, 0, 0)), back_(vec3(0, 0, -1)),
 	distance_(1.f), fovy_(45.f), zoom(0.f),
 	yaw_(Math::deg_to_rad(-90.f)), roll_(0.f), pitch_(0.f), width_(2 * tanf(.5f * fovy_)), height_(width_ / aspect_),
-	aspect_(GLManager::get_width() / GLManager::get_height())
+	aspect_(GraphicSystem::width_ / GraphicSystem::height_)
 {
 	viewgeometry_.set(width_, height_, distance_);
 }
 
 void Camera::update(float /*dt*/)
 {
-	aspect_ = GLManager::get_width() / GLManager::get_height();
+	aspect_ = GraphicSystem::width_ / GraphicSystem::height_;
 	width_ = 2 * tanf(.5f * fovy_);
 	height_ = width_ / aspect_;
 	viewgeometry_.set(width_, height_, distance_);

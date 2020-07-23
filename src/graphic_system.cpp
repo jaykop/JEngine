@@ -13,12 +13,10 @@ Contains the methods of GraphicSystem class
 #include <glew.h>
 #include <graphic_system.hpp>
 #include <scene_manager.hpp>
-#include <gl_manager.hpp>
 #include <asset_manager.hpp>
 #include <scene.hpp>
 #include <shader.hpp>
 #include <math_util.hpp>
-#include <vec2.hpp>
 #include <mat4.hpp>
 #include <colors.hpp>
 
@@ -26,12 +24,32 @@ Contains the methods of GraphicSystem class
 #include <camera.hpp>
 #include <renderer.hpp>
 #include <light.hpp>
+#include <vertex.hpp>
 
 jeBegin
+
+
+const std::vector<float> quadVertices =
+{
+	-.5f, .5f, 0.0f , 0.f, 0.f, 1.f,  0.0f, 0.0f ,
+	-.5f, -.5f, 0.0f , 0.f, 0.f, 1.f,  0.0f, 1.0f,
+	.5f, -.5f, 0.0f , 0.f, 0.f, 1.f,  1.0f, 1.0f,
+	.5f,  .5f, 0.0f , 0.f, 0.f, 1.f,  1.0f, 0.0f
+};
+
+const std::vector<unsigned> quadIndices = { 2, 0, 1, 2, 3, 0 };
 
 const std::string type("mode"), position("position"), direction("direction"),
 innerAngle("innerAngle"), outerAngle("outerAngle"), fallOff("fallOff"),
 aColor("aColor"), sColor("sColor"), dColor("dColor"), activate("activate"), radius("radius");
+
+vec3 GraphicSystem::resScaler_;
+GraphicSystem::Shaders GraphicSystem::shader_;
+int GraphicSystem::widthStart_ = 0, GraphicSystem::heightStart_ = 0;
+float GraphicSystem::width_ = 0.f, GraphicSystem::height_ = 0.f;
+unsigned GraphicSystem::quadVao_ = 0, GraphicSystem::quadVbo_ = 0, GraphicSystem::quadEbo_ = 0,
+GraphicSystem::drVao_ = 0, GraphicSystem::drVbo_ = 0,
+GraphicSystem::quadIndicesSize_ = 6, GraphicSystem::gridVerticeSize_ = 48;
 
 std::stack<GraphicSystem::Graphic> GraphicSystem::graphicStack_;
 Camera* GraphicSystem::mainCamera_ = nullptr;
@@ -73,8 +91,8 @@ void GraphicSystem::update(float dt) {
 
 	// scissor out the letterbox area
 	glEnable(GL_SCISSOR_TEST);
-	glScissor(GLManager::widthStart_, GLManager::heightStart_,
-		static_cast<GLsizei>(GLManager::width_), static_cast<GLsizei>(GLManager::height_));
+	glScissor(widthStart_, heightStart_,
+		static_cast<GLsizei>(width_), static_cast<GLsizei>(height_));
 
 	// cull out invisible face
 	glEnable(GL_CULL_FACE);
@@ -90,8 +108,8 @@ void GraphicSystem::update(float dt) {
 		backgroundColor.a);
 
 	// update the viewport
-	glViewport(GLManager::widthStart_, GLManager::heightStart_,
-		static_cast<GLsizei>(GLManager::width_), static_cast<GLsizei>(GLManager::height_));
+	glViewport(widthStart_, heightStart_,
+		static_cast<GLsizei>(width_), static_cast<GLsizei>(height_));
 
 	// render grid
 	if (grid.render)
@@ -115,7 +133,7 @@ void GraphicSystem::close() {
 
 void GraphicSystem::render_grid()
 {
-	Shader* shader = GLManager::shader_[GLManager::GRID];
+	Shader* shader = shader_[GRID];
 	shader->use();
 
 	shader->set_matrix("m4_translate", mat4::translate(vec3::zero));
@@ -134,9 +152,9 @@ void GraphicSystem::render_grid()
 
 	else {
 
-		float right_ = GLManager::get_width() * GLManager::resScaler_.x;
+		float right_ = width_ * resScaler_.x;
 		float left_ = -right_;
-		float top_ = GLManager::get_height() * GLManager::resScaler_.y;
+		float top_ = height_ * resScaler_.y;
 		float bottom_ = -top_;
 
 		mat4 orthogonal = mat4::orthogonal(left_, right_, bottom_, top_, mainCamera_->near_, mainCamera_->far_);
@@ -151,11 +169,11 @@ void GraphicSystem::render_grid()
 	glDisable(GL_DEPTH_TEST);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	glBindVertexArray(GLManager::quadVao_);
-	glBindBuffer(GL_ARRAY_BUFFER, GLManager::quadVbo_);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, GLManager::quadEbo_);
+	glBindVertexArray(quadVao_);
+	glBindBuffer(GL_ARRAY_BUFFER, quadVbo_);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, quadEbo_);
 	glBindTexture(GL_TEXTURE_2D, grid.texture_);
-	glDrawElements(GL_TRIANGLES, GLManager::quadIndicesSize_, GL_UNSIGNED_INT, nullptr);
+	glDrawElements(GL_TRIANGLES, quadIndicesSize_, GL_UNSIGNED_INT, nullptr);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
@@ -232,13 +250,13 @@ void GraphicSystem::resume()
 
 void GraphicSystem::update_lights(float dt)
 {
-	Shader* shader = GLManager::shader_[GLManager::SPRITE];
+	Shader* shader = shader_[SPRITE];
 	shader->use();
 	shader->set_uint("uint_lightSize", lights_.size());
 	
 	for (unsigned i = 0; i < lights_.size() ; ++i)
 	{
-		shader = GLManager::shader_[GLManager::SPRITE];
+		shader = shader_[SPRITE];
 		shader->use();
 
 		// Update shader uniform info
@@ -279,6 +297,112 @@ void GraphicSystem::update_lights(float dt)
 		}
 	}
 }
+
+void GraphicSystem::initialize_graphics()
+{
+	// init shaders
+	// do shader stuff
+	for (unsigned int i = 0; i < Pipeline::END; ++i) {
+
+		Shader* newShader = new Shader;
+		newShader->create_shader(Shader::vsDirectory_[i], Shader::Type::VERTEX);
+
+		// TODO
+		// Work on geometry shader
+		//shader_[i]->CreateShader(Shader::m_geometryShader[i], Shader::JE_GEOMETRY);
+
+		newShader->create_shader(Shader::fsDirectory_[i], Shader::Type::PIXEL);
+		newShader->combine_shaders(i);
+
+		shader_.push_back(newShader);
+	}
+
+	// remove shader directories
+	Shader::vsDirectory_.clear();
+	Shader::fsDirectory_.clear();
+
+	jeDebugPrint("*GLManager - Compiled and linked shaders.\n");
+
+	// init buffers
+	/**************************** QUAD BUFFER ******************************/
+	// generate vertex array
+	glGenVertexArrays(1, &quadVao_);
+	glBindVertexArray(quadVao_);
+
+	// generate vertex buffer
+	glGenBuffers(1, &quadVbo_);
+	glBindBuffer(GL_ARRAY_BUFFER, quadVbo_);
+
+	// set vertex data
+	glBufferData(GL_ARRAY_BUFFER, quadVertices.size() * sizeof(float), &quadVertices[0], GL_STATIC_DRAW);
+
+	// vertex position
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(0);
+
+	// normals of vertices
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(1);
+
+	// texture coordinate position
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+	glEnableVertexAttribArray(2);
+
+	// generate index buffer
+	glGenBuffers(1, &quadEbo_);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, quadEbo_);
+
+	// set index data
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, quadIndices.size() * sizeof(unsigned), &quadIndices[0], GL_STATIC_DRAW);
+
+	// unbind buffer
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindVertexArray(0);
+
+	/**************************** DEBUG RENDERER BUFFER ******************************/
+
+	glGenVertexArrays(1, &drVao_);
+	glBindVertexArray(drVao_);
+
+	glGenBuffers(1, &drVbo_);
+	glBindBuffer(GL_ARRAY_BUFFER, drVbo_);
+
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
+		reinterpret_cast<void*>(offsetof(Vertex, Vertex::position)));
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
+		reinterpret_cast<void*>(offsetof(Vertex, Vertex::normal)));
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex),
+		reinterpret_cast<void*>(offsetof(Vertex, Vertex::texCoords)));
+	glEnableVertexAttribArray(2);
+	glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex),
+		reinterpret_cast<void*>(offsetof(Vertex, Vertex::color)));
+	glEnableVertexAttribArray(3);
+
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindVertexArray(0);
+}
+
+void GraphicSystem::close_graphics()
+{
+	glDeleteVertexArrays(1, &quadVao_);
+	glDeleteBuffers(1, &quadVbo_);
+	glDeleteBuffers(1, &quadEbo_);
+
+	glDeleteVertexArrays(1, &drVao_);
+	glDeleteBuffers(1, &drVbo_);
+
+	for (unsigned i = 0; i < Pipeline::END; ++i)
+		delete shader_[i];
+
+	shader_.clear();
+}
+
+float GraphicSystem::get_width() { return width_; }
+
+float GraphicSystem::get_height() { return height_; }
 
 //void GraphicSystem::RenderToFramebuffer() const
 //{

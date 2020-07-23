@@ -2,7 +2,6 @@
 #include <transform.hpp>
 #include <graphic_system.hpp>
 #include <shader.hpp>
-#include <gl_manager.hpp>
 #include <camera.hpp>
 #include <asset_manager.hpp>
 
@@ -73,7 +72,7 @@ void Emitter::draw(float dt)
 
 		Camera* camera = GraphicSystem::get_camera();
 
-		Shader* shader = GLManager::shader_[GLManager::PARTICLE];
+		Shader* shader = GraphicSystem::shader_[GraphicSystem::PARTICLE];
 		shader->use();
 
 		//shader->set_matrix("m4_translate", mat4::translate(transform_->position));
@@ -100,9 +99,9 @@ void Emitter::draw(float dt)
 		case ProjectType::ORTHOGONAL:
 		default:
 		{
-			float right_ = GLManager::get_width() * GLManager::resScaler_.x;
+			float right_ = GraphicSystem::width_ * GraphicSystem::resScaler_.x;
 			float left_ = -right_;
-			float top_ = GLManager::get_height() * GLManager::resScaler_.y;
+			float top_ = GraphicSystem::height_ * GraphicSystem::resScaler_.y;
 			float bottom_ = -top_;
 
 			mat4 orthogonal = mat4::orthogonal(left_, right_, bottom_, top_, camera->near_, camera->far_);
@@ -153,9 +152,9 @@ void Emitter::draw(float dt)
 		for (auto& t : threads)
 			t.join();
 
-		glBindVertexArray(GLManager::quadVao_);
-		glBindBuffer(GL_ARRAY_BUFFER, GLManager::quadVbo_);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, GLManager::quadEbo_);
+		glBindVertexArray(GraphicSystem::quadVao_);
+		glBindBuffer(GL_ARRAY_BUFFER, GraphicSystem::quadVbo_);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, GraphicSystem::quadEbo_);
 		glBindTexture(GL_TEXTURE_2D, texture_);
 
 		for (auto& particle : particles_) {
@@ -172,7 +171,7 @@ void Emitter::draw(float dt)
 			shader->set_vec4("v4_color", vec4(particle->color, particle->life));
 			shader->set_bool("boolean_hide", particle->hidden);
 
-			glDrawElements(drawMode_, GLManager::quadIndicesSize_, GL_UNSIGNED_INT, nullptr);
+			glDrawElements(drawMode_, GraphicSystem::quadIndicesSize_, GL_UNSIGNED_INT, nullptr);
 		}
 
 		glBindTexture(GL_TEXTURE_2D, 0);

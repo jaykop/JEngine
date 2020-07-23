@@ -13,10 +13,10 @@ Contains the methods of SceneManager class
 #include <SDL.h>
 #include <scene_manager.hpp>
 #include <scene.hpp>
-#include <gl_manager.hpp>
 #include <input_handler.hpp>
 #include <timer.hpp>
 #include <debug_tools.hpp>
+#include <application.hpp>
 
 jeBegin
 
@@ -59,7 +59,7 @@ void SceneManager::update(SDL_Event* event)
 		if (SDL_PollEvent(event))
 		{
 			InputHandler::update(*event);
-			GLManager::update(window_, *event);
+			Application::event_update();
 		}
 
 		elapsedTime = timer_.get_elapsed_time(); // get elapsed time

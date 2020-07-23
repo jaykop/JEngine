@@ -7,9 +7,6 @@
     <ClCompile Include="..\src\component_manager.cpp">
       <Filter>core\component</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\gl_manager.cpp">
-      <Filter>core\opengl</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\object.cpp">
       <Filter>core\object</Filter>
     </ClCompile>
@@ -156,9 +153,6 @@
     </ClInclude>
     <ClInclude Include="..\include\JEngine\component_manager.hpp">
       <Filter>core\component</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\JEngine\gl_manager.hpp">
-      <Filter>core\opengl</Filter>
     </ClInclude>
     <ClInclude Include="..\include\JEngine\object_manager.hpp">
       <Filter>core\object</Filter>

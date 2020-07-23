@@ -40,10 +40,15 @@ class GraphicSystem {
 	friend class Text;
 	friend class Emitter;
 	friend class DebugRenderer;
+	friend class Application;
 
 	using Renderers = std::vector<Renderer*>;
 	using Cameras = std::vector<Camera*>;
 	using Lights = std::vector<Light*>;
+	using Shaders = std::vector<Shader*>;
+
+	// enum class Target { SCREEN, TEXT, END };
+	enum Pipeline { SPRITE, TEXT, PARTICLE, MODEL, LIGHT, DEBUG, GRID, SCREEN, END };
 
 	struct Grid
 	{
@@ -59,6 +64,8 @@ class GraphicSystem {
 
 public:
 
+	static float get_width();
+	static float get_height();
 	static void set_camera(Camera* camera);
 	static Camera* get_camera();
 
@@ -66,6 +73,9 @@ public:
 	static vec4 backgroundColor, screenColor;
 
 private:
+
+	static void initialize_graphics();
+	static void close_graphics();
 
 	static void initialize();
 	static void update(float dt);
@@ -86,10 +96,18 @@ private:
 	static void pause();
 	static void resume();
 
+	static vec3 resScaler_;
 	static Camera* mainCamera_;
-	static Renderers renderers_;
-	static Cameras cameras_;
+
+	static float width_, height_;
+	static int widthStart_, heightStart_;
+	static unsigned quadVao_, quadVbo_, quadEbo_,
+		drVao_, drVbo_,	quadIndicesSize_, gridVerticeSize_;
+
 	static Lights lights_;
+	static Shaders shader_;
+	static Cameras cameras_;
+	static Renderers renderers_;
 
 	struct Graphic
 	{

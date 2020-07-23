@@ -25,7 +25,9 @@ class Application {
 	Application() = delete;
 	~Application() = delete;
 
-	jePreventClone(Application)
+	jePreventClone(Application);
+
+	friend class SceneManager;
 
 	// application data structure
 	struct AppData {
@@ -47,8 +49,6 @@ public:
 	static SDL_Window* get_window();
 	static AppData get_appdata();
 
-	static void set_screensize(int w, int h);
-	static void set_title(const char* title);
 	static void set_fullscreen(bool isFullScreen);
 	static void hide_cursor(bool hide);
 	static void activate_vsync(bool on);
@@ -58,6 +58,9 @@ private:
 	static bool initialize();
 	static void update();
 	static void close();
+
+	static void gl_initialize();
+	static void event_update();
 
 	// Private variables
 	static AppData data_;

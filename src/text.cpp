@@ -2,7 +2,6 @@
 #include <transform.hpp>
 #include <graphic_system.hpp>
 #include <shader.hpp>
-#include <gl_manager.hpp>
 #include <camera.hpp>
 #include <asset_manager.hpp>
 
@@ -77,7 +76,7 @@ void Text::draw(float /*dt*/)
 
 		Camera* camera = GraphicSystem::get_camera();
 
-		Shader* shader = GLManager::shader_[GLManager::TEXT];
+		Shader* shader = GraphicSystem::shader_[GraphicSystem::TEXT];
 		shader->use();
 
 		//shader->set_matrix("m4_translate", mat4::translate(transform_->position));
@@ -103,9 +102,9 @@ void Text::draw(float /*dt*/)
 		case ProjectType::ORTHOGONAL:
 		default:
 		{
-			float right_ = GLManager::get_width() * GLManager::resScaler_.x;
+			float right_ = GraphicSystem::width_ * GraphicSystem::resScaler_.x;
 			float left_ = -right_;
-			float top_ = GLManager::get_height() * GLManager::resScaler_.y;
+			float top_ = GraphicSystem::height_ * GraphicSystem::resScaler_.y;
 			float bottom_ = -top_;
 
 			mat4 orthogonal = mat4::orthogonal(left_, right_, bottom_, top_, camera->near_, camera->far_);
@@ -177,7 +176,7 @@ void Text::render_character(unsigned long key, float& newX, float intervalY)
 
 	newX += (character.advance >> characterShift) * scale.x;
 
-	Shader* shader = GLManager::shader_[GLManager::TEXT];
+	Shader* shader = GraphicSystem::shader_[GraphicSystem::TEXT];
 	shader->set_matrix("m4_translate", mat4::translate(position));
 
 	GLfloat width = character.size.x;

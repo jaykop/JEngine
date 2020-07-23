@@ -2,7 +2,6 @@
 #include <mesh.hpp>
 #include <shader.hpp>
 #include <transform.hpp>
-#include <gl_manager.hpp>
 #include <camera.hpp>
 #include <renderer.hpp>
 
@@ -44,7 +43,7 @@ void DebugRenderer::load(const rapidjson::Value& /*data*/) {
 void DebugRenderer::draw(float /*dt*/)
 {
 	Camera* camera = GraphicSystem::get_camera();
-	Shader* shader = GLManager::shader_[GLManager::DEBUG];
+	Shader* shader = GraphicSystem::shader_[GraphicSystem::DEBUG];
 	shader->use();
 
 	shader->set_matrix("m4_translate", mat4::translate(transform_->position));
@@ -71,9 +70,9 @@ void DebugRenderer::draw(float /*dt*/)
 	case ProjectType::ORTHOGONAL:
 	default:
 	{
-		float right_ = GLManager::get_width() * GLManager::resScaler_.x;
+		float right_ = GraphicSystem::width_ * GraphicSystem::resScaler_.x;
 		float left_ = -right_;
-		float top_ = GLManager::get_height() * GLManager::resScaler_.y;
+		float top_ = GraphicSystem::height_ * GraphicSystem::resScaler_.y;
 		float bottom_ = -top_;
 
 		mat4 orthogonal = mat4::orthogonal(left_, right_, bottom_, top_, camera->near_, camera->far_);
@@ -105,8 +104,8 @@ void DebugRenderer::draw(float /*dt*/)
 
 	if (!vertices_.empty()) {
 
-		glBindVertexArray(GLManager::drVao_);
-		glBindBuffer(GL_ARRAY_BUFFER, GLManager::drVbo_);
+		glBindVertexArray(GraphicSystem::drVao_);
+		glBindBuffer(GL_ARRAY_BUFFER, GraphicSystem::drVbo_);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * vertices_.size(), &vertices_[0], GL_DYNAMIC_DRAW);
 		glDrawArrays(GL_LINES, 0, GLsizei(vertices_.size()));
 		glBindBuffer(GL_ARRAY_BUFFER, 0);

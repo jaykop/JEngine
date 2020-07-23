@@ -1,4 +1,5 @@
-#include <gl_manager.hpp>
+#include <glew.h>
+#define GLEW_STATIC
 #include <application.hpp>
 #include <random.hpp>
 #include <json_parser.hpp>
@@ -7,6 +8,7 @@
 #include <asset_manager.hpp>
 #include <input_handler.hpp>
 #include <SDL_image.h>
+#include <graphic_system.hpp>
 
 jeBegin
 
@@ -19,6 +21,8 @@ SDL_Window* Application::window_ = nullptr;
 SDL_Surface	*Application::surface_ = nullptr, *Application::icon_= nullptr;
 SDL_GLContext Application::context_ = nullptr;
 Application::AppData Application::data_ = { "demo", "resource/ico/main.ico", false, false, 800, 600, 0, 0 };
+
+const vec3 stdResolution(1.f / 800.f, 1.f / 600.f, 1.f);
 
 void Application::run()
 {
@@ -142,15 +146,16 @@ bool Application::initialize()
 	// Fill the surface white
 	SDL_FillRect(surface_, nullptr, SDL_MapRGB(surface_->format, 0xFF, 0xFF, 0xFF));
 
-	AssetManager::load_shaders();
-	GLManager::initialize();
+	gl_initialize();
 
 	// initialize components and assets
+	AssetManager::load_shaders();
 	AssetManager::set_bulit_in_components();
 	AssetManager::load_assets();
 
 	// initialize key map
 	InputHandler::initialize();
+	GraphicSystem::initialize_graphics();
 
 	return true;
 }
@@ -186,7 +191,7 @@ void Application::close()
 
 	InputHandler::close();
 	AssetManager::unload_assets();
-	GLManager::close();
+	GraphicSystem::close_graphics();
 	JsonParser::close();
 }
 
@@ -207,10 +212,10 @@ void Application::set_fullscreen(bool fullscreen)
 		float offset = static_cast<float>(data_.displayHeight) / data_.height;
 		int iWidth = static_cast<int>(offset * static_cast<float>(data_.width));
 
-		GLManager::widthStart_ = data_.displayWidth / 2 - iWidth / 2;
-		GLManager::heightStart_ = 0;
-		GLManager::width_ = static_cast<float>(iWidth);
-		GLManager::height_ = static_cast<float>(data_.displayHeight);
+		GraphicSystem::widthStart_ = data_.displayWidth / 2 - iWidth / 2;
+		GraphicSystem::heightStart_ = 0;
+		GraphicSystem::width_ = static_cast<float>(iWidth);
+		GraphicSystem::height_ = static_cast<float>(data_.displayHeight);
 
 	}
 
@@ -221,10 +226,10 @@ void Application::set_fullscreen(bool fullscreen)
 			data_.displayHeight / 2 - data_.height / 2);
 		SDL_SetWindowSize(window_, data_.width, data_.height);
 
-		GLManager::width_ = static_cast<float>(data_.width);
-		GLManager::height_ = static_cast<float>(data_.height);
+		GraphicSystem::width_ = static_cast<float>(data_.width);
+		GraphicSystem::height_ = static_cast<float>(data_.height);
 
-		GLManager::widthStart_ = GLManager::heightStart_ = 0;
+		GraphicSystem::widthStart_ = GraphicSystem::heightStart_ = 0;
 	}
 
 	data_.isFullscreen = fullscreen;
@@ -236,6 +241,99 @@ void Application::hide_cursor(bool hide)
 	SDL_bool enable = hide ? SDL_FALSE : SDL_TRUE;
 	// SDL_SetRelativeMouseMode(enable);
 	SDL_ShowCursor(enable);
+}
+
+void Application::event_update()
+{
+	switch (event_.type)
+	{
+	case SDL_WINDOWEVENT_RESIZED:
+	{
+		//int w, h;
+
+		//SDL_GetWindowSize(window, &w, &h);
+		//auto& appData = Application::get_appdata();
+
+		//appData.width = w;
+		//appData.width = h;
+
+		//if (appData.isFullscreen)
+		//{
+		//	GLManager::widthStart_ = appData.displayWidth / 2 - appData.width / 2;
+		//	GLManager::heightStart_ = appData.displayHeight / 2 - appData.height / 2;
+		//}
+
+		//else
+		//{
+		//	GLManager::widthStart_ = GLManager::heightStart_ = 0;
+		//}
+
+		//// Update the projection size by window screen size
+		//width_ = float(w), height_ = float(h);
+		//vec3 windowSize(width_, height_, 1.f);
+		//resScaler_ = windowSize * stdResolution;
+		//resScaler_.set(0.5f / resScaler_.x, 0.5f / resScaler_.y, 1.f);
+
+		break;
+	}
+	case SDL_WINDOWEVENT_CLOSE:
+	{
+		// TODO
+		break;
+	}
+	case SDL_WINDOWEVENT_MOVED:
+	{
+		// SDL_GetWindowPosition(window_, &widthStart_, &heightStart_);
+
+		break;
+	}
+	}
+
+	vec3 windowSize(static_cast<float>(Application::get_appdata().width),
+		static_cast<float>(Application::get_appdata().height), 1.f);
+	GraphicSystem::resScaler_ = windowSize * stdResolution;
+	GraphicSystem::resScaler_.set(0.5f / GraphicSystem::resScaler_.x, 
+		0.5f / GraphicSystem::resScaler_.y, 1.f);
+}
+
+void Application::gl_initialize()
+{
+	// force GLEW to use a modern OpenGL method
+	glewExperimental = GL_TRUE;
+
+	// before using shader, initialize glew.
+#if defined(_DEBUG)
+	DEBUG_ASSERT(glewInit() == GLEW_OK, "Failed to initialize GLEW");
+#else
+	glewInit();
+#endif
+
+	GLuint buffer; 
+	glGenBuffers(1, &buffer);
+
+	// todo:
+	glDeleteBuffers(1, &buffer);
+
+	// show GL version info
+	const GLubyte* renderer = glGetString(GL_RENDERER);
+	const GLubyte* vendor = glGetString(GL_VENDOR);
+	const GLubyte* version = glGetString(GL_VERSION);
+	const GLubyte* glslVersion = glGetString(GL_SHADING_LANGUAGE_VERSION);
+
+	GLint buffers, samples, attributes;
+
+	glGetIntegerv(GL_SAMPLE_BUFFERS, &buffers);
+	glGetIntegerv(GL_SAMPLES, &samples);
+
+	jeDebugPrint("*GLManager - GL Vendor: %s / GL Renderer: %s\n", vendor, renderer);
+	jeDebugPrint("*GLManager - GL Version: %s\n", version);
+	jeDebugPrint("*GLManager - GLSL Version: %s\n", glslVersion);
+	jeDebugPrint("*GLManager - GL Samples: %d / GL Sample Buffers: %d\n", samples, buffers);
+
+	// show how many attributes are available
+	glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &attributes);
+	jeDebugPrint("*GLManager - Maximum number of vertex attributes supported: %d\n", attributes);
+
 }
 
 jeEnd

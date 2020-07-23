@@ -1,6 +1,5 @@
 #include <assimpModel.hpp>
 #include <shader.hpp>
-#include <gl_manager.hpp>
 #include <shader.hpp>
 #include <camera.hpp>
 #include <transform.hpp>
@@ -24,7 +23,7 @@ assimpMesh::assimpMesh(std::vector<Vertex> vertices, std::vector<unsigned int> i
 void assimpMesh::Draw()
 {
     Camera* camera = GraphicSystem::get_camera();
-    Shader* shader = GLManager::shader_[GLManager::MODEL];
+    Shader* shader = GraphicSystem::shader_[GraphicSystem::MODEL];
     shader->use();
 
     shader->set_matrix("m4_translate", mat4::translate(vec3::zero));

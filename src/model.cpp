@@ -4,7 +4,6 @@
 #include <shader.hpp>
 #include <asset_manager.hpp>
 #include <graphic_system.hpp>
-#include <gl_manager.hpp>
 #include <camera.hpp>
 
 jeBegin
@@ -68,7 +67,7 @@ void Model::draw(float /*dt*/)
 {
 	Camera* camera = GraphicSystem::get_camera();
 	// Shader* shader = GLManager::shader_[GLManager::SPRITE];
-	Shader* shader = GLManager::shader_[GLManager::MODEL];
+	Shader* shader = GraphicSystem::shader_[GraphicSystem::MODEL];
 	shader->use();
 
 	shader->set_matrix("m4_translate", mat4::translate(transform_->position));
@@ -95,9 +94,9 @@ void Model::draw(float /*dt*/)
 	case ProjectType::ORTHOGONAL:
 	default:
 	{
-		float right_ = GLManager::get_width() * GLManager::resScaler_.x;
+		float right_ = GraphicSystem::width_ * GraphicSystem::resScaler_.x;
 		float left_ = -right_;
-		float top_ = GLManager::get_height() * GLManager::resScaler_.y;
+		float top_ = GraphicSystem::height_ * GraphicSystem::resScaler_.y;
 		float bottom_ = -top_;
 
 		mat4 orthogonal = mat4::orthogonal(left_, right_, bottom_, top_, camera->near_, camera->far_);
@@ -159,7 +158,7 @@ void Model::draw_normals()
 		|| renderFaceNormals_) {
 
 		// Shader* shader = GLManager::shader_[GLManager::SPRITE];
-		Shader* shader = GLManager::shader_[GLManager::MODEL];
+		Shader* shader = GraphicSystem::shader_[GraphicSystem::MODEL];
 		shader->use();
 
 		for (const auto& m : meshes_) {
