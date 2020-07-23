@@ -321,7 +321,7 @@ void GraphicSystem::initialize_graphics()
 	Shader::vsDirectory_.clear();
 	Shader::fsDirectory_.clear();
 
-	jeDebugPrint("*GLManager - Compiled and linked shaders.\n");
+	jeDebugPrint("*Compiled and linked shaders.\n");
 
 	// init buffers
 	/**************************** QUAD BUFFER ******************************/

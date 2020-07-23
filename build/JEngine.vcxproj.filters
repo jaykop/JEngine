@@ -70,9 +70,6 @@
     <ClCompile Include="..\src\physics_system.cpp">
       <Filter>system\physics</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\shader.cpp">
-      <Filter>core\opengl</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\application.cpp">
       <Filter>core\app</Filter>
     </ClCompile>
@@ -121,9 +118,6 @@
     <ClCompile Include="..\src\audio.cpp">
       <Filter>system\sound</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\sound_manager.cpp">
-      <Filter>core\fmod</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\mesh.cpp">
       <Filter>system\graphics</Filter>
     </ClCompile>
@@ -135,6 +129,9 @@
     </ClCompile>
     <ClCompile Include="..\src\assimpModel.cpp">
       <Filter>core\asset</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\shader.cpp">
+      <Filter>system\graphics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -220,9 +217,6 @@
     <ClInclude Include="..\include\JEngine\physics_system.hpp">
       <Filter>system\physics</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\JEngine\shader.hpp">
-      <Filter>core\opengl</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\JEngine\transform.hpp">
       <Filter>system</Filter>
     </ClInclude>
@@ -274,9 +268,6 @@
     <ClInclude Include="..\include\JEngine\audio.hpp">
       <Filter>system\sound</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\JEngine\sound_manager.hpp">
-      <Filter>core\fmod</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\JEngine\vertex.hpp">
       <Filter>system\graphics</Filter>
     </ClInclude>
@@ -306,6 +297,9 @@
     </ClInclude>
     <ClInclude Include="..\include\JEngine\assimpModel.hpp">
       <Filter>core\asset</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\JEngine\shader.hpp">
+      <Filter>system\graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -337,9 +331,6 @@
     </Filter>
     <Filter Include="core\component">
       <UniqueIdentifier>{2460f6e4-70cf-448d-a5d3-d8c097d42b99}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="core\opengl">
-      <UniqueIdentifier>{31613505-fdba-4d93-bd2a-3c819746390a}</UniqueIdentifier>
     </Filter>
     <Filter Include="core\object">
       <UniqueIdentifier>{f79c0a07-0a96-4a30-9a72-26ca130a1da1}</UniqueIdentifier>
@@ -379,9 +370,6 @@
     </Filter>
     <Filter Include="system\sound">
       <UniqueIdentifier>{340b4a86-cf49-4e83-a96e-33e155d85e22}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="core\fmod">
-      <UniqueIdentifier>{8254de40-1274-4943-9c22-7d055d05f5f7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -11,8 +11,8 @@ All codes are written by Jaykop Jeong...
 /******************************************************************************/
 
 #include <audio.hpp>
-#include <sound_manager.hpp>
 #include <fmod.hpp>
+#include <sound_system.hpp>
 
 jeBegin
 
@@ -23,7 +23,7 @@ jeBegin
 */
 /******************************************************************************/
 Audio::Audio(Object* owner)
-	: Component(owner), system_(SoundManager::system_), channel_(nullptr), sound_(nullptr),
+	: Component(owner), system_(SoundSystem::system_), channel_(nullptr), sound_(nullptr),
 	volume_(0.5f), pause_(false), play_(false)
 {
 

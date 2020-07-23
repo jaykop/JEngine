@@ -249,31 +249,6 @@ void Application::event_update()
 	{
 	case SDL_WINDOWEVENT_RESIZED:
 	{
-		//int w, h;
-
-		//SDL_GetWindowSize(window, &w, &h);
-		//auto& appData = Application::get_appdata();
-
-		//appData.width = w;
-		//appData.width = h;
-
-		//if (appData.isFullscreen)
-		//{
-		//	GLManager::widthStart_ = appData.displayWidth / 2 - appData.width / 2;
-		//	GLManager::heightStart_ = appData.displayHeight / 2 - appData.height / 2;
-		//}
-
-		//else
-		//{
-		//	GLManager::widthStart_ = GLManager::heightStart_ = 0;
-		//}
-
-		//// Update the projection size by window screen size
-		//width_ = float(w), height_ = float(h);
-		//vec3 windowSize(width_, height_, 1.f);
-		//resScaler_ = windowSize * stdResolution;
-		//resScaler_.set(0.5f / resScaler_.x, 0.5f / resScaler_.y, 1.f);
-
 		break;
 	}
 	case SDL_WINDOWEVENT_CLOSE:
@@ -283,8 +258,6 @@ void Application::event_update()
 	}
 	case SDL_WINDOWEVENT_MOVED:
 	{
-		// SDL_GetWindowPosition(window_, &widthStart_, &heightStart_);
-
 		break;
 	}
 	}
@@ -325,14 +298,14 @@ void Application::gl_initialize()
 	glGetIntegerv(GL_SAMPLE_BUFFERS, &buffers);
 	glGetIntegerv(GL_SAMPLES, &samples);
 
-	jeDebugPrint("*GLManager - GL Vendor: %s / GL Renderer: %s\n", vendor, renderer);
-	jeDebugPrint("*GLManager - GL Version: %s\n", version);
-	jeDebugPrint("*GLManager - GLSL Version: %s\n", glslVersion);
-	jeDebugPrint("*GLManager - GL Samples: %d / GL Sample Buffers: %d\n", samples, buffers);
+	jeDebugPrint("*GL Vendor: %s / GL Renderer: %s\n", vendor, renderer);
+	jeDebugPrint("*GL Version: %s\n", version);
+	jeDebugPrint("*GLSL Version: %s\n", glslVersion);
+	jeDebugPrint("*GL Samples: %d / GL Sample Buffers: %d\n", samples, buffers);
 
 	// show how many attributes are available
 	glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &attributes);
-	jeDebugPrint("*GLManager - Maximum number of vertex attributes supported: %d\n", attributes);
+	jeDebugPrint("*Maximum number of vertex attributes supported: %d\n", attributes);
 
 }
 

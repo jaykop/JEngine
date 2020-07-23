@@ -1,4 +1,3 @@
-#include "gl_manager.hpp"
 #include "transform.hpp"
 #include "camera.hpp"
 #include "camera_controller.h"

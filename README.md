@@ -3,8 +3,6 @@
 =================================
 
 **Next goals** - 2D  
-*unit scale/position of assimp component
-*integrate applications / app / fmod / gl
 *light  
 *FMOD Lib  
 *polish grid  

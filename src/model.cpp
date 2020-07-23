@@ -66,7 +66,6 @@ void Model::set_draw_mode(unsigned mode)
 void Model::draw(float /*dt*/)
 {
 	Camera* camera = GraphicSystem::get_camera();
-	// Shader* shader = GLManager::shader_[GLManager::SPRITE];
 	Shader* shader = GraphicSystem::shader_[GraphicSystem::MODEL];
 	shader->use();
 
@@ -154,10 +153,8 @@ void Model::draw(float /*dt*/)
 void Model::draw_normals()
 {
 	// Rendering normals
-	if (renderVertexNormals_
-		|| renderFaceNormals_) {
+	if (renderVertexNormals_ || renderFaceNormals_) {
 
-		// Shader* shader = GLManager::shader_[GLManager::SPRITE];
 		Shader* shader = GraphicSystem::shader_[GraphicSystem::MODEL];
 		shader->use();
 

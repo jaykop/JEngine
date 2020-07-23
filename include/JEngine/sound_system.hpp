@@ -31,6 +31,7 @@ class SoundSystem {
 	jePreventClone(SoundSystem)
 
 	friend class Scene;
+	friend class Audio;
 
 public:
 
@@ -41,6 +42,9 @@ private:
 	static void initialize();
 	static void update(float dt);
 	static void close();
+
+	static void init_fmod();
+	static void close_fmod();
 
 	static FMOD::System* system_;
 	static FMOD::Channel* channel_;
