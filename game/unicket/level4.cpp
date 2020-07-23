@@ -57,11 +57,11 @@ void Level4::init_models()
 	trans1->scale.set(1.f, 1.f, 1.f);
 	register_object(model1);
 
-	model2 = ObjectManager::create_object("sphere");
+	model2 = ObjectManager::create_object("whale");
 	model2->add_component<Model>();
 	auto* md2 = model2->get_component<Model>();
 	auto* trans2 = model2->get_component<Transform>();
-	md2->set_meshes(AssetManager::get_meshes("sphere"));
+	md2->set_meshes(AssetManager::get_meshes("whale"));
 	trans2->position.set(-5.f, 0.f, -10.f);
 	trans2->scale.set(1.f, 1.f, 1.f);
 	register_object(model2);

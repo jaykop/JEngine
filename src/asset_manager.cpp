@@ -216,6 +216,7 @@ void AssetManager::load_texture(const char* path, const char* textureKey, Textur
 
 		tMap->insert(TextureMap::value_type(
 			textureKey, image.handle));
+		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 }
 
@@ -320,9 +321,8 @@ void AssetManager::load_characters(Font* font, float& newLineLevel,
 		if (newLineLevel < character.size.y)
 			newLineLevel = character.size.y;
 		font->data.insert(Font::FontData::value_type(c, character));
+		glBindTexture(GL_TEXTURE_2D, 0);
 	}
-
-	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 bool AssetManager::load_obj(const std::string& path, const char* meshKey, MeshMap* mMap)
@@ -732,8 +732,8 @@ unsigned int TextureFromFile(const char* path, const std::string& directory)
 		switch (nrComponents)
 		{
 		case 1: format = GL_RED; break;
-		case 2: format = GL_RGB; break;
-		case 3:
+		case 3: format = GL_RGB; break;
+		case 4:
 		default:
 			format = GL_RGBA;
 			break;
@@ -756,6 +756,7 @@ unsigned int TextureFromFile(const char* path, const std::string& directory)
 		stbi_image_free(data);
 	}
 
+	glBindTexture(GL_TEXTURE_2D, 0);
 	return textureID;
 }
 

@@ -26,7 +26,7 @@ private:
     
     std::vector<Vertex> vertices_;
     std::vector<unsigned int> indices_;
-    std::vector<Texture> textures_;
+    std::vector<Texture> textures_, texturesLoaded;
 
     unsigned int vao_, vbo_, ebo_, defaultTexture_;
 

@@ -68,8 +68,8 @@ void Mesh::draw(Shader* shader)
     glDrawElements(GL_TRIANGLES, indices_.size(), GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
 
-    // always good practice to set everything back to defaults once configured.
     glActiveTexture(GL_TEXTURE0);
+    // glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void Mesh::setup_mesh()
