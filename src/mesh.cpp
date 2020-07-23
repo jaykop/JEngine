@@ -1,6 +1,7 @@
 #include <mesh.hpp>
 #include <shader.hpp>
 #include <graphic_system.hpp>
+#include <asset_manager.hpp>
 
 #include <vec3.hpp>
 #include <vec2.hpp>
@@ -9,11 +10,17 @@
 jeBegin
 
 // constructor
-Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures)
+Mesh::Mesh(const std::vector<Vertex>& vertices,
+    const std::vector<unsigned int>& indices, const std::vector<Texture>& textures)
+    : vao_(0), vbo_(0), ebo_(0), defaultTexture_(0)
 {
     vertices_ = vertices;
     indices_ = indices;
     textures_ = textures;
+
+    // set default texture
+    if (textures_.empty())
+        defaultTexture_ = AssetManager::get_texture("rect");
 
     // now that we have all the required data, set the vertex buffers and its attribute pointers.
     setup_mesh();
@@ -32,6 +39,10 @@ void Mesh::draw(Shader* shader)
     unsigned int specularNr = 1;
     unsigned int normalNr = 1;
     unsigned int heightNr = 1;
+
+    if (defaultTexture_)
+        glBindTexture(GL_TEXTURE_2D, defaultTexture_);
+
     for (unsigned int i = 0; i < textures_.size(); i++)
     {
         glActiveTexture(GL_TEXTURE0 + i); // active proper texture unit before binding
@@ -50,9 +61,8 @@ void Mesh::draw(Shader* shader)
         // now set the sampler to the correct texture unit
         shader->set_uint((name + number).c_str(), i);
         // and finally bind the texture
-        glBindTexture(GL_TEXTURE_2D, textures_[i].id);
     }
-
+    
     // draw mesh
     glBindVertexArray(vao_);
     glDrawElements(GL_TRIANGLES, indices_.size(), GL_UNSIGNED_INT, 0);

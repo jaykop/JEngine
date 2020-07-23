@@ -13,7 +13,10 @@ class Mesh {
 
 public:
 
-    Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures);
+    Mesh(const std::vector<Vertex>& vertices, 
+        const std::vector<unsigned int>& indices, 
+        const std::vector<Texture>& textures);
+    ~Mesh() {};
 
     unsigned get_indices_count() const;
 
@@ -25,7 +28,7 @@ private:
     std::vector<unsigned int> indices_;
     std::vector<Texture> textures_;
 
-    unsigned int vao_, vbo_, ebo_;
+    unsigned int vao_, vbo_, ebo_, defaultTexture_;
 
     void setup_mesh();
 };

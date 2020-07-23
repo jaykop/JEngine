@@ -11,7 +11,7 @@ jeBegin
 void Level4::initialize()
 {
 	init_basic();
-	// init_models();
+	init_models();
 
 	// base init
 	Scene::initialize();
@@ -50,11 +50,23 @@ void Level4::init_models()
 {
 	model1 = ObjectManager::create_object("cube");
 	model1->add_component<Model>();
-	auto* md = model1->get_component<Model>();
-	md->set_meshes(AssetManager::get_meshes("cube"));
-	// md->set_draw_mode(GL_TRIANGLES);
+	auto* md1 = model1->get_component<Model>();
+	auto* trans1 = model1->get_component<Transform>();
+	md1->set_meshes(AssetManager::get_meshes("cube"));
+	trans1->position.set(5.f, 0.f, -10.f);
+	trans1->scale.set(1.f, 1.f, 1.f);
 	register_object(model1);
-	// model2 = ObjectManager::create_object("sphere");
+
+	model2 = ObjectManager::create_object("sphere");
+	model2->add_component<Model>();
+	auto* md2 = model2->get_component<Model>();
+	auto* trans2 = model2->get_component<Transform>();
+	md2->set_meshes(AssetManager::get_meshes("sphere"));
+	trans2->position.set(-5.f, 0.f, -10.f);
+	trans2->scale.set(1.f, 1.f, 1.f);
+	register_object(model2);
+
+
 }
 
 jeEnd

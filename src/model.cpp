@@ -52,9 +52,9 @@ void Model::draw(float /*dt*/)
     Shader* shader = GraphicSystem::shader_[GraphicSystem::MODEL];
     shader->use();
 
-    shader->set_matrix("m4_translate", mat4::translate(vec3::zero));
-    shader->set_matrix("m4_scale", mat4::scale(vec3::one * 10));
-    shader->set_matrix("m4_rotate", mat4::identity);
+    shader->set_matrix("m4_translate", mat4::translate(transform_->position));
+    shader->set_matrix("m4_scale", mat4::scale(transform_->scale));
+    shader->set_matrix("m4_rotate", transform_->orientation.to_mat4());
     shader->set_vec3("v3_cameraPosition", camera->position);
     shader->set_bool("boolean_bilboard", (status & IS_BILBOARD) == IS_BILBOARD);
     shader->set_vec4("v4_color", color);
