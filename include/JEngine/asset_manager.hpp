@@ -13,6 +13,7 @@ Contains the definition of asset_manager class
 #pragma once
 #include <vec3.hpp>
 #include <assets.hpp>
+#include <scene.h> // assimp
 
 jeBegin
 
@@ -42,7 +43,7 @@ public:
 	static FMOD::Sound* get_audio(const char* key);
 	static unsigned	get_texture(const char* key);
 	static Archetype* get_archetype(const char* key);
-	static Mesh* get_mesh(const char* name);
+	static const std::vector<Mesh*>& get_meshes(const char* key);
 
 private:
 
@@ -51,14 +52,13 @@ private:
 	static void unload_assets();
 
 	// asset loaders
+	static void load_shaders();
 	static void load_audio(const char* path, const char* audioKey, 
 		AudioMap* aMap = &audioMap_);
 	static void load_archetype(const char* path, const char* archetypeKey,
 		ArchetypeMap* atMap = &archetypeMap_);
 	static void load_texture(const char* path, const char* textureKey, 
 		TextureMap* tMap = &textureMap_);
-
-	static void load_shaders();
 
 	// font loader
 	static void load_font(const char* path, const char* audioKey, unsigned size,
@@ -67,16 +67,13 @@ private:
 	static void load_characters(Font* font, float& newLineLevel, unsigned long start, unsigned long end);
 
 	// obj loader
-	static bool load_obj(const char* path, const char* meshKey,
+	static bool load_obj(const std::string& path, const char* meshKey,
 		MeshMap* mMap = &meshMap_);
-	static void initialize_mesh_buffer(Mesh* mesh);
-	static void clear_meshes();
-	static void parse(const std::string& data, Mesh** mesh);
-	static void read_vertex(const std::string& file_data, unsigned pos, std::vector<vec3>& points, vec3& maxPoint, vec3& minPoint);
-	static void read_face(const std::string& file_data, unsigned pos, std::vector<unsigned>& indice, unsigned vertice_size);
-	static unsigned read_index(const char* data, unsigned vertice_size);
-	static unsigned get_next_elements(const std::string& file_data, unsigned pos);
-
+	static void load_model(const std::string& path);
+	static void process_node(aiNode* node, const aiScene* scene, std::vector<Mesh*>& meshes, const std::string& directory, std::vector<Texture>& texturesLoaded);
+	static Mesh* process_mesh(aiMesh* mesh, const aiScene* scene, const std::string& directory, std::vector<Texture>& texturesLoaded);
+	static std::vector<Texture> load_material_textures(aiMaterial* mat, aiTextureType type, const std::string& typeName, const std::string directory, std::vector<Texture>& texturesLoaded);
+	
 	static MeshMap meshMap_;
 	static FontMap fontMap_;
 	static AudioMap	audioMap_;

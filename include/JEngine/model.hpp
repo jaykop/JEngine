@@ -1,53 +1,35 @@
 #pragma once
-#include <vector>
-#include <string>
+#include <assets.hpp>
 #include <renderer.hpp>
+#include <vec4.hpp>
 
 jeBegin
 
 class Mesh;
-
 class Model : public Renderer
 {
-	jeBaseFriends(Model);
-	friend class GraphicSystem;
-	using Meshes = std::vector<Mesh*>;
-
 public:
 
-	Model(Object* owner);
-	virtual ~Model();
+    bool gammaCorrection;
 
-	void add_mesh(Mesh* mesh);
-	const Meshes& get_meshes(void) const;
+    Model(Object* owner);
+    virtual ~Model();
 
-	void set_draw_mode(unsigned mode);
-	void draw(float dt) override;
-	void draw_normals();
-	void draw_debug_info();
+    void set_meshes(std::vector<Mesh*> meshes);
 
-private:
-
-	bool renderBoundary_, 
-		renderFaceNormals_, 
-		renderVertexNormals_;
-	bool h_;
-	Meshes meshes_;
-
-	//AABB aabb_;
-	//OBB obb_;
-	//BoundingEllipsoid ellipse_;
-	//BoundingSphere sphere_;
-
-	// private methods
-	// void GenerateBV(void);
+    vec4 color;
 
 protected:
 
-	virtual void add_to_system();
-	virtual void remove_from_system();
-	virtual void load(const rapidjson::Value& data);
+    void add_to_system();
+    void remove_from_system();
+    void load(const rapidjson::Value& /*data*/);
 
+private:
+
+    void draw(float dt) override;
+
+    std::vector<Mesh*> meshes_;
 };
 
 jeDeclareComponentBuilder(Model);

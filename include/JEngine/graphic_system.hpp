@@ -20,7 +20,6 @@ Contains the definition of GraphicSystem class
 jeBegin
 
 class Renderer;
-class Camera;
 class GraphicSystem {
 
 	// Prevent to clone this class
@@ -28,9 +27,6 @@ class GraphicSystem {
 	~GraphicSystem() = delete;
 
 	jePreventClone(GraphicSystem);
-
-	// todo
-	friend class assimpMesh;
 
 	friend class Scene;
 	friend class Camera;

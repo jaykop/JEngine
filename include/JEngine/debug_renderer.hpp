@@ -28,8 +28,6 @@ public:
 
 	DebugRenderer(Object* owner);
 	virtual ~DebugRenderer(void);
-
-	void draw(float dt) override; 
 	
 	// bool inside(const vec3& point);
 
@@ -42,6 +40,8 @@ protected:
 	void add_to_system() override;
 	void remove_from_system() override;
 	void load(const rapidjson::Value& data) override;
+
+	void draw(float dt) override;
 
 private:
 

@@ -17,8 +17,6 @@ public:
 	Sprite(Object* owner);
 	virtual ~Sprite();
 
-	void draw(float dt) override;
-
 	void set_texture(unsigned texture);
 	unsigned get_texture() const;
 
@@ -31,6 +29,8 @@ protected:
 	virtual void add_to_system();
 	virtual void remove_from_system();
 	virtual void load(const rapidjson::Value& data);
+
+	void draw(float dt) override;
 
 private:
 

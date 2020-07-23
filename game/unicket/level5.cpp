@@ -4,7 +4,7 @@
 #include "pch.h"
 #include "model.hpp"
 #include "mesh.hpp"
-#include "assimpModel.hpp"
+#include "model.hpp"
 
 jeBegin
 

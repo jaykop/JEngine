@@ -38,9 +38,6 @@ public:
 	Text(Object* owner);
 	virtual ~Text();
 
-	void draw(float dt) override;
-	void render_character(unsigned long key, float& newX, float intervalY);
-
 	void set_text(const wchar_t* pText, ...);
 	const std::wstring& get_text() const;
 
@@ -55,7 +52,11 @@ protected:
 	virtual void remove_from_system();
 	virtual void load(const rapidjson::Value& data);
 
+	void draw(float dt) override;
+
 private:
+
+	void render_character(unsigned long key, float& newX, float intervalY);
 
 	unsigned vao_, vbo_, ebo_;
 	Font* font_ = nullptr;

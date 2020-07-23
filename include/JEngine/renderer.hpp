@@ -32,8 +32,6 @@ public:
 	virtual ~Renderer() {};
 
 	// public methods
-	virtual void draw(float dt) = 0;
-
 	static void draw_lighting_effect(Light* light);
 	
 	bool picked() const;
@@ -45,6 +43,7 @@ protected:
 	virtual void remove_from_system() = 0;
 	virtual void load(const rapidjson::Value& data) = 0;
 
+	virtual void draw(float dt) = 0;
 	void set_parent_renderer();
 
 	unsigned drawMode_;

@@ -3,8 +3,6 @@
 
 jeBegin
 
-class assimpModel;
-
 // Generic scene class
 class Level5 : public Scene
 {

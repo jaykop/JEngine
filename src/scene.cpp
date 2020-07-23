@@ -133,14 +133,14 @@ void Scene::unload()
 			glDeleteTextures(1, &tex.second);
 	}
 
-	// clear texture memory
-	for (auto& m : meshes_)
+	// clear model memory
+	for (auto& ms : meshes_)
 	{
-		if (m.second)
-			glDeleteTextures(1, &m.second->texture_);
-
-		delete m.second;
-		m.second = nullptr;
+		for (auto& m : ms.second)
+		{
+			delete m;
+			m = nullptr;
+		}
 	}
 
 	meshes_.clear();

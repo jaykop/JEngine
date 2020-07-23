@@ -61,6 +61,14 @@ void SceneController::update(float /*dt*/)
 			SceneManager::set_next_scene<Level4>();
 	}
 
+	if (InputHandler::key_triggered(KEY::NUM_5))
+	{
+		if (SceneManager::is_paused())
+			SceneManager::resume_and_next<Level5>();
+		else
+			SceneManager::set_next_scene<Level5>();
+	}
+
 	if (InputHandler::key_triggered(KEY::BACK))
 	{
 		if (SceneManager::is_paused())

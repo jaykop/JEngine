@@ -142,7 +142,7 @@ void AssetManager::initialize_mesh_buffer(Mesh* mesh)
 	glBindVertexArray(0);
 }
 
-Mesh* AssetManager::get_mesh(const char* key)
+const std::vector<Mesh*>& AssetManager::get_model(const char* key)
 {
 	auto found = meshMap_.find(key);
 	if (found != meshMap_.end())

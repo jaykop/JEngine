@@ -31,13 +31,6 @@ public:
 	Emitter(Object* owner);
 	virtual ~Emitter();
 
-	void draw(float dt) override;
-
-	void update_particle(Particles& particles, 
-		float dt, unsigned start, unsigned end);
-
-	Particle* generate_particle();
-	void refresh_particle(Particle* pParticle);
 	void refresh_particles();
 
 	void set_size(unsigned size);
@@ -66,7 +59,15 @@ protected:
 	virtual void remove_from_system();
 	virtual void load(const rapidjson::Value& data);
 
+	void draw(float dt) override;
+
 private:
+
+	void update_particle(Particles& particles,
+		float dt, unsigned start, unsigned end);
+
+	Particle* generate_particle();
+	void refresh_particle(Particle* pParticle);
 
 	Particles particles_;
 	vec3 startColor_, endColor_, colorDiff_;

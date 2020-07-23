@@ -24,8 +24,8 @@
     <ClCompile Include="..\src\animation_2d.cpp" />
     <ClCompile Include="..\src\application.cpp" />
     <ClCompile Include="..\src\asset_manager.cpp" />
-    <ClCompile Include="..\src\assimpMesh.cpp" />
-    <ClCompile Include="..\src\assimpModel.cpp" />
+    <ClCompile Include="..\src\mesh.cpp" />
+    <ClCompile Include="..\src\model.cpp" />
     <ClCompile Include="..\src\audio.cpp" />
     <ClCompile Include="..\src\behavior.cpp" />
     <ClCompile Include="..\src\behavior_system.cpp" />
@@ -42,19 +42,6 @@
     <ClCompile Include="..\src\mat3.cpp" />
     <ClCompile Include="..\src\mat4.cpp" />
     <ClCompile Include="..\src\mat4_transform.cpp" />
-    <ClCompile Include="..\src\mesh.cpp" />
-    <ClCompile Include="..\src\model.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\src\obj_loader.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="..\src\quat.cpp" />
     <ClCompile Include="..\src\renderer.cpp" />
     <ClCompile Include="..\src\object.cpp" />
@@ -79,8 +66,8 @@
     <ClInclude Include="..\include\JEngine\application.hpp" />
     <ClInclude Include="..\include\JEngine\assets.hpp" />
     <ClInclude Include="..\include\JEngine\asset_manager.hpp" />
-    <ClInclude Include="..\include\JEngine\assimpMesh.hpp" />
-    <ClInclude Include="..\include\JEngine\assimpModel.hpp" />
+    <ClInclude Include="..\include\JEngine\mesh.hpp" />
+    <ClInclude Include="..\include\JEngine\model.hpp" />
     <ClInclude Include="..\include\JEngine\audio.hpp" />
     <ClInclude Include="..\include\JEngine\behavior.hpp" />
     <ClInclude Include="..\include\JEngine\behavior_system.hpp" />
@@ -107,13 +94,6 @@
     <ClInclude Include="..\include\JEngine\mat3.hpp" />
     <ClInclude Include="..\include\JEngine\mat4.hpp" />
     <ClInclude Include="..\include\JEngine\math_util.hpp" />
-    <ClInclude Include="..\include\JEngine\mesh.hpp" />
-    <ClInclude Include="..\include\JEngine\model.hpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-    </ClInclude>
     <ClInclude Include="..\include\JEngine\quat.hpp" />
     <ClInclude Include="..\include\JEngine\renderer.hpp" />
     <ClInclude Include="..\include\JEngine\object.hpp" />

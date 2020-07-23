@@ -17,8 +17,6 @@ public:
     Light(Object* owner);
     virtual ~Light();
 
-    void draw(float dt) override;
-
     static float constant, linear, quadratic;
     static vec3 kAmbientColor, fogColor;
 
@@ -32,6 +30,8 @@ protected:
     virtual void add_to_system();
     virtual void remove_from_system();
     virtual void load(const rapidjson::Value& data);
+
+    void draw(float dt) override;
 
 private:
 

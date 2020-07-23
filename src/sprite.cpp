@@ -41,7 +41,6 @@ void Sprite::load(const rapidjson::Value& /*data*/) {
 
 }
 
-
 void Sprite::draw(float /*dt*/)
 {
 	Camera* camera = GraphicSystem::get_camera();

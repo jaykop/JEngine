@@ -76,9 +76,6 @@
     <ClCompile Include="..\src\transform.cpp">
       <Filter>system</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\obj_loader.cpp">
-      <Filter>core\asset</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\quat.cpp">
       <Filter>util\math</Filter>
     </ClCompile>
@@ -103,9 +100,6 @@
     <ClCompile Include="..\src\emitter.cpp">
       <Filter>system\graphics</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\model.cpp">
-      <Filter>system\graphics</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\renderer.cpp">
       <Filter>system\graphics</Filter>
     </ClCompile>
@@ -118,19 +112,16 @@
     <ClCompile Include="..\src\audio.cpp">
       <Filter>system\sound</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\mesh.cpp">
-      <Filter>system\graphics</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\light.cpp">
       <Filter>system\graphics</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\assimpMesh.cpp">
-      <Filter>core\asset</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\assimpModel.cpp">
-      <Filter>core\asset</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\shader.cpp">
+      <Filter>system\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\model.cpp">
+      <Filter>system\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\mesh.cpp">
       <Filter>system\graphics</Filter>
     </ClCompile>
   </ItemGroup>
@@ -253,9 +244,6 @@
     <ClInclude Include="..\include\JEngine\emitter.hpp">
       <Filter>system\graphics</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\JEngine\model.hpp">
-      <Filter>system\graphics</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\JEngine\renderer.hpp">
       <Filter>system\graphics</Filter>
     </ClInclude>
@@ -286,19 +274,16 @@
     <ClInclude Include="..\include\JEngine\half_edge_vertex.hpp">
       <Filter>system\graphics</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\JEngine\mesh.hpp">
-      <Filter>system\graphics</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\JEngine\light.hpp">
       <Filter>system\graphics</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\JEngine\assimpMesh.hpp">
-      <Filter>core\asset</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\JEngine\assimpModel.hpp">
-      <Filter>core\asset</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\JEngine\shader.hpp">
+      <Filter>system\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\JEngine\model.hpp">
+      <Filter>system\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\JEngine\mesh.hpp">
       <Filter>system\graphics</Filter>
     </ClInclude>
   </ItemGroup>

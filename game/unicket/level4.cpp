@@ -4,7 +4,7 @@
 #include "pch.h"
 #include "model.hpp"
 #include "mesh.hpp"
-#include "assimpModel.hpp"
+#include "model.hpp"
 
 jeBegin
 
@@ -15,21 +15,16 @@ void Level4::initialize()
 
 	// base init
 	Scene::initialize();
-
-	aModel = new assimpModel("resource/model/Mesh_Orca/Mesh_Orca.obj");
 }
 
 void Level4::update(float dt)
 {
 	// base update
 	Scene::update(dt);
-	aModel->Draw();
 }
 
 void Level4::close()
 {
-	delete aModel;
-
 	// base close
 	Scene::close();
 }
@@ -56,7 +51,7 @@ void Level4::init_models()
 	model1 = ObjectManager::create_object("cube");
 	model1->add_component<Model>();
 	auto* md = model1->get_component<Model>();
-	md->add_mesh(AssetManager::get_mesh("cube"));
+	md->set_meshes(AssetManager::get_meshes("cube"));
 	// md->set_draw_mode(GL_TRIANGLES);
 	register_object(model1);
 	// model2 = ObjectManager::create_object("sphere");

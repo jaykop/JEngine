@@ -13,12 +13,9 @@ class Camera : public Component
 {
 	jeBaseFriends(Camera);
 
-	// todo:
-	friend class assimpMesh;
-
+	friend class Model;
 	friend class Text;
 	friend class Light;
-	friend class Model; 
 	friend class Sprite;
 	friend class Emitter;
 	friend class InputHandler;
