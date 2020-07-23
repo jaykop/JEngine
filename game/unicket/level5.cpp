@@ -1,4 +1,4 @@
-#include "level4.h"
+#include "level5.h"
 #include "scene_controller.h"
 #include "camera_controller.h"
 #include "pch.h"
@@ -8,33 +8,28 @@
 
 jeBegin
 
-void Level4::initialize()
+void Level5::initialize()
 {
 	init_basic();
 	// init_models();
 
 	// base init
 	Scene::initialize();
-
-	aModel = new assimpModel("resource/model/Mesh_Orca/Mesh_Orca.obj");
 }
 
-void Level4::update(float dt)
+void Level5::update(float dt)
 {
 	// base update
 	Scene::update(dt);
-	aModel->Draw();
 }
 
-void Level4::close()
+void Level5::close()
 {
-	delete aModel;
-
 	// base close
 	Scene::close();
 }
 
-void Level4::init_basic()
+void Level5::init_basic()
 {
 	// add camera
 	Object* camera = ObjectManager::create_object("main_camera");
@@ -51,15 +46,9 @@ void Level4::init_basic()
 	register_object(controller);
 }
 
-void Level4::init_models()
+void Level5::init_lights()
 {
-	model1 = ObjectManager::create_object("cube");
-	model1->add_component<Model>();
-	auto* md = model1->get_component<Model>();
-	md->add_mesh(AssetManager::get_mesh("cube"));
-	// md->set_draw_mode(GL_TRIANGLES);
-	register_object(model1);
-	// model2 = ObjectManager::create_object("sphere");
+
 }
 
 jeEnd
