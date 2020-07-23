@@ -3,8 +3,10 @@
 =================================
 
 **Next goals** - 2D  
-*FMOD Lib  
+*unit scale/position of assimp component
+*integrate applications / app / fmod / gl
 *light  
+*FMOD Lib  
 *polish grid  
 *physics + thread  
 *emitter explosion refresh  
@@ -14,11 +16,9 @@
 *Add orbiting camera to camera controller  
 *Rippling effect  
 *Go over ai example and techniques  
-*Import assimp lib  
 *string to string_view  
 
 **Annoying**  
-*integrate applications / app / fmod / gl
 *vector ostream + friend functions  
 *jeDebugPrint / assert / friend / constructor+operator  
 *Clone function - copy and move constructor  
