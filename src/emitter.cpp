@@ -24,7 +24,7 @@ Emitter::Emitter(Object* owner)
 	type(ParticleType::NORMAL), startColor_(vec3::zero), endColor_(vec3::zero), colorDiff_(vec3::zero),
 	deadCount_(0), size_(0), drawMode_(GL_TRIANGLES), texture_(0)
 {
-	status = status & IS_BILBOARD;
+	status |= IS_BILBOARD;
 	sfactor_ = GL_SRC_ALPHA;
 	dfactor_ = GL_ONE;
 }

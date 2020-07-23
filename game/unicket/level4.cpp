@@ -17,7 +17,7 @@ void Level4::initialize()
 	// base init
 	Scene::initialize();
 
-	aModel = new assimpModel("resource/model/earth_ball/earth_ball.obj");
+	aModel = new assimpModel("resource/model/Mesh_Orca/Mesh_Orca.obj");
 }
 
 void Level4::update(float dt)

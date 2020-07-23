@@ -3,10 +3,11 @@
 #include <sstream>
 #include <iostream>
 #include <stb_image/stb_image.h>
-
 #include <assimp/Importer.hpp>
 #include <assimp/postprocess.h>
 #include <glew.h>
+
+#include <math_util.hpp>
 
 jeBegin
 
@@ -32,13 +33,6 @@ void assimpModel::loadModel(std::string const& path)
     Assimp::Importer importer;
     const aiScene* scene = importer.ReadFile(path, 
         aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenSmoothNormals | aiProcess_CalcTangentSpace);
-    
-    //double factor(0.0);
-    //bool result = scene->mRootNode->mMetaData->Get("UnitScaleFactor", factor);
-    //if (result == false)
-    //    jeDebugPrint("Failed to retrieve  unit scale factor!");
-    //else
-    //    jeDebugPrint("Scale is %f", factor);
 
     // check for errors
     if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) // if is Not Zero
@@ -62,7 +56,7 @@ void assimpModel::processNode(aiNode* node, const aiScene* scene)
         // the node object only contains indices to index the actual objects in the scene. 
         // the scene contains all the data, node is just to keep stuff organized (like relations between nodes).
         aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-        meshes.push_back(processMesh(mesh, scene));
+        meshes.emplace_back(processMesh(mesh, scene));
     }
     // after we've processed all of the meshes (if any) we then recursively process each of the children nodes
     for (unsigned int i = 0; i < node->mNumChildren; i++)
@@ -74,6 +68,11 @@ void assimpModel::processNode(aiNode* node, const aiScene* scene)
 
 assimpMesh assimpModel::processMesh(aiMesh* mesh, const aiScene* scene)
 {
+    vec3 minPoint(Math::max_float, Math::max_float, Math::max_float),
+        maxPoint(Math::min_float, Math::min_float, Math::min_float),
+        centerOffset;
+    float absMax = 0.f;
+
     // data to fill
     std::vector<Vertex> vertices;
     std::vector<unsigned int> indices;
@@ -88,6 +87,23 @@ assimpMesh assimpModel::processMesh(aiMesh* mesh, const aiScene* scene)
         vector.x = mesh->mVertices[i].x;
         vector.y = mesh->mVertices[i].y;
         vector.z = mesh->mVertices[i].z;
+
+        // check absolute min/max value from vertex
+        if (vector.x < minPoint.x)
+            minPoint.x = vector.x;
+        else
+            maxPoint.x = vector.x;
+
+        if (vector.y < minPoint.y)
+            minPoint.y = vector.y;
+        else
+            maxPoint.y = vector.y;
+
+        if (vector.z < minPoint.z)
+            minPoint.z = vector.z;
+        else
+            maxPoint.z = vector.z;
+
         vertex.position = vector;
         // normals
         vector.x = mesh->mNormals[i].x;
@@ -106,6 +122,7 @@ assimpMesh assimpModel::processMesh(aiMesh* mesh, const aiScene* scene)
         }
         else
             vertex.texCoords = vec2(0.0f, 0.0f);
+
         //// tangent
         //vector.x = mesh->mTangents[i].x;
         //vector.y = mesh->mTangents[i].y;
@@ -116,15 +133,44 @@ assimpMesh assimpModel::processMesh(aiMesh* mesh, const aiScene* scene)
         //vector.y = mesh->mBitangents[i].y;
         //vector.z = mesh->mBitangents[i].z;
         //vertex.Bitangent = vector;
-        vertices.push_back(vertex);
+
+        vertices.emplace_back(vertex);
     }
+
+    // normalize the scale and position
+    vec3 sum = { maxPoint.x - minPoint.x,
+        maxPoint.y - minPoint.y,
+        maxPoint.z - minPoint.z };
+
+    sum *= .5f;
+
+    if (absMax < sum.x)
+        absMax = sum.x;
+    if (absMax < sum.y)
+        absMax = sum.y;
+    if (absMax < sum.z)
+        absMax = sum.z;
+
+    maxPoint /= absMax;
+    minPoint /= absMax;
+    centerOffset = ((maxPoint + minPoint) * .5f);
+    minPoint -= centerOffset;
+    maxPoint -= centerOffset;
+
+    // move to center and set unit scale
+    for (auto& v : vertices)
+    {
+        v.position = v.position / absMax - centerOffset;
+        v.normal = v.normal / absMax - centerOffset;
+    }
+
     // now wak through each of the mesh's faces (a face is a mesh its triangle) and retrieve the corresponding vertex indices.
     for (unsigned int i = 0; i < mesh->mNumFaces; i++)
     {
         aiFace face = mesh->mFaces[i];
         // retrieve all indices of the face and store them in the indices vector
         for (unsigned int j = 0; j < face.mNumIndices; j++)
-            indices.push_back(face.mIndices[j]);
+            indices.emplace_back(face.mIndices[j]);
     }
     // process materials
     aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
@@ -167,7 +213,7 @@ std::vector<Texture> assimpModel::loadMaterialTextures(aiMaterial* mat, aiTextur
         {
             if (std::strcmp(textures_loaded[j].path.data(), str.C_Str()) == 0)
             {
-                textures.push_back(textures_loaded[j]);
+                textures.emplace_back(textures_loaded[j]);
                 skip = true; // a texture with the same filepath has already been loaded, continue to next one. (optimization)
                 break;
             }
@@ -178,8 +224,8 @@ std::vector<Texture> assimpModel::loadMaterialTextures(aiMaterial* mat, aiTextur
             texture.id = TextureFromFile(str.C_Str(), this->directory);
             texture.type = typeName;
             texture.path = str.C_Str();
-            textures.push_back(texture);
-            textures_loaded.push_back(texture);  // store it as texture loaded for entire model, to ensure we won't unnecesery load duplicate textures.
+            textures.emplace_back(texture);
+            textures_loaded.emplace_back(texture);  // store it as texture loaded for entire model, to ensure we won't unnecesery load duplicate textures.
         }
     }
     return textures;

@@ -133,9 +133,6 @@
     <ClCompile Include="..\src\light.cpp">
       <Filter>system\graphics</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\assimp.cpp">
-      <Filter>core\asset</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\assimpMesh.cpp">
       <Filter>core\asset</Filter>
     </ClCompile>

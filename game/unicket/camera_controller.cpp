@@ -25,7 +25,7 @@ void CameraController::update(float dt)
 	{
 		camera->set_pitch(Math::deg_to_rad(0.f));
 		camera->set_yaw(Math::deg_to_rad(-90.f));
-		camera->position.set(0.f, 0.f, 100.f);
+		camera->position.set(0.f, 0.f, 10.f);
 		camera->zoom = 0.f;
 	}
 

@@ -24,7 +24,6 @@
     <ClCompile Include="..\src\animation_2d.cpp" />
     <ClCompile Include="..\src\application.cpp" />
     <ClCompile Include="..\src\asset_manager.cpp" />
-    <ClCompile Include="..\src\assimp.cpp" />
     <ClCompile Include="..\src\assimpMesh.cpp" />
     <ClCompile Include="..\src\assimpModel.cpp" />
     <ClCompile Include="..\src\audio.cpp" />
