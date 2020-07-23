@@ -349,6 +349,8 @@ MigrationBackup/
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
 
+!/*/default/*.obj
+!/game/*/resource/model/*/*.obj
 !/lib/*/x64/
 !/lib/assimp/Debug/
 !/lib/assimp/Release/
