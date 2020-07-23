@@ -61,6 +61,7 @@ void Mesh::draw(Shader* shader)
         // now set the sampler to the correct texture unit
         shader->set_uint((name + number).c_str(), i);
         // and finally bind the texture
+        glBindTexture(GL_TEXTURE_2D, textures_[i].id);
     }
     
     // draw mesh
@@ -69,7 +70,6 @@ void Mesh::draw(Shader* shader)
     glBindVertexArray(0);
 
     glActiveTexture(GL_TEXTURE0);
-    // glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void Mesh::setup_mesh()

@@ -31,6 +31,9 @@ Contains the methods of asset_manager class
 
 jeBegin
 
+std::string meshDir;
+std::vector<Texture> texturesLoaded;
+
 unsigned int TextureFromFile(const char* path, const std::string& directory);
 
 std::string	AssetManager::initDirectory_, AssetManager::assetDirectory_, 
@@ -216,7 +219,6 @@ void AssetManager::load_texture(const char* path, const char* textureKey, Textur
 
 		tMap->insert(TextureMap::value_type(
 			textureKey, image.handle));
-		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 }
 
@@ -321,7 +323,6 @@ void AssetManager::load_characters(Font* font, float& newLineLevel,
 		if (newLineLevel < character.size.y)
 			newLineLevel = character.size.y;
 		font->data.insert(Font::FontData::value_type(c, character));
-		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 }
 
@@ -339,16 +340,15 @@ bool AssetManager::load_obj(const std::string& path, const char* meshKey, MeshMa
 		return false;
 	}
 	// retrieve the directory path of the filepath
-	std::string directory = path.substr(0, path.find_last_of('/'));
-
+	meshDir = path.substr(0, path.find_last_of('/'));
 	std::vector<Mesh*> newMeshes;
-	std::vector<Texture> texturesLoaded;
 
 	// process ASSIMP's root node recursively
-	process_node(scene->mRootNode, scene, newMeshes,
-		directory, texturesLoaded);
-
+	process_node(scene->mRootNode, scene, newMeshes);
 	mMap->insert(MeshMap::value_type(meshKey, newMeshes));
+
+	meshDir.clear();
+	texturesLoaded.clear();
 	return true;
 }
 
@@ -526,8 +526,7 @@ void AssetManager::set_scene_directory(const char* dir) { stateDirectory_.assign
 void AssetManager::set_archetype_directory(const char* dir) { archeDirectory_.assign(dir); }
 
 // processes a node in a recursive fashion. Processes each individual mesh located at the node and repeats this process on its children nodes (if any).
-void AssetManager::process_node(aiNode* node, const aiScene* scene, std::vector<Mesh*>& meshes, 
-	const std::string& directory, std::vector<Texture>& texturesLoaded)
+void AssetManager::process_node(aiNode* node, const aiScene* scene, std::vector<Mesh*>& meshes)
 {
 	// process each mesh located at the current node
 	for (unsigned int i = 0; i < node->mNumMeshes; i++)
@@ -535,17 +534,16 @@ void AssetManager::process_node(aiNode* node, const aiScene* scene, std::vector<
 		// the node object only contains indices to index the actual objects in the scene. 
 		// the scene contains all the data, node is just to keep stuff organized (like relations between nodes).
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-		meshes.emplace_back(process_mesh(mesh, scene, directory, texturesLoaded));
+		meshes.emplace_back(process_mesh(mesh, scene));
 	}
 	// after we've processed all of the meshes (if any) we then recursively process each of the children nodes
 	for (unsigned int i = 0; i < node->mNumChildren; i++)
 	{
-		process_node(node->mChildren[i], scene, meshes, directory, texturesLoaded);
+		process_node(node->mChildren[i], scene, meshes);
 	}
 }
 
-Mesh* AssetManager::process_mesh(aiMesh* mesh, const aiScene* scene, 
-	const std::string& directory, std::vector<Texture>& texturesLoaded)
+Mesh* AssetManager::process_mesh(aiMesh* mesh, const aiScene* scene)
 {
 	vec3 minPoint(Math::max_float, Math::max_float, Math::max_float),
 		maxPoint(Math::min_float, Math::min_float, Math::min_float),
@@ -661,20 +659,16 @@ Mesh* AssetManager::process_mesh(aiMesh* mesh, const aiScene* scene,
 	// normal: texture_normalN
 
 	// 1. diffuse maps
-	std::vector<Texture> diffuseMaps = load_material_textures(material, aiTextureType_DIFFUSE, "texture_diffuse", 
-		directory, texturesLoaded);
+	std::vector<Texture> diffuseMaps = load_material_textures(material, aiTextureType_DIFFUSE, "texture_diffuse");
 	textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
 	// 2. specular maps
-	std::vector<Texture> specularMaps = load_material_textures(material, aiTextureType_SPECULAR, "texture_specular", 
-		directory, texturesLoaded);
+	std::vector<Texture> specularMaps = load_material_textures(material, aiTextureType_SPECULAR, "texture_specular");
 	textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
 	// 3. normal maps
-	std::vector<Texture> normalMaps = load_material_textures(material, aiTextureType_HEIGHT, "texture_normal", 
-		directory, texturesLoaded);
+	std::vector<Texture> normalMaps = load_material_textures(material, aiTextureType_HEIGHT, "texture_normal");
 	textures.insert(textures.end(), normalMaps.begin(), normalMaps.end());
 	// 4. height maps
-	std::vector<Texture> heightMaps = load_material_textures(material, aiTextureType_AMBIENT, "texture_height", 
-		directory, texturesLoaded);
+	std::vector<Texture> heightMaps = load_material_textures(material, aiTextureType_AMBIENT, "texture_height");
 	textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
 
 	// return a mesh object created from the extracted mesh data
@@ -683,8 +677,7 @@ Mesh* AssetManager::process_mesh(aiMesh* mesh, const aiScene* scene,
 
 // checks all material textures of a given type and loads the textures if they're not loaded yet.
 // the required info is returned as a Texture struct.
-std::vector<Texture> AssetManager::load_material_textures(aiMaterial* mat, aiTextureType type, 
-	const std::string& typeName, const std::string directory, std::vector<Texture>& texturesLoaded)
+std::vector<Texture> AssetManager::load_material_textures(aiMaterial* mat, aiTextureType type, const std::string& typeName)
 {
 	std::vector<Texture> textures;
 	for (unsigned int i = 0; i < mat->GetTextureCount(type); i++)
@@ -705,7 +698,7 @@ std::vector<Texture> AssetManager::load_material_textures(aiMaterial* mat, aiTex
 		if (!skip)
 		{   // if texture hasn't been loaded already, load it
 			Texture texture;
-			texture.id = TextureFromFile(str.C_Str(), directory);
+			texture.id = TextureFromFile(str.C_Str(), meshDir);
 			texture.type = typeName;
 			texture.path = str.C_Str();
 			textures.emplace_back(texture);
@@ -756,7 +749,6 @@ unsigned int TextureFromFile(const char* path, const std::string& directory)
 		stbi_image_free(data);
 	}
 
-	glBindTexture(GL_TEXTURE_2D, 0);
 	return textureID;
 }
 

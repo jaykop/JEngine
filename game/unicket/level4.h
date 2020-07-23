@@ -23,8 +23,6 @@ private:
 
 	void init_basic();
 	void init_models();
-
-	Object* model1 = nullptr, * model2 = nullptr;
 };
 
 jeEnd

@@ -48,25 +48,41 @@ void Level4::init_basic()
 
 void Level4::init_models()
 {
-	model1 = ObjectManager::create_object("cube");
-	model1->add_component<Model>();
-	auto* md1 = model1->get_component<Model>();
-	auto* trans1 = model1->get_component<Transform>();
-	md1->set_meshes(AssetManager::get_meshes("cube"));
+	auto* earth = ObjectManager::create_object("earth");
+	earth->add_component<Model>();
+	auto* md1 = earth->get_component<Model>();
+	auto* trans1 = earth->get_component<Transform>();
+	md1->set_meshes(AssetManager::get_meshes("earth"));
 	trans1->position.set(5.f, 0.f, -10.f);
 	trans1->scale.set(1.f, 1.f, 1.f);
-	register_object(model1);
+	register_object(earth);
 
-	model2 = ObjectManager::create_object("whale");
-	model2->add_component<Model>();
-	auto* md2 = model2->get_component<Model>();
-	auto* trans2 = model2->get_component<Transform>();
+	auto* whale = ObjectManager::create_object("whale");
+	whale->add_component<Model>();
+	auto* md2 = whale->get_component<Model>();
+	auto* trans2 = whale->get_component<Transform>();
 	md2->set_meshes(AssetManager::get_meshes("whale"));
 	trans2->position.set(-5.f, 0.f, -10.f);
 	trans2->scale.set(1.f, 1.f, 1.f);
-	register_object(model2);
+	register_object(whale);
 
+	auto* cube = ObjectManager::create_object("cube");
+	cube->add_component<Model>();
+	auto* md3 = cube->get_component<Model>();
+	auto* trans3 = cube->get_component<Transform>();
+	md3->set_meshes(AssetManager::get_meshes("cube"));
+	trans3->position.set(0.f, 5.f, -10.f);
+	trans3->scale.set(1.f, 1.f, 1.f);
+	register_object(cube);
 
+	auto* sphere = ObjectManager::create_object("sphere");
+	sphere->add_component<Model>();
+	auto* md4 = sphere->get_component<Model>();
+	auto* trans4 = sphere->get_component<Transform>();
+	md4->set_meshes(AssetManager::get_meshes("sphere"));
+	trans4->position.set(0.f, -5.f, -10.f);
+	trans4->scale.set(1.f, 1.f, 1.f);
+	register_object(sphere);
 }
 
 jeEnd

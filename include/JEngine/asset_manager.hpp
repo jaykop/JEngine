@@ -68,11 +68,10 @@ private:
 
 	// obj loader
 	static bool load_obj(const std::string& path, const char* meshKey,
-		MeshMap* mMap = &meshMap_);
-	static void load_model(const std::string& path);
-	static void process_node(aiNode* node, const aiScene* scene, std::vector<Mesh*>& meshes, const std::string& directory, std::vector<Texture>& texturesLoaded);
-	static Mesh* process_mesh(aiMesh* mesh, const aiScene* scene, const std::string& directory, std::vector<Texture>& texturesLoaded);
-	static std::vector<Texture> load_material_textures(aiMaterial* mat, aiTextureType type, const std::string& typeName, const std::string directory, std::vector<Texture>& texturesLoaded);
+		MeshMap* mMap = &meshMap_);	
+	static void process_node(aiNode* node, const aiScene* scene, std::vector<Mesh*>& meshes);
+	static Mesh* process_mesh(aiMesh* mesh, const aiScene* scene);
+	static std::vector<Texture> load_material_textures(aiMaterial* mat, aiTextureType type, const std::string& typeName);
 	
 	static MeshMap meshMap_;
 	static FontMap fontMap_;
