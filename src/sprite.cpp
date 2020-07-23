@@ -46,7 +46,7 @@ void Sprite::load(const rapidjson::Value& /*data*/) {
 void Sprite::draw(float /*dt*/)
 {
 	Camera* camera = GraphicSystem::get_camera();
-	Shader* shader = GLManager::shader_[GLManager::NORMAL];
+	Shader* shader = GLManager::shader_[GLManager::SPRITE];
 	shader->use();
 
 	shader->set_matrix("m4_translate", mat4::translate(transform_->position));
@@ -165,7 +165,7 @@ void Sprite::run_animation()
 		}
 
 		// Send color info to shader
-		Shader* shader = GLManager::shader_[GLManager::NORMAL];
+		Shader* shader = GLManager::shader_[GLManager::SPRITE];
 		shader->use();
 
 		shader->set_matrix("m4_aniScale", mat4::scale(animation_->scale_));

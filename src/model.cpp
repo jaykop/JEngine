@@ -67,7 +67,8 @@ void Model::set_draw_mode(unsigned mode)
 void Model::draw(float /*dt*/)
 {
 	Camera* camera = GraphicSystem::get_camera();
-	Shader* shader = GLManager::shader_[GLManager::NORMAL];
+	// Shader* shader = GLManager::shader_[GLManager::SPRITE];
+	Shader* shader = GLManager::shader_[GLManager::MODEL];
 	shader->use();
 
 	shader->set_matrix("m4_translate", mat4::translate(transform_->position));
@@ -133,9 +134,8 @@ void Model::draw(float /*dt*/)
 	glEnable(GL_DEPTH_TEST);
 	glBlendFunc(sfactor_, dfactor_);
 
-
 	// save polygon mode
-	GLint polygon_mode[2];
+	//GLint polygon_mode[2];
 	//glGetIntegerv(GL_POLYGON_MODE, polygon_mode);
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
@@ -158,7 +158,8 @@ void Model::draw_normals()
 	if (renderVertexNormals_
 		|| renderFaceNormals_) {
 
-		Shader* shader = GLManager::shader_[GLManager::NORMAL];
+		// Shader* shader = GLManager::shader_[GLManager::SPRITE];
+		Shader* shader = GLManager::shader_[GLManager::MODEL];
 		shader->use();
 
 		for (const auto& m : meshes_) {

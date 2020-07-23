@@ -28,7 +28,10 @@ class GLManager
 	GLManager() = delete;
 	~GLManager() = delete;
 
-	jePreventClone(GLManager)
+	jePreventClone(GLManager);
+
+	// todo:
+	friend class assimpMesh;
 
 	friend class Renderer;
 	friend class Sprite;
@@ -44,7 +47,7 @@ class GLManager
 	using Shaders = std::vector<Shader*>;
 
 	// enum class Target { SCREEN, TEXT, END };
-	enum Pipeline { DEBUG, NORMAL, TEXT, PARTICLE, LIGHT, SCREEN, GRID, END };
+	enum Pipeline { SPRITE, TEXT, PARTICLE, MODEL, LIGHT, DEBUG, GRID, SCREEN, END };
 
 public:
 

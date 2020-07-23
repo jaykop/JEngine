@@ -5,6 +5,7 @@
 #include "model.hpp"
 #include "mesh.hpp"
 #include "glew.h"
+#include "assimpModel.hpp"
 
 jeBegin
 
@@ -15,16 +16,21 @@ void Level4::initialize()
 
 	// base init
 	Scene::initialize();
+
+	aModel = new assimpModel("resources/model/backpack/backpack.obj");
 }
 
 void Level4::update(float dt)
 {
 	// base update
 	Scene::update(dt);
+	aModel->Draw();
 }
 
 void Level4::close()
 {
+	delete aModel;
+
 	// base close
 	Scene::close();
 }

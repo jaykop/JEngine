@@ -3,6 +3,8 @@
 
 jeBegin
 
+class assimpModel;
+
 // Generic scene class
 class Level4 : public Scene
 {
@@ -25,7 +27,7 @@ private:
 	void init_models();
 
 	Object* model1 = nullptr, * model2 = nullptr;
-
+	assimpModel* aModel = nullptr;
 };
 
 jeEnd

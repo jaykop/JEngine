@@ -24,6 +24,9 @@
     <ClCompile Include="..\src\animation_2d.cpp" />
     <ClCompile Include="..\src\application.cpp" />
     <ClCompile Include="..\src\asset_manager.cpp" />
+    <ClCompile Include="..\src\assimp.cpp" />
+    <ClCompile Include="..\src\assimpMesh.cpp" />
+    <ClCompile Include="..\src\assimpModel.cpp" />
     <ClCompile Include="..\src\audio.cpp" />
     <ClCompile Include="..\src\behavior.cpp" />
     <ClCompile Include="..\src\behavior_system.cpp" />
@@ -79,6 +82,8 @@
     <ClInclude Include="..\include\JEngine\application.hpp" />
     <ClInclude Include="..\include\JEngine\assets.hpp" />
     <ClInclude Include="..\include\JEngine\asset_manager.hpp" />
+    <ClInclude Include="..\include\JEngine\assimpMesh.hpp" />
+    <ClInclude Include="..\include\JEngine\assimpModel.hpp" />
     <ClInclude Include="..\include\JEngine\audio.hpp" />
     <ClInclude Include="..\include\JEngine\behavior.hpp" />
     <ClInclude Include="..\include\JEngine\behavior_system.hpp" />

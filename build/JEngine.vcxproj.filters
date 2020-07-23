@@ -133,6 +133,15 @@
     <ClCompile Include="..\src\light.cpp">
       <Filter>system\graphics</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\assimp.cpp">
+      <Filter>core\asset</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\assimpMesh.cpp">
+      <Filter>core\asset</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\assimpModel.cpp">
+      <Filter>core\asset</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\JEngine\macros.hpp" />
@@ -300,6 +309,12 @@
     </ClInclude>
     <ClInclude Include="..\include\JEngine\light.hpp">
       <Filter>system\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\JEngine\assimpMesh.hpp">
+      <Filter>core\asset</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\JEngine\assimpModel.hpp">
+      <Filter>core\asset</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -227,13 +227,13 @@ void GraphicSystem::resume()
 
 void GraphicSystem::update_lights(float dt)
 {
-	Shader* shader = GLManager::shader_[GLManager::NORMAL];
+	Shader* shader = GLManager::shader_[GLManager::SPRITE];
 	shader->use();
 	shader->set_uint("uint_lightSize", lights_.size());
 	
 	for (unsigned i = 0; i < lights_.size() ; ++i)
 	{
-		shader = GLManager::shader_[GLManager::NORMAL];
+		shader = GLManager::shader_[GLManager::SPRITE];
 		shader->use();
 
 		// Update shader uniform info

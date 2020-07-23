@@ -1,25 +1,27 @@
 {
 	"vertex": [
 
-		{ "Directory": "../shader/debug.vs" },
-		{ "Directory": "../shader/model.vs" },
+		{ "Directory": "../shader/sprite.vs" },
 		{ "Directory": "../shader/text.vs" },
 		{ "Directory": "../shader/particle.vs" },
+		{ "Directory": "../shader/model.vs" },
 		{ "Directory": "../shader/light.vs" },
-		{ "Directory": "../shader/screen.vs" },
-		{ "Directory": "../shader/grid.vs" }
+		{ "Directory": "../shader/debug.vs" },
+		{ "Directory": "../shader/grid.vs" },
+		{ "Directory": "../shader/screen.vs" }
 
 	],
 
 	"fragment": [
 
-		{ "Directory": "../shader/debug.fs" },
-		{ "Directory": "../shader/model.fs" },
+		{ "Directory": "../shader/sprite.fs" },
 		{ "Directory": "../shader/text.fs" },
 		{ "Directory": "../shader/particle.fs" },
+		{ "Directory": "../shader/model.fs" },
 		{ "Directory": "../shader/light.fs" },
-		{ "Directory": "../shader/screen.fs" },
-		{ "Directory": "../shader/grid.fs" }
+		{ "Directory": "../shader/debug.fs" },
+		{ "Directory": "../shader/grid.fs" },
+		{ "Directory": "../shader/screen.fs" }
 
 	]
 	
