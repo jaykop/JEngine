@@ -4,6 +4,7 @@
 #include <mat4.hpp>
 #include <transform.hpp>
 #include <camera.hpp>
+#include <asset_manager.hpp>
 
 jeBegin
 
@@ -15,6 +16,7 @@ vec3 Light::kAmbientColor = vec3::zero, Light::fogColor = vec3::zero;
 Light::Light(Object* owner)
 	: Renderer(owner)
 {
+	texture = AssetManager::get_texture("rect");
 }
 
 Light::~Light()
@@ -30,9 +32,6 @@ void Light::draw(float /*dt*/)
 	shader->set_matrix("m4_translate", mat4::translate(transform_->position));
 	shader->set_matrix("m4_scale", mat4::scale(transform_->scale));
 	shader->set_matrix("m4_rotate", transform_->orientation.to_mat4());
-	shader->set_vec3("v3_cameraPosition", camera->position);
-	shader->set_bool("boolean_bilboard", (status & IS_BILBOARD) == IS_BILBOARD);
-	shader->set_bool("boolean_flip", (status & IS_FLIPPED) == IS_FLIPPED);
 	shader->set_vec3("v3_color", diffuse);
 
 	switch (prjType)
@@ -67,8 +66,6 @@ void Light::draw(float /*dt*/)
 
 	if (!fixed)
 	{
-		// Send camera info to shader
-		// mat4 viewport = mat4::look_at(camera->position, camera->right_, camera->up_, camera->back_);
 		mat4 viewport = mat4::look_at(camera->position, camera->position + camera->back_, camera->up_);
 		shader->set_matrix("m4_viewport", viewport);
 	}
@@ -83,23 +80,15 @@ void Light::draw(float /*dt*/)
 		shader->set_matrix("m4_parentRotate", pTransform->orientation.to_mat4());
 	}
 
-	glEnable(GL_BLEND);
+	glDisable(GL_BLEND);
 	glEnable(GL_DEPTH_TEST);
-	glBlendFunc(sfactor_, dfactor_);
 
 	glBindVertexArray(GraphicSystem::quadVao_);
-	glBindBuffer(GL_ARRAY_BUFFER, GraphicSystem::quadVbo_);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, GraphicSystem::quadEbo_);
-	// glBindTexture(GL_TEXTURE_2D, texture_);
+	glBindTexture(GL_TEXTURE_2D, texture);
 	glDrawElements(GL_TRIANGLES, GraphicSystem::quadIndicesSize_, GL_UNSIGNED_INT, nullptr);
-
-	glBindTexture(GL_TEXTURE_2D, 0);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
 
 	glDisable(GL_DEPTH_TEST);
-	glDisable(GL_BLEND);
 }
 
 void Light::add_to_system()

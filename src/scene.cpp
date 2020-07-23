@@ -89,6 +89,8 @@ void Scene::load()
 		}
 	}
 
+	JsonParser::clear_document();
+
 	// bind the objects to the manager
 	ObjectManager::objects_ = &objects_;
 }

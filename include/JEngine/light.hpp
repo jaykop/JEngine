@@ -35,6 +35,8 @@ protected:
 
 private:
 
+    unsigned texture;
+
     Light() = delete;
     Light(const Light& /*copy*/) = delete;
 

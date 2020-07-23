@@ -1,3 +1,4 @@
+#pragma warning (disable : 26812)
 /*
 ---------------------------------------------------------------------------
 Open Asset Import Library (assimp)

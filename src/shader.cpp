@@ -10,8 +10,8 @@
 
 jeBegin
 
-std::vector<const char*> Shader::vsDirectory_;
-std::vector<const char*> Shader::fsDirectory_;
+std::vector<std::string> Shader::vsDirectory_;
+std::vector<std::string> Shader::fsDirectory_;
 
 Shader::Shader() : programId_(0), vertexId_(0),
 	fragmentId_(0), geometryId_(0),

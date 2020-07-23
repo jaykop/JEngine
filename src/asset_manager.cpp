@@ -112,7 +112,7 @@ void AssetManager::load_assets()
 		load_texture(textures[i]["Directory"].GetString(), textures[i]["Key"].GetString());
 		jeDebugPrint("*AssetManager - Loaded image: %s.\n", textures[i]["Directory"].GetString());
 	}
-	
+
 	// Load obj 
 	const rapidjson::Value& models = JsonParser::get_document()["Model"];
 	for (rapidjson::SizeType i = 0; i < models.Size(); ++i) {
@@ -139,6 +139,8 @@ void AssetManager::load_assets()
 				static_cast<unsigned long>(fonts[i]["Additional"][j][1].GetUint64()));
 		}
 	}	
+
+	JsonParser::clear_document();
 }
 
 void AssetManager::unload_assets()
@@ -513,8 +515,8 @@ const std::vector<Mesh*>& AssetManager::get_meshes(const char* key)
 
 	jeDebugPrint("!AssetManager: Cannot find such name of model resource: %s.\n", key);
 
-	// return empty meshes
-	return std::vector<Mesh*>();
+	// return invalid meshes
+	return found->second;
 }
 
 void AssetManager::set_initdata_directory(const char* dir) { initDirectory_.assign(dir); }

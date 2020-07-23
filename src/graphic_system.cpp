@@ -252,7 +252,7 @@ void GraphicSystem::update_lights(float dt)
 {
 	Shader* shader = shader_[SPRITE];
 	shader->use();
-	shader->set_uint("uint_lightSize", lights_.size());
+	shader->set_uint("uint_lightSize", static_cast<unsigned>(lights_.size()));
 	
 	for (unsigned i = 0; i < lights_.size() ; ++i)
 	{
@@ -305,13 +305,13 @@ void GraphicSystem::initialize_graphics()
 	for (unsigned int i = 0; i < Pipeline::END; ++i) {
 
 		Shader* newShader = new Shader;
-		newShader->create_shader(Shader::vsDirectory_[i], Shader::Type::VERTEX);
+		newShader->create_shader(Shader::vsDirectory_[i].c_str(), Shader::Type::VERTEX);
 
 		// TODO
 		// Work on geometry shader
 		//shader_[i]->CreateShader(Shader::m_geometryShader[i], Shader::JE_GEOMETRY);
 
-		newShader->create_shader(Shader::fsDirectory_[i], Shader::Type::PIXEL);
+		newShader->create_shader(Shader::fsDirectory_[i].c_str(), Shader::Type::PIXEL);
 		newShader->combine_shaders(i);
 
 		shader_.push_back(newShader);

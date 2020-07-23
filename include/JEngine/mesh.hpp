@@ -16,7 +16,7 @@ public:
     Mesh(const std::vector<Vertex>& vertices, 
         const std::vector<unsigned int>& indices, 
         const std::vector<Texture>& textures);
-    ~Mesh() {};
+    ~Mesh();
 
     unsigned get_indices_count() const;
 

@@ -26,9 +26,16 @@ Mesh::Mesh(const std::vector<Vertex>& vertices,
     setup_mesh();
 }
 
+Mesh::~Mesh()
+{
+    glDeleteVertexArrays(1, &vao_);
+    glDeleteBuffers(1, &vbo_);
+    glDeleteBuffers(1, &ebo_);
+}
+
 unsigned Mesh::get_indices_count() const
 {
-    return indices_.size();
+    return static_cast<unsigned>(indices_.size());
 }
 
 // render the mesh
@@ -66,7 +73,7 @@ void Mesh::draw(Shader* shader)
     
     // draw mesh
     glBindVertexArray(vao_);
-    glDrawElements(GL_TRIANGLES, indices_.size(), GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(indices_.size()), GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
 
     glActiveTexture(GL_TEXTURE0);

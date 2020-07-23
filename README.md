@@ -14,7 +14,6 @@
 *Add orbiting camera to camera controller  
 *Rippling effect  
 *Go over ai example and techniques  
-*string to string_view  
 
 **Annoying**  
 *vector ostream + friend functions  

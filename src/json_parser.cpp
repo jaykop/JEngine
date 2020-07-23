@@ -23,6 +23,11 @@ rapidjson::Document JsonParser::document_;
 
 void JsonParser::read_file(const char* directory)
 {
+	// size_t a = document_.GetAllocator().Capacity();
+	// size_t a = document_.GetAllocator().Capacity();
+	document_.GetAllocator().Clear();
+	// a = document_.GetAllocator().Capacity();
+
 	std::ifstream read(directory);
 	rapidjson::IStreamWrapper toInputStream(read);
 #if defined(_DEBUG)
@@ -35,10 +40,14 @@ void JsonParser::read_file(const char* directory)
 
 const rapidjson::Document& JsonParser::get_document() { return document_; }
 
+void JsonParser::clear_document()
+{
+	document_.GetAllocator().Clear();
+}
 
 void JsonParser::close() 
 {
-	// clear_document();
+	
 }
 
 void JsonParser::load_objects()

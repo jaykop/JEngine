@@ -13,6 +13,7 @@ Contains the definition of Shader class
 
 #include <glew.h>
 #include <vector>
+#include <string>
 #include <macros.hpp>
 
 struct mat4;
@@ -27,8 +28,8 @@ class Shader {
 	friend class GraphicSystem;
 	friend class AssetManager;
 
-	static std::vector<const char*> vsDirectory_;
-	static std::vector<const char*> fsDirectory_;
+	static std::vector<std::string> vsDirectory_;
+	static std::vector<std::string> fsDirectory_;
 
 public:
 
