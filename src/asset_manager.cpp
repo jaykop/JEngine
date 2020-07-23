@@ -568,17 +568,17 @@ Mesh* AssetManager::process_mesh(aiMesh* mesh, const aiScene* scene)
 		// check absolute min/max value from vertex
 		if (vector.x < minPoint.x)
 			minPoint.x = vector.x;
-		else
+		else if (vector.x > maxPoint.x)
 			maxPoint.x = vector.x;
 
 		if (vector.y < minPoint.y)
 			minPoint.y = vector.y;
-		else
+		else if (vector.y > maxPoint.y)
 			maxPoint.y = vector.y;
 
 		if (vector.z < minPoint.z)
 			minPoint.z = vector.z;
-		else
+		else if (vector.z > maxPoint.z)
 			maxPoint.z = vector.z;
 
 		vertex.position = vector;
@@ -620,13 +620,7 @@ Mesh* AssetManager::process_mesh(aiMesh* mesh, const aiScene* scene)
 		maxPoint.z - minPoint.z };
 
 	sum *= .5f;
-
-	if (absMax < sum.x)
-		absMax = sum.x;
-	if (absMax < sum.y)
-		absMax = sum.y;
-	if (absMax < sum.z)
-		absMax = sum.z;
+	absMax = std::fmaxf(std::fmaxf(sum.x, sum.y), sum.z);
 
 	maxPoint /= absMax;
 	minPoint /= absMax;
