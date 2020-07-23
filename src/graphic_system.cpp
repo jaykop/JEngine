@@ -76,6 +76,11 @@ void GraphicSystem::update(float dt) {
 	glScissor(GLManager::widthStart_, GLManager::heightStart_,
 		static_cast<GLsizei>(GLManager::width_), static_cast<GLsizei>(GLManager::height_));
 
+	// cull out invisible face
+	glEnable(GL_CULL_FACE);
+	//glCullFace(GL_BACK);
+	//glFrontFace(GL_CCW);
+
 	// clear buffers
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(

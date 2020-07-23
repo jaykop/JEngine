@@ -27,7 +27,7 @@ void JEngine::register_scenes()
 	SceneManager::register_scene<Level4>("resource/scene/level4.json");
 
 	// set the first scene
-	SceneManager::set_first_scene<Level1>();
+	SceneManager::set_first_scene<Level4>();
 }
 
 bool JEngine::register_assets()

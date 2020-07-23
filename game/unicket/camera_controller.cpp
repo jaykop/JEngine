@@ -102,10 +102,13 @@ void CameraController::rotate(float dt)
 	lastX = InputHandler::get_position().x;
 	lastY = InputHandler::get_position().y;
 
-	float dx = sensitivity * dt * std::fabsf(xoffset);
-	float dy = sensitivity * dt * std::fabsf(yoffset);
-	if (dx > maxOffset) dx = dt;
-	if (dy > maxOffset) dy = dt;
+	last_dx = dx;
+	last_dy = dy;
+
+	dx = sensitivity * dt * std::fabsf(xoffset);
+	dy = sensitivity * dt * std::fabsf(yoffset);
+	if (dx > maxOffset) dx = last_dx;
+	if (dy > maxOffset) dy = last_dy;
 
 	if (xoffset > 0)
 		camera->set_yaw(camera->get_yaw() + dx);

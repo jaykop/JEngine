@@ -30,7 +30,7 @@ private:
 	void rotate(float dt);
 
 	bool firstMouse = true, camera_2d = true;
-	float lastX, lastY;
+	float lastX, lastY, dx, dy, last_dx, last_dy;
 	float sensitivity = .1f;
 	const float maxOffset = .1f;
 

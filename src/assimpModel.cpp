@@ -6,6 +6,7 @@
 
 #include <assimp/Importer.hpp>
 #include <assimp/postprocess.h>
+#include <glew.h>
 
 jeBegin
 
@@ -29,7 +30,16 @@ void assimpModel::loadModel(std::string const& path)
 {
     // read file via ASSIMP
     Assimp::Importer importer;
-    const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
+    const aiScene* scene = importer.ReadFile(path, 
+        aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenSmoothNormals | aiProcess_CalcTangentSpace);
+    
+    //double factor(0.0);
+    //bool result = scene->mRootNode->mMetaData->Get("UnitScaleFactor", factor);
+    //if (result == false)
+    //    jeDebugPrint("Failed to retrieve  unit scale factor!");
+    //else
+    //    jeDebugPrint("Scale is %f", factor);
+
     // check for errors
     if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) // if is Not Zero
     {

@@ -12,12 +12,12 @@ jeBegin
 void Level4::initialize()
 {
 	init_basic();
-	init_models();
+	// init_models();
 
 	// base init
 	Scene::initialize();
 
-	aModel = new assimpModel("resources/model/backpack/backpack.obj");
+	aModel = new assimpModel("resource/model/earth_ball/earth_ball.obj");
 }
 
 void Level4::update(float dt)

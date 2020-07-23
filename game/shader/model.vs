@@ -1,16 +1,22 @@
-#version 330 core
-layout (location = 0) in vec3 aPos;
-layout (location = 1) in vec3 aNormal;
-layout (location = 2) in vec2 aTexCoords;
+#version 450 core
+
+layout(location = 0) in vec3 position;
+layout(location = 1) in vec3 normal;
+layout(location = 2) in vec2 uvPosition;
+
+uniform mat4 m4_translate;
+uniform mat4 m4_scale;
+uniform mat4 m4_rotate;
+uniform mat4 m4_viewport;
+uniform mat4 m4_projection;
 
 out vec2 TexCoords;
 
-uniform mat4 model;
-uniform mat4 view;
-uniform mat4 projection;
-
 void main()
 {
-    TexCoords = aTexCoords;    
-    gl_Position = projection * view * model * vec4(aPos, 1.0);
-}
+	mat4 model = m4_scale * m4_rotate * m4_translate;
+	mat4 mvp = transpose(m4_projection) * transpose(m4_viewport)* transpose(model);
+	gl_Position = mvp * vec4(position, 1);
+    TexCoords = uvPosition;   
+} 
+

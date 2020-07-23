@@ -27,7 +27,10 @@ class GraphicSystem {
 	GraphicSystem() = delete;
 	~GraphicSystem() = delete;
 
-	jePreventClone(GraphicSystem)
+	jePreventClone(GraphicSystem);
+
+	// todo
+	friend class assimpMesh;
 
 	friend class Scene;
 	friend class Camera;
