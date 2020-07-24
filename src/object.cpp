@@ -32,7 +32,7 @@ Object::~Object()
 
 void Object::register_components()
 {
-	for (auto component : components_)
+	for (const auto& component : components_)
 		component.second->add_to_system();
 }
 
@@ -55,7 +55,7 @@ void Object::add_component(const char* componentName)
 Component* Object::get_component(const char* componentName)
 {
 	const char* typeName = ComponentManager::key_to_type(componentName);
-	auto found = components_.find(typeName);
+	const auto& found = components_.find(typeName);
 
 	DEBUG_ASSERT(found != components_.end(), "No such name of component!");
 
@@ -65,7 +65,7 @@ Component* Object::get_component(const char* componentName)
 bool Object::has_component(const char* componentName)
 {
 	const char* typeName = ComponentManager::key_to_type(componentName);
-	auto found = components_.find(typeName);
+	const auto& found = components_.find(typeName);
 
 	return found != components_.end();
 }
@@ -73,7 +73,7 @@ bool Object::has_component(const char* componentName)
 void Object::remove_component(const char* componentName)
 {
 	const char* typeName = ComponentManager::key_to_type(componentName);
-	auto found = components_.find(typeName);
+	const auto& found = components_.find(typeName);
 
 	DEBUG_ASSERT(found != components_.end(), "No such name of component!");
 
@@ -83,7 +83,7 @@ void Object::remove_component(const char* componentName)
 
 void Object::add_child(Object* child)
 {
-	auto found = children_.find(child->get_name());
+	const auto& found = children_.find(child->get_name());
 	DEBUG_ASSERT(found == children_.end(), "Trying to add an existing object!");
 	children_.insert(Children::value_type(child->get_name(), child));
 	child->set_parent(this);
@@ -96,13 +96,13 @@ void Object::remove_child(const char* name)
 
 bool Object::has_child(const char* name)
 {
-	auto found = children_.find(name);
+	const auto& found = children_.find(name);
 	return found != children_.end();
 }
 
 Object* Object::get_child(const char* name)
 {
-	auto found = children_.find(name);
+	const auto& found = children_.find(name);
 	DEBUG_ASSERT(found != children_.end(), "No such child object!");
 	return found->second;
 }
@@ -118,7 +118,7 @@ void Object::clear_children()
 void Object::clear_component()
 {
 	// Clear all components in the list
-	for (auto component : components_) {
+	for (auto& component : components_) {
 
 		if (component.second) {
 			delete component.second;

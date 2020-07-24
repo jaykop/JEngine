@@ -53,6 +53,7 @@ void BehaviorSystem::close()
 		b->close();
 
 	behaviors_.clear();
+	behaviors_.shrink_to_fit();
 }
 
 void BehaviorSystem::pause()

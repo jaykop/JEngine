@@ -35,7 +35,6 @@ public:
 	static void generate_screenshot(const char* directory);
 
 	static void	set_initdata_directory(const char* dir);
-	static void	set_asset_directory(const char* dir);
 	static void	set_scene_directory(const char* dir);
 	static void	set_archetype_directory(const char* dir);
 
@@ -78,8 +77,7 @@ private:
 	static AudioMap	audioMap_;
 	static TextureMap textureMap_;
 	static ArchetypeMap	archetypeMap_;
-	static std::string initDirectory_, assetDirectory_,
-		stateDirectory_, archeDirectory_;
+	static std::string initDirectory_, stateDirectory_, archeDirectory_;
 };
 
 jeEnd

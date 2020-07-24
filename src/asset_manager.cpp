@@ -11,6 +11,9 @@ Contains the methods of asset_manager class
 /******************************************************************************/
 #include <thread>
 #include <lodepng.h>
+#include <stb_image.h>
+#include <Importer.hpp>
+#include <postprocess.h>
 
 #include <application.hpp>
 #include <debug_tools.hpp>
@@ -20,13 +23,7 @@ Contains the methods of asset_manager class
 #include <scene.hpp>
 #include <component_manager.hpp>
 #include <components.hpp>
-
 #include <mesh.hpp>
-
-#include <stb_image.h>
-#include <Importer.hpp>
-#include <postprocess.h>
-
 #include <math_util.hpp>
 
 jeBegin
@@ -36,7 +33,7 @@ std::vector<Texture> texturesLoaded;
 
 unsigned int TextureFromFile(const char* path, const std::string& directory);
 
-std::string	AssetManager::initDirectory_, AssetManager::assetDirectory_, 
+std::string	AssetManager::initDirectory_, 
 AssetManager::stateDirectory_, AssetManager::archeDirectory_;
 
 MeshMap AssetManager::meshMap_; 
@@ -58,9 +55,8 @@ bool AssetManager::set_bulit_in_components()
 	jeRegisterComponent(DebugRenderer);
 	jeRegisterComponent(Text);
 	jeRegisterComponent(Emitter);
-
-	//jeCheckComponentRegistration(jeRegisterComponent(Light));
-	//jeCheckComponentRegistration(jeRegisterComponent(Material));
+	jeRegisterComponent(Light);
+	//jeRegisterComponent(Material);
 
 	return false;
 }
@@ -81,8 +77,6 @@ void AssetManager::load_shaders() {
 
 void AssetManager::load_assets()
 {
-	AssetManager::set_asset_directory("../default/default.json");
-
 	// Read scene info
 	JsonParser::read_file(stateDirectory_.c_str());
 
@@ -104,7 +98,7 @@ void AssetManager::load_assets()
 	}
 
 	// Read asset info
-	JsonParser::read_file(assetDirectory_.c_str());
+	JsonParser::read_file("../default/default.json");
 
 	// Load textures 
 	const rapidjson::Value& textures = JsonParser::get_document()["Texture"];
@@ -520,8 +514,6 @@ const std::vector<Mesh*>& AssetManager::get_meshes(const char* key)
 }
 
 void AssetManager::set_initdata_directory(const char* dir) { initDirectory_.assign(dir); }
-
-void AssetManager::set_asset_directory(const char* dir) { assetDirectory_.assign(dir); }
 
 void AssetManager::set_scene_directory(const char* dir) { stateDirectory_.assign(dir); }
 

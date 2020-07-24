@@ -42,7 +42,10 @@ class Application {
 
 public:
 
-	static void run();
+	static bool initialize();
+	static void update();
+	static void close();
+
 	static void quit();
 
 	static bool cursor_hidden();
@@ -54,10 +57,6 @@ public:
 	static void activate_vsync(bool on);
 
 private:
-
-	static bool initialize();
-	static void update();
-	static void close();
 
 	static void gl_initialize();
 	static void event_update();

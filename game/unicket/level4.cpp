@@ -3,8 +3,6 @@
 #include "camera_controller.h"
 #include "pch.h"
 #include "model.hpp"
-#include "mesh.hpp"
-#include "model.hpp"
 
 jeBegin
 

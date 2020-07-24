@@ -28,7 +28,7 @@ void JEngine::register_scenes()
 	SceneManager::register_scene<Level5>("resource/scene/level5.json");
 
 	// set the first scene
-	SceneManager::set_first_scene<Level1>();
+	SceneManager::set_first_scene<Level5>();
 }
 
 bool JEngine::register_assets()
@@ -36,16 +36,10 @@ bool JEngine::register_assets()
 	// Get assets ready 
 	AssetManager::set_initdata_directory("resource/register/initData.json");
 	AssetManager::set_scene_directory("resource/register/scene.json");
-	AssetManager::set_asset_directory("resource/register/asset.json");
 	AssetManager::set_archetype_directory("resource/register/archetype.json");
 	
 	register_scenes();
 	register_builders();
 
 	return true;
-}
-
-void JEngine::run()
-{
-	Application::run();
 }

@@ -7,6 +7,7 @@ jeBegin
 class Shader;
 class Mesh {
 
+    friend class Light;
     friend class Model;
     friend class DebugRenderer;
     friend class GraphicSystem;

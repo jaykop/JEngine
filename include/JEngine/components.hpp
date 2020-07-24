@@ -8,3 +8,4 @@
 #include <animation_2d.hpp>
 #include <debug_renderer.hpp>
 #include <emitter.hpp>
+#include <light.hpp>

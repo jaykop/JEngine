@@ -3,7 +3,6 @@
 #include <application.hpp>
 #include <random.hpp>
 #include <json_parser.hpp>
-#include <debug_tools.hpp>
 #include <scene_manager.hpp>
 #include <asset_manager.hpp>
 #include <input_handler.hpp>
@@ -23,24 +22,6 @@ SDL_GLContext Application::context_ = nullptr;
 Application::AppData Application::data_ = { "demo", "resource/ico/main.ico", false, false, 800, 600, 0, 0 };
 
 const vec3 stdResolution(1.f / 800.f, 1.f / 600.f, 1.f);
-
-void Application::run()
-{
-	// pop a console window
-	DEBUG_LEAK_CHECKS(-1);
-	DEBUG_CREATE_CONSOLE();
-
-	// if initialization succeeded, run the app
-	if (initialize()) {
-
-		update();
-		close();
-	}
-
-	// destroy the console window
-	DEBUG_DESTROY_CONSOLE();
-	
-}
 
 void Application::activate_vsync(bool on)
 {

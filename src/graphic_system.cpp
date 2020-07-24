@@ -128,6 +128,7 @@ void GraphicSystem::update(float dt) {
 void GraphicSystem::close() {
 
 	renderers_.clear();
+	renderers_.shrink_to_fit();
 	mainCamera_ = nullptr;
 }
 
@@ -250,13 +251,13 @@ void GraphicSystem::resume()
 
 void GraphicSystem::update_lights(float dt)
 {
-	Shader* shader = shader_[SPRITE];
+	Shader* shader = shader_[LIGHT];
 	shader->use();
 	shader->set_uint("uint_lightSize", static_cast<unsigned>(lights_.size()));
 	
 	for (unsigned i = 0; i < lights_.size() ; ++i)
 	{
-		shader = shader_[SPRITE];
+		shader = shader_[LIGHT];
 		shader->use();
 
 		// Update shader uniform info
@@ -274,8 +275,7 @@ void GraphicSystem::update_lights(float dt)
 			float lightMax = std::fmaxf(std::fmaxf(ambientMax, diffuseMax), speculaMax);
 
 			// Get radius
-			lights_[i]->radius = (-Light::linear 
-				+ std::sqrtf(Light::linear * Light::linear - 4 * Light::quadratic 
+			float lightRadius = (-Light::linear + std::sqrtf(Light::linear * Light::linear - 4 * Light::quadratic 
 					* (Light::constant - (256.f / 5.f) * lightMax))) * 0.5f * Light::quadratic;
 
 			// Update light direction
@@ -289,7 +289,7 @@ void GraphicSystem::update_lights(float dt)
 			shader->set_vec3((str + sColor).c_str(), lights_[i]->specular);
 			shader->set_vec3((str + dColor).c_str(), lights_[i]->diffuse);
 			shader->set_float((str + fallOff).c_str(), lights_[i]->fallOff);
-			shader->set_float((str + radius).c_str(), lights_[i]->radius);
+			shader->set_float((str + radius).c_str(), lightRadius);
 			shader->set_float((str + innerAngle).c_str(), Math::deg_to_rad(lights_[i]->innerAngle));
 			shader->set_float((str + outerAngle).c_str(), Math::deg_to_rad(lights_[i]->outerAngle));
 

@@ -1,9 +1,11 @@
 #pragma once
+#include <vector>
 #include <vec4.hpp>
 #include <renderer.hpp>
 
 jeBegin
 
+class Mesh;
 class Light : public Renderer
 {
 
@@ -21,7 +23,7 @@ public:
     static vec3 kAmbientColor, fogColor;
 
     vec3 direction, ambient, diffuse, specular;
-    float innerAngle, outerAngle, fallOff, radius;
+    float innerAngle, outerAngle, fallOff;
     bool activate;
     LightType type;
 
@@ -35,7 +37,7 @@ protected:
 
 private:
 
-    unsigned texture;
+    std::vector<Mesh*> meshes_;
 
     Light() = delete;
     Light(const Light& /*copy*/) = delete;

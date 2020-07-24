@@ -23,6 +23,7 @@ private:
 
 	void init_basic();
 	void init_lights();
+	void init_models();
 
 	Object* light = nullptr, * model = nullptr;
 };
