@@ -25,7 +25,11 @@ private:
 	void init_lights();
 	void init_models();
 
-	Object* light = nullptr, * model = nullptr;
+	std::vector<int> spherePos;
+	std::vector<Object*> lights;
+
+	Object*  model = nullptr;
+
 };
 
 jeEnd

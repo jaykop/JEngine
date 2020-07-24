@@ -39,7 +39,7 @@ const std::vector<float> quadVertices =
 
 const std::vector<unsigned> quadIndices = { 2, 0, 1, 2, 3, 0 };
 
-const std::string type("mode"), position("position"), direction("direction"),
+const std::string type("mode"), position("position"),
 innerAngle("innerAngle"), outerAngle("outerAngle"), fallOff("fallOff"),
 aColor("aColor"), sColor("sColor"), dColor("dColor"), activate("activate"), radius("radius");
 
@@ -251,7 +251,6 @@ void GraphicSystem::resume()
 
 void GraphicSystem::update_lights(float dt)
 {
-	
 	for (unsigned i = 0; i < lights_.size(); ++i)
 	{
 		Shader* shader = shader_[MODEL];
@@ -276,12 +275,8 @@ void GraphicSystem::update_lights(float dt)
 					* (Light::constant - (256.f / 5.f) * lightMax))) * 0.5f * Light::quadratic;
 
 			// Update light direction
-			const vec3& pos = lights_[i]->transform_->position;
-			lights_[i]->direction = (vec3::zero - pos);
-			shader->set_vec3((str + type).c_str(), pos);
-
 			shader->set_int((str + type).c_str(), static_cast<int>(lights_[i]->type));
-			shader->set_vec3((str + type).c_str(), lights_[i]->direction);
+			shader->set_vec3((str + position).c_str(), lights_[i]->transform_->position);
 			shader->set_vec3((str + aColor).c_str(), lights_[i]->ambient);
 			shader->set_vec3((str + sColor).c_str(), lights_[i]->specular);
 			shader->set_vec3((str + dColor).c_str(), lights_[i]->diffuse);

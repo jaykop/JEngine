@@ -25,9 +25,9 @@ protected:
     void remove_from_system();
     void load(const rapidjson::Value& /*data*/);
 
-private:
-
     void draw(float dt) override;
+
+private:
 
     std::vector<Mesh*> meshes_;
 };

@@ -43,16 +43,13 @@ void Scene::load()
 
 	// Load textures 
 	const rapidjson::Value& textures = JsonParser::get_document()["Texture"];
-	if (!textures.Empty())
+	for (rapidjson::SizeType i = 0; i < textures.Size(); ++i) 
 	{
-		for (rapidjson::SizeType i = 0; i < textures.Size(); ++i) 
-		{
-			AssetManager::load_texture(textures[i]["Directory"].GetString(), textures[i]["Key"].GetString(),
-				&textures_);
-				jeDebugPrint("*AssetManager - Loaded image: %s.\n", textures[i]["Directory"].GetString());
-		}
+		AssetManager::load_texture(textures[i]["Directory"].GetString(), textures[i]["Key"].GetString(),
+			&textures_);
+			jeDebugPrint("*AssetManager - Loaded image: %s.\n", textures[i]["Directory"].GetString());
 	}
-
+	
 	// Load obj 
 	const rapidjson::Value& models = JsonParser::get_document()["Model"];
 	for (rapidjson::SizeType i = 0; i < models.Size(); ++i) {
@@ -64,27 +61,24 @@ void Scene::load()
 	// Load font
 	// Read font info
 	const rapidjson::Value& fonts = JsonParser::get_document()["Font"];
-	if (!fonts.Empty())
-	{
-		for (rapidjson::SizeType i = 0; i < fonts.Size(); ++i) {
+	for (rapidjson::SizeType i = 0; i < fonts.Size(); ++i) {
 
-			// Load default ascii characters (0 - 128)
-			AssetManager::load_font(fonts[i]["Directory"].GetString(),
-				fonts[i]["Key"].GetString(),
-				fonts[i]["Size"].GetUint(),
-				0, 128, &fonts_);
+		// Load default ascii characters (0 - 128)
+		AssetManager::load_font(fonts[i]["Directory"].GetString(),
+			fonts[i]["Key"].GetString(),
+			fonts[i]["Size"].GetUint(),
+			0, 128, &fonts_);
 
-			if (fonts[i].HasMember("Additional"))
-			{
-				// Load additional korean set
-				for (unsigned j = 0; j < fonts[i]["Additional"].Size(); ++j) {
-					AssetManager::load_font(fonts[i]["Directory"].GetString(),
-						fonts[i]["Key"].GetString(),
-						fonts[i]["Size"].GetUint(),
-						static_cast<unsigned long>(fonts[i]["Additional"][j][0].GetUint64()),
-						static_cast<unsigned long>(fonts[i]["Additional"][j][1].GetUint64()),
-						&fonts_);
-				}
+		if (fonts[i].HasMember("Additional"))
+		{
+			// Load additional korean set
+			for (unsigned j = 0; j < fonts[i]["Additional"].Size(); ++j) {
+				AssetManager::load_font(fonts[i]["Directory"].GetString(),
+					fonts[i]["Key"].GetString(),
+					fonts[i]["Size"].GetUint(),
+					static_cast<unsigned long>(fonts[i]["Additional"][j][0].GetUint64()),
+					static_cast<unsigned long>(fonts[i]["Additional"][j][1].GetUint64()),
+					&fonts_);
 			}
 		}
 	}

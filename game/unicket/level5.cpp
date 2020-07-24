@@ -7,11 +7,16 @@
 
 jeBegin
 
+const int NUMBER_OF_SPHERES = 16;
+const float DISTANCE_FROM_CENTER = 5.F;
+const float DEGREE_INCREMENT = 360 / (NUMBER_OF_SPHERES);
+const float ORBIT_SPEED = .5F;
+
 void Level5::initialize()
 {
 	init_basic();
-	init_lights();
-	init_models();
+	//init_lights();
+	//init_models();
 
 	// base init
 	Scene::initialize();
@@ -19,6 +24,15 @@ void Level5::initialize()
 
 void Level5::update(float dt)
 {
+	//for (int i = 0; i < NUMBER_OF_SPHERES; i++)
+	//{
+	//	spherePos[i] += dt * ORBIT_SPEED;
+
+	//	auto* trans = lights[i]->get_component<Transform>();
+	//	trans->position.x = DISTANCE_FROM_CENTER * cos(spherePos[i]);
+	//	trans->position.z = DISTANCE_FROM_CENTER * sin(spherePos[i]);
+	//}
+
 	// base update
 	Scene::update(dt);
 }
@@ -48,14 +62,29 @@ void Level5::init_basic()
 
 void Level5::init_lights()
 {
-	Object* light1 = ObjectManager::create_object("light1");
-	light1->add_component<Light>();
-	auto* trans = light1->get_component<Transform>();
-	trans->scale.set(1.f, 1.f, 1.f);
-	trans->position.set(0.f, 0.f, 0.f);
-	register_object(light1);
-}
+	//spherePos.resize(NUMBER_OF_SPHERES);
+	//
+	//std::string name("light");
 
+	//for (int i = 0; i < NUMBER_OF_SPHERES; ++i) {
+
+	//	// Set deg to initialize
+	//	spherePos[i] = 2 * i * Math::rad_to_deg(DEGREE_INCREMENT);
+
+	//	// light object
+	//	Object* obj = ObjectManager::create_object(std::string(name + std::to_string(i)).c_str());
+	//	obj->add_component<Light>();
+	//	auto* trans = obj->get_component<Transform>();
+	//	auto* light = obj->get_component<Light>();
+	//	trans->scale.set(1.f, 1.f, 1.f);
+	//	trans->position.x = DISTANCE_FROM_CENTER * cos(spherePos[i]);
+	//	trans->position.z = DISTANCE_FROM_CENTER * sin(spherePos[i]);
+	//	light->type = Light::LightType::SPOT;
+	//	register_object(obj);
+
+	//	lights.emplace_back(obj);
+	//}
+}
 
 void Level5::init_models()
 {

@@ -44,7 +44,7 @@ const char* Object::get_name()
 void Object::add_component(const char* componentName)
 {
 	const char* typeName = ComponentManager::key_to_type(componentName);
-	auto found = components_.find(typeName);
+	const auto& found = components_.find(typeName);
 
 	DEBUG_ASSERT(found == components_.end(), "Trying to add an existing component!");
 

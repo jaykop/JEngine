@@ -10,8 +10,6 @@ uniform mat4 m4_rotate;
 uniform mat4 m4_viewport;
 uniform mat4 m4_projection;
 
-uniform bool boolean_light;
-
 ////////////////////////////
 // out variables
 ////////////////////////////
@@ -28,13 +26,8 @@ void main()
 	gl_Position = mvp * v4_position;
     v2_outTexCoord = uvPosition;  
 
-	// Lighting attributes
-	if (boolean_light) {
-
-		// Lighing attributes
-		v3_outFragmentPosition = vec3(transpose(model) * v4_position);
-
-		v3_outNormal = mat3(inverse(model)) * normal;
-	}	
+	// Lighing attributes
+	v3_outFragmentPosition = vec3(transpose(model) * v4_position);
+	v3_outNormal = mat3(inverse(model)) * normal;
 } 
 

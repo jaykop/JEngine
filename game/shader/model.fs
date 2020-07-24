@@ -24,7 +24,7 @@ const float ns = 25;
 struct Light{
 	int mode;
 	bool activate;
-	vec3 position, direction;
+	vec3 position;
 	vec3 aColor, dColor, sColor;
 	float innerAngle, outerAngle, fallOff;
 	float radius;
@@ -52,6 +52,7 @@ uniform float constant, linear, quadratic;
 
 uniform float zFar, zNear;
 uniform vec3 v3_cameraPosition;
+uniform vec4 v4_color;
 
 ////////////////////////////
 // in variables
@@ -77,7 +78,7 @@ vec3 GetDirLight(Light light, vec3 fragPos, vec3 viewDir,
 		* pow(max(dot(reflectDir, viewDir), 0.0), ns)
 		* light.sColor* sSpec;
 	
-	return 	(ambient + specular + diffuse );
+	return 	(ambient + specular + diffuse);
 }
 
 vec3 GetPointLight(Light light, vec3 fragPos, vec3 viewDir, 
@@ -106,7 +107,7 @@ vec3 GetSpotLight(Light light, vec3 fragPos, vec3 viewDir,
 	vec3 lightDir = normalize(light.position - fragPos);
 	float distance = length(light.position - fragPos);
 	float attenuation = min(1.0 / (constant + linear * distance + quadratic * (distance * distance)), 1);			
-	float alpha = dot(normalize(-light.direction), lightDir);
+	float alpha = dot(normalize(-lightDir), lightDir);
 	float spotlightEffect = clamp(
 		(alpha - cos(light.outerAngle))
 		/ (cos(light.innerAngle) - cos(light.outerAngle))
@@ -197,15 +198,15 @@ void main()
 				}
 
 				// Add all those three and multiply by color of object
-				local = vec3(1,0,0);//0.1 * kAmbi + project;
+				local += 0.1 * kAmbi + project;
 			}
 		}
 	}
 	
 	float distanceToCamera = length(v3_cameraPosition - FragPos);
 	float S = (zFar - distanceToCamera) / (zFar - zNear);
-	
-	v4_fragColor = vec4(local, 1.f);//vec4(S*local + (1-S)*sFog, 1.f);
+	local *= v4_color.xyz;
+	v4_fragColor = vec4(S*local + (1-S)*sFog, v4_color.w);
 		
 	break;
 	}	

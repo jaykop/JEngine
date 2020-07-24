@@ -14,7 +14,7 @@ class Light : public Renderer
 
 public:
 
-    enum class LightType { /*NORMAL,*/ POINT, DIRECTIONAL, SPOT };
+    enum class LightType { NONE, POINT, DIRECTIONAL, SPOT };
 
     Light(Object* owner);
     virtual ~Light();
@@ -22,7 +22,7 @@ public:
     static float constant, linear, quadratic;
     static vec3 kAmbientColor, fogColor;
 
-    vec3 direction, ambient, diffuse, specular;
+    vec3 ambient, diffuse, specular;
     float innerAngle, outerAngle, fallOff;
     bool activate;
     LightType type;

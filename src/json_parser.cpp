@@ -47,7 +47,7 @@ void JsonParser::clear_document()
 
 void JsonParser::close() 
 {
-	
+	clear_document();
 }
 
 void JsonParser::load_objects()

@@ -29,14 +29,13 @@ protected:
 	virtual void remove_from_system() = 0;
 	virtual void load(const rapidjson::Value& data) = 0;
 
-	Component(Object* owner) : owner_(owner), typeName_(nullptr) {}
+	Component(Object* owner) : owner_(owner) {}
 	virtual ~Component() {}
 
 private:
 
 	Object* owner_ = nullptr;
 	bool bulitIn_ = false;
-	const char* typeName_;
 
 	// No default constructor
 	Component() = delete;
