@@ -27,6 +27,9 @@ private:
 
 	Object* renderer_2d = nullptr;
 
+	std::vector<int> spherePos;
+	std::vector<Object*> lights;
+
 };
 
 jeEnd

@@ -38,7 +38,7 @@ public:
 protected:
 
 	Scene(const char* name, const char* dir) : name_(name), directory_(dir) {}
-	~Scene() {};
+	virtual	~Scene() {};
 
 	virtual void load();
 	virtual void initialize();
