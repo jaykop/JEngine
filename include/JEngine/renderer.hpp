@@ -18,7 +18,11 @@ class Renderer : public Component {
 public:
 
 	enum class ProjectType { PERSPECTIVE, ORTHOGONAL };
-	enum class RenderType { NONE, POSITION, NORMAL };
+	enum class RenderType { NONE, POSITION, NORMAL, DIFFUSE };
+
+	// static members
+	static bool renderObj;
+	static RenderType renderType;
 
 	const static int IS_FIXED = 0x1000;
 	const static int IS_FLIPPED = 0x0100;
@@ -51,10 +55,6 @@ protected:
 
 	Transform* transform_ = nullptr;
 	Renderer* parent_ = nullptr;
-
-	// static members
-	static bool renderObj_;
-	static RenderType renderType_;
 
 private:
 

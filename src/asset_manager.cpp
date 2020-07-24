@@ -647,18 +647,18 @@ Mesh* AssetManager::process_mesh(aiMesh* mesh, const aiScene* scene)
 	// normal: texture_normalN
 
 	// 1. diffuse maps
-	std::vector<Texture> diffuseMaps = load_material_textures(material, aiTextureType_DIFFUSE, "texture_diffuse");
+	std::vector<Texture> diffuseMaps = load_material_textures(material, aiTextureType_DIFFUSE, "gDiffuse");
 	textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
 	// 2. specular maps
-	std::vector<Texture> specularMaps = load_material_textures(material, aiTextureType_SPECULAR, "texture_specular");
+	std::vector<Texture> specularMaps = load_material_textures(material, aiTextureType_SPECULAR, "gSpecular");
 	textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
-	// 3. normal maps
-	std::vector<Texture> normalMaps = load_material_textures(material, aiTextureType_HEIGHT, "texture_normal");
-	textures.insert(textures.end(), normalMaps.begin(), normalMaps.end());
-	// 4. height maps
-	std::vector<Texture> heightMaps = load_material_textures(material, aiTextureType_AMBIENT, "texture_height");
+	// 3. height maps
+	std::vector<Texture> heightMaps = load_material_textures(material, aiTextureType_AMBIENT, "gAmbient");
 	textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
-
+	//// 4. normal maps
+	//std::vector<Texture> normalMaps = load_material_textures(material, aiTextureType_HEIGHT, "texture_normal");
+	//textures.insert(textures.end(), normalMaps.begin(), normalMaps.end());
+	
 	// return a mesh object created from the extracted mesh data
 	return new Mesh(vertices, indices, textures);
 }

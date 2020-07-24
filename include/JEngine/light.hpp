@@ -14,7 +14,7 @@ class Light : public Renderer
 
 public:
 
-    enum class LightType { NORMAL, DIRECTIONAL, SPOT, POINT};
+    enum class LightType { /*NORMAL,*/ POINT, DIRECTIONAL, SPOT };
 
     Light(Object* owner);
     virtual ~Light();

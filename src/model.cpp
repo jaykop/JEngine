@@ -1,20 +1,17 @@
 #include <model.hpp>
 #include <fstream>
 #include <sstream>
+#include <glew.h>
+#include <map>
 
 #include <graphic_system.hpp>
 #include <math_util.hpp>
-
-#include <glew.h>
-
-#include <map>
 #include <mesh.hpp>
-#include <iostream>
-
+#include <mat4.hpp>
 #include <shader.hpp>
 #include <camera.hpp>
+#include <light.hpp>
 #include <transform.hpp>
-#include <mat4.hpp>
 
 jeBegin
 
@@ -51,6 +48,15 @@ void Model::draw(float /*dt*/)
     Camera* camera = GraphicSystem::get_camera();
     Shader* shader = GraphicSystem::shader_[GraphicSystem::MODEL];
     shader->use();
+
+    shader->set_uint("lightSize", GraphicSystem::get_num_of_lights());
+
+    // shader->set_vec3("gAmb", ambient);
+    shader->set_float("zNear", camera->near_);
+    shader->set_float("zFar", camera->far_);
+    shader->set_vec3("fogColor", Light::fogColor);
+    shader->set_vec3("kAmbient", Light::kAmbientColor);
+    shader->set_int("targetType", static_cast<int>(Renderer::renderType));
 
     shader->set_matrix("m4_translate", mat4::translate(transform_->position));
     shader->set_matrix("m4_scale", mat4::scale(transform_->scale));

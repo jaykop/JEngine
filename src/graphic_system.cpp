@@ -251,13 +251,10 @@ void GraphicSystem::resume()
 
 void GraphicSystem::update_lights(float dt)
 {
-	Shader* shader = shader_[LIGHT];
-	shader->use();
-	shader->set_uint("uint_lightSize", static_cast<unsigned>(lights_.size()));
 	
-	for (unsigned i = 0; i < lights_.size() ; ++i)
+	for (unsigned i = 0; i < lights_.size(); ++i)
 	{
-		shader = shader_[LIGHT];
+		Shader* shader = shader_[MODEL];
 		shader->use();
 
 		// Update shader uniform info
@@ -403,6 +400,11 @@ void GraphicSystem::close_graphics()
 float GraphicSystem::get_width() { return width_; }
 
 float GraphicSystem::get_height() { return height_; }
+
+unsigned GraphicSystem::get_num_of_lights()
+{
+	return static_cast<unsigned>(lights_.size());
+}
 
 //void GraphicSystem::RenderToFramebuffer() const
 //{

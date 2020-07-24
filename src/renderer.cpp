@@ -22,8 +22,8 @@ jeBegin
 
 using namespace Math;
 
-bool Renderer::renderObj_ = true;
-Renderer::RenderType Renderer::renderType_ = Renderer::RenderType::NONE;
+bool Renderer::renderObj = true;
+Renderer::RenderType Renderer::renderType = Renderer::RenderType::NONE;
 
 Renderer::Renderer(Object* owner)
 	: Component(owner),

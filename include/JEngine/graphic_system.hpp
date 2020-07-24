@@ -62,6 +62,7 @@ public:
 
 	static float get_width();
 	static float get_height();
+	static unsigned get_num_of_lights();
 	static void set_camera(Camera* camera);
 	static Camera* get_camera();
 
