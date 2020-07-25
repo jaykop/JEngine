@@ -27,6 +27,7 @@ struct Light{
 	vec3 position;
 	vec3 aColor, dColor, sColor;
 	float innerAngle, outerAngle, fallOff;
+	float constant, linear, quadratic;
 	float radius;
 };
 
@@ -48,7 +49,6 @@ uniform vec3 kAmbient;
 uniform Light light[MAX_LIGHTS];
 uniform uint lightSize; 
 uniform int targetType;
-uniform float constant, linear, quadratic;
 
 uniform float zFar, zNear;
 uniform vec3 v3_cameraPosition;
@@ -82,11 +82,10 @@ vec3 GetDirLight(Light light, vec3 fragPos, vec3 viewDir,
 }
 
 vec3 GetPointLight(Light light, vec3 fragPos, vec3 viewDir, 
-	vec3 sAmbi, vec3 sDiff, vec3 sSpec, vec3 normal)
+	vec3 sAmbi, vec3 sDiff, vec3 sSpec, vec3 normal, float distance)
 {
 	vec3 lightDir = normalize(light.position - fragPos);
-	float distance = length(light.position - fragPos);
-	float attenuation = min(1.0 / (constant + linear * distance + quadratic * (distance * distance)), 1);			
+	float attenuation = min(1.0 / (light.constant + light.linear * distance + light.quadratic * (distance * distance)), 1);			
 			
 	// Calculate ambient  
 	vec3 ambient = 0.1 * light.aColor * sAmbi;
@@ -102,11 +101,10 @@ vec3 GetPointLight(Light light, vec3 fragPos, vec3 viewDir,
 }
 
 vec3 GetSpotLight(Light light, vec3 fragPos, vec3 viewDir, 
-	vec3 sAmbi, vec3 sDiff, vec3 sSpec, vec3 normal)
+	vec3 sAmbi, vec3 sDiff, vec3 sSpec, vec3 normal, float distance)
 {
 	vec3 lightDir = normalize(light.position - fragPos);
-	float distance = length(light.position - fragPos);
-	float attenuation = min(1.0 / (constant + linear * distance + quadratic * (distance * distance)), 1);			
+	float attenuation = min(1.0 / (light.constant + light.linear * distance + light.quadratic * (distance * distance)), 1);			
 	float alpha = dot(normalize(lightDir), lightDir);
 	float spotlightEffect = clamp(
 		(alpha - cos(light.outerAngle))
@@ -179,9 +177,9 @@ void main()
 			switch (light[index].mode)
 			{
 			case POINTLIGHT:
-			if (distance < light[index].radius)
+			//if (distance < light[index].radius)
 				project = GetPointLight(light[index], FragPos, viewDir, 
-				sAmbi, sDiff, sSpec, Normal);
+				sAmbi, sDiff, sSpec, Normal, distance);
 			break;
 			
 			case DIRECTIONALLIGHT:
@@ -190,9 +188,9 @@ void main()
 			break;
 			
 			case SPOTLIGHT:
-			if (distance < light[index].radius)
+			//if (distance < light[index].radius)
 				project = GetSpotLight(light[index], FragPos, viewDir, 
-				sAmbi, sDiff, sSpec, Normal);
+				sAmbi, sDiff, sSpec, Normal, distance);
 			break;
 			}
 

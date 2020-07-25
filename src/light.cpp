@@ -11,12 +11,13 @@ jeBegin
 
 jeDefineComponentBuilder(Light);
 
-float Light::constant = 1.f, Light::linear = 0.7f, Light::quadratic = 1.8f;
 vec3 Light::kAmbientColor = vec3::zero, Light::fogColor = vec3::zero;
 
 Light::Light(Object* owner)
 	: Renderer(owner), ambient(vec3::one), diffuse(vec3::one), specular(vec3::one),
-	innerAngle(24.5f), outerAngle(35.5f), fallOff(1.f), activate(true), type(LightType::POINT)
+	innerAngle(24.5f), outerAngle(35.5f), fallOff(1.f), 
+    constant(1.f), linear(/*0.7f*/0.09f), quadratic(/*1.8f*/0.032f), 
+    activate(true), type(LightType::POINT)
 {
     meshes_ = AssetManager::get_meshes("cube");
 }

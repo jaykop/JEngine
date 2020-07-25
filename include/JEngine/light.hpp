@@ -19,11 +19,11 @@ public:
     Light(Object* owner);
     virtual ~Light();
 
-    static float constant, linear, quadratic;
     static vec3 kAmbientColor, fogColor;
 
     vec3 ambient, diffuse, specular;
     float innerAngle, outerAngle, fallOff;
+    float constant, linear, quadratic;
     bool activate;
     LightType type;
 

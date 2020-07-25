@@ -28,9 +28,6 @@ private:
 	std::vector<float> spherePos;
 	std::vector<Object*> lights;
 
-	Object*  model = nullptr;
-	Object* cube = nullptr;
-
 };
 
 jeEnd

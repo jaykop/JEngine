@@ -42,7 +42,7 @@ const std::vector<unsigned> quadIndices = { 2, 0, 1, 2, 3, 0 };
 const std::string type("].mode"), position("].position"),
 innerAngle("].innerAngle"), outerAngle("].outerAngle"), fallOff("].fallOff"),
 aColor("].aColor"), sColor("].sColor"), dColor("].dColor"), activate("].activate"), radius("].radius"),
-constant("constant"), linear("linear"), quadratic("quadratic");
+constant("].constant"), linear("].linear"), quadratic("].quadratic");
 
 vec3 GraphicSystem::resScaler_;
 GraphicSystem::Shaders GraphicSystem::shader_;
@@ -261,10 +261,6 @@ void GraphicSystem::update_lights(float dt)
 		std::string str("light[" + std::to_string(i));
 		shader->set_bool((str + activate).c_str(), lights_[i]->activate);
 
-		shader->set_float(constant.c_str(), Light::constant);
-		shader->set_float(linear.c_str(), Light::linear);
-		shader->set_float(quadratic.c_str(), Light::quadratic);
-
 		// Set strings as a static
 		if (lights_[i]->activate) {
 
@@ -276,12 +272,18 @@ void GraphicSystem::update_lights(float dt)
 			float lightMax = std::fmaxf(std::fmaxf(ambientMax, diffuseMax), speculaMax);
 
 			// Get radius
-			float lightRadius = (-Light::linear + std::sqrtf(Light::linear * Light::linear - 4 * Light::quadratic 
-					* (Light::constant - (256.f / 5.f) * lightMax))) * 0.5f * Light::quadratic;
+			float lightConstant = lights_[i]->constant;
+			float lightLinear = lights_[i]->linear;
+			float lightQuadratic = lights_[i]->quadratic;
+			float lightRadius = (-lightLinear + std::sqrtf(lightLinear * lightLinear
+				- 4 * lightQuadratic * (lightConstant - (256.f / 5.f) * lightMax))) * 0.5f * lightQuadratic;
 
 			// Update light direction
 			shader->set_int((str + type).c_str(), static_cast<int>(lights_[i]->type));
 			shader->set_vec3((str + position).c_str(), lights_[i]->transform_->position);
+			shader->set_float((str + constant).c_str(), lightConstant);
+			shader->set_float((str + linear).c_str(), lightLinear);
+			shader->set_float((str + quadratic).c_str(), lightQuadratic);
 			shader->set_vec3((str + aColor).c_str(), lights_[i]->ambient);
 			shader->set_vec3((str + sColor).c_str(), lights_[i]->specular);
 			shader->set_vec3((str + dColor).c_str(), lights_[i]->diffuse);
