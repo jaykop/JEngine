@@ -7,7 +7,7 @@
 
 jeBegin
 
-const int NUMBER_OF_SPHERES = 1;
+const int NUMBER_OF_SPHERES = 2;
 const float DISTANCE_FROM_CENTER = 10.F;
 const float DEGREE_INCREMENT = 360 / (NUMBER_OF_SPHERES);
 const float ORBIT_SPEED = .5F;
@@ -97,7 +97,7 @@ void Level5::init_lights()
 		trans->scale.set(.3f, .3f, .3f);
 		trans->position.x = DISTANCE_FROM_CENTER * cos(spherePos[i]);
 		trans->position.z = DISTANCE_FROM_CENTER * sin(spherePos[i]);
-		light->type = Light::LightType::SPOT;
+		light->type = Light::LightType::POINT;
 		register_object(obj);
 
 		lights.emplace_back(obj);
@@ -111,7 +111,8 @@ void Level5::init_models()
 	auto* md3 = cube->get_component<Model>();
 	auto* trans3 = cube->get_component<Transform>();
 	md3->set_meshes(AssetManager::get_meshes("cube"));
-	// md3->color.set(1, 0, 0, 1);
+	md3->shadow = true;
+	md3->color.set(1, 0, 0, 1);
 	trans3->position.set(-5.f, 0.f, 0.f);
 	trans3->set_euler_deg(0.f, 0.f, 0.f);
 	trans3->scale.set(1.f, 1.f, 1.f);
@@ -123,6 +124,7 @@ void Level5::init_models()
 	auto* trans4 = sphere->get_component<Transform>();
 	md4->set_meshes(AssetManager::get_meshes("sphere"));
 	md4->color.set(0, 0, 1, 1);
+	md4->shadow = true;
 	trans4->position.set(5.f, 0.f, 0.f);
 	trans3->set_euler_deg(0.f, 0.f, 0.f);
 	trans4->scale.set(1.f, 1.f, 1.f);

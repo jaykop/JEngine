@@ -41,7 +41,9 @@ const std::vector<unsigned> quadIndices = { 2, 0, 1, 2, 3, 0 };
 
 const std::string type("].mode"), position("].position"),
 innerAngle("].innerAngle"), outerAngle("].outerAngle"), fallOff("].fallOff"),
-aColor("].aColor"), sColor("].sColor"), dColor("].dColor"), activate("].activate"), radius("].radius"),
+aColor("].aColor"), sColor("].sColor"), dColor("].dColor"), 
+aIntense("].aIntensity"), dIntense("].dIntensity"), sIntense("].sIntensity"),
+activate("].activate"), radius("].radius"),
 constant("].constant"), linear("].linear"), quadratic("].quadratic");
 
 vec3 GraphicSystem::resScaler_;
@@ -128,6 +130,8 @@ void GraphicSystem::update(float dt) {
 
 void GraphicSystem::close() {
 
+	lights_.clear();
+	cameras_.clear();
 	renderers_.clear();
 	renderers_.shrink_to_fit();
 	mainCamera_ = nullptr;
@@ -266,17 +270,17 @@ void GraphicSystem::update_lights(float dt)
 
 			/*Calculate the light max and set the radius for light volume optimization*/
 			// Calculate the light max
-			float ambientMax = std::fmaxf(std::fmaxf(lights_[i]->ambient.x, lights_[i]->ambient.y),lights_[i]->ambient.z);
-			float diffuseMax = std::fmaxf(std::fmaxf(lights_[i]->diffuse.x, lights_[i]->diffuse.y),lights_[i]->diffuse.z);
-			float speculaMax = std::fmaxf(std::fmaxf(lights_[i]->specular.x, lights_[i]->specular.y), lights_[i]->specular.z);
-			float lightMax = std::fmaxf(std::fmaxf(ambientMax, diffuseMax), speculaMax);
+			//float ambientMax = std::fmaxf(std::fmaxf(lights_[i]->ambient.x, lights_[i]->ambient.y),lights_[i]->ambient.z);
+			//float diffuseMax = std::fmaxf(std::fmaxf(lights_[i]->diffuse.x, lights_[i]->diffuse.y),lights_[i]->diffuse.z);
+			//float speculaMax = std::fmaxf(std::fmaxf(lights_[i]->specular.x, lights_[i]->specular.y), lights_[i]->specular.z);
+			//float lightMax = std::fmaxf(std::fmaxf(ambientMax, diffuseMax), speculaMax);
 
 			// Get radius
 			float lightConstant = lights_[i]->constant;
 			float lightLinear = lights_[i]->linear;
 			float lightQuadratic = lights_[i]->quadratic;
-			float lightRadius = (-lightLinear + std::sqrtf(lightLinear * lightLinear
-				- 4 * lightQuadratic * (lightConstant - (256.f / 5.f) * lightMax))) * 0.5f * lightQuadratic;
+			//float lightRadius = (-lightLinear + std::sqrtf(lightLinear * lightLinear
+			//	- 4 * lightQuadratic * (lightConstant - (256.f / 5.f) * lightMax))) * 0.5f * lightQuadratic;
 
 			// Update light direction
 			shader->set_int((str + type).c_str(), static_cast<int>(lights_[i]->type));
@@ -287,8 +291,11 @@ void GraphicSystem::update_lights(float dt)
 			shader->set_vec3((str + aColor).c_str(), lights_[i]->ambient);
 			shader->set_vec3((str + sColor).c_str(), lights_[i]->specular);
 			shader->set_vec3((str + dColor).c_str(), lights_[i]->diffuse);
+			shader->set_float((str + aIntense).c_str(), lights_[i]->ambientIntensity);
+			shader->set_float((str + dIntense).c_str(), lights_[i]->diffuseIntensity);
+			shader->set_float((str + sIntense).c_str(), lights_[i]->specularIntensity);
 			shader->set_float((str + fallOff).c_str(), lights_[i]->fallOff);
-			shader->set_float((str + radius).c_str(), lightRadius);
+			//shader->set_float((str + radius).c_str(), lightRadius);
 			shader->set_float((str + innerAngle).c_str(), Math::deg_to_rad(lights_[i]->innerAngle));
 			shader->set_float((str + outerAngle).c_str(), Math::deg_to_rad(lights_[i]->outerAngle));
 

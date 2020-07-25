@@ -10,14 +10,13 @@ class Model : public Renderer
 {
 public:
 
-    bool gammaCorrection;
-
     Model(Object* owner);
     virtual ~Model();
 
     void set_meshes(std::vector<Mesh*> meshes);
 
     vec4 color;
+    bool gammaCorrection, shadow;
 
 protected:
 

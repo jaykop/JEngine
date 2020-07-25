@@ -19,7 +19,7 @@ jeDefineComponentBuilder(Model);
 
 // constructor, expects a filepath to a 3D model.
 Model::Model(Object* owner)
-    : Renderer(owner), gammaCorrection(false), color(vec4::one)
+    : Renderer(owner), color(vec4::one), gammaCorrection(false), shadow(false)
 {
 }
 
@@ -49,19 +49,9 @@ void Model::draw(float /*dt*/)
     Shader* shader = GraphicSystem::shader_[GraphicSystem::MODEL];
     shader->use();
 
-    shader->set_uint("lightSize", GraphicSystem::get_num_of_lights());
-
-    // shader->set_vec3("gAmb", ambient);
-    shader->set_float("zNear", camera->near_);
-    shader->set_float("zFar", camera->far_);
-    shader->set_vec3("fogColor", Light::fogColor);
-    shader->set_vec3("kAmbient", Light::kAmbientColor);
-    shader->set_int("targetType", static_cast<int>(Renderer::renderType));
-
     shader->set_matrix("m4_translate", mat4::translate(transform_->position));
     shader->set_matrix("m4_scale", mat4::scale(transform_->scale));
     shader->set_matrix("m4_rotate", transform_->orientation.to_mat4());
-    shader->set_vec3("v3_cameraPosition", camera->position);
     shader->set_bool("boolean_bilboard", (status & IS_BILBOARD) == IS_BILBOARD);
     shader->set_vec4("v4_color", color);
 
@@ -111,8 +101,19 @@ void Model::draw(float /*dt*/)
         shader->set_matrix("m4_parentRotate", pTransform->orientation.to_mat4());
     }
 
-    //if (pModel->pMaterial_ && isLight_)
-    //	LightingEffectPipeline(pModel->pMaterial_);
+    shader->set_bool("shadow", shadow);
+    if (shadow)
+    {
+        // shader->set_vec3("gAmb", ambient);
+        shader->set_uint("lightSize", GraphicSystem::get_num_of_lights());
+        shader->set_vec3("v3_cameraPosition", camera->position);
+        shader->set_float("zNear", camera->near_);
+        shader->set_float("zFar", camera->far_);
+        shader->set_vec3("fogColor", Light::fogColor);
+        shader->set_vec3("kAmbient", Light::kAmbientColor);
+        shader->set_int("targetType", static_cast<int>(Renderer::renderType));
+        //	LightingEffectPipeline(pModel->pMaterial_);
+    }
 
     glEnable(GL_BLEND);
     glEnable(GL_DEPTH_TEST);

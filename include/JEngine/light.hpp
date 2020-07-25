@@ -22,6 +22,7 @@ public:
     static vec3 kAmbientColor, fogColor;
 
     vec3 ambient, diffuse, specular;
+    float ambientIntensity, diffuseIntensity, specularIntensity;
     float innerAngle, outerAngle, fallOff;
     float constant, linear, quadratic;
     bool activate;

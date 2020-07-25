@@ -23,7 +23,8 @@ public:
 	void run_animation();
 
 	vec4 color;
-	
+	bool gammaCorrection, shadow;
+
 protected:
 
 	virtual void add_to_system();

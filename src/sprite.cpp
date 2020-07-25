@@ -4,6 +4,7 @@
 #include <graphic_system.hpp>
 #include <object.hpp>
 
+#include <light.hpp>
 #include <camera.hpp>
 #include <transform.hpp>
 #include <mat4.hpp>
@@ -13,7 +14,8 @@ jeBegin
 jeDefineComponentBuilder(Sprite);
 
 Sprite::Sprite(Object* owner)
-	: Renderer(owner), color(vec4::one), animation_ (nullptr), texture_(0)
+	: Renderer(owner), color(vec4::one), gammaCorrection(false), shadow(false),
+	animation_ (nullptr), texture_(0)
 {
 	if (!owner->has_component<Animation2D>())
 		owner->add_component<Animation2D>();
@@ -50,7 +52,6 @@ void Sprite::draw(float /*dt*/)
 	shader->set_matrix("m4_translate", mat4::translate(transform_->position));
 	shader->set_matrix("m4_scale", mat4::scale(transform_->scale));
 	shader->set_matrix("m4_rotate", transform_->orientation.to_mat4());
-	shader->set_vec3("v3_cameraPosition", camera->position);
 	shader->set_bool("boolean_bilboard", (status & IS_BILBOARD) == IS_BILBOARD);
 	shader->set_bool("boolean_flip", (status & IS_FLIPPED) == IS_FLIPPED);
 	shader->set_vec4("v4_color", color);
@@ -103,8 +104,19 @@ void Sprite::draw(float /*dt*/)
 		shader->set_matrix("m4_parentRotate", pTransform->orientation.to_mat4());
 	}
 
-	//if (pModel->pMaterial_ && isLight_)
-	//	LightingEffectPipeline(pModel->pMaterial_);
+	shader->set_bool("shadow", shadow);
+	if (shadow)
+	{
+		// shader->set_vec3("gAmb", ambient);
+		shader->set_uint("lightSize", GraphicSystem::get_num_of_lights());
+		shader->set_vec3("v3_cameraPosition", camera->position);
+		shader->set_float("zNear", camera->near_);
+		shader->set_float("zFar", camera->far_);
+		shader->set_vec3("fogColor", Light::fogColor);
+		shader->set_vec3("kAmbient", Light::kAmbientColor);
+		shader->set_int("targetType", static_cast<int>(Renderer::renderType));
+		//	LightingEffectPipeline(pModel->pMaterial_);
+	}
 
 	glEnable(GL_BLEND);
 	glEnable(GL_DEPTH_TEST);

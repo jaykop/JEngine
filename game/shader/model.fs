@@ -26,6 +26,7 @@ struct Light{
 	bool activate;
 	vec3 position;
 	vec3 aColor, dColor, sColor;
+	float aIntensity, dIntensity, sIntensity;
 	float innerAngle, outerAngle, fallOff;
 	float constant, linear, quadratic;
 	float radius;
@@ -34,6 +35,9 @@ struct Light{
 ////////////////////////////
 // uniform variables
 ////////////////////////////
+
+uniform bool shadow;
+uniform vec4 v4_color;
 
 uniform sampler2D gPosition;
 uniform sampler2D gNormal;
@@ -52,7 +56,6 @@ uniform int targetType;
 
 uniform float zFar, zNear;
 uniform vec3 v3_cameraPosition;
-uniform vec4 v4_color;
 
 ////////////////////////////
 // in variables
@@ -65,16 +68,46 @@ in vec3 v3_outFragmentPosition;
 // function declarations
 ////////////////////////////
 vec3 GetDirLight(Light light, vec3 fragPos, vec3 viewDir, 
+	vec3 sAmbi, vec3 sDiff, vec3 sSpec, vec3 normal);
+vec3 GetPointLight(Light light, vec3 fragPos, vec3 viewDir, 
+	vec3 sAmbi, vec3 sDiff, vec3 sSpec, vec3 normal, float distance);
+vec3 GetSpotLight(Light light, vec3 fragPos, vec3 viewDir, 
+	vec3 sAmbi, vec3 sDiff, vec3 sSpec, vec3 normal, float distance);
+void LightingEffect(vec3 sDiff, vec3 sAmbi, vec3 sSpec);
+
+////////////////////////////
+// entry point
+////////////////////////////
+void main()
+{      
+	vec3 sDiff = texture(gDiffuse, v2_outTexCoord).rgb;
+	vec3 sSpec = texture(gSpecular, v2_outTexCoord).rgb;
+	vec3 sAmbi = texture(gAmbient, v2_outTexCoord).rgb;
+	
+	if (shadow)
+		LightingEffect(sDiff, sAmbi, sSpec);
+	
+	else
+	{
+		v4_fragColor.xyz = ((sDiff + sSpec + sAmbi) / 3) * v4_color.xyz;
+		v4_fragColor.w = v4_color.w;
+	}
+}
+
+////////////////////////////
+// function definitions
+////////////////////////////
+vec3 GetDirLight(Light light, vec3 fragPos, vec3 viewDir, 
 	vec3 sAmbi, vec3 sDiff, vec3 sSpec, vec3 normal)
 {
 	vec3 lightDir = normalize(light.position - fragPos);
 	// Calculate ambient  
-	vec3 ambient = 0.1 * light.aColor * sAmbi;
+	vec3 ambient = light.aIntensity * light.aColor * sAmbi;
 	// Calculate diffuse
-	vec3 diffuse = max(dot(normal, lightDir), 0.0) * light.dColor * 0.5* sDiff;
+	vec3 diffuse = max(dot(normal, lightDir), 0.0) * light.dColor * light.dIntensity * sDiff;
 	// Calculate specular
 	vec3 reflectDir = 2*(dot(normal, lightDir)) * normal - lightDir;
-	vec3 specular = 0.5
+	vec3 specular = light.sIntensity
 		* pow(max(dot(reflectDir, viewDir), 0.0), ns)
 		* light.sColor* sSpec;
 	
@@ -88,12 +121,12 @@ vec3 GetPointLight(Light light, vec3 fragPos, vec3 viewDir,
 	float attenuation = min(1.0 / (light.constant + light.linear * distance + light.quadratic * (distance * distance)), 1);			
 			
 	// Calculate ambient  
-	vec3 ambient = 0.1 * light.aColor * sAmbi;
+	vec3 ambient = light.aIntensity * light.aColor * sAmbi;
 	// Calculate diffuse
-	vec3 diffuse = max(dot(normal, lightDir), 0.0) * light.dColor * 0.5* sDiff;
+	vec3 diffuse = max(dot(normal, lightDir), 0.0) * light.dColor * light.dIntensity * sDiff;
 	// Calculate specular
 	vec3 reflectDir = 2*(dot(normal, lightDir)) * normal - lightDir;
-	vec3 specular = 0.5
+	vec3 specular = light.sIntensity
 		* pow(max(dot(reflectDir, viewDir), 0.0), ns)
 		* light.sColor* sSpec;
 	
@@ -112,26 +145,22 @@ vec3 GetSpotLight(Light light, vec3 fragPos, vec3 viewDir,
 		, 0.0, 1.0);
 	spotlightEffect = pow(spotlightEffect, light.fallOff);
 	// Calculate ambient  
-	vec3 ambient = 0.1 * light.aColor * sAmbi;
+	vec3 ambient = light.aIntensity * light.aColor * sAmbi;
 	// Calculate diffuse
-	vec3 diffuse = max(dot(normal, lightDir), 0.0) * light.dColor * 0.5* sDiff;
+	vec3 diffuse = max(dot(normal, lightDir), 0.0) * light.dColor * light.dIntensity * sDiff;
 	// Calculate specular
 	vec3 reflectDir = 2*(dot(normal, lightDir)) * normal - lightDir;
-	vec3 specular = 0.5
+	vec3 specular = light.sIntensity
 		* pow(max(dot(reflectDir, viewDir), 0.0), ns)
 		* light.sColor* sSpec;
 	
 	return 	spotlightEffect * (ambient + attenuation * (specular + diffuse));
 }
 
-////////////////////////////
-// entry point
-////////////////////////////
-void main()
-{      
+void LightingEffect(vec3 sDiff, vec3 sAmbi, vec3 sSpec)
+{
 	vec3 FragPos = texture(gPosition, v2_outTexCoord).rgb;
-    vec3 Normal = texture(gNormal, v2_outTexCoord).rgb;
-    vec3 sDiff = texture(gDiffuse, v2_outTexCoord).rgb;
+	vec3 Normal = texture(gNormal, v2_outTexCoord).rgb;
 	
 	// Send it to fragment shader by the toggle
 	switch (targetType)
@@ -151,11 +180,8 @@ void main()
 	default:
 	case NONE:
 			
-	vec3 sSpec = texture(gSpecular, v2_outTexCoord).rgb;
-	vec3 sAmbi = texture(gAmbient, v2_outTexCoord).rgb;
 	//vec3 sFog = texture(gFog, v2_outTexCoord).rgb;
 	//vec3 kAmbi = texture(kAmb, v2_outTexCoord).rgb;
-		
 	vec3 sFog = texture(gFog, v2_outTexCoord).rgb;
 	vec3 kAmbi = texture(kAmb, v2_outTexCoord).rgb;
 		
@@ -206,5 +232,4 @@ void main()
 		
 	break;
 	}	
-
 }
