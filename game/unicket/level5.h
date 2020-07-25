@@ -25,7 +25,7 @@ private:
 	void init_lights();
 	void init_models();
 
-	std::vector<int> spherePos;
+	std::vector<float> spherePos;
 	std::vector<Object*> lights;
 
 	Object*  model = nullptr;

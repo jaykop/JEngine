@@ -626,7 +626,6 @@ Mesh* AssetManager::process_mesh(aiMesh* mesh, const aiScene* scene)
 	for (auto& v : vertices)
 	{
 		v.position = v.position / absMax - centerOffset;
-		v.normal = v.normal / absMax - centerOffset;
 	}
 
 	// now wak through each of the mesh's faces (a face is a mesh its triangle) and retrieve the corresponding vertex indices.

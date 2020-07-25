@@ -107,7 +107,7 @@ vec3 GetSpotLight(Light light, vec3 fragPos, vec3 viewDir,
 	vec3 lightDir = normalize(light.position - fragPos);
 	float distance = length(light.position - fragPos);
 	float attenuation = min(1.0 / (constant + linear * distance + quadratic * (distance * distance)), 1);			
-	float alpha = dot(normalize(-lightDir), lightDir);
+	float alpha = dot(normalize(lightDir), lightDir);
 	float spotlightEffect = clamp(
 		(alpha - cos(light.outerAngle))
 		/ (cos(light.innerAngle) - cos(light.outerAngle))
@@ -133,7 +133,7 @@ void main()
 {      
 	vec3 FragPos = texture(gPosition, v2_outTexCoord).rgb;
     vec3 Normal = texture(gNormal, v2_outTexCoord).rgb;
-    vec3 sDiff = texture(gDiffuse, v2_outTexCoord).rgb;
+    vec3 sDiff = v4_color.xyz;;texture(gDiffuse, v2_outTexCoord).rgb;
 	
 	// Send it to fragment shader by the toggle
 	switch (targetType)
@@ -153,8 +153,8 @@ void main()
 	default:
 	case NONE:
 			
-	vec3 sSpec = texture(gSpecular, v2_outTexCoord).rgb;
-	vec3 sAmbi = texture(gAmbient, v2_outTexCoord).rgb;
+	vec3 sSpec = v4_color.xyz;texture(gDiffuse, v2_outTexCoord).rgb;
+	vec3 sAmbi = v4_color.xyz;texture(gDiffuse, v2_outTexCoord).rgb;
 	//vec3 sFog = texture(gFog, v2_outTexCoord).rgb;
 	//vec3 kAmbi = texture(kAmb, v2_outTexCoord).rgb;
 		
@@ -177,7 +177,7 @@ void main()
 			float distance = length(light[index].position - FragPos);
 		
 			// Check the distance and the radius of the light sphere
-			if (distance < light[index].radius) {
+			//if (distance < light[index].radius) {
 			
 				switch (light[index].mode)
 				{
@@ -199,7 +199,7 @@ void main()
 
 				// Add all those three and multiply by color of object
 				local += 0.1 * kAmbi + project;
-			}
+			//}
 		}
 	}
 	

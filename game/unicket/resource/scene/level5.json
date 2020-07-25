@@ -9,6 +9,8 @@
 
 	"Model": [
 	
+		{	"Key": "whale",	"Directory": "resource/model/Mesh_Orca/Mesh_Orca.obj"	},
+		{	"Key": "bunny",	"Directory": "resource/model/bunny.obj"	}
 	
 	],
 
@@ -16,7 +18,7 @@
 
 	],
 
-	"Background": [ 0.5, 0.5, 0.5, 1 ],
+	"Background": [ 0.0, 0.0, 0.0, 1 ],
 	"Screen": [ 1.0, 1.0, 1.0, 1.0 ],
 	"Effect": { "Type": "None" },
 	"Object": [	]
