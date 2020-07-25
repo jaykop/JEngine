@@ -86,7 +86,7 @@ vec3 GetPointLight(Light light, vec3 fragPos, vec3 viewDir,
 {
 	vec3 lightDir = normalize(light.position - fragPos);
 	float distance = length(light.position - fragPos);
-	float attenuation = min((1.0 / (constant + linear * distance + quadratic * (distance * distance))), 1);			
+	float attenuation = min(1.0 / (constant + linear * distance + quadratic * (distance * distance)), 1);			
 			
 	// Calculate ambient  
 	vec3 ambient = 0.1 * light.aColor * sAmbi;
@@ -123,7 +123,7 @@ vec3 GetSpotLight(Light light, vec3 fragPos, vec3 viewDir,
 		* pow(max(dot(reflectDir, viewDir), 0.0), ns)
 		* light.sColor* sSpec;
 	
-	return 	spotlightEffect * attenuation * (ambient + specular + diffuse);
+	return 	spotlightEffect * (ambient + attenuation * (specular + diffuse));
 }
 
 ////////////////////////////
@@ -133,7 +133,7 @@ void main()
 {      
 	vec3 FragPos = texture(gPosition, v2_outTexCoord).rgb;
     vec3 Normal = texture(gNormal, v2_outTexCoord).rgb;
-    vec3 sDiff = v4_color.xyz;;texture(gDiffuse, v2_outTexCoord).rgb;
+    vec3 sDiff = texture(gDiffuse, v2_outTexCoord).rgb;
 	
 	// Send it to fragment shader by the toggle
 	switch (targetType)
@@ -153,8 +153,8 @@ void main()
 	default:
 	case NONE:
 			
-	vec3 sSpec = v4_color.xyz;texture(gDiffuse, v2_outTexCoord).rgb;
-	vec3 sAmbi = v4_color.xyz;texture(gDiffuse, v2_outTexCoord).rgb;
+	vec3 sSpec = texture(gSpecular, v2_outTexCoord).rgb;
+	vec3 sAmbi = texture(gAmbient, v2_outTexCoord).rgb;
 	//vec3 sFog = texture(gFog, v2_outTexCoord).rgb;
 	//vec3 kAmbi = texture(kAmb, v2_outTexCoord).rgb;
 		
@@ -175,31 +175,29 @@ void main()
 		if (light[index].activate) {
 		
 			float distance = length(light[index].position - FragPos);
-		
-			// Check the distance and the radius of the light sphere
-			//if (distance < light[index].radius) {
-			
-				switch (light[index].mode)
-				{
-				case POINTLIGHT:
+
+			switch (light[index].mode)
+			{
+			case POINTLIGHT:
+			if (distance < light[index].radius)
 				project = GetPointLight(light[index], FragPos, viewDir, 
 				sAmbi, sDiff, sSpec, Normal);
-				break;
-				
-				case DIRECTIONALLIGHT:
-				project = GetDirLight(light[index], FragPos, viewDir, 
-				sAmbi, sDiff, sSpec, Normal);
-				break;
-				
-				case SPOTLIGHT:
+			break;
+			
+			case DIRECTIONALLIGHT:
+			project = GetDirLight(light[index], FragPos, viewDir, 
+			sAmbi, sDiff, sSpec, Normal);
+			break;
+			
+			case SPOTLIGHT:
+			if (distance < light[index].radius)
 				project = GetSpotLight(light[index], FragPos, viewDir, 
 				sAmbi, sDiff, sSpec, Normal);
-				break;
-				}
+			break;
+			}
 
-				// Add all those three and multiply by color of object
-				local += 0.1 * kAmbi + project;
-			//}
+			// Add all those three and multiply by color of object
+			local += 0.1 * kAmbi + project;
 		}
 	}
 	

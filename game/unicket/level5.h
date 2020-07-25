@@ -29,6 +29,7 @@ private:
 	std::vector<Object*> lights;
 
 	Object*  model = nullptr;
+	Object* cube = nullptr;
 
 };
 

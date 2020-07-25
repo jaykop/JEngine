@@ -39,9 +39,10 @@ const std::vector<float> quadVertices =
 
 const std::vector<unsigned> quadIndices = { 2, 0, 1, 2, 3, 0 };
 
-const std::string type("mode"), position("position"),
-innerAngle("innerAngle"), outerAngle("outerAngle"), fallOff("fallOff"),
-aColor("aColor"), sColor("sColor"), dColor("dColor"), activate("activate"), radius("radius");
+const std::string type("].mode"), position("].position"),
+innerAngle("].innerAngle"), outerAngle("].outerAngle"), fallOff("].fallOff"),
+aColor("].aColor"), sColor("].sColor"), dColor("].dColor"), activate("].activate"), radius("].radius"),
+constant("constant"), linear("linear"), quadratic("quadratic");
 
 vec3 GraphicSystem::resScaler_;
 GraphicSystem::Shaders GraphicSystem::shader_;
@@ -257,8 +258,12 @@ void GraphicSystem::update_lights(float dt)
 		shader->use();
 
 		// Update shader uniform info
-		std::string str("light[" + std::to_string(i) + "].");
+		std::string str("light[" + std::to_string(i));
 		shader->set_bool((str + activate).c_str(), lights_[i]->activate);
+
+		shader->set_float(constant.c_str(), Light::constant);
+		shader->set_float(linear.c_str(), Light::linear);
+		shader->set_float(quadratic.c_str(), Light::quadratic);
 
 		// Set strings as a static
 		if (lights_[i]->activate) {

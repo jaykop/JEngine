@@ -7,7 +7,7 @@
 
 jeBegin
 
-const int NUMBER_OF_SPHERES = 4;
+const int NUMBER_OF_SPHERES = 1;
 const float DISTANCE_FROM_CENTER = 10.F;
 const float DEGREE_INCREMENT = 360 / (NUMBER_OF_SPHERES);
 const float ORBIT_SPEED = .5F;
@@ -24,14 +24,31 @@ void Level5::initialize()
 
 void Level5::update(float dt)
 {
-	for (int i = 0; i < NUMBER_OF_SPHERES; i++)
+	Transform* trans = cube->get_component<Transform>();
+	if (InputHandler::key_pressed(KEY::LEFT))
 	{
-		spherePos[i] += dt * ORBIT_SPEED;
-
-		auto* trans = lights[i]->get_component<Transform>();
-		trans->position.x = DISTANCE_FROM_CENTER * cos(spherePos[i]);
-		trans->position.z = DISTANCE_FROM_CENTER * sin(spherePos[i]);
+		trans->position += vec3(-1, 0, 0) * 3 * dt;
 	}
+	if (InputHandler::key_pressed(KEY::RIGHT))
+	{
+		trans->position += vec3(1, 0, 0) * 3 * dt;
+	}
+	if (InputHandler::key_pressed(KEY::UP))
+	{
+		trans->position += vec3(0, 1, 0) * 3 * dt;
+	}
+	if (InputHandler::key_pressed(KEY::DOWN))
+	{
+		trans->position += vec3(0, -1, 0) * 3 * dt;
+	}
+	//for (int i = 0; i < NUMBER_OF_SPHERES; i++)
+	//{
+	//	spherePos[i] += dt * ORBIT_SPEED;
+
+	//	auto* trans = lights[i]->get_component<Transform>();
+	//	trans->position.x = DISTANCE_FROM_CENTER * cos(spherePos[i]);
+	//	trans->position.z = DISTANCE_FROM_CENTER * sin(spherePos[i]);
+	//}
 
 	// base update
 	Scene::update(dt);
@@ -78,8 +95,8 @@ void Level5::init_lights()
 		auto* trans = obj->get_component<Transform>();
 		auto* light = obj->get_component<Light>();
 		trans->scale.set(.3f, .3f, .3f);
-		trans->position.x = DISTANCE_FROM_CENTER * cos(spherePos[i]);
-		trans->position.z = DISTANCE_FROM_CENTER * sin(spherePos[i]);
+		//trans->position.x = DISTANCE_FROM_CENTER * cos(spherePos[i]);
+		//trans->position.z = DISTANCE_FROM_CENTER * sin(spherePos[i]);
 		light->type = Light::LightType::POINT;
 		register_object(obj);
 
@@ -89,15 +106,15 @@ void Level5::init_lights()
 
 void Level5::init_models()
 {
-	auto* cube = ObjectManager::create_object("whale");
+	cube = ObjectManager::create_object("sphere");
 	cube->add_component<Model>();
 	auto* md3 = cube->get_component<Model>();
 	auto* trans3 = cube->get_component<Transform>();
-	md3->set_meshes(AssetManager::get_meshes("whale"));
+	md3->set_meshes(AssetManager::get_meshes("sphere"));
 	// md3->color.set(1, 0, 0, 1);
-	trans3->position.set(-3.f, 0.f, 0.f);
+	trans3->position.set(-5.f, 0.f, 0.f);
 	trans3->set_euler_deg(0.f, 0.f, 0.f);
-	trans3->scale.set(4.f, 4.f, 4.f);
+	trans3->scale.set(1.f, 1.f, 1.f);
 	register_object(cube);
 
 	auto* sphere = ObjectManager::create_object("bunny");
@@ -106,10 +123,21 @@ void Level5::init_models()
 	auto* trans4 = sphere->get_component<Transform>();
 	md4->set_meshes(AssetManager::get_meshes("bunny"));
 	md4->color.set(0, 0, 1, 1);
-	trans4->position.set(3.f, 0.f, 0.f);
+	trans4->position.set(5.f, 0.f, 0.f);
 	trans3->set_euler_deg(0.f, 0.f, 0.f);
 	trans4->scale.set(1.f, 1.f, 1.f);
 	register_object(sphere);
+
+	//auto* cube = ObjectManager::create_object("cube");
+	//cube->add_component<Model>();
+	//auto* md3 = cube->get_component<Model>();
+	//auto* trans3 = cube->get_component<Transform>();
+	//md3->set_meshes(AssetManager::get_meshes("cube"));
+	//// md3->color.set(1, 0, 0, 1);
+	//trans3->position.set(-3.f, 0.f, 0.f);
+	//trans3->set_euler_deg(0.f, 0.f, 0.f);
+	//trans3->scale.set(10.f, 10.f, .1f);
+	//register_object(cube);
 }
 
 jeEnd
