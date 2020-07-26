@@ -4,6 +4,9 @@
 #include "pch.h"
 #include "light.hpp"
 #include "model.hpp"
+#include "animation_2d.hpp"
+#include "sprite.hpp"
+#include "debug_renderer.hpp"
 
 jeBegin
 
@@ -140,6 +143,24 @@ void Level5::init_models()
 	//trans3->set_euler_deg(0.f, 0.f, 0.f);
 	//trans3->scale.set(10.f, 10.f, .1f);
 	//register_object(cube);
+
+	auto* renderer_2d = ObjectManager::create_object("renderer_2d");
+	renderer_2d->add_component<Sprite>();
+	renderer_2d->add_component<DebugRenderer>();
+	auto* renderer = renderer_2d->get_component<Sprite>();
+	auto* animation = renderer_2d->get_component<Animation2D>();
+	auto* trans = renderer_2d->get_component<Transform>();
+	renderer->set_texture(AssetManager::get_texture("testAnimation"));
+	renderer->prjType = Renderer::ProjectType::PERSPECTIVE;
+	renderer->shadow = true;
+	// renderer->status |= Renderer::IS_BILBOARD;
+	animation->activate(true);
+	animation->set_frame(8);
+	animation->set_speed(10.f);
+	// animation->fix_frame(0);
+	trans->scale.set(2.5, 4., 0.f);
+	trans->position.z = 0.f;
+	register_object(renderer_2d);
 }
 
 jeEnd

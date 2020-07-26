@@ -5,39 +5,55 @@ layout (location = 0) out vec4 v4_fragColor;
 ////////////////////////////
 // const variables
 ////////////////////////////
-const int MAX_ARRAY			= 16;
-const int LIGHT_DIRECTIONAL	= 1;
-const int LIGHT_SPOTLIGHT	= 2;
-const int LIGHT_POINTLIGHT	= 3;
+const int MAX_LIGHTS 		= 16;
+const int POINTLIGHT		= 1;
+const int DIRECTIONALLIGHT	= 2;
+const int SPOTLIGHT			= 3;
+
+const int NONE	 	= 0;
+const int POSITION	= 1;
+const int NORMAL	= 2;
+const int DIFFUSE	= 3;
+
+const float ns = 25;
 
 ////////////////////////////
 // structs
 ////////////////////////////
-struct Material{
-	sampler2D m_diffuse;
-	sampler2D m_specular;	// specular highlighted color
-	float m_shininess;		// impacts the specular light
+// Per-light values
+struct Light{
+	int mode;
+	bool activate;
+	vec3 position;
+	vec3 aColor, dColor, sColor;
+	float aIntensity, dIntensity, sIntensity;
+	float innerAngle, outerAngle, fallOff;
+	float constant, linear, quadratic;
+	float radius;
 };
 
-struct Light {
+////////////////////////////
+// uniform variables
+////////////////////////////
 
-	int m_type;
-	vec3 m_position;
-	vec3 m_direction;
+uniform bool shadow;
+uniform vec4 v4_color;
 
-	vec4 m_ambient;
-	vec4 m_diffuse;
-	vec4 m_specular;
+uniform sampler2D gPosition;
+uniform sampler2D gNormal;
+uniform sampler2D Texture;
+uniform sampler2D gFog;
+uniform sampler2D kAmb;
 
-	float mconstant;
-	float m_linear;
-	float m_quadratic;
+uniform vec3 fogColor;
+uniform vec3 kAmbient;
 
-	float m_cutOff;
-	float m_outerCutOff;
+uniform Light light[MAX_LIGHTS];
+uniform uint lightSize; 
+uniform int targetType;
 
-	bool m_offset;
-};
+uniform float zFar, zNear;
+uniform vec3 v3_cameraPosition;
 
 ////////////////////////////
 // in variables
@@ -47,87 +63,170 @@ in vec3 v3_outNormal;
 in vec3 v3_outFragmentPosition;
 
 ////////////////////////////
-// uniform variables
-////////////////////////////
-uniform uint 		uint_lightSize;
-uniform vec3 		v3_cameraPosition;
-uniform vec4 		v4_color;
-uniform vec4 		v4_lightColor[MAX_ARRAY];
-uniform Light		light[MAX_ARRAY];
-uniform sampler2D 	Texture;
-uniform Material 	material;
-
-////////////////////////////
 // function declarations
 ////////////////////////////
-void LightingEffect(inout vec4 _light);
+vec3 GetDirLight(Light light, vec3 fragPos, vec3 viewDir, 
+	vec3 finalTexture, vec3 normal);
+vec3 GetPointLight(Light light, vec3 fragPos, vec3 viewDir, 
+	vec3 finalTexture, vec3 normal, float distance);
+vec3 GetSpotLight(Light light, vec3 fragPos, vec3 viewDir, 
+	vec3 finalTexture, vec3 normal, float distance);
+void LightingEffect(vec3 finalTexture);
 
 ////////////////////////////
 // entry point
 ////////////////////////////
-void main() {
-
+void main()
+{      
 	vec4 finalTexture = vec4(0,0,0,0);
 
 	finalTexture = texture(Texture, v2_outTexCoord) * v4_color;
-	LightingEffect(finalTexture);
-	
 	if (finalTexture.a <= 0.0)
 		discard;
 
-	v4_fragColor = finalTexture;
+	if (shadow)
+		LightingEffect(finalTexture.xyz);
+	
+	else
+		v4_fragColor = finalTexture * v4_color;
 }
 
 ////////////////////////////
-// function bodies
+// function definitions
 ////////////////////////////
-void LightingEffect(inout vec4 _color) {
-
-	float a = _color.w;
-	for (uint index = 0; index < uint_lightSize ; ++index) {
-
-		float 	attenuation = 1.f;
-		vec3 	gap = light[index].m_position - v3_outFragmentPosition;
-		vec3 	lightDirection = normalize(gap);
-		float 	theta = 0.f;
-		float 	intensity = 1.f;
+vec3 GetDirLight(Light light, vec3 fragPos, vec3 viewDir, 
+	vec3 finalTexture, vec3 normal)
+{
+	vec3 lightDir = normalize(light.position - fragPos);
+	// Calculate ambient  
+	vec3 ambient = light.aIntensity * light.aColor * finalTexture;
+	// Calculate diffuse
+	vec3 diffuse = max(dot(normal, lightDir), 0.0) * light.dColor * light.dIntensity * finalTexture;
+	// Calculate specular
+	vec3 reflectDir = 2*(dot(normal, lightDir)) * normal - lightDir;
+	vec3 specular = light.sIntensity
+		* pow(max(dot(reflectDir, viewDir), 0.0), ns)
+		* light.sColor* finalTexture;
 	
-		// Directional light
-		if (light[index].m_type == LIGHT_DIRECTIONAL)
-			lightDirection = normalize(-light[index].m_direction);
-	 
-		// Spotlight
-		else if (light[index].m_type == LIGHT_SPOTLIGHT) {
-			theta = dot(lightDirection, normalize(-light[index].m_direction));
-			float epsilon = light[index].m_cutOff - light[index].m_outerCutOff;
-			intensity = clamp((theta - light[index].m_outerCutOff) / epsilon, 0.0, 1.0);
-		}
+	return 	(ambient + specular + diffuse);
+}
+
+vec3 GetPointLight(Light light, vec3 fragPos, vec3 viewDir, 
+	vec3 finalTexture, vec3 normal, float distance)
+{
+	vec3 lightDir = normalize(light.position - fragPos);
+	float attenuation = min(1.0 / (light.constant + light.linear * distance + light.quadratic * (distance * distance)), 1);			
+			
+	// Calculate ambient  
+	vec3 ambient = light.aIntensity * light.aColor * finalTexture;
+	// Calculate diffuse
+	vec3 diffuse = max(dot(normal, lightDir), 0.0) * light.dColor * light.dIntensity * finalTexture;
+	// Calculate specular
+	vec3 reflectDir = 2*(dot(normal, lightDir)) * normal - lightDir;
+	vec3 specular = light.sIntensity
+		* pow(max(dot(reflectDir, viewDir), 0.0), ns)
+		* light.sColor* finalTexture;
+	
+	return 	attenuation * (ambient + specular + diffuse);
+}
+
+vec3 GetSpotLight(Light light, vec3 fragPos, vec3 viewDir, 
+	vec3 finalTexture, vec3 normal, float distance)
+{
+	vec3 lightDir = normalize(light.position - fragPos);
+	float attenuation = min(1.0 / (light.constant + light.linear * distance + light.quadratic * (distance * distance)), 1);			
+	float alpha = dot(normalize(lightDir), lightDir);
+	float spotlightEffect = clamp(
+		(alpha - cos(light.outerAngle))
+		/ (cos(light.innerAngle) - cos(light.outerAngle))
+		, 0.0, 1.0);
+	spotlightEffect = pow(spotlightEffect, light.fallOff);
+	// Calculate ambient  
+	vec3 ambient = light.aIntensity * light.aColor * finalTexture;
+	// Calculate diffuse
+	vec3 diffuse = max(dot(normal, lightDir), 0.0) * light.dColor * light.dIntensity * finalTexture;
+	// Calculate specular
+	vec3 reflectDir = 2*(dot(normal, lightDir)) * normal - lightDir;
+	vec3 specular = light.sIntensity
+		* pow(max(dot(reflectDir, viewDir), 0.0), ns)
+		* light.sColor* finalTexture;
+	
+	return 	spotlightEffect * (ambient + attenuation * (specular + diffuse));
+}
+
+void LightingEffect(vec3 finalTexture)
+{
+	vec3 FragPos = texture(gPosition, v2_outTexCoord).rgb;
+	vec3 Normal = texture(gNormal, v2_outTexCoord).rgb;
+	
+	// Send it to fragment shader by the toggle
+	switch (targetType)
+	{
+	case POSITION:
+	v4_fragColor = vec4(FragPos, 1.0);
+	break;
+	
+	case NORMAL:
+	v4_fragColor = vec4(Normal, 1.0);
+	break;
+
+	case DIFFUSE:
+	v4_fragColor = vec4(finalTexture, 1.0);
+	break;		
+	
+	default:
+	case NONE:
+			
+	//vec3 sFog = texture(gFog, v2_outTexCoord).rgb;
+	//vec3 kAmbi = texture(kAmb, v2_outTexCoord).rgb;
+	vec3 sFog = texture(gFog, v2_outTexCoord).rgb;
+	vec3 kAmbi = texture(kAmb, v2_outTexCoord).rgb;
 		
-		// Pointlight
-		else if (light[index].m_type == LIGHT_POINTLIGHT) {
-			float distance = length(gap);
-			attenuation = 1.0 / (light[index].mconstant + light[index].m_linear * distance + light[index].m_quadratic * (distance * distance));
-		}
-	
-		// Ambient light
-		vec4 ambient = light[index].m_ambient * vec4(texture(Texture, v2_outTexCoord)); 
-	
-		// Diffuse light
-		vec3 norm = normalize(v3_outNormal);
-	
-		float diff = max(dot(norm, lightDirection), 0.0);
-		vec4 diffuse = light[index].m_diffuse * vec4(diff * texture(Texture, v2_outTexCoord))* intensity;
-	
-		// Specular light
-		vec3 viewDirection = normalize(v3_cameraPosition - v3_outFragmentPosition);
-		vec3 reflectedDirection = reflect(-lightDirection, norm);
-		float spec = pow(max(dot(viewDirection, reflectedDirection), 0.0), material.m_shininess);
-		vec4 specular = light[index].m_specular * vec4(spec * texture(Texture, v2_outTexCoord)) * intensity; 
-		
-		// Add all light effects
-		_color += v4_lightColor[index] * ((ambient + diffuse + specular) * attenuation);
-	} 
+	FragPos = v3_outFragmentPosition;
+	Normal = v3_outNormal;
+	sFog = fogColor;
+	kAmbi = kAmbient;
 
-	// Refresh alpha value
-	_color.w = a;
+	vec3 local = vec3(0,0,0);
+	vec3 project = vec3(0,0,0);
+	vec3 viewDir = normalize(v3_cameraPosition - FragPos);
+	
+	for (uint index = 0; index < lightSize; ++index) {
+	
+		if (light[index].activate) {
+		
+			float distance = length(light[index].position - FragPos);
+
+			switch (light[index].mode)
+			{
+			case POINTLIGHT:
+			//if (distance < light[index].radius)
+				project = GetPointLight(light[index], FragPos, viewDir, 
+				finalTexture, Normal, distance);
+			break;
+			
+			case DIRECTIONALLIGHT:
+			project = GetDirLight(light[index], FragPos, viewDir, 
+			finalTexture, Normal);
+			break;
+			
+			case SPOTLIGHT:
+			//if (distance < light[index].radius)
+				project = GetSpotLight(light[index], FragPos, viewDir, 
+				finalTexture, Normal, distance);
+			break;
+			}
+
+			// Add all those three and multiply by color of object
+			local += 0.1 * kAmbi + project;
+		}
+	}
+	
+	float distanceToCamera = length(v3_cameraPosition - FragPos);
+	float S = (zFar - distanceToCamera) / (zFar - zNear);
+	local *= v4_color.xyz;
+	v4_fragColor = vec4(S*local + (1-S)*sFog, v4_color.w);
+		
+	break;
+	}	
 }

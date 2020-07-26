@@ -153,7 +153,6 @@ void Emitter::draw(float dt)
 			t.join();
 
 		glBindVertexArray(GraphicSystem::quadVao_);
-		glBindBuffer(GL_ARRAY_BUFFER, GraphicSystem::quadVbo_);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, GraphicSystem::quadEbo_);
 		glBindTexture(GL_TEXTURE_2D, texture_);
 

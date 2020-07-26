@@ -5,6 +5,11 @@
 
 	"Texture": [
 
+		{
+			"Key": "testAnimation",
+			"Directory": "resource/texture/testAnimation.png"
+		}
+
 	],
 
 	"Model": [

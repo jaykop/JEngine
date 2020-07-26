@@ -31,10 +31,10 @@ jeBegin
 
 const std::vector<float> quadVertices =
 {
-	-.5f, .5f, 0.0f , 0.f, 0.f, 1.f,  0.0f, 0.0f ,
-	-.5f, -.5f, 0.0f , 0.f, 0.f, 1.f,  0.0f, 1.0f,
-	.5f, -.5f, 0.0f , 0.f, 0.f, 1.f,  1.0f, 1.0f,
-	.5f,  .5f, 0.0f , 0.f, 0.f, 1.f,  1.0f, 0.0f
+	-.5f, .5f, 0.0f, 0.f, 0.f, 1.f, 0.0f, 0.0f ,
+	-.5f, -.5f, 0.0f, 0.f, 0.f, 1.f, 0.0f, 1.0f,
+	.5f, -.5f, 0.0f, 0.f, 0.f, 1.f, 1.0f, 1.0f,
+	.5f,  .5f, 0.0f, 0.f, 0.f, 1.f, 1.0f, 0.0f
 };
 
 const std::vector<unsigned> quadIndices = { 2, 0, 1, 2, 3, 0 };
@@ -258,7 +258,7 @@ void GraphicSystem::update_lights(float dt)
 {
 	for (unsigned i = 0; i < lights_.size(); ++i)
 	{
-		Shader* shader = shader_[MODEL];
+		Shader* shader = shader_[SPRITE];
 		shader->use();
 
 		// Update shader uniform info
@@ -298,9 +298,50 @@ void GraphicSystem::update_lights(float dt)
 			//shader->set_float((str + radius).c_str(), lightRadius);
 			shader->set_float((str + innerAngle).c_str(), Math::deg_to_rad(lights_[i]->innerAngle));
 			shader->set_float((str + outerAngle).c_str(), Math::deg_to_rad(lights_[i]->outerAngle));
-
-			lights_[i]->draw(dt);
 		}
+
+		shader = shader_[MODEL];
+		shader->use();
+
+		// Update shader uniform info
+		shader->set_bool((str + activate).c_str(), lights_[i]->activate);
+
+		// Set strings as a static
+		if (lights_[i]->activate) {
+
+			/*Calculate the light max and set the radius for light volume optimization*/
+			// Calculate the light max
+			//float ambientMax = std::fmaxf(std::fmaxf(lights_[i]->ambient.x, lights_[i]->ambient.y),lights_[i]->ambient.z);
+			//float diffuseMax = std::fmaxf(std::fmaxf(lights_[i]->diffuse.x, lights_[i]->diffuse.y),lights_[i]->diffuse.z);
+			//float speculaMax = std::fmaxf(std::fmaxf(lights_[i]->specular.x, lights_[i]->specular.y), lights_[i]->specular.z);
+			//float lightMax = std::fmaxf(std::fmaxf(ambientMax, diffuseMax), speculaMax);
+
+			// Get radius
+			float lightConstant = lights_[i]->constant;
+			float lightLinear = lights_[i]->linear;
+			float lightQuadratic = lights_[i]->quadratic;
+			//float lightRadius = (-lightLinear + std::sqrtf(lightLinear * lightLinear
+			//	- 4 * lightQuadratic * (lightConstant - (256.f / 5.f) * lightMax))) * 0.5f * lightQuadratic;
+
+			// Update light direction
+			shader->set_int((str + type).c_str(), static_cast<int>(lights_[i]->type));
+			shader->set_vec3((str + position).c_str(), lights_[i]->transform_->position);
+			shader->set_float((str + constant).c_str(), lightConstant);
+			shader->set_float((str + linear).c_str(), lightLinear);
+			shader->set_float((str + quadratic).c_str(), lightQuadratic);
+			shader->set_vec3((str + aColor).c_str(), lights_[i]->ambient);
+			shader->set_vec3((str + sColor).c_str(), lights_[i]->specular);
+			shader->set_vec3((str + dColor).c_str(), lights_[i]->diffuse);
+			shader->set_float((str + aIntense).c_str(), lights_[i]->ambientIntensity);
+			shader->set_float((str + dIntense).c_str(), lights_[i]->diffuseIntensity);
+			shader->set_float((str + sIntense).c_str(), lights_[i]->specularIntensity);
+			shader->set_float((str + fallOff).c_str(), lights_[i]->fallOff);
+			//shader->set_float((str + radius).c_str(), lightRadius);
+			shader->set_float((str + innerAngle).c_str(), Math::deg_to_rad(lights_[i]->innerAngle));
+			shader->set_float((str + outerAngle).c_str(), Math::deg_to_rad(lights_[i]->outerAngle));
+		}
+
+		lights_[i]->draw(dt);
 	}
 }
 

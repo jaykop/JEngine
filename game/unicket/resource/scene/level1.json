@@ -8,8 +8,11 @@
 		{
 			"Key": "testAnimation",
 			"Directory": "resource/texture/testAnimation.png"
+		},
+		{
+			"Key": "crosshair",
+			"Directory": "resource/texture/crosshair.png"
 		}
-
 	],
 	
 	"Model": [

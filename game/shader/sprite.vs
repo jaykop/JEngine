@@ -111,11 +111,7 @@ void SendToFrag(vec4 _position, vec4 _texCoord, mat4 _model) {
 	v2_outTexCoord = _texCoord.xy;
 
 	// Lighting attributes
-	if (boolean_light) {
-
-		// Lighing attributes
-		v3_outFragmentPosition = vec3(transpose(_model) * _position);
-
-		v3_outNormal = mat3(inverse(_model)) * normal;
-	}
+	v3_outFragmentPosition = vec3(transpose(_model) * _position);
+	v3_outNormal =  normal;
+	
 };

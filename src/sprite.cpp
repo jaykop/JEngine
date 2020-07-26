@@ -125,16 +125,11 @@ void Sprite::draw(float /*dt*/)
 	run_animation();
 
 	glBindVertexArray(GraphicSystem::quadVao_);
-	glBindBuffer(GL_ARRAY_BUFFER, GraphicSystem::quadVbo_);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, GraphicSystem::quadEbo_);
 	glBindTexture(GL_TEXTURE_2D, texture_);
 	glDrawElements(GL_TRIANGLES, GraphicSystem::quadIndicesSize_, GL_UNSIGNED_INT, nullptr);
-	
 	glBindTexture(GL_TEXTURE_2D, 0);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
-
 	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_BLEND);
 }

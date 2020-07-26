@@ -101,18 +101,18 @@ void Level1::init_sprite()
 
 void Level1::init_ui()
 {
-	auto ui1 = ObjectManager::create_object("ui1");
-	ui1->add_component<Sprite>();
-	auto* rd1 = ui1->get_component<Sprite>();
-	auto* trans1 = ui1->get_component<Transform>();
-	rd1->set_texture(AssetManager::get_texture("rect"));
+	auto crosshair = ObjectManager::create_object("crosshair");
+	crosshair->add_component<Sprite>();
+	auto* rd1 = crosshair->get_component<Sprite>();
+	auto* trans1 = crosshair->get_component<Transform>();
+	rd1->set_texture(AssetManager::get_texture("crosshair"));
 	rd1->prjType = Renderer::ProjectType::ORTHOGONAL;
-	rd1->color.set(1.f, 1.f, 0.f, 1.f);
+	rd1->color.set(1.f, 1.f, 1.f, 1.f);
 	//rd1->status |= Renderer::IS_BILBOARD;
 	rd1->status |= Renderer::IS_FIXED;
-	trans1->scale.set(5, 5, 0.f);
+	trans1->scale.set(25, 25, 0.f);
 	trans1->position.set(0, 0, -100.f);
-	register_object(ui1);
+	register_object(crosshair);
 }
 
 jeEnd
