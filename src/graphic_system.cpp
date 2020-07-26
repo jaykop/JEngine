@@ -39,6 +39,26 @@ const std::vector<float> quadVertices =
 
 const std::vector<unsigned> quadIndices = { 2, 0, 1, 2, 3, 0 };
 
+const std::vector<float> cubeVertices =
+{
+	-.5f, .5f, .5f, .5f, .5f, .5f,	.5f, -.5f, .5f,	-.5f, -.5f, .5f,
+	.5f, .5f, -.5f,	-.5f, .5f, -.5f, -.5f, -.5f, -.5f, .5f, -.5f, -.5f,
+	-.5f, .5f, -.5f, -.5f, .5f, .5f, -.5f, -.5f, .5f, -.5f, -.5f, -.5f,
+	.5f, .5f, .5f, .5f, .5f, -.5f, .5f, -.5f, -.5f,	.5f, -.5f, .5f,
+	-.5f, -.5f, .5f, .5f, -.5f, .5f, .5f, -.5f, -.5f, -.5f, -.5f, -.5f,
+	-.5f, .5f, -.5f, .5f, .5f, -.5f, .5f, .5f, .5f,	-.5f, .5f, .5f
+};
+
+const std::vector<unsigned> cubeIndices =
+{
+	1, 1, 0, 0, 0, 0, 2 ,2, 0, 3, 3, 0, 2, 2, 0, 0, 0, 0,
+	5, 5, 1, 7, 7, 1, 6, 6, 1, 7, 7, 1, 5, 5, 1, 4, 4, 1,
+	11, 9, 2, 10, 3, 2, 8, 8, 2, 9, 0, 2, 8, 8, 2, 10, 3, 2,
+	13, 4, 3, 15, 2, 3, 14, 7, 3, 15, 2, 3, 13, 4, 3, 12, 1, 3,
+	19, 11, 4, 18, 10, 4, 16, 3, 4, 17, 2, 4, 16, 3, 4, 18, 10, 4,
+	23, 0, 5, 22, 1, 5, 20, 12, 5, 21, 13, 5, 20, 12, 5, 22, 1, 5
+};
+
 const std::string type("].mode"), position("].position"),
 innerAngle("].innerAngle"), outerAngle("].outerAngle"), fallOff("].fallOff"),
 aColor("].aColor"), sColor("].sColor"), dColor("].dColor"), 
@@ -52,7 +72,8 @@ int GraphicSystem::widthStart_ = 0, GraphicSystem::heightStart_ = 0;
 float GraphicSystem::width_ = 0.f, GraphicSystem::height_ = 0.f;
 unsigned GraphicSystem::quadVao_ = 0, GraphicSystem::quadVbo_ = 0, GraphicSystem::quadEbo_ = 0,
 GraphicSystem::drVao_ = 0, GraphicSystem::drVbo_ = 0,
-GraphicSystem::quadIndicesSize_ = 6, GraphicSystem::gridVerticeSize_ = 48;
+GraphicSystem::skyboxVao_ = 0, GraphicSystem::skyboxVbo_ = 0, GraphicSystem::skyboxEbo_ = 0,
+GraphicSystem::quadIndicesSize_ = 6, GraphicSystem::cubeIndicesSize_ = 36;
 
 std::stack<GraphicSystem::Graphic> GraphicSystem::graphicStack_;
 Camera* GraphicSystem::mainCamera_ = nullptr;
@@ -61,6 +82,7 @@ GraphicSystem::Cameras GraphicSystem::cameras_;
 GraphicSystem::Lights GraphicSystem::lights_;
 vec4 GraphicSystem::backgroundColor = vec4::zero, GraphicSystem::screenColor = vec4::zero;
 GraphicSystem::Grid GraphicSystem::grid;
+GraphicSystem::Skybox GraphicSystem::skybox;
 
 void GraphicSystem::set_camera(Camera* camera)
 {
@@ -73,9 +95,6 @@ Camera* GraphicSystem::get_camera()
 }
 
 void GraphicSystem::initialize() {
-
-	if (!grid.texture_)
-		grid.texture_ = AssetManager::get_texture("grid");
 
 	if (!mainCamera_ && !(cameras_.empty()))
 		mainCamera_ = *cameras_.begin();
@@ -157,7 +176,7 @@ void GraphicSystem::render_grid()
 			mainCamera_->fovy_ + mainCamera_->zoom, mainCamera_->aspect_,
 			mainCamera_->near_, mainCamera_->far_);
 
-		shader->set_matrix("m4_projection", perspective);
+ 		shader->set_matrix("m4_projection", perspective);
 		break;
 	}
 
@@ -187,6 +206,46 @@ void GraphicSystem::render_grid()
 	glBindVertexArray(quadVao_);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, quadEbo_);
 	glDrawElements(GL_TRIANGLES, quadIndicesSize_, GL_UNSIGNED_INT, nullptr);
+	glBindVertexArray(0);
+	glDisable(GL_DEPTH_TEST);
+	glDisable(GL_BLEND);
+}
+
+void GraphicSystem::render_skybox()
+{
+	Shader* shader = shader_[SKYBOX];
+	shader->use();
+
+	shader->set_matrix("m4_translate", mat4::translate(vec3::zero));
+	shader->set_matrix("m4_scale", mat4::scale(vec3::one * 10));
+	shader->set_matrix("m4_rotate", mat4::identity);
+	shader->set_vec3("v3_color", vec3::one);
+
+	mat4 perspective = mat4::perspective(
+		mainCamera_->fovy_ + mainCamera_->zoom, mainCamera_->aspect_,
+		mainCamera_->near_, mainCamera_->far_);
+
+	shader->set_matrix("m4_projection", perspective);
+
+	// Send camera info to shader
+	mat4 viewport = mat4::look_at(mainCamera_->position, mainCamera_->position + mainCamera_->back_, mainCamera_->up_);
+	shader->set_matrix("m4_viewport", viewport);
+
+	glEnable(GL_BLEND);
+	glEnable(GL_DEPTH_TEST);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	glEnable(GL_TEXTURE_2D);
+	for (int i = 0; i < 6; i++) {
+		glActiveTexture(GL_TEXTURE0 + i);
+		glBindTexture(GL_TEXTURE_2D, skybox.textures[i]);
+		std::string sampler("sampler["), sampler_end("]");
+		shader->set_int((sampler + std::to_string(i) + sampler_end).c_str(), i);
+	}
+
+	glBindVertexArray(skyboxVao_);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, quadEbo_);
+	glDrawElements(GL_TRIANGLES, cubeIndicesSize_, GL_UNSIGNED_INT, nullptr);
 	glBindVertexArray(0);
 	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_BLEND);
@@ -411,6 +470,31 @@ void GraphicSystem::initialize_graphics()
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
 
+	/**************************** SKYBOX BUFFER ******************************/
+
+	glGenVertexArrays(1, &skyboxVao_);
+	glBindVertexArray(skyboxVao_);
+
+	glGenBuffers(1, &skyboxVbo_);
+	glBindBuffer(GL_ARRAY_BUFFER, skyboxVbo_);
+
+	// set vertex data
+	glBufferData(GL_ARRAY_BUFFER, cubeVertices.size() * sizeof(float), &cubeVertices[0], GL_STATIC_DRAW);
+
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(0);
+
+	glGenBuffers(1, &skyboxEbo_);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, skyboxEbo_);
+
+	// set index data
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, cubeIndices.size() * sizeof(unsigned), &cubeIndices[0], GL_STATIC_DRAW);
+
+	// unbind buffer
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindVertexArray(0);
+
 	/**************************** DEBUG RENDERER BUFFER ******************************/
 
 	glGenVertexArrays(1, &drVao_);
@@ -441,6 +525,10 @@ void GraphicSystem::close_graphics()
 	glDeleteVertexArrays(1, &quadVao_);
 	glDeleteBuffers(1, &quadVbo_);
 	glDeleteBuffers(1, &quadEbo_);
+
+	glDeleteVertexArrays(1, &skyboxVao_);
+	glDeleteBuffers(1, &skyboxVbo_);
+	glDeleteBuffers(1, &skyboxEbo_);
 
 	glDeleteVertexArrays(1, &drVao_);
 	glDeleteBuffers(1, &drVbo_);

@@ -23,6 +23,8 @@ void Level5::initialize()
 
 	// base init
 	Scene::initialize();
+
+	GraphicSystem::grid.color.set(1.f, 0.f, 0.f);
 }
 
 void Level5::update(float dt)

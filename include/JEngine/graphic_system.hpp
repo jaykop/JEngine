@@ -44,7 +44,7 @@ class GraphicSystem {
 	using Shaders = std::vector<Shader*>;
 
 	// enum class Target { SCREEN, TEXT, END };
-	enum Pipeline { SPRITE, TEXT, PARTICLE, MODEL, LIGHT, DEBUG, GRID, SCREEN, END };
+	enum Pipeline { SPRITE, TEXT, PARTICLE, MODEL, LIGHT, DEBUG, GRID, SKYBOX, SCREEN, END };
 
 	struct Grid
 	{
@@ -53,10 +53,11 @@ class GraphicSystem {
 		float scale = 10.f, thickness = 0.1f;
 		int divisions = 10;
 		Renderer::ProjectType prjType = Renderer::ProjectType::PERSPECTIVE;
+	};
 
-	private:
-		friend class GraphicSystem;
-		unsigned texture_ = 0;
+	struct Skybox
+	{
+		unsigned textures[6];
 	};
 
 public:
@@ -68,6 +69,7 @@ public:
 	static Camera* get_camera();
 
 	static Grid grid;
+	static Skybox skybox;
 	static vec4 backgroundColor, screenColor;
 
 private:
@@ -81,6 +83,7 @@ private:
 
 	static void update_lights(float dt);
 	static void render_grid();
+	static void render_skybox();
 
 	static void add_renderer(Renderer* model);
 	static void remove_renderer(Renderer* model);
@@ -100,7 +103,8 @@ private:
 	static float width_, height_;
 	static int widthStart_, heightStart_;
 	static unsigned quadVao_, quadVbo_, quadEbo_,
-		drVao_, drVbo_,	quadIndicesSize_, gridVerticeSize_;
+		drVao_, drVbo_,	quadIndicesSize_,
+		skyboxVao_, skyboxVbo_, skyboxEbo_, cubeIndicesSize_;
 
 	static Lights lights_;
 	static Shaders shader_;
