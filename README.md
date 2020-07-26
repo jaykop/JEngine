@@ -3,9 +3,8 @@
 =================================
 
 **Next goals** - 2D  
-*light  
+*Skybox
 *FMOD Lib  
-*polish grid  
 *physics + thread  
 *emitter explosion refresh  
 

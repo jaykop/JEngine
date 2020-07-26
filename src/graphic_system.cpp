@@ -114,16 +114,16 @@ void GraphicSystem::update(float dt) {
 	glViewport(widthStart_, heightStart_,
 		static_cast<GLsizei>(width_), static_cast<GLsizei>(height_));
 
-	// render grid
-	if (grid.render)
-		render_grid();
-
 	// update lights
 	update_lights(dt);
 
 	// update renderers
 	for (auto& r : renderers_)
 		r->draw(dt);
+
+	// render grid
+	if (grid.render)
+		render_grid();
 
 	glDisable(GL_SCISSOR_TEST);
 }
@@ -143,28 +143,36 @@ void GraphicSystem::render_grid()
 	shader->use();
 
 	shader->set_matrix("m4_translate", mat4::translate(vec3::zero));
-	shader->set_matrix("m4_scale", mat4::scale(vec3::one * static_cast<float>(grid.size)));
+	shader->set_matrix("m4_scale", mat4::scale(vec3::one * static_cast<float>(grid.scale)));
 	shader->set_matrix("m4_rotate", mat4::identity);
 	shader->set_vec3("v3_color", grid.color);
+	shader->set_float("thickness", grid.thickness);
+	shader->set_int("divisions", grid.divisions);
 
-	if (grid.prjType == Renderer::ProjectType::PERSPECTIVE) {
-
+	switch (grid.prjType)
+	{
+	case Renderer::ProjectType::PERSPECTIVE:
+	{
 		mat4 perspective = mat4::perspective(
 			mainCamera_->fovy_ + mainCamera_->zoom, mainCamera_->aspect_,
 			mainCamera_->near_, mainCamera_->far_);
 
 		shader->set_matrix("m4_projection", perspective);
+		break;
 	}
 
-	else {
-
-		float right_ = width_ * resScaler_.x;
+	case Renderer::ProjectType::ORTHOGONAL:
+	default:
+	{
+		float right_ = GraphicSystem::width_ * GraphicSystem::resScaler_.x;
 		float left_ = -right_;
-		float top_ = height_ * resScaler_.y;
+		float top_ = GraphicSystem::height_ * GraphicSystem::resScaler_.y;
 		float bottom_ = -top_;
 
 		mat4 orthogonal = mat4::orthogonal(left_, right_, bottom_, top_, mainCamera_->near_, mainCamera_->far_);
 		shader->set_matrix("m4_projection", orthogonal);
+		break;
+	}
 	}
 
 	// Send camera info to shader
@@ -172,20 +180,16 @@ void GraphicSystem::render_grid()
 	shader->set_matrix("m4_viewport", viewport);
 
 	glEnable(GL_BLEND);
-	glDisable(GL_DEPTH_TEST);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_DEPTH_TEST);
+	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glBlendFunc(GL_SRC_COLOR, GL_ONE_MINUS_SRC_COLOR);
 
 	glBindVertexArray(quadVao_);
-	glBindBuffer(GL_ARRAY_BUFFER, quadVbo_);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, quadEbo_);
-	glBindTexture(GL_TEXTURE_2D, grid.texture_);
 	glDrawElements(GL_TRIANGLES, quadIndicesSize_, GL_UNSIGNED_INT, nullptr);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
-
-	glBindTexture(GL_TEXTURE_2D, 0);
-
+	glDisable(GL_DEPTH_TEST);
+	glDisable(GL_BLEND);
 }
 
 void GraphicSystem::add_renderer(Renderer* model) 

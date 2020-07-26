@@ -50,7 +50,8 @@ class GraphicSystem {
 	{
 		vec3 color = vec3::one;
 		bool render = false;
-		unsigned size = 10000;
+		float scale = 10.f, thickness = 0.1f;
+		int divisions = 10;
 		Renderer::ProjectType prjType = Renderer::ProjectType::PERSPECTIVE;
 
 	private:

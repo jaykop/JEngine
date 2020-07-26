@@ -3,18 +3,26 @@
 layout (location = 0) out vec4 fragColor;
 
 smooth in vec2 v2_outTexCoord;
-
 uniform vec3 v3_color;
-uniform sampler2D Texture;
+uniform int divisions;
+uniform float thickness;
 
 void main()
 {
-    if(fract(v2_outTexCoord.x / 0.001f) < 0.1f || fract(v2_outTexCoord.y / 0.001f) < 0.1f)
-        fragColor = vec4(v3_color, 1);
-    else
-        fragColor = vec4(0);
+    float f_divisions = float(divisions);
 
-	//vec2 coord = v2_outTexCoord * 10;
-	//vec4 finalTexture = texture(Texture, coord) * vec4(v3_color, 1);
-	//fragColor = finalTexture;
+    float x = fract(v2_outTexCoord.x * divisions);
+    x = min(x, 1.0 - x);
+    float xdelta = fwidth(x);
+    x = smoothstep(x - xdelta, x + xdelta, thickness);
+
+    float y = fract(v2_outTexCoord.y * divisions);
+    y = min(y, 1.0 - y);
+    float ydelta = fwidth(y);
+    y = smoothstep(y - ydelta, y + ydelta, thickness);
+
+    float c = clamp(x + y, 0.0, 1.0);
+	fragColor.xyz = vec3(c) * v3_color;
+	fragColor.w = .5f;
+	
 }
