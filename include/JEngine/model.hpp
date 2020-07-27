@@ -16,7 +16,7 @@ public:
     void set_meshes(std::vector<Mesh*> meshes);
 
     vec4 color;
-    bool gammaCorrection, shadow;
+    bool gammaCorrection;
 
 protected:
 

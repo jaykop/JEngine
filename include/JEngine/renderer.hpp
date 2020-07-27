@@ -24,14 +24,15 @@ public:
 	static bool renderObj;
 	static RenderType renderType;
 
-	const static int IS_FIXED		= 0x00001;
-	const static int IS_FLIPPED		= 0x00010;
-	const static int IS_BILBOARD	= 0x00100;
-	const static int IS_REFLECTED	= 0x01000;
-	const static int IS_REFRACTED	= 0x10000;
+	const static unsigned IS_FIXED		= 0x000001;
+	const static unsigned IS_FLIPPED	= 0x000010;
+	const static unsigned IS_LIGHTEN	= 0x000100;
+	const static unsigned IS_BILBOARD	= 0x001000;
+	const static unsigned IS_REFLECTED	= 0x010000;
+	const static unsigned IS_REFRACTED	= 0x100000;
 
 	ProjectType prjType;
-	int status;
+	unsigned status;
 
 	Renderer(Object* owner);
 	virtual ~Renderer() {};

@@ -23,7 +23,7 @@ public:
 	void run_animation();
 
 	vec4 color;
-	bool gammaCorrection, shadow;
+	bool gammaCorrection;
 
 protected:
 

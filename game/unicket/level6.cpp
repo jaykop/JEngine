@@ -53,7 +53,7 @@ void Level6::init_models()
 	auto* md3 = cube->get_component<Model>();
 	auto* trans3 = cube->get_component<Transform>();
 	md3->set_meshes(AssetManager::get_meshes("cube"));
-	md3->shadow = true;
+	md3->status |= Renderer::IS_LIGHTEN;
 	md3->color.set(1, 0, 0, 1);
 	trans3->position.set(-5.f, 0.f, 0.f);
 	trans3->set_euler_deg(0.f, 0.f, 0.f);
@@ -66,7 +66,7 @@ void Level6::init_models()
 	auto* trans4 = sphere->get_component<Transform>();
 	md4->set_meshes(AssetManager::get_meshes("sphere"));
 	md4->color.set(0, 0, 1, 1);
-	md4->shadow = true;
+	md3->status |= Renderer::IS_LIGHTEN;
 	trans4->position.set(5.f, 0.f, 0.f);
 	trans3->set_euler_deg(0.f, 0.f, 0.f);
 	trans4->scale.set(1.f, 1.f, 1.f);

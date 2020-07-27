@@ -14,8 +14,7 @@ jeBegin
 jeDefineComponentBuilder(Sprite);
 
 Sprite::Sprite(Object* owner)
-	: Renderer(owner), color(vec4::one), gammaCorrection(false), shadow(false),
-	animation_ (nullptr), texture_(0)
+	: Renderer(owner), color(vec4::one), gammaCorrection(false), animation_ (nullptr), texture_(0)
 {
 	if (!owner->has_component<Animation2D>())
 		owner->add_component<Animation2D>();
@@ -104,8 +103,9 @@ void Sprite::draw(float /*dt*/)
 		shader->set_matrix("m4_parentRotate", pTransform->orientation.to_mat4());
 	}
 
-	shader->set_bool("shadow", shadow);
-	if (shadow)
+	bool isLighten = (status & IS_LIGHTEN) == IS_LIGHTEN;
+	shader->set_bool("boolean_lighten", isLighten);
+	if (isLighten)
 	{
 		// shader->set_vec3("gAmb", ambient);
 		shader->set_uint("lightSize", GraphicSystem::get_num_of_lights());

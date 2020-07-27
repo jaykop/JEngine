@@ -23,11 +23,11 @@ public:
 
 private:
 
-    void draw(Shader* shader, unsigned status);
+    void draw(Shader* shader, bool envr);
     
     std::vector<Vertex> vertices_;
     std::vector<unsigned int> indices_;
-    std::vector<Texture> textures_, texturesLoaded;
+    std::vector<Texture> textures_;
 
     unsigned int vao_, vbo_, ebo_, defaultTexture_;
 

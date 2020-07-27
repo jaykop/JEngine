@@ -39,7 +39,7 @@ unsigned Mesh::get_indices_count() const
 }
 
 // render the mesh
-void Mesh::draw(Shader* shader, unsigned status)
+void Mesh::draw(Shader* shader, bool envr)
 {
     // bind appropriate textures
     unsigned int diffuseNr = 1;
@@ -47,12 +47,7 @@ void Mesh::draw(Shader* shader, unsigned status)
     unsigned int normalNr = 1;
     unsigned int heightNr = 1;
 
-    bool reflected = (status & Renderer::IS_REFLECTED) == Renderer::IS_REFLECTED;
-    bool refracted = (status & Renderer::IS_REFRACTED) == Renderer::IS_REFRACTED;
-    shader->set_bool("boolean_reflected", reflected);
-    shader->set_bool("boolean_refracted", refracted);
-
-    if (reflected || refracted)
+    if (envr)
     {
         glActiveTexture(GL_TEXTURE0);
         shader->set_uint("skybox", 0);
@@ -93,9 +88,10 @@ void Mesh::draw(Shader* shader, unsigned status)
     // draw mesh
     glBindVertexArray(vao_);
     glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(indices_.size()), GL_UNSIGNED_INT, 0);
-    glBindVertexArray(0);
-
+    glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
+    glBindTexture(GL_TEXTURE_2D, 0);
     glActiveTexture(GL_TEXTURE0);
+    glBindVertexArray(0);
 }
 
 void Mesh::setup_mesh()

@@ -19,7 +19,7 @@ jeDefineComponentBuilder(Model);
 
 // constructor, expects a filepath to a 3D model.
 Model::Model(Object* owner)
-    : Renderer(owner), color(vec4::one), gammaCorrection(false), shadow(false)
+    : Renderer(owner), color(vec4::one), gammaCorrection(false)
 {
 }
 
@@ -46,8 +46,38 @@ void Model::load(const rapidjson::Value& /*data*/) {
 void Model::draw(float /*dt*/)
 {
     Camera* camera = GraphicSystem::get_camera();
-    Shader* shader = GraphicSystem::shader_[GraphicSystem::MODEL];
-    shader->use();
+    Shader* shader = nullptr;
+
+    bool reflected = (status & Renderer::IS_REFLECTED) == Renderer::IS_REFLECTED;
+    bool refracted = (status & Renderer::IS_REFRACTED) == Renderer::IS_REFRACTED;
+    
+    if (reflected || refracted)
+    {
+        shader = GraphicSystem::shader_[GraphicSystem::ENVIRONMENT];
+        shader->use();
+        shader->set_bool("boolean_reflected", reflected);
+        shader->set_bool("boolean_refracted", refracted);
+    }
+
+    else
+    {
+        shader = GraphicSystem::shader_[GraphicSystem::MODEL];
+        shader->use();
+
+        bool isLighten = (status & IS_LIGHTEN) == IS_LIGHTEN;
+        shader->set_bool("boolean_lighten", isLighten);
+        if (isLighten)
+        {
+            // shader->set_vec3("gAmb", ambient);
+            shader->set_uint("lightSize", GraphicSystem::get_num_of_lights());
+            shader->set_float("zNear", camera->near_);
+            shader->set_float("zFar", camera->far_);
+            shader->set_vec3("fogColor", Light::fogColor);
+            shader->set_vec3("kAmbient", Light::kAmbientColor);
+            shader->set_int("targetType", static_cast<int>(Renderer::renderType));
+            //	LightingEffectPipeline(pModel->pMaterial_);
+        }
+    }
 
     shader->set_matrix("m4_translate", mat4::translate(transform_->position));
     shader->set_matrix("m4_scale", mat4::scale(transform_->scale));
@@ -101,25 +131,12 @@ void Model::draw(float /*dt*/)
         shader->set_matrix("m4_parentRotate", pTransform->orientation.to_mat4());
     }
 
-    shader->set_bool("shadow", shadow);
-    if (shadow)
-    {
-        // shader->set_vec3("gAmb", ambient);
-        shader->set_uint("lightSize", GraphicSystem::get_num_of_lights());
-        shader->set_float("zNear", camera->near_);
-        shader->set_float("zFar", camera->far_);
-        shader->set_vec3("fogColor", Light::fogColor);
-        shader->set_vec3("kAmbient", Light::kAmbientColor);
-        shader->set_int("targetType", static_cast<int>(Renderer::renderType));
-        //	LightingEffectPipeline(pModel->pMaterial_);
-    }
-
     glEnable(GL_BLEND);
     glEnable(GL_DEPTH_TEST);
     glBlendFunc(sfactor_, dfactor_);
 
     for (const auto& m : meshes_)
-        m->draw(shader, status);
+        m->draw(shader, reflected || refracted);
 
     glDisable(GL_DEPTH_TEST);
     glDisable(GL_BLEND);

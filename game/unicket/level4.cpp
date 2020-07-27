@@ -80,6 +80,7 @@ void Level4::init_models()
 	auto* md4 = sphere->get_component<Model>();
 	auto* trans4 = sphere->get_component<Transform>();
 	md4->set_meshes(AssetManager::get_meshes("sphere"));
+	md4->status |= Renderer::IS_REFLECTED;
 	md4->color.set(0, 0, 1, 1);
 	trans4->position.set(0.f, -5.f, -10.f);
 	trans4->scale.set(1.f, 1.f, 1.f);

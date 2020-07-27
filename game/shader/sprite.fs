@@ -36,7 +36,7 @@ struct Light{
 // uniform variables
 ////////////////////////////
 
-uniform bool shadow;
+uniform bool boolean_lighten;
 uniform vec4 v4_color;
 
 uniform sampler2D gPosition;
@@ -84,7 +84,7 @@ void main()
 	if (finalTexture.a <= 0.0)
 		discard;
 
-	if (shadow)
+	if (boolean_lighten)
 		LightingEffect(finalTexture.xyz);
 	
 	else

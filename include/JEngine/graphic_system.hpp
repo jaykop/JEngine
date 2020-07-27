@@ -44,7 +44,7 @@ class GraphicSystem {
 	using Shaders = std::vector<Shader*>;
 
 	// enum class Target { SCREEN, TEXT, END };
-	enum Pipeline { SPRITE, TEXT, PARTICLE, MODEL, LIGHT, DEBUG, GRID, SKYBOX, SCREEN, END };
+	enum Pipeline { SPRITE, TEXT, PARTICLE, MODEL, LIGHT, DEBUG, GRID, SKYBOX, ENVIRONMENT, SCREEN, END };
 
 	struct Grid
 	{

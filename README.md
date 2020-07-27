@@ -3,7 +3,8 @@
 =================================
 
 **Next goals** 
-*Skybox
+*Re-work on reflection and refraction
+*Update order of glsl mat mul
 *FMOD Lib  
 *Depth test with z value
 *physics + thread  
