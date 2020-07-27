@@ -8,6 +8,7 @@
 		{ "Directory": "../shader/light.vs" },
 		{ "Directory": "../shader/debug.vs" },
 		{ "Directory": "../shader/grid.vs" },
+		{ "Directory": "../shader/skybox.vs" },
 		{ "Directory": "../shader/screen.vs" }
 
 	],
@@ -21,6 +22,7 @@
 		{ "Directory": "../shader/light.fs" },
 		{ "Directory": "../shader/debug.fs" },
 		{ "Directory": "../shader/grid.fs" },
+		{ "Directory": "../shader/skybox.fs" },
 		{ "Directory": "../shader/screen.fs" }
 
 	]

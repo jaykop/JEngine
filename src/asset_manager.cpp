@@ -107,6 +107,12 @@ void AssetManager::load_assets()
 		jeDebugPrint("*AssetManager - Loaded image: %s.\n", textures[i]["Directory"].GetString());
 	}
 
+	const rapidjson::Value& skybox = JsonParser::get_document()["Skybox"];
+	for (rapidjson::SizeType i = 0; i < skybox.Size(); ++i) {
+		load_skybox(skybox[i]["Directory"].GetString(), skybox[i]["Key"].GetString());
+		jeDebugPrint("*AssetManager - Loaded skybox: %s.\n", skybox[i]["Directory"].GetString());
+	}
+
 	// Load obj 
 	const rapidjson::Value& models = JsonParser::get_document()["Model"];
 	for (rapidjson::SizeType i = 0; i < models.Size(); ++i) {
@@ -132,6 +138,8 @@ void AssetManager::load_assets()
 				static_cast<unsigned long>(fonts[i]["Additional"][j][0].GetUint64()),
 				static_cast<unsigned long>(fonts[i]["Additional"][j][1].GetUint64()));
 		}
+
+		jeDebugPrint("*AssetManager - Loaded fonst: %s.\n", fonts[i]["Directory"].GetString());
 	}	
 
 	JsonParser::clear_document();
@@ -346,6 +354,85 @@ bool AssetManager::load_obj(const std::string& path, const char* meshKey, MeshMa
 	meshDir.clear();
 	texturesLoaded.clear();
 	return true;
+}
+
+void AssetManager::load_skybox(const char* path, const char* textureKey, TextureMap* tMap)
+{
+	//std::vector<std::string> faces = 
+	//{
+	//	"front",
+	//	"back",
+	//	"left",
+	//	"right",
+	//	"top",
+	//	"bottom"
+	//};
+
+	//std::string underbar("_"), png(".png");
+
+	//for (const auto& f : faces)
+	//{
+	//	Image image;
+	//	unsigned error = lodepng::decode(image.pixels, image.width, image.height, path + f + png);
+
+	//	if (error)
+	//		jeDebugPrint("!AssetManager - Decoder error %d / %s.\n", error, lodepng_error_text(error));
+
+	//	else
+	//	{
+	//		// Enable the texture for OpenGL.
+	//		glEnable(GL_TEXTURE_2D);
+	//		glGenTextures(1, &image.handle);
+	//		glBindTexture(GL_TEXTURE_2D, image.handle);
+	//		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image.width, image.height, 0,
+	//			GL_RGBA, GL_UNSIGNED_BYTE, &image.pixels[0]);
+
+	//		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	//		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+	//		tMap->insert(TextureMap::value_type(
+	//			textureKey + underbar + f, image.handle));
+	//	}
+	//}
+
+	std::vector<std::string> faces = 
+	{
+		"/right.png",
+		"/left.png",
+		"/top.png",
+		"/bottom.png",
+		"/front.png",
+		"/back.png",
+	};
+
+	unsigned int textureID;
+	glGenTextures(1, &textureID);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
+
+	int width, height, nrChannels;
+	for (unsigned int i = 0; i < faces.size(); i++)
+	{
+		unsigned char* data = stbi_load((path + faces[i]).c_str(), &width, &height, &nrChannels, 0);
+		if (data)
+		{
+			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
+				0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data
+			);
+			stbi_image_free(data);
+		}
+		else
+		{
+			stbi_image_free(data);
+		}
+	}
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+
+	tMap->insert(TextureMap::value_type(
+		textureKey, textureID));
 }
 
 void AssetManager::load_audio(const char* /*path*/, const char* /*_audioKey*/, AudioMap* /*aMap*/)

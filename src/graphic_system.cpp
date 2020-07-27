@@ -41,12 +41,54 @@ const std::vector<unsigned> quadIndices = { 2, 0, 1, 2, 3, 0 };
 
 const std::vector<float> cubeVertices =
 {
-	-.5f, .5f, .5f, .5f, .5f, .5f,	.5f, -.5f, .5f,	-.5f, -.5f, .5f,
-	.5f, .5f, -.5f,	-.5f, .5f, -.5f, -.5f, -.5f, -.5f, .5f, -.5f, -.5f,
-	-.5f, .5f, -.5f, -.5f, .5f, .5f, -.5f, -.5f, .5f, -.5f, -.5f, -.5f,
-	.5f, .5f, .5f, .5f, .5f, -.5f, .5f, -.5f, -.5f,	.5f, -.5f, .5f,
-	-.5f, -.5f, .5f, .5f, -.5f, .5f, .5f, -.5f, -.5f, -.5f, -.5f, -.5f,
-	-.5f, .5f, -.5f, .5f, .5f, -.5f, .5f, .5f, .5f,	-.5f, .5f, .5f
+	// positions          
+		-1.0f,  1.0f, -1.0f,
+		-1.0f, -1.0f, -1.0f,
+		 1.0f, -1.0f, -1.0f,
+		 1.0f, -1.0f, -1.0f,
+		 1.0f,  1.0f, -1.0f,
+		-1.0f,  1.0f, -1.0f,
+
+		-1.0f, -1.0f,  1.0f,
+		-1.0f, -1.0f, -1.0f,
+		-1.0f,  1.0f, -1.0f,
+		-1.0f,  1.0f, -1.0f,
+		-1.0f,  1.0f,  1.0f,
+		-1.0f, -1.0f,  1.0f,
+
+		 1.0f, -1.0f, -1.0f,
+		 1.0f, -1.0f,  1.0f,
+		 1.0f,  1.0f,  1.0f,
+		 1.0f,  1.0f,  1.0f,
+		 1.0f,  1.0f, -1.0f,
+		 1.0f, -1.0f, -1.0f,
+
+		-1.0f, -1.0f,  1.0f,
+		-1.0f,  1.0f,  1.0f,
+		 1.0f,  1.0f,  1.0f,
+		 1.0f,  1.0f,  1.0f,
+		 1.0f, -1.0f,  1.0f,
+		-1.0f, -1.0f,  1.0f,
+
+		-1.0f,  1.0f, -1.0f,
+		 1.0f,  1.0f, -1.0f,
+		 1.0f,  1.0f,  1.0f,
+		 1.0f,  1.0f,  1.0f,
+		-1.0f,  1.0f,  1.0f,
+		-1.0f,  1.0f, -1.0f,
+
+		-1.0f, -1.0f, -1.0f,
+		-1.0f, -1.0f,  1.0f,
+		 1.0f, -1.0f, -1.0f,
+		 1.0f, -1.0f, -1.0f,
+		-1.0f, -1.0f,  1.0f,
+		 1.0f, -1.0f,  1.0f
+	//-.5f, .5f, .5f, .5f, .5f, .5f,	.5f, -.5f, .5f,	-.5f, -.5f, .5f,
+	//.5f, .5f, -.5f,	-.5f, .5f, -.5f, -.5f, -.5f, -.5f, .5f, -.5f, -.5f,
+	//-.5f, .5f, -.5f, -.5f, .5f, .5f, -.5f, -.5f, .5f, -.5f, -.5f, -.5f,
+	//.5f, .5f, .5f, .5f, .5f, -.5f, .5f, -.5f, -.5f,	.5f, -.5f, .5f,
+	//-.5f, -.5f, .5f, .5f, -.5f, .5f, .5f, -.5f, -.5f, -.5f, -.5f, -.5f,
+	//-.5f, .5f, -.5f, .5f, .5f, -.5f, .5f, .5f, .5f,	-.5f, .5f, .5f
 };
 
 const std::vector<unsigned> cubeIndices =
@@ -99,6 +141,18 @@ void GraphicSystem::initialize() {
 	if (!mainCamera_ && !(cameras_.empty()))
 		mainCamera_ = *cameras_.begin();
 
+	/*if (!skybox.textures[0])
+	{
+		skybox.textures[0] = AssetManager::get_texture("skybox_front");
+		skybox.textures[1] = AssetManager::get_texture("skybox_back");
+		skybox.textures[2] = AssetManager::get_texture("skybox_left");
+		skybox.textures[3] = AssetManager::get_texture("skybox_right");
+		skybox.textures[4] = AssetManager::get_texture("skybox_top");
+		skybox.textures[5] = AssetManager::get_texture("skybox_bottom");
+	}*/
+
+	if (!skybox.texture)
+		skybox.texture = AssetManager::get_texture("skybox");
 	//for (auto& model : models_)
 	//	model->initialize();
 }
@@ -144,16 +198,28 @@ void GraphicSystem::update(float dt) {
 	if (grid.render)
 		render_grid();
 
+	// render skybox
+	if (skybox.texture)
+		render_skybox();
+
 	glDisable(GL_SCISSOR_TEST);
 }
 
 void GraphicSystem::close() {
 
 	lights_.clear();
+	lights_.shrink_to_fit();
+
 	cameras_.clear();
+	cameras_.shrink_to_fit();
+
 	renderers_.clear();
 	renderers_.shrink_to_fit();
+
 	mainCamera_ = nullptr;
+
+	for (int i = 0; i < 6; ++i)
+		skybox.textures[i] = 0;
 }
 
 void GraphicSystem::render_grid()
@@ -216,10 +282,12 @@ void GraphicSystem::render_skybox()
 	Shader* shader = shader_[SKYBOX];
 	shader->use();
 
-	shader->set_matrix("m4_translate", mat4::translate(vec3::zero));
-	shader->set_matrix("m4_scale", mat4::scale(vec3::one * 10));
+	shader->set_matrix("m4_translate", mat4::translate(mainCamera_->position));
+	//shader->set_matrix("m4_translate", mat4::translate(vec3::zero));
+	shader->set_matrix("m4_scale", mat4::scale(vec3::one));
 	shader->set_matrix("m4_rotate", mat4::identity);
 	shader->set_vec3("v3_color", vec3::one);
+	shader->set_vec3("v3_cameraPosition", mainCamera_->position);
 
 	mat4 perspective = mat4::perspective(
 		mainCamera_->fovy_ + mainCamera_->zoom, mainCamera_->aspect_,
@@ -229,26 +297,21 @@ void GraphicSystem::render_skybox()
 
 	// Send camera info to shader
 	mat4 viewport = mat4::look_at(mainCamera_->position, mainCamera_->position + mainCamera_->back_, mainCamera_->up_);
+	viewport.m[0][3] = viewport.m[1][3] = viewport.m[2][3] = 0.f;
 	shader->set_matrix("m4_viewport", viewport);
 
-	glEnable(GL_BLEND);
 	glEnable(GL_DEPTH_TEST);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-	glEnable(GL_TEXTURE_2D);
-	for (int i = 0; i < 6; i++) {
-		glActiveTexture(GL_TEXTURE0 + i);
-		glBindTexture(GL_TEXTURE_2D, skybox.textures[i]);
-		std::string sampler("sampler["), sampler_end("]");
-		shader->set_int((sampler + std::to_string(i) + sampler_end).c_str(), i);
-	}
+	glCullFace(GL_BACK);
+	glDepthFunc(GL_LEQUAL);
+	
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, skybox.texture);
 
 	glBindVertexArray(skyboxVao_);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, quadEbo_);
-	glDrawElements(GL_TRIANGLES, cubeIndicesSize_, GL_UNSIGNED_INT, nullptr);
+	glDrawArrays(GL_TRIANGLES, 0, 36); 
 	glBindVertexArray(0);
+	glDepthFunc(GL_LESS);
 	glDisable(GL_DEPTH_TEST);
-	glDisable(GL_BLEND);
 }
 
 void GraphicSystem::add_renderer(Renderer* model) 
@@ -442,8 +505,6 @@ void GraphicSystem::initialize_graphics()
 	// generate vertex buffer
 	glGenBuffers(1, &quadVbo_);
 	glBindBuffer(GL_ARRAY_BUFFER, quadVbo_);
-
-	// set vertex data
 	glBufferData(GL_ARRAY_BUFFER, quadVertices.size() * sizeof(float), &quadVertices[0], GL_STATIC_DRAW);
 
 	// vertex position
@@ -461,8 +522,6 @@ void GraphicSystem::initialize_graphics()
 	// generate index buffer
 	glGenBuffers(1, &quadEbo_);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, quadEbo_);
-
-	// set index data
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, quadIndices.size() * sizeof(unsigned), &quadIndices[0], GL_STATIC_DRAW);
 
 	// unbind buffer
@@ -477,8 +536,6 @@ void GraphicSystem::initialize_graphics()
 
 	glGenBuffers(1, &skyboxVbo_);
 	glBindBuffer(GL_ARRAY_BUFFER, skyboxVbo_);
-
-	// set vertex data
 	glBufferData(GL_ARRAY_BUFFER, cubeVertices.size() * sizeof(float), &cubeVertices[0], GL_STATIC_DRAW);
 
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
@@ -486,8 +543,6 @@ void GraphicSystem::initialize_graphics()
 
 	glGenBuffers(1, &skyboxEbo_);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, skyboxEbo_);
-
-	// set index data
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, cubeIndices.size() * sizeof(unsigned), &cubeIndices[0], GL_STATIC_DRAW);
 
 	// unbind buffer
@@ -597,84 +652,5 @@ unsigned GraphicSystem::get_num_of_lights()
 //
 //	glBindVertexArray(0);
 //}
-//
-////////////////////////////////////////////////////////////////////////////
-//// Light box pipeline
-////////////////////////////////////////////////////////////////////////////
-//void GraphicSystem::LightSourcePipeline()
-//{
-//	if (isLight_) {
-//
-//		glEnable(GL_BLEND);
-//		glEnable(GL_DEPTH_TEST);
-//
-//		Shader::Use(GLM::JE_SHADER_LIGHTING);
-//
-//		for (auto light : lights_) {
-//
-//			Transform* transform = light->pTransform_;
-//
-//			Shader::pCurrentShader_->SetMatrix(
-//				"m4_translate", Translate(transform->position_));
-//
-//			Shader::pCurrentShader_->SetMatrix(
-//				"m4_rotate", Rotate(Math::DegToRad(transform->rotation_), transform->rotationAxis_));
-//
-//			Shader::pCurrentShader_->SetMatrix("m4_scale", Scale(transform->scale_));
-//
-//			Shader::pCurrentShader_->SetMatrix(
-//				"m4_rotateZ", RotateZ(atan2(light->direction_.y, light->direction_.x)));
-//
-//			Shader::pCurrentShader_->SetMatrix(
-//				"m4_rotateY", RotateY(-atan2(light->direction_.z, light->direction_.x)));
-//
-//			if (light->projection_ == PROJECTION_PERSPECTIVE) {
-//				Shader::pCurrentShader_->SetMatrix("m4_projection", perspective_);
-//
-//				viewport_ = LookAt(mainCamera_->position_, mainCamera_->target_, mainCamera_->up_);
-//			}
-//
-//			else {
-//				right_ = width_ * .5f;
-//				left_ = -right_;
-//				top_ = height_ * .5f;
-//				bottom_ = -top_;
-//
-//				orthogonal_ = Orthogonal(left_, right_, bottom_, top_, mainCamera_->near_, mainCamera_->far_);
-//
-//				Shader::pCurrentShader_->SetMatrix("m4_projection", orthogonal_);
-//
-//				SetIdentity(viewport_);
-//				viewport_ = Scale(resolutionScaler_);
-//			}
-//
-//			Shader::pCurrentShader_->SetMatrix("m4_viewport", viewport_);
-//			Shader::pCurrentShader_->SetVector4("v4_color", light->color_);
-//
-//			glBlendFunc(light->sfactor_, light->dfactor_);
-//
-//			// Update every mesh
-//			for (auto mesh : light->meshes_)
-//				Render(mesh, mesh->drawMode_);
-//
-//		} // for (auto light : lights_) {
-//	} // if (isLight_) {
-//
-//	glDisable(GL_DEPTH_TEST);
-//	glDisable(GL_BLEND);
-//}
-//
-//void GraphicSystem::ParentPipeline(Transform* pTransform) const
-//{
-//	glUniformMatrix4fv(glGetUniformLocation(Shader::pCurrentShader_->programId_, "m4_parentTranslate"),
-//		1, GL_FALSE, &Translate(pTransform->position_).m[0][0]);
-//
-//	glUniformMatrix4fv(glGetUniformLocation(Shader::pCurrentShader_->programId_, "m4_parentScale"),
-//		1, GL_FALSE, &Scale(pTransform->scale_).m[0][0]);
-//
-//	glUniformMatrix4fv(glGetUniformLocation(Shader::pCurrentShader_->programId_, "m4_parentRotate"),
-//		1, GL_FALSE, &Rotate(DegToRad(pTransform->rotation_), pTransform->rotationAxis_).m[0][0]);
-//}
-//
 
 jeEnd

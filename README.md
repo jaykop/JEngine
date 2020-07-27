@@ -2,17 +2,16 @@
 
 =================================
 
-**Next goals** - 2D  
+**Next goals** 
 *Skybox
 *FMOD Lib  
+*Depth test with z value
 *physics + thread  
 *emitter explosion refresh  
-
-**Nice to have** - 3D + a  
 *3D models + import CS300/350 works  
+*Go over ai example and techniques  
 *Add orbiting camera to camera controller  
 *Rippling effect  
-*Go over ai example and techniques  
 
 **Annoying**  
 *vector ostream + friend functions  

@@ -16,6 +16,12 @@
 	
 	],
 	
+	"Skybox" : [
+
+		{	"Key": "skybox",	"Directory": "../default/skybox/"	}
+	
+	],
+	
 	"Model" : [
 	
 		{	"Key": "cube",	"Directory": "../default/cube.obj"	},

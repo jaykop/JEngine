@@ -57,7 +57,7 @@ class GraphicSystem {
 
 	struct Skybox
 	{
-		unsigned textures[6];
+		unsigned textures[6], texture;
 	};
 
 public:
