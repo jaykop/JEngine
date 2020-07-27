@@ -36,70 +36,54 @@ const std::vector<float> quadVertices =
 	.5f, -.5f, 0.0f, 0.f, 0.f, 1.f, 1.0f, 1.0f,
 	.5f,  .5f, 0.0f, 0.f, 0.f, 1.f, 1.0f, 0.0f
 };
-
 const std::vector<unsigned> quadIndices = { 2, 0, 1, 2, 3, 0 };
 
-const std::vector<float> cubeVertices =
+std::vector<float> cubeVertices =
 {
 	// positions          
-		-1.0f,  1.0f, -1.0f,
-		-1.0f, -1.0f, -1.0f,
-		 1.0f, -1.0f, -1.0f,
-		 1.0f, -1.0f, -1.0f,
-		 1.0f,  1.0f, -1.0f,
-		-1.0f,  1.0f, -1.0f,
+		-10.0f,  10.0f, -10.0f,
+		-10.0f, -10.0f, -10.0f,
+		 10.0f, -10.0f, -10.0f,
+		 10.0f, -10.0f, -10.0f,
+		 10.0f,  10.0f, -10.0f,
+		-10.0f,  10.0f, -10.0f,
 
-		-1.0f, -1.0f,  1.0f,
-		-1.0f, -1.0f, -1.0f,
-		-1.0f,  1.0f, -1.0f,
-		-1.0f,  1.0f, -1.0f,
-		-1.0f,  1.0f,  1.0f,
-		-1.0f, -1.0f,  1.0f,
+		-10.0f, -10.0f,  10.0f,
+		-10.0f, -10.0f, -10.0f,
+		-10.0f,  10.0f, -10.0f,
+		-10.0f,  10.0f, -10.0f,
+		-10.0f,  10.0f,  10.0f,
+		-10.0f, -10.0f,  10.0f,
 
-		 1.0f, -1.0f, -1.0f,
-		 1.0f, -1.0f,  1.0f,
-		 1.0f,  1.0f,  1.0f,
-		 1.0f,  1.0f,  1.0f,
-		 1.0f,  1.0f, -1.0f,
-		 1.0f, -1.0f, -1.0f,
+		 10.0f, -10.0f, -10.0f,
+		 10.0f, -10.0f,  10.0f,
+		 10.0f,  10.0f,  10.0f,
+		 10.0f,  10.0f,  10.0f,
+		 10.0f,  10.0f, -10.0f,
+		 10.0f, -10.0f, -10.0f,
 
-		-1.0f, -1.0f,  1.0f,
-		-1.0f,  1.0f,  1.0f,
-		 1.0f,  1.0f,  1.0f,
-		 1.0f,  1.0f,  1.0f,
-		 1.0f, -1.0f,  1.0f,
-		-1.0f, -1.0f,  1.0f,
+		-10.0f, -10.0f,  10.0f,
+		-10.0f,  10.0f,  10.0f,
+		 10.0f,  10.0f,  10.0f,
+		 10.0f,  10.0f,  10.0f,
+		 10.0f, -10.0f,  10.0f,
+		-10.0f, -10.0f,  10.0f,
 
-		-1.0f,  1.0f, -1.0f,
-		 1.0f,  1.0f, -1.0f,
-		 1.0f,  1.0f,  1.0f,
-		 1.0f,  1.0f,  1.0f,
-		-1.0f,  1.0f,  1.0f,
-		-1.0f,  1.0f, -1.0f,
+		-10.0f,  10.0f, -10.0f,
+		 10.0f,  10.0f, -10.0f,
+		 10.0f,  10.0f,  10.0f,
+		 10.0f,  10.0f,  10.0f,
+		-10.0f,  10.0f,  10.0f,
+		-10.0f,  10.0f, -10.0f,
 
-		-1.0f, -1.0f, -1.0f,
-		-1.0f, -1.0f,  1.0f,
-		 1.0f, -1.0f, -1.0f,
-		 1.0f, -1.0f, -1.0f,
-		-1.0f, -1.0f,  1.0f,
-		 1.0f, -1.0f,  1.0f
-	//-.5f, .5f, .5f, .5f, .5f, .5f,	.5f, -.5f, .5f,	-.5f, -.5f, .5f,
-	//.5f, .5f, -.5f,	-.5f, .5f, -.5f, -.5f, -.5f, -.5f, .5f, -.5f, -.5f,
-	//-.5f, .5f, -.5f, -.5f, .5f, .5f, -.5f, -.5f, .5f, -.5f, -.5f, -.5f,
-	//.5f, .5f, .5f, .5f, .5f, -.5f, .5f, -.5f, -.5f,	.5f, -.5f, .5f,
-	//-.5f, -.5f, .5f, .5f, -.5f, .5f, .5f, -.5f, -.5f, -.5f, -.5f, -.5f,
-	//-.5f, .5f, -.5f, .5f, .5f, -.5f, .5f, .5f, .5f,	-.5f, .5f, .5f
+		-10.0f, -10.0f, -10.0f,
+		-10.0f, -10.0f,  10.0f,
+		 10.0f, -10.0f, -10.0f,
+		 10.0f, -10.0f, -10.0f,
+		-10.0f, -10.0f,  10.0f,
+		 10.0f, -10.0f,  10.0f
 };
-
-const std::vector<unsigned> cubeIndices =
-{
-	1, 1, 0, 0, 0, 0, 2 ,2, 0, 3, 3, 0, 2, 2, 0, 0, 0, 0,
-	5, 5, 1, 7, 7, 1, 6, 6, 1, 7, 7, 1, 5, 5, 1, 4, 4, 1,
-	11, 9, 2, 10, 3, 2, 8, 8, 2, 9, 0, 2, 8, 8, 2, 10, 3, 2,
-	13, 4, 3, 15, 2, 3, 14, 7, 3, 15, 2, 3, 13, 4, 3, 12, 1, 3,
-	19, 11, 4, 18, 10, 4, 16, 3, 4, 17, 2, 4, 16, 3, 4, 18, 10, 4,
-	23, 0, 5, 22, 1, 5, 20, 12, 5, 21, 13, 5, 20, 12, 5, 22, 1, 5
-};
+const int cubeVerticesSize = 36;
 
 const std::string type("].mode"), position("].position"),
 innerAngle("].innerAngle"), outerAngle("].outerAngle"), fallOff("].fallOff"),
@@ -114,8 +98,7 @@ int GraphicSystem::widthStart_ = 0, GraphicSystem::heightStart_ = 0;
 float GraphicSystem::width_ = 0.f, GraphicSystem::height_ = 0.f;
 unsigned GraphicSystem::quadVao_ = 0, GraphicSystem::quadVbo_ = 0, GraphicSystem::quadEbo_ = 0,
 GraphicSystem::drVao_ = 0, GraphicSystem::drVbo_ = 0,
-GraphicSystem::skyboxVao_ = 0, GraphicSystem::skyboxVbo_ = 0, GraphicSystem::skyboxEbo_ = 0,
-GraphicSystem::quadIndicesSize_ = 6, GraphicSystem::cubeIndicesSize_ = 36;
+GraphicSystem::skyboxVao_ = 0, GraphicSystem::skyboxVbo_ = 0, GraphicSystem::quadIndicesSize_ = 6;
 
 std::stack<GraphicSystem::Graphic> GraphicSystem::graphicStack_;
 Camera* GraphicSystem::mainCamera_ = nullptr;
@@ -138,21 +121,22 @@ Camera* GraphicSystem::get_camera()
 
 void GraphicSystem::initialize() {
 
+	// set main camera
 	if (!mainCamera_ && !(cameras_.empty()))
 		mainCamera_ = *cameras_.begin();
 
-	/*if (!skybox.textures[0])
-	{
-		skybox.textures[0] = AssetManager::get_texture("skybox_front");
-		skybox.textures[1] = AssetManager::get_texture("skybox_back");
-		skybox.textures[2] = AssetManager::get_texture("skybox_left");
-		skybox.textures[3] = AssetManager::get_texture("skybox_right");
-		skybox.textures[4] = AssetManager::get_texture("skybox_top");
-		skybox.textures[5] = AssetManager::get_texture("skybox_bottom");
-	}*/
-
-	if (!skybox.texture)
+	// set skybox
+	if (!skybox.texture) 
 		skybox.texture = AssetManager::get_texture("skybox");
+
+	if (skybox.scale != 1)
+	{
+		glBindBuffer(GL_ARRAY_BUFFER, skyboxVbo_);
+		for (auto& v : cubeVertices)
+			v *= skybox.scale;
+		glBufferData(GL_ARRAY_BUFFER, cubeVertices.size() * sizeof(float), &cubeVertices[0], GL_STATIC_DRAW);
+	}
+
 	//for (auto& model : models_)
 	//	model->initialize();
 }
@@ -187,6 +171,10 @@ void GraphicSystem::update(float dt) {
 	glViewport(widthStart_, heightStart_,
 		static_cast<GLsizei>(width_), static_cast<GLsizei>(height_));
 
+	// render skybox
+	//if (skybox.texture)
+	render_skybox();
+
 	// update lights
 	update_lights(dt);
 
@@ -197,10 +185,6 @@ void GraphicSystem::update(float dt) {
 	// render grid
 	if (grid.render)
 		render_grid();
-
-	// render skybox
-	if (skybox.texture)
-		render_skybox();
 
 	glDisable(GL_SCISSOR_TEST);
 }
@@ -217,9 +201,7 @@ void GraphicSystem::close() {
 	renderers_.shrink_to_fit();
 
 	mainCamera_ = nullptr;
-
-	for (int i = 0; i < 6; ++i)
-		skybox.textures[i] = 0;
+	skybox.texture = 0;
 }
 
 void GraphicSystem::render_grid()
@@ -282,11 +264,7 @@ void GraphicSystem::render_skybox()
 	Shader* shader = shader_[SKYBOX];
 	shader->use();
 
-	shader->set_matrix("m4_translate", mat4::translate(mainCamera_->position));
-	//shader->set_matrix("m4_translate", mat4::translate(vec3::zero));
-	shader->set_matrix("m4_scale", mat4::scale(vec3::one));
-	shader->set_matrix("m4_rotate", mat4::identity);
-	shader->set_vec3("v3_color", vec3::one);
+	shader->set_vec3("v3_color", skybox.color);
 	shader->set_vec3("v3_cameraPosition", mainCamera_->position);
 
 	mat4 perspective = mat4::perspective(
@@ -297,21 +275,22 @@ void GraphicSystem::render_skybox()
 
 	// Send camera info to shader
 	mat4 viewport = mat4::look_at(mainCamera_->position, mainCamera_->position + mainCamera_->back_, mainCamera_->up_);
-	viewport.m[0][3] = viewport.m[1][3] = viewport.m[2][3] = 0.f;
+	viewport.m[0][3] = viewport.m[1][3] = 0.f; viewport.m[2][3] = 0.f;
 	shader->set_matrix("m4_viewport", viewport);
 
-	glEnable(GL_DEPTH_TEST);
+	//glEnable(GL_BLEND);
+	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glDisable(GL_DEPTH_TEST);
+	glDepthMask(GL_FALSE);
 	glCullFace(GL_BACK);
-	glDepthFunc(GL_LEQUAL);
-	
+	glBindVertexArray(skyboxVao_);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, skybox.texture);
-
-	glBindVertexArray(skyboxVao_);
-	glDrawArrays(GL_TRIANGLES, 0, 36); 
+	glDrawArrays(GL_TRIANGLES, 0, cubeVerticesSize); 
 	glBindVertexArray(0);
-	glDepthFunc(GL_LESS);
-	glDisable(GL_DEPTH_TEST);
+	glEnable(GL_DEPTH_TEST);
+	glDepthMask(GL_TRUE);
+	/*glDisable(GL_BLEND);*/
 }
 
 void GraphicSystem::add_renderer(Renderer* model) 
@@ -541,10 +520,6 @@ void GraphicSystem::initialize_graphics()
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
 
-	glGenBuffers(1, &skyboxEbo_);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, skyboxEbo_);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, cubeIndices.size() * sizeof(unsigned), &cubeIndices[0], GL_STATIC_DRAW);
-
 	// unbind buffer
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -583,7 +558,6 @@ void GraphicSystem::close_graphics()
 
 	glDeleteVertexArrays(1, &skyboxVao_);
 	glDeleteBuffers(1, &skyboxVbo_);
-	glDeleteBuffers(1, &skyboxEbo_);
 
 	glDeleteVertexArrays(1, &drVao_);
 	glDeleteBuffers(1, &drVbo_);

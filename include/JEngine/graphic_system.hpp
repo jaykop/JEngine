@@ -57,7 +57,9 @@ class GraphicSystem {
 
 	struct Skybox
 	{
-		unsigned textures[6], texture;
+		unsigned texture = 0;
+		float scale = 1.f;
+		vec3 color = vec3::one;
 	};
 
 public:
@@ -104,7 +106,7 @@ private:
 	static int widthStart_, heightStart_;
 	static unsigned quadVao_, quadVbo_, quadEbo_,
 		drVao_, drVbo_,	quadIndicesSize_,
-		skyboxVao_, skyboxVbo_, skyboxEbo_, cubeIndicesSize_;
+		skyboxVao_, skyboxVbo_;
 
 	static Lights lights_;
 	static Shaders shader_;
