@@ -110,7 +110,7 @@ void Light::draw(float /*dt*/)
     glBlendFunc(sfactor_, dfactor_);
 
     for (const auto& m : meshes_)
-        m->draw(shader);
+        m->draw(shader, status);
 
     glDisable(GL_DEPTH_TEST);
     glDisable(GL_BLEND);

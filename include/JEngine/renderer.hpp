@@ -24,10 +24,11 @@ public:
 	static bool renderObj;
 	static RenderType renderType;
 
-	const static int IS_FIXED = 0x1000;
-	const static int IS_FLIPPED = 0x0100;
-	const static int IS_BILBOARD = 0x0010;
-	const static int IS_INHERITED = 0x0001;
+	const static int IS_FIXED		= 0x00001;
+	const static int IS_FLIPPED		= 0x00010;
+	const static int IS_BILBOARD	= 0x00100;
+	const static int IS_REFLECTED	= 0x01000;
+	const static int IS_REFRACTED	= 0x10000;
 
 	ProjectType prjType;
 	int status;

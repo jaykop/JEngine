@@ -1,0 +1,36 @@
+{
+	"Font": [
+
+	],
+
+	"Texture": [
+
+		{
+			"Key": "testAnimation",
+			"Directory": "resource/texture/testAnimation.png"
+		}
+
+	],
+	
+	"Skybox" : [
+
+		{	"Key": "badomen",	"Directory": "resource/texture/badomen"	}
+	
+	],
+	
+	"Model": [
+	
+		{	"Key": "whale",	"Directory": "resource/model/Mesh_Orca/Mesh_Orca.obj"	},
+		{	"Key": "bunny",	"Directory": "resource/model/bunny.obj"	}
+	
+	],
+
+	"Audio": [
+
+	],
+
+	"Background": [ 0.05, 0.05, 0.05, 1 ],
+	"Screen": [ 1.0, 1.0, 1.0, 1.0 ],
+	"Effect": { "Type": "None" },
+	"Object": [	]
+}

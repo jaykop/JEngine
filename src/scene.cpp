@@ -50,6 +50,13 @@ void Scene::load()
 			jeDebugPrint("*AssetManager - Loaded image: %s.\n", textures[i]["Directory"].GetString());
 	}
 	
+	const rapidjson::Value& skybox = JsonParser::get_document()["Skybox"];
+	for (rapidjson::SizeType i = 0; i < skybox.Size(); ++i) {
+		AssetManager::load_skybox(skybox[i]["Directory"].GetString(), skybox[i]["Key"].GetString(),
+			&textures_);
+		jeDebugPrint("*AssetManager - Loaded skybox: %s.\n", skybox[i]["Directory"].GetString());
+	}
+
 	// Load obj 
 	const rapidjson::Value& models = JsonParser::get_document()["Model"];
 	for (rapidjson::SizeType i = 0; i < models.Size(); ++i) {

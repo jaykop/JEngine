@@ -18,6 +18,10 @@
 		{	"Key": "bunny",	"Directory": "resource/model/bunny.obj"	}
 	
 	],
+	
+	"Skybox" : [
+	
+	],
 
 	"Audio": [
 

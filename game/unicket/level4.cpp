@@ -60,6 +60,7 @@ void Level4::init_models()
 	auto* md2 = whale->get_component<Model>();
 	auto* trans2 = whale->get_component<Transform>();
 	md2->set_meshes(AssetManager::get_meshes("whale"));
+	md2->status |= Renderer::IS_REFLECTED;
 	trans2->position.set(-5.f, 0.f, -10.f);
 	trans2->scale.set(1.f, 1.f, 1.f);
 	register_object(whale);

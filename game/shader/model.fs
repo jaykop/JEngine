@@ -36,6 +36,9 @@ struct Light{
 // uniform variables
 ////////////////////////////
 
+uniform bool boolean_reflected;
+uniform bool boolean_refracted;
+
 uniform bool shadow;
 uniform vec4 v4_color;
 
@@ -46,6 +49,8 @@ uniform sampler2D gDiffuse;
 uniform sampler2D gSpecular;
 uniform sampler2D gFog;
 uniform sampler2D kAmb;
+
+uniform samplerCube skybox;
 
 uniform vec3 fogColor;
 uniform vec3 kAmbient;
@@ -80,17 +85,34 @@ void LightingEffect(vec3 sDiff, vec3 sAmbi, vec3 sSpec);
 ////////////////////////////
 void main()
 {      
-	vec3 sDiff = texture(gDiffuse, v2_outTexCoord).rgb;
-	vec3 sSpec = texture(gSpecular, v2_outTexCoord).rgb;
-	vec3 sAmbi = texture(gAmbient, v2_outTexCoord).rgb;
+	//if (boolean_reflected)
+	//{
+	//	vec3 I = normalize(v3_outFragmentPosition - v3_cameraPosition);
+	//	vec3 R = reflect(I, normalize(v3_outNormal));
+	//	v4_fragColor = vec4(texture(skybox, R).rgb, 1.0);
+	//}
 	
-	if (shadow)
-		LightingEffect(sDiff, sAmbi, sSpec);
+	//else if (boolean_refracted)
+	//{
+		//vec3 I = normalize(v3_outFragmentPosition - v3_cameraPosition);
+		//vec3 R = refract(I, normalize(v3_outNormal));
+	//	v4_fragColor = vec4(1,1,1,1);//vec4(texture(skybox, R).rgb, 1.0);
+	//}
 	
-	else
+	//else 
 	{
-		v4_fragColor.xyz = ((sDiff + sSpec + sAmbi) / 3) * v4_color.xyz;
-		v4_fragColor.w = v4_color.w;
+		vec3 sDiff = texture(gDiffuse, v2_outTexCoord).rgb;
+		vec3 sSpec = texture(gSpecular, v2_outTexCoord).rgb;
+		vec3 sAmbi = texture(gAmbient, v2_outTexCoord).rgb;
+		
+		if (shadow)
+			LightingEffect(sDiff, sAmbi, sSpec);
+		
+		else
+		{
+			v4_fragColor.xyz = ((sDiff + sSpec + sAmbi) / 3) * v4_color.xyz;
+			v4_fragColor.w = v4_color.w;
+		}
 	}
 }
 

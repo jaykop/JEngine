@@ -57,6 +57,9 @@
     <ClInclude Include="level5.h">
       <Filter>game_scene</Filter>
     </ClInclude>
+    <ClInclude Include="level6.h">
+      <Filter>game_scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -96,6 +99,9 @@
       <Filter>game_scene</Filter>
     </ClCompile>
     <ClCompile Include="level5.cpp">
+      <Filter>game_scene</Filter>
+    </ClCompile>
+    <ClCompile Include="level6.cpp">
       <Filter>game_scene</Filter>
     </ClCompile>
   </ItemGroup>

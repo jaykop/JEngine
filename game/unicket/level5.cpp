@@ -135,17 +135,6 @@ void Level5::init_models()
 	trans4->scale.set(1.f, 1.f, 1.f);
 	register_object(sphere);
 
-	//auto* cube = ObjectManager::create_object("cube");
-	//cube->add_component<Model>();
-	//auto* md3 = cube->get_component<Model>();
-	//auto* trans3 = cube->get_component<Transform>();
-	//md3->set_meshes(AssetManager::get_meshes("cube"));
-	//// md3->color.set(1, 0, 0, 1);
-	//trans3->position.set(-3.f, 0.f, 0.f);
-	//trans3->set_euler_deg(0.f, 0.f, 0.f);
-	//trans3->scale.set(10.f, 10.f, .1f);
-	//register_object(cube);
-
 	auto* renderer_2d = ObjectManager::create_object("renderer_2d");
 	renderer_2d->add_component<Sprite>();
 	renderer_2d->add_component<DebugRenderer>();

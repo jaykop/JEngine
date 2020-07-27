@@ -28,6 +28,16 @@ Contains the methods of asset_manager class
 
 jeBegin
 
+static const std::vector<std::string> faces =
+{
+	"/right.png",
+	"/left.png",
+	"/top.png",
+	"/bottom.png",
+	"/front.png",
+	"/back.png",
+};
+
 std::string meshDir;
 std::vector<Texture> texturesLoaded;
 
@@ -358,105 +368,24 @@ bool AssetManager::load_obj(const std::string& path, const char* meshKey, MeshMa
 
 void AssetManager::load_skybox(const char* path, const char* textureKey, TextureMap* tMap)
 {
-	/*std::vector<std::string> faces = 
+	Image image;
+
+	glGenTextures(1, &image.handle);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, image.handle);
+
+	for (unsigned int i = 0; i < faces.size(); ++i)
 	{
-		"front",
-		"back",
-		"left",
-		"right",
-		"top",
-		"bottom"
-	};
-
-	std::string underbar("_"), png(".png");
-
-	for (const auto& f : faces)
-	{
-		unsigned textureId;
-		glGenTextures(1, &textureId);
-
-		int width, height, numOfComponents;
-		unsigned char* data = stbi_load(std::string(path + f + png).c_str(), &width, &height, &numOfComponents, 0);
-		if (data)
-		{
-			GLenum format = 0;
-			if (numOfComponents == 1)
-				format = GL_RED;
-			else if (numOfComponents == 3)
-				format = GL_RGB;
-			else if (numOfComponents == 4)
-				format = GL_RGBA;
-
-			glBindTexture(GL_TEXTURE_2D, textureId);
-			glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
-			glGenerateMipmap(GL_TEXTURE_2D);
-
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-			tMap->insert(TextureMap::value_type(
-				textureKey + underbar + f, textureId));
-
-			stbi_image_free(data);
-		}
-		else
-		{
-			stbi_image_free(data);
-		}*/
-
-		/*Image image;
-		unsigned error = lodepng::decode(image.pixels, image.width, image.height, path + f + png);
+		image.pixels.clear();
+		unsigned error = lodepng::decode(image.pixels, image.width, image.height, std::string(path + faces[i]).c_str(), LCT_RGB);
 
 		if (error)
 			jeDebugPrint("!AssetManager - Decoder error %d / %s.\n", error, lodepng_error_text(error));
 
 		else
 		{
-			glEnable(GL_TEXTURE_2D);
-			glGenTextures(1, &image.handle);
-			glBindTexture(GL_TEXTURE_2D, image.handle);
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image.width, image.height, 0,
-				GL_RGBA, GL_UNSIGNED_BYTE, &image.pixels[0]);
-			glGenerateMipmap(GL_TEXTURE_2D);
-
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-			tMap->insert(TextureMap::value_type(
-				textureKey + underbar + f, image.handle));
-		}*/
-	//}
-
-	std::vector<std::string> faces = 
-	{
-		"/right.png",
-		"/left.png",
-		"/top.png",
-		"/bottom.png",
-		"/front.png",
-		"/back.png",
-	};
-
-	unsigned int textureID;
-	glGenTextures(1, &textureID);
-	glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
-
-	int width, height, nrChannels;
-	for (unsigned int i = 0; i < faces.size(); i++)
-	{
-		unsigned char* data = stbi_load(std::string(path + faces[i]).c_str(), &width, &height, &nrChannels, 0);
-		if (data)
-		{
-			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-			stbi_image_free(data);
-		}
-		else
-		{
-			stbi_image_free(data);
+			// Enable the texture for OpenGL.
+			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, image.width, image.height, 0,
+				GL_RGB, GL_UNSIGNED_BYTE, &image.pixels[0]);
 		}
 	}
 
@@ -467,7 +396,7 @@ void AssetManager::load_skybox(const char* path, const char* textureKey, Texture
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
 	tMap->insert(TextureMap::value_type(
-		textureKey, textureID));
+		textureKey, image.handle));
 }
 
 void AssetManager::load_audio(const char* /*path*/, const char* /*_audioKey*/, AudioMap* /*aMap*/)

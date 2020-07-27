@@ -23,7 +23,7 @@ public:
 
 private:
 
-    void draw(Shader* shader);
+    void draw(Shader* shader, unsigned status);
     
     std::vector<Vertex> vertices_;
     std::vector<unsigned int> indices_;

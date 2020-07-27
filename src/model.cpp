@@ -53,13 +53,13 @@ void Model::draw(float /*dt*/)
     shader->set_matrix("m4_scale", mat4::scale(transform_->scale));
     shader->set_matrix("m4_rotate", transform_->orientation.to_mat4());
     shader->set_bool("boolean_bilboard", (status & IS_BILBOARD) == IS_BILBOARD);
+    shader->set_vec3("v3_cameraPosition", camera->position);
     shader->set_vec4("v4_color", color);
 
     switch (prjType)
     {
     case ProjectType::PERSPECTIVE:
     {
-
         mat4 perspective = mat4::perspective(
             camera->fovy_ + camera->zoom, camera->aspect_,
             camera->near_, camera->far_);
@@ -106,7 +106,6 @@ void Model::draw(float /*dt*/)
     {
         // shader->set_vec3("gAmb", ambient);
         shader->set_uint("lightSize", GraphicSystem::get_num_of_lights());
-        shader->set_vec3("v3_cameraPosition", camera->position);
         shader->set_float("zNear", camera->near_);
         shader->set_float("zFar", camera->far_);
         shader->set_vec3("fogColor", Light::fogColor);
@@ -120,7 +119,7 @@ void Model::draw(float /*dt*/)
     glBlendFunc(sfactor_, dfactor_);
 
     for (const auto& m : meshes_)
-        m->draw(shader);
+        m->draw(shader, status);
 
     glDisable(GL_DEPTH_TEST);
     glDisable(GL_BLEND);
