@@ -309,7 +309,10 @@ void GraphicSystem::render_copy(float dt)
 		backgroundColor.w);
 	glBindFramebuffer(GL_FRAMEBUFFER, fbo_);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glViewport(widthStart_, heightStart_, width_, height_);
+	glViewport(static_cast<GLsizei>(widthStart_), 
+		static_cast<GLsizei>(heightStart_),
+		static_cast<GLsizei>(width_),
+		static_cast<GLsizei>(height_));
 
 	for (int i = 0; i < 6; i++) {
 
@@ -359,7 +362,10 @@ void GraphicSystem::render_copy(float dt)
 		backgroundColor.w);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glViewport(widthStart_, heightStart_, width_, height_);
+	glViewport(static_cast<GLsizei>(widthStart_),
+		static_cast<GLsizei>(heightStart_),
+		static_cast<GLsizei>(width_),
+		static_cast<GLsizei>(height_));
 }
 
 void GraphicSystem::add_renderer(Renderer* model) 
