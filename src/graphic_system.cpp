@@ -290,7 +290,6 @@ void GraphicSystem::render_skybox()
 	glCullFace(GL_BACK);
 	glBindVertexArray(skyboxVao_);
 	
-	glEnable(GL_TEXTURE_2D);
 	for (int i = 0; i < 6; i++) {
 		glActiveTexture(GL_TEXTURE0 + i);
 		glBindTexture(GL_TEXTURE_2D, skybox.textures[i]);
@@ -300,6 +299,7 @@ void GraphicSystem::render_skybox()
 	//glActiveTexture(GL_TEXTURE0);
 	//glBindTexture(GL_TEXTURE_CUBE_MAP, skybox.texture);
 	glDrawArrays(GL_TRIANGLES, 0, cubeVerticesSize); 
+	glActiveTexture(GL_TEXTURE0);
 	glBindVertexArray(0);
 	glEnable(GL_DEPTH_TEST);
 	glDepthMask(GL_TRUE);

@@ -60,9 +60,9 @@ void Scene::load()
 	// Load obj 
 	const rapidjson::Value& models = JsonParser::get_document()["Model"];
 	for (rapidjson::SizeType i = 0; i < models.Size(); ++i) {
-		AssetManager::load_obj(models[i]["Directory"].GetString(), models[i]["Key"].GetString(), 
+		bool loaded = AssetManager::load_obj(models[i]["Directory"].GetString(), models[i]["Key"].GetString(), 
 			&meshes_);
-		jeDebugPrint("*AssetManager - Loaded obj: %s.\n", models[i]["Directory"].GetString());
+		if (loaded) jeDebugPrint("*AssetManager - Loaded obj: %s.\n", models[i]["Directory"].GetString());
 	}
 
 	// Load font
