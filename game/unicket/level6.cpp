@@ -14,7 +14,6 @@ void Level6::initialize()
 	// base init
 	Scene::initialize();
 
-	// GraphicSystem::skybox.texture = AssetManager::get_texture("church");
 	GraphicSystem::skybox.textures[0] = AssetManager::get_texture("badomen_front");
 	GraphicSystem::skybox.textures[1] = AssetManager::get_texture("badomen_back");
 	GraphicSystem::skybox.textures[2] = AssetManager::get_texture("badomen_right");

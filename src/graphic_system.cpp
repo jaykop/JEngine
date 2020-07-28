@@ -134,7 +134,6 @@ void GraphicSystem::initialize() {
 		skybox.textures[3] = AssetManager::get_texture("skybox_left");
 		skybox.textures[4] = AssetManager::get_texture("skybox_top");
 		skybox.textures[5] = AssetManager::get_texture("skybox_bottom");
-		// skybox.texture = AssetManager::get_texture("skybox");
 	}
 
 
@@ -202,7 +201,8 @@ void GraphicSystem::close() {
 	renderers_.shrink_to_fit();
 
 	mainCamera_ = nullptr;
-	skybox.texture = 0;
+	for (auto& t : skybox.textures)
+		t = 0;
 }
 
 void GraphicSystem::render_grid()
@@ -280,11 +280,8 @@ void GraphicSystem::render_skybox()
 
 	// Send camera info to shader
 	mat4 viewport = mat4::look_at(mainCamera_->position, mainCamera_->position + mainCamera_->back_, mainCamera_->up_);
-	// viewport.m[0][3] = viewport.m[1][3] = 0.f; viewport.m[2][3] = 0.f;
 	shader->set_matrix("m4_viewport", viewport);
 
-	//glEnable(GL_BLEND);
-	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glDisable(GL_DEPTH_TEST);
 	glDepthMask(GL_FALSE);
 	glCullFace(GL_BACK);
@@ -296,14 +293,11 @@ void GraphicSystem::render_skybox()
 		shader->set_int(std::string("sampler[" + std::to_string(i) + "]").c_str(), i);
 	}
 	
-	//glActiveTexture(GL_TEXTURE0);
-	//glBindTexture(GL_TEXTURE_CUBE_MAP, skybox.texture);
 	glDrawArrays(GL_TRIANGLES, 0, cubeVerticesSize); 
 	glActiveTexture(GL_TEXTURE0);
 	glBindVertexArray(0);
 	glEnable(GL_DEPTH_TEST);
 	glDepthMask(GL_TRUE);
-	/*glDisable(GL_BLEND);*/
 }
 
 void GraphicSystem::add_renderer(Renderer* model) 

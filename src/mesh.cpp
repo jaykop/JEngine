@@ -49,9 +49,9 @@ void Mesh::draw(Shader* shader, bool envr)
 
     if (envr)
     {
-        glActiveTexture(GL_TEXTURE0);
-        shader->set_int("skybox", 0);
-        glBindTexture(GL_TEXTURE_CUBE_MAP, GraphicSystem::skybox.texture);
+        //glActiveTexture(GL_TEXTURE0);
+        //shader->set_int("skybox", 0);
+        //glBindTexture(GL_TEXTURE_CUBE_MAP, GraphicSystem::skybox.texture);
     }
 
     else if (defaultTexture_)

@@ -58,7 +58,6 @@ class GraphicSystem {
 	struct Skybox
 	{
 		unsigned textures[6] = { 0 };
-		unsigned texture = 0;
 		float scale = 10.f;
 		vec3 color = vec3::one;
 	};

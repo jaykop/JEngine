@@ -377,56 +377,19 @@ bool AssetManager::load_obj(const std::string& path, const char* meshKey, MeshMa
 
 void AssetManager::load_skybox(const char* path, const char* textureKey, TextureMap* tMap)
 {
-	//Image image;
-
-	//glGenTextures(1, &image.handle);
-	//glBindTexture(GL_TEXTURE_CUBE_MAP, image.handle);
-
-	//for (unsigned int i = 0; i < faces.size(); ++i)
-	//{
-	//	image.pixels.clear();
-	//	unsigned error = lodepng::decode(image.pixels, image.width, image.height, std::string(path + faces[i]).c_str(), LCT_RGB);
-
-	//	if (error)
-	//		jeDebugPrint("!AssetManager - Decoder error %d / %s.\n", error, lodepng_error_text(error));
-
-	//	else
-	//	{
-	//		// Enable the texture for OpenGL.
-	//		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, image.width, image.height, 0,
-	//			GL_RGB, GL_UNSIGNED_BYTE, &image.pixels[0]);
-	//	}
-	//}
-
-	//glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	//glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	//glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	//glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	//glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-
-	//tMap->insert(TextureMap::value_type(
-	//	textureKey, image.handle));
-
 	for (unsigned int i = 0; i < faces.size(); ++i)
 	{
-		unsigned textureId;
-		glGenTextures(1, &textureId);
+		Image image;
+		unsigned error = lodepng::decode(image.pixels, image.width, image.height, std::string(path + faces[i] + png).c_str(), LCT_RGB);
 
-		int width, height, numOfComponents;
-		unsigned char* data = stbi_load(std::string(path + faces[i] + png).c_str(),
-			&width, &height, &numOfComponents, 0);
-		if (data)
+		if (error)
+			jeDebugPrint("!AssetManager - Decoder error %d / %s.\n", error, lodepng_error_text(error));
+
+		else
 		{
-			GLenum format = 0;
-			if (numOfComponents == 1)
-				format = GL_RED;
-			else if (numOfComponents == 3)
-				format = GL_RGB;
-			else if (numOfComponents == 4)
-				format = GL_RGBA;
-
-			glBindTexture(GL_TEXTURE_2D, textureId);
-			glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
+			glGenTextures(1, &image.handle);
+			glBindTexture(GL_TEXTURE_2D, image.handle);
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, image.width, image.height, 0, GL_RGB, GL_UNSIGNED_BYTE, &image.pixels[0]);
 			glGenerateMipmap(GL_TEXTURE_2D);
 
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -434,15 +397,8 @@ void AssetManager::load_skybox(const char* path, const char* textureKey, Texture
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-
 			tMap->insert(TextureMap::value_type(
-				std::string(textureKey + underbar + faces[i]).c_str(), textureId));
-
-			stbi_image_free(data);
-		}
-		else
-		{
-			stbi_image_free(data);
+				std::string(textureKey + underbar + faces[i]).c_str(), image.handle));
 		}
 	}
 }
