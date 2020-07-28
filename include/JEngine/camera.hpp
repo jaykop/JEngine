@@ -34,7 +34,7 @@ public:
 
 	const vec3& get_up() const;
 	const vec3& get_right() const;
-	const vec3& get_back() const;
+	const vec3& get_front() const;
 
 	void set_yaw(float degree);
 	void set_pitch(float degree);
@@ -56,7 +56,7 @@ private:
 
 	static vec3 worldUp_;
 
-	vec3 up_, right_, back_, viewgeometry_;
+	vec3 up_, right_, /*back_,*/ front_, viewgeometry_;
 	float distance_, aspect_, fovy_, width_, height_, near_, far_;
 	float yaw_, roll_, pitch_;
 

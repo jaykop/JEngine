@@ -22,8 +22,8 @@ void CameraController::update(float dt)
 
 	if (InputHandler::key_triggered(KEY::MOUSE_MIDDLE))
 	{
-		camera->set_pitch(Math::deg_to_rad(0.f));
-		camera->set_yaw(Math::deg_to_rad(-90.f));
+		camera->set_pitch(0.f);
+		camera->set_yaw(-90.f);
 		camera->position.set(0.f, 0.f, 10.f);
 		camera->zoom = 0.f;
 	}
@@ -65,12 +65,12 @@ void CameraController::move(float dt)
 	{
 		if (InputHandler::key_pressed(KEY::W))
 		{
-			camera->position += camera->get_back() * offset;
+			camera->position += camera->get_front() * offset;
 		}
 
 		if (InputHandler::key_pressed(KEY::S))
 		{
-			camera->position -= camera->get_back() * offset;
+			camera->position -= camera->get_front() * offset;
 		}
 	}
 
@@ -106,8 +106,8 @@ void CameraController::rotate(float dt)
 
 	dx = sensitivity * dt * std::fabsf(xoffset);
 	dy = sensitivity * dt * std::fabsf(yoffset);
-	if (dx > maxOffset) dx = last_dx;
-	if (dy > maxOffset) dy = last_dy;
+	if (dx > sensitivity) dx = last_dx;
+	if (dy > sensitivity) dy = last_dy;
 
 	if (xoffset > 0)
 		camera->set_yaw(camera->get_yaw() + dx);
@@ -118,10 +118,10 @@ void CameraController::rotate(float dt)
 	else if (yoffset < 0)
 		camera->set_pitch(camera->get_pitch() - dy);
 
-	if (Math::rad_to_deg(camera->get_pitch()) > 89.0f)
-		camera->set_pitch(Math::deg_to_rad(89.0f));
-	else if (Math::rad_to_deg(camera->get_pitch()) < -89.0f)
-		camera->set_pitch(Math::deg_to_rad(-89.0f));
+	if (camera->get_pitch() > 89.0f)
+		camera->set_pitch(89.0f);
+	else if (camera->get_pitch() < -89.0f)
+		camera->set_pitch(-89.0f);
 }
 
 jeEnd

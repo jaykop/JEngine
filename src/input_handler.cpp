@@ -291,7 +291,7 @@ vec3 InputHandler::get_ray_direction()
 	vec4 ray_clip = vec4(x, y, -1.0, 1.0);
 
 	Camera* camera = GraphicSystem::get_camera();
-	mat4 viewport = mat4::look_at(camera->position, camera->position + camera->back_, camera->up_);
+	mat4 viewport = mat4::look_at(camera->position, camera->position + camera->front_, camera->up_);
 	mat4 perspective = mat4::perspective(
 		camera->fovy_ + camera->zoom, camera->aspect_,
 		camera->near_, camera->far_);

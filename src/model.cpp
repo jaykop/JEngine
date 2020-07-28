@@ -117,7 +117,7 @@ void Model::draw(float /*dt*/)
 
     if (!fixed)
     {
-        mat4 viewport = mat4::look_at(camera->position, camera->position + camera->back_, camera->up_);
+        mat4 viewport = mat4::look_at(camera->position, camera->position + camera->front_, camera->up_);
         shader->set_matrix("m4_viewport", viewport);
     }
 

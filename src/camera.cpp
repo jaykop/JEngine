@@ -23,7 +23,7 @@ void Camera::load(const rapidjson::Value& /*data*/) {
 
 Camera::Camera(Object* owner) 
 	: Component(owner), position(vec3::zero), near_(.1f), far_(1000.f),
-	up_(vec3(0, 1, 0)), right_(vec3(1, 0, 0)), back_(vec3(0, 0, -1)),
+	up_(vec3(0, 1, 0)), right_(vec3(1, 0, 0)), front_(vec3(0, 0, 1)),
 	distance_(1.f), fovy_(45.f), zoom(0.f),
 	yaw_(Math::deg_to_rad(-90.f)), roll_(0.f), pitch_(0.f), width_(2 * tanf(.5f * fovy_)), height_(width_ / aspect_),
 	aspect_(GraphicSystem::width_ / GraphicSystem::height_)
@@ -37,36 +37,22 @@ void Camera::update(float /*dt*/)
 	width_ = 2 * tanf(.5f * fovy_);
 	height_ = width_ / aspect_;
 	viewgeometry_.set(width_, height_, distance_);
+
+	front_.x = cosf(yaw_) * cosf(pitch_);
+	front_.y = sinf(pitch_);
+	front_.z = sinf(yaw_) * cosf(pitch_);
+
+	right_ = (front_.cross(worldUp_)).normalized();
+	up_ = (right_.cross(front_)).normalized();
 }
 
-void Camera::set_yaw(float rad)
-{
-	yaw_ = rad;
+void Camera::set_yaw(float deg) { yaw_ = Math::deg_to_rad(deg); }
 
-	back_.x = cosf(yaw_) * cosf(pitch_);
-	back_.y = sinf(pitch_);
-	back_.z = sinf(yaw_) * cosf(pitch_);
-	back_.normalize();
+void Camera::set_pitch(float deg) {	pitch_ = Math::deg_to_rad(deg); }
 
-	// worldUp_ or up?
-	right_ = (worldUp_).cross(-back_).normalized();
-}
+float Camera::get_yaw() const { return Math::rad_to_deg(yaw_); }
 
-void Camera::set_pitch(float rad)
-{
-	pitch_ = rad;
-
-	back_.x = cosf(yaw_) * cosf(pitch_);
-	back_.y = sinf(pitch_);
-	back_.z = sinf(yaw_) * cosf(pitch_);
-	back_.normalize();
-
-	up_ = (-back_).cross(right_).normalized();
-}
-
-float Camera::get_yaw() const { return yaw_; }
-
-float Camera::get_pitch() const { return pitch_; }
+float Camera::get_pitch() const { return Math::rad_to_deg(pitch_); }
 
 // todo:
 //void Camera::set_roll(float rad)
@@ -107,9 +93,9 @@ const vec3& Camera::get_right() const
 	return right_;
 }
 
-const vec3& Camera::get_back() const
+const vec3& Camera::get_front() const
 {
-	return back_;
+	return front_;
 }
 
 jeEnd

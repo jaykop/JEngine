@@ -247,12 +247,11 @@ void GraphicSystem::render_grid()
 	}
 
 	// Send camera info to shader
-	mat4 viewport = mat4::look_at(mainCamera_->position, mainCamera_->position + mainCamera_->back_, mainCamera_->up_);
+	mat4 viewport = mat4::look_at(mainCamera_->position, mainCamera_->position + mainCamera_->front_, mainCamera_->up_);
 	shader->set_matrix("m4_viewport", viewport);
 
 	glEnable(GL_BLEND);
 	glEnable(GL_DEPTH_TEST);
-	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glBlendFunc(GL_SRC_COLOR, GL_ONE_MINUS_SRC_COLOR);
 
 	glBindVertexArray(quadVao_);
@@ -282,7 +281,7 @@ void GraphicSystem::render_skybox()
 	shader->set_matrix("m4_projection", perspective);
 
 	// Send camera info to shader
-	mat4 viewport = mat4::look_at(mainCamera_->position, mainCamera_->position + mainCamera_->back_, mainCamera_->up_);
+	mat4 viewport = mat4::look_at(mainCamera_->position, mainCamera_->position + mainCamera_->front_, mainCamera_->up_);
 	shader->set_matrix("m4_viewport", viewport);
 
 	glDisable(GL_DEPTH_TEST);
@@ -328,28 +327,28 @@ void GraphicSystem::render_copy(float dt)
 
 		default:
 		case 0:
-			mainCamera_->set_pitch(Math::deg_to_rad(0.f));
-			mainCamera_->set_yaw(Math::deg_to_rad(0.f));
+			mainCamera_->set_pitch(0.f);
+			mainCamera_->set_yaw(0.f);
 			break;
 		case 1:
-			mainCamera_->set_pitch(Math::deg_to_rad(0.f));
-			mainCamera_->set_yaw(Math::deg_to_rad(90.f));
+			mainCamera_->set_pitch(0.f);
+			mainCamera_->set_yaw(90.f);
 			break;
 		case 2:
-			mainCamera_->set_pitch(Math::deg_to_rad(0.f));
-			mainCamera_->set_yaw(Math::deg_to_rad(180.f));
+			mainCamera_->set_pitch(0.f);
+			mainCamera_->set_yaw(180.f);
 			break;
 		case 3:
-			mainCamera_->set_pitch(Math::deg_to_rad(0.f));
-			mainCamera_->set_yaw(Math::deg_to_rad(270.f));
+			mainCamera_->set_pitch(0.f);
+			mainCamera_->set_yaw(270.f);
 			break;
 		case 4:
-			mainCamera_->set_pitch(Math::deg_to_rad(90.f));
-			mainCamera_->set_yaw(Math::deg_to_rad(0.f));
+			mainCamera_->set_pitch(90.f);
+			mainCamera_->set_yaw(0.f);
 			break;
 		case 5:
-			mainCamera_->set_pitch(Math::deg_to_rad(-90.f));
-			mainCamera_->set_yaw(Math::deg_to_rad(0.f));
+			mainCamera_->set_pitch(-90.f);
+			mainCamera_->set_yaw(0.f);
 			break;
 		}
 		
@@ -364,8 +363,8 @@ void GraphicSystem::render_copy(float dt)
 	}
 	
 	mainCamera_->position = camPos;
-	mainCamera_->set_pitch(camPitch);
-	mainCamera_->set_yaw(camYaw);
+	mainCamera_->pitch_ = camPitch;
+	mainCamera_->yaw_ = camYaw;
 
 	glClearColor(backgroundColor.x, 
 		backgroundColor.y, 

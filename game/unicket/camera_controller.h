@@ -31,8 +31,8 @@ private:
 
 	bool firstMouse = true, camera_2d = true;
 	float lastX, lastY, dx, dy, last_dx, last_dy;
-	float sensitivity = .1f;
-	const float maxOffset = .1f;
+	float sensitivity = 5.f;
+	// const float maxOffset = 10.f;
 
 };
 
