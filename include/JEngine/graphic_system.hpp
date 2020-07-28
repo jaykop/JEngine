@@ -91,6 +91,7 @@ private:
 	static void update_lights(float dt);
 	static void render_grid();
 	static void render_skybox();
+	static void render_copy(float dt);
 
 	static void add_renderer(Renderer* model);
 	static void remove_renderer(Renderer* model);
@@ -111,7 +112,7 @@ private:
 	static int widthStart_, heightStart_;
 	static unsigned quadVao_, quadVbo_, quadEbo_,
 		drVao_, drVbo_,	quadIndicesSize_,
-		skyboxVao_, skyboxVbo_;
+		skyboxVao_, skyboxVbo_, fbo_, environmentTextures_[6];
 
 	static Lights lights_;
 	static Shaders shader_;

@@ -97,8 +97,9 @@ GraphicSystem::Shaders GraphicSystem::shader_;
 int GraphicSystem::widthStart_ = 0, GraphicSystem::heightStart_ = 0;
 float GraphicSystem::width_ = 0.f, GraphicSystem::height_ = 0.f;
 unsigned GraphicSystem::quadVao_ = 0, GraphicSystem::quadVbo_ = 0, GraphicSystem::quadEbo_ = 0,
-GraphicSystem::drVao_ = 0, GraphicSystem::drVbo_ = 0,
-GraphicSystem::skyboxVao_ = 0, GraphicSystem::skyboxVbo_ = 0, GraphicSystem::quadIndicesSize_ = 6;
+GraphicSystem::drVao_ = 0, GraphicSystem::drVbo_ = 0, GraphicSystem::fbo_ = 0,
+GraphicSystem::skyboxVao_ = 0, GraphicSystem::skyboxVbo_ = 0, GraphicSystem::quadIndicesSize_ = 6,
+GraphicSystem::environmentTextures_[] = {0};
 
 std::stack<GraphicSystem::Graphic> GraphicSystem::graphicStack_;
 Camera* GraphicSystem::mainCamera_ = nullptr;
@@ -172,7 +173,6 @@ void GraphicSystem::update(float dt) {
 		static_cast<GLsizei>(width_), static_cast<GLsizei>(height_));
 
 	// render skybox
-	//if (skybox.texture)
 	render_skybox();
 
 	// update lights
@@ -298,6 +298,68 @@ void GraphicSystem::render_skybox()
 	glBindVertexArray(0);
 	glEnable(GL_DEPTH_TEST);
 	glDepthMask(GL_TRUE);
+}
+
+void GraphicSystem::render_copy(float dt)
+{
+	// Start copy
+	glClearColor(backgroundColor.x,
+		backgroundColor.y,
+		backgroundColor.z,
+		backgroundColor.w);
+	glBindFramebuffer(GL_FRAMEBUFFER, fbo_);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glViewport(widthStart_, heightStart_, width_, height_);
+
+	for (int i = 0; i < 6; i++) {
+
+		mainCamera_->position.set_zero();
+		switch (i) {
+
+		default:
+		case 0:
+			mainCamera_->set_yaw(Math::deg_to_rad(0.f));
+			mainCamera_->set_pitch(Math::deg_to_rad(0.f));
+			break;
+		case 1:
+			mainCamera_->set_yaw(Math::deg_to_rad(90.f));
+			mainCamera_->set_pitch(Math::deg_to_rad(0.f));
+			break;
+		case 2:
+			mainCamera_->set_yaw(Math::deg_to_rad(180.f));
+			mainCamera_->set_pitch(Math::deg_to_rad(0.f));
+			break;
+		case 3:
+			mainCamera_->set_yaw(270.f);
+			mainCamera_->set_pitch(Math::deg_to_rad(0.f));
+			break;
+		case 4:
+			mainCamera_->set_yaw(Math::deg_to_rad(0.f));
+			mainCamera_->set_pitch(Math::deg_to_rad(90.f));
+			break;
+		case 5:
+			mainCamera_->set_yaw(Math::deg_to_rad(0.f));
+			mainCamera_->set_pitch(Math::deg_to_rad(-90.f));
+			break;
+		}
+		
+		// update lights
+		update_lights(dt);
+
+		// update renderers
+		for (auto& r : renderers_)
+			r->draw(dt);
+
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, environmentTextures_[i], 0);
+	}
+	
+	glClearColor(backgroundColor.x, 
+		backgroundColor.y, 
+		backgroundColor.z, 
+		backgroundColor.w);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glViewport(widthStart_, heightStart_, width_, height_);
 }
 
 void GraphicSystem::add_renderer(Renderer* model) 
@@ -574,6 +636,45 @@ void GraphicSystem::initialize_graphics()
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
+
+	/**************************** FRAME BUFFER ******************************/
+
+	glGenFramebuffers(1, &fbo_);
+	glBindFramebuffer(GL_FRAMEBUFFER, fbo_);
+
+	// Bind the newly created textures
+	glGenTextures(6, environmentTextures_);
+
+	for (int i = 0; i < 6; i++) {
+		glBindTexture(GL_TEXTURE_2D, environmentTextures_[i]);
+
+		// Give an empty image to OpenGL ( the last "0" means "empty" )
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 512, 512, 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
+
+		// Poor filtering
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	}
+
+	//// Set the list of draw buffers.
+	//glDrawBuffers(1, DrawBuffers); // "1" is the size of DrawBuffers
+	//glDrawBuffer(GL_COLOR_ATTACHMENT0);
+
+	// The depth buffer
+	GLuint depthrenderbuffer;
+	glGenRenderbuffers(1, &depthrenderbuffer);
+	glBindRenderbuffer(GL_RENDERBUFFER, depthrenderbuffer);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, 512, 512);
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthrenderbuffer);
+
+	//// Always check that our framebuffer is ok
+	//if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+	//	return false;
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void GraphicSystem::close_graphics()
