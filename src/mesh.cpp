@@ -42,28 +42,28 @@ unsigned Mesh::get_indices_count() const
 void Mesh::draw(Shader* shader, bool envr)
 {
     // bind appropriate textures
-    unsigned int diffuseNr = 1;
-    unsigned int specularNr = 1;
-    unsigned int normalNr = 1;
-    unsigned int heightNr = 1;
+    unsigned int diffuseNr = 0;
+    unsigned int specularNr = 0;
+    unsigned int normalNr = 0;
+    unsigned int heightNr = 0;
 
     if (envr)
     {
         glActiveTexture(GL_TEXTURE0);
-        shader->set_uint("skybox", 0);
+        shader->set_int("skybox", 0);
         glBindTexture(GL_TEXTURE_CUBE_MAP, GraphicSystem::skybox.texture);
     }
 
     else if (defaultTexture_)
     {
         glActiveTexture(GL_TEXTURE0);
-        shader->set_uint("gDiffuse", 0);
+        shader->set_int("gDiffuse0", 0);
         glBindTexture(GL_TEXTURE_2D, defaultTexture_);
     }
 
     else
     {
-        for (unsigned int i = 0; i < textures_.size(); i++)
+        for (int i = 0; i < textures_.size(); i++)
         {
             glActiveTexture(GL_TEXTURE0 + i); // active proper texture unit before binding
             // retrieve texture number (the N in diffuse_textureN)
@@ -79,7 +79,7 @@ void Mesh::draw(Shader* shader, bool envr)
                 number = std::to_string(normalNr++); // transfer unsigned int to stream
 
             // now set the sampler to the correct texture unit
-            shader->set_uint((name).c_str(), i);
+            shader->set_int((name + number).c_str(), i);
             // and finally bind the texture
             glBindTexture(GL_TEXTURE_2D, textures_[i].id);
         }
@@ -88,9 +88,6 @@ void Mesh::draw(Shader* shader, bool envr)
     // draw mesh
     glBindVertexArray(vao_);
     glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(indices_.size()), GL_UNSIGNED_INT, 0);
-    glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
-    glBindTexture(GL_TEXTURE_2D, 0);
-    glActiveTexture(GL_TEXTURE0);
     glBindVertexArray(0);
 }
 
