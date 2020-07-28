@@ -14,7 +14,13 @@ void Level6::initialize()
 	// base init
 	Scene::initialize();
 
-	GraphicSystem::skybox.texture = AssetManager::get_texture("badomen");
+	// GraphicSystem::skybox.texture = AssetManager::get_texture("church");
+	GraphicSystem::skybox.textures[0] = AssetManager::get_texture("badomen_front");
+	GraphicSystem::skybox.textures[1] = AssetManager::get_texture("badomen_back");
+	GraphicSystem::skybox.textures[2] = AssetManager::get_texture("badomen_right");
+	GraphicSystem::skybox.textures[3] = AssetManager::get_texture("badomen_left");
+	GraphicSystem::skybox.textures[4] = AssetManager::get_texture("badomen_top");
+	GraphicSystem::skybox.textures[5] = AssetManager::get_texture("badomen_bottom");
 }
 
 void Level6::update(float dt)

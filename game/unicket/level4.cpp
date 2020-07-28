@@ -46,7 +46,7 @@ void Level4::init_basic()
 
 void Level4::init_models()
 {
-	auto* earth = ObjectManager::create_object("earth");
+	/*auto* earth = ObjectManager::create_object("earth");
 	earth->add_component<Model>();
 	auto* md1 = earth->get_component<Model>();
 	auto* trans1 = earth->get_component<Transform>();
@@ -74,7 +74,7 @@ void Level4::init_models()
 	md3->color.set(1, 0, 0, 1);
 	trans3->position.set(0.f, 5.f, -10.f);
 	trans3->scale.set(1.f, 1.f, 1.f);
-	register_object(cube);
+	register_object(cube);*/
 
 	auto* sphere = ObjectManager::create_object("sphere");
 	sphere->add_component<Model>();

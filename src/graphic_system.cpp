@@ -41,47 +41,47 @@ const std::vector<unsigned> quadIndices = { 2, 0, 1, 2, 3, 0 };
 std::vector<float> cubeVertices =
 {
 	// positions          
-		-10.0f,  10.0f, -10.0f,
-		-10.0f, -10.0f, -10.0f,
-		 10.0f, -10.0f, -10.0f,
-		 10.0f, -10.0f, -10.0f,
-		 10.0f,  10.0f, -10.0f,
-		-10.0f,  10.0f, -10.0f,
+	-1.0f,  1.0f, -1.0f,
+	-1.0f, -1.0f, -1.0f,
+	1.0f, -1.0f, -1.0f,
+	1.0f, -1.0f, -1.0f,
+	1.0f,  1.0f, -1.0f,
+	-1.0f,  1.0f, -1.0f,
 
-		-10.0f, -10.0f,  10.0f,
-		-10.0f, -10.0f, -10.0f,
-		-10.0f,  10.0f, -10.0f,
-		-10.0f,  10.0f, -10.0f,
-		-10.0f,  10.0f,  10.0f,
-		-10.0f, -10.0f,  10.0f,
+	-1.0f, -1.0f,  1.0f,
+	-1.0f, -1.0f, -1.0f,
+	-1.0f,  1.0f, -1.0f,
+	-1.0f,  1.0f, -1.0f,
+	-1.0f,  1.0f,  1.0f,
+	-1.0f, -1.0f,  1.0f,
 
-		 10.0f, -10.0f, -10.0f,
-		 10.0f, -10.0f,  10.0f,
-		 10.0f,  10.0f,  10.0f,
-		 10.0f,  10.0f,  10.0f,
-		 10.0f,  10.0f, -10.0f,
-		 10.0f, -10.0f, -10.0f,
+	1.0f, -1.0f, -1.0f,
+	1.0f, -1.0f,  1.0f,
+	1.0f,  1.0f,  1.0f,
+	1.0f,  1.0f,  1.0f,
+	1.0f,  1.0f, -1.0f,
+	1.0f, -1.0f, -1.0f,
 
-		-10.0f, -10.0f,  10.0f,
-		-10.0f,  10.0f,  10.0f,
-		 10.0f,  10.0f,  10.0f,
-		 10.0f,  10.0f,  10.0f,
-		 10.0f, -10.0f,  10.0f,
-		-10.0f, -10.0f,  10.0f,
+	-1.0f, -1.0f,  1.0f,
+	-1.0f,  1.0f,  1.0f,
+	1.0f,  1.0f,  1.0f,
+	1.0f,  1.0f,  1.0f,
+	1.0f, -1.0f,  1.0f,
+	-1.0f, -1.0f,  1.0f,
 
-		-10.0f,  10.0f, -10.0f,
-		 10.0f,  10.0f, -10.0f,
-		 10.0f,  10.0f,  10.0f,
-		 10.0f,  10.0f,  10.0f,
-		-10.0f,  10.0f,  10.0f,
-		-10.0f,  10.0f, -10.0f,
+	-1.0f,  1.0f, -1.0f,
+	1.0f,  1.0f, -1.0f,
+	1.0f,  1.0f,  1.0f,
+	1.0f,  1.0f,  1.0f,
+	-1.0f,  1.0f,  1.0f,
+	-1.0f,  1.0f, -1.0f,
 
-		-10.0f, -10.0f, -10.0f,
-		-10.0f, -10.0f,  10.0f,
-		 10.0f, -10.0f, -10.0f,
-		 10.0f, -10.0f, -10.0f,
-		-10.0f, -10.0f,  10.0f,
-		 10.0f, -10.0f,  10.0f
+	-1.0f, -1.0f, -1.0f,
+	-1.0f, -1.0f,  1.0f,
+	1.0f, -1.0f, -1.0f,
+	1.0f, -1.0f, -1.0f,
+	-1.0f, -1.0f,  1.0f,
+	1.0f, -1.0f,  1.0f
 };
 const int cubeVerticesSize = 36;
 
@@ -126,16 +126,17 @@ void GraphicSystem::initialize() {
 		mainCamera_ = *cameras_.begin();
 
 	// set skybox
-	if (!skybox.texture) 
-		skybox.texture = AssetManager::get_texture("skybox");
-
-	if (skybox.scale != 1)
+	if (!skybox.textures[0])
 	{
-		glBindBuffer(GL_ARRAY_BUFFER, skyboxVbo_);
-		for (auto& v : cubeVertices)
-			v *= skybox.scale;
-		glBufferData(GL_ARRAY_BUFFER, cubeVertices.size() * sizeof(float), &cubeVertices[0], GL_STATIC_DRAW);
+		skybox.textures[0] = AssetManager::get_texture("skybox_front");
+		skybox.textures[1] = AssetManager::get_texture("skybox_back");
+		skybox.textures[2] = AssetManager::get_texture("skybox_right");
+		skybox.textures[3] = AssetManager::get_texture("skybox_left");
+		skybox.textures[4] = AssetManager::get_texture("skybox_top");
+		skybox.textures[5] = AssetManager::get_texture("skybox_bottom");
+		// skybox.texture = AssetManager::get_texture("skybox");
 	}
+
 
 	//for (auto& model : models_)
 	//	model->initialize();
@@ -210,7 +211,7 @@ void GraphicSystem::render_grid()
 	shader->use();
 
 	shader->set_matrix("m4_translate", mat4::translate(vec3::zero));
-	shader->set_matrix("m4_scale", mat4::scale(vec3::one * static_cast<float>(grid.scale)));
+	shader->set_matrix("m4_scale", mat4::scale(vec3::one ));
 	shader->set_matrix("m4_rotate", mat4::identity);
 	shader->set_vec3("v3_color", grid.color);
 	shader->set_float("thickness", grid.thickness);
@@ -264,8 +265,12 @@ void GraphicSystem::render_skybox()
 	Shader* shader = shader_[SKYBOX];
 	shader->use();
 
+	shader->set_matrix("m4_translate", mat4::translate(mainCamera_->position));
+	shader->set_matrix("m4_scale", mat4::scale(vec3::one));
+	shader->set_matrix("m4_rotate", mat4::identity);
 	shader->set_vec3("v3_color", skybox.color);
 	shader->set_vec3("v3_cameraPosition", mainCamera_->position);
+	shader->set_float("f_scale", skybox.scale);
 
 	mat4 perspective = mat4::perspective(
 		mainCamera_->fovy_ + mainCamera_->zoom, mainCamera_->aspect_,
@@ -275,7 +280,7 @@ void GraphicSystem::render_skybox()
 
 	// Send camera info to shader
 	mat4 viewport = mat4::look_at(mainCamera_->position, mainCamera_->position + mainCamera_->back_, mainCamera_->up_);
-	viewport.m[0][3] = viewport.m[1][3] = 0.f; viewport.m[2][3] = 0.f;
+	// viewport.m[0][3] = viewport.m[1][3] = 0.f; viewport.m[2][3] = 0.f;
 	shader->set_matrix("m4_viewport", viewport);
 
 	//glEnable(GL_BLEND);
@@ -284,8 +289,16 @@ void GraphicSystem::render_skybox()
 	glDepthMask(GL_FALSE);
 	glCullFace(GL_BACK);
 	glBindVertexArray(skyboxVao_);
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_CUBE_MAP, skybox.texture);
+	
+	glEnable(GL_TEXTURE_2D);
+	for (int i = 0; i < 6; i++) {
+		glActiveTexture(GL_TEXTURE0 + i);
+		glBindTexture(GL_TEXTURE_2D, skybox.textures[i]);
+		shader->set_int(std::string("sampler[" + std::to_string(i) + "]").c_str(), i);
+	}
+	
+	//glActiveTexture(GL_TEXTURE0);
+	//glBindTexture(GL_TEXTURE_CUBE_MAP, skybox.texture);
 	glDrawArrays(GL_TRIANGLES, 0, cubeVerticesSize); 
 	glBindVertexArray(0);
 	glEnable(GL_DEPTH_TEST);
@@ -450,7 +463,7 @@ void GraphicSystem::update_lights(float dt)
 	}
 }
 
-void GraphicSystem::initialize_graphics()
+void GraphicSystem::initialize_shaders()
 {
 	// init shaders
 	// do shader stuff
@@ -470,10 +483,29 @@ void GraphicSystem::initialize_graphics()
 	}
 
 	// remove shader directories
-	Shader::vsDirectory_.clear();
-	Shader::fsDirectory_.clear();
+	//Shader::vsDirectory_.clear();
+	//Shader::fsDirectory_.clear();
 
 	jeDebugPrint("*Compiled and linked shaders.\n");
+}
+
+void GraphicSystem::close_shaders()
+{
+	for (unsigned i = 0; i < Pipeline::END; ++i)
+		delete shader_[i];
+
+	shader_.clear();
+}
+
+void GraphicSystem::recompile_shaders()
+{
+	close_shaders();
+	initialize_shaders();
+}
+
+void GraphicSystem::initialize_graphics()
+{
+	initialize_shaders();
 
 	// init buffers
 	/**************************** QUAD BUFFER ******************************/
@@ -562,10 +594,7 @@ void GraphicSystem::close_graphics()
 	glDeleteVertexArrays(1, &drVao_);
 	glDeleteBuffers(1, &drVbo_);
 
-	for (unsigned i = 0; i < Pipeline::END; ++i)
-		delete shader_[i];
-
-	shader_.clear();
+	close_shaders();
 }
 
 float GraphicSystem::get_width() { return width_; }

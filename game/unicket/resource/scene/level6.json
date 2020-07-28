@@ -14,7 +14,7 @@
 	
 	"Skybox" : [
 
-		{	"Key": "badomen",	"Directory": "resource/texture/badomen"	}
+		{	"Key": "badomen",	"Directory": "resource/texture/badomen/"	}
 	
 	],
 	

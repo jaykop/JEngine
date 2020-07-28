@@ -84,7 +84,10 @@ void SceneController::update(float /*dt*/)
 		auto pos = InputHandler::get_position();
 		std::cout << pos.x << " " << pos.y << " " << pos.z << "\n";
 	}
-		
+	
+	if (InputHandler::key_triggered(KEY::F1))
+		GraphicSystem::recompile_shaders();
+
 	if (InputHandler::key_triggered(KEY::F12))
 		AssetManager::generate_screenshot("resource/screenshot/");
 

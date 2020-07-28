@@ -57,12 +57,15 @@ class GraphicSystem {
 
 	struct Skybox
 	{
+		unsigned textures[6] = { 0 };
 		unsigned texture = 0;
-		float scale = 1.f;
+		float scale = 10.f;
 		vec3 color = vec3::one;
 	};
 
 public:
+
+	static void recompile_shaders();
 
 	static float get_width();
 	static float get_height();
@@ -75,6 +78,9 @@ public:
 	static vec4 backgroundColor, screenColor;
 
 private:
+
+	static void initialize_shaders();
+	static void close_shaders();
 
 	static void initialize_graphics();
 	static void close_graphics();

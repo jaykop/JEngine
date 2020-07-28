@@ -30,13 +30,22 @@ jeBegin
 
 static const std::vector<std::string> faces =
 {
-	"/right.png",
-	"/left.png",
-	"/top.png",
-	"/bottom.png",
-	"/front.png",
-	"/back.png",
+	//"right.png",
+	//"left.png",
+	//"top.png",
+	//"bottom.png",
+	//"front.png",
+	//"back.png",
+
+	"right",
+	"left",
+	"top",
+	"bottom",
+	"front",
+	"back",
 };
+
+static const std::string png(".png"), underbar("_");
 
 std::string meshDir;
 std::vector<Texture> texturesLoaded;
@@ -368,35 +377,73 @@ bool AssetManager::load_obj(const std::string& path, const char* meshKey, MeshMa
 
 void AssetManager::load_skybox(const char* path, const char* textureKey, TextureMap* tMap)
 {
-	Image image;
+	//Image image;
 
-	glGenTextures(1, &image.handle);
-	glBindTexture(GL_TEXTURE_CUBE_MAP, image.handle);
+	//glGenTextures(1, &image.handle);
+	//glBindTexture(GL_TEXTURE_CUBE_MAP, image.handle);
+
+	//for (unsigned int i = 0; i < faces.size(); ++i)
+	//{
+	//	image.pixels.clear();
+	//	unsigned error = lodepng::decode(image.pixels, image.width, image.height, std::string(path + faces[i]).c_str(), LCT_RGB);
+
+	//	if (error)
+	//		jeDebugPrint("!AssetManager - Decoder error %d / %s.\n", error, lodepng_error_text(error));
+
+	//	else
+	//	{
+	//		// Enable the texture for OpenGL.
+	//		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, image.width, image.height, 0,
+	//			GL_RGB, GL_UNSIGNED_BYTE, &image.pixels[0]);
+	//	}
+	//}
+
+	//glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	//glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	//glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	//glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	//glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+
+	//tMap->insert(TextureMap::value_type(
+	//	textureKey, image.handle));
 
 	for (unsigned int i = 0; i < faces.size(); ++i)
 	{
-		image.pixels.clear();
-		unsigned error = lodepng::decode(image.pixels, image.width, image.height, std::string(path + faces[i]).c_str(), LCT_RGB);
+		unsigned textureId;
+		glGenTextures(1, &textureId);
 
-		if (error)
-			jeDebugPrint("!AssetManager - Decoder error %d / %s.\n", error, lodepng_error_text(error));
+		int width, height, numOfComponents;
+		unsigned char* data = stbi_load(std::string(path + faces[i] + png).c_str(),
+			&width, &height, &numOfComponents, 0);
+		if (data)
+		{
+			GLenum format = 0;
+			if (numOfComponents == 1)
+				format = GL_RED;
+			else if (numOfComponents == 3)
+				format = GL_RGB;
+			else if (numOfComponents == 4)
+				format = GL_RGBA;
 
+			glBindTexture(GL_TEXTURE_2D, textureId);
+			glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
+			glGenerateMipmap(GL_TEXTURE_2D);
+
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+			tMap->insert(TextureMap::value_type(
+				std::string(textureKey + underbar + faces[i]).c_str(), textureId));
+
+			stbi_image_free(data);
+		}
 		else
 		{
-			// Enable the texture for OpenGL.
-			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, image.width, image.height, 0,
-				GL_RGB, GL_UNSIGNED_BYTE, &image.pixels[0]);
+			stbi_image_free(data);
 		}
 	}
-
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-
-	tMap->insert(TextureMap::value_type(
-		textureKey, image.handle));
 }
 
 void AssetManager::load_audio(const char* /*path*/, const char* /*_audioKey*/, AudioMap* /*aMap*/)

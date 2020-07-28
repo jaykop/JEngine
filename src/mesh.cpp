@@ -63,7 +63,8 @@ void Mesh::draw(Shader* shader, bool envr)
 
     else
     {
-        for (int i = 0; i < textures_.size(); i++)
+        int textureSize = static_cast<int>(textures_.size());
+        for (int i = 0; i < textureSize; i++)
         {
             glActiveTexture(GL_TEXTURE0 + i); // active proper texture unit before binding
             // retrieve texture number (the N in diffuse_textureN)
