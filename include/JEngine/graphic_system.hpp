@@ -30,6 +30,7 @@ class GraphicSystem {
 
 	friend class Scene;
 	friend class Camera;
+	friend class Mesh;
 	friend class Sprite;
 	friend class Model;
 	friend class Light;

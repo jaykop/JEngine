@@ -172,6 +172,9 @@ void GraphicSystem::update(float dt) {
 	glViewport(widthStart_, heightStart_,
 		static_cast<GLsizei>(width_), static_cast<GLsizei>(height_));
 
+	// copy all the renderers
+	render_copy(dt);
+
 	// render skybox
 	render_skybox();
 
@@ -309,40 +312,44 @@ void GraphicSystem::render_copy(float dt)
 		backgroundColor.w);
 	glBindFramebuffer(GL_FRAMEBUFFER, fbo_);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glViewport(static_cast<GLsizei>(widthStart_), 
+	glViewport(/*static_cast<GLsizei>(widthStart_), 
 		static_cast<GLsizei>(heightStart_),
 		static_cast<GLsizei>(width_),
-		static_cast<GLsizei>(height_));
+		static_cast<GLsizei>(height_)*/
+	0,0,512,512);
 
-	for (int i = 0; i < 6; i++) {
+	vec3 camPos = mainCamera_->position;
+	float camYaw = mainCamera_->yaw_, camPitch = mainCamera_->pitch_;
+
+	for (int i = 0; i < 6; ++i) {
 
 		mainCamera_->position.set_zero();
 		switch (i) {
 
 		default:
 		case 0:
-			mainCamera_->set_yaw(Math::deg_to_rad(0.f));
 			mainCamera_->set_pitch(Math::deg_to_rad(0.f));
+			mainCamera_->set_yaw(Math::deg_to_rad(0.f));
 			break;
 		case 1:
-			mainCamera_->set_yaw(Math::deg_to_rad(90.f));
 			mainCamera_->set_pitch(Math::deg_to_rad(0.f));
+			mainCamera_->set_yaw(Math::deg_to_rad(90.f));
 			break;
 		case 2:
-			mainCamera_->set_yaw(Math::deg_to_rad(180.f));
 			mainCamera_->set_pitch(Math::deg_to_rad(0.f));
+			mainCamera_->set_yaw(Math::deg_to_rad(180.f));
 			break;
 		case 3:
-			mainCamera_->set_yaw(270.f);
 			mainCamera_->set_pitch(Math::deg_to_rad(0.f));
+			mainCamera_->set_yaw(Math::deg_to_rad(270.f));
 			break;
 		case 4:
-			mainCamera_->set_yaw(Math::deg_to_rad(0.f));
 			mainCamera_->set_pitch(Math::deg_to_rad(90.f));
+			mainCamera_->set_yaw(Math::deg_to_rad(0.f));
 			break;
 		case 5:
-			mainCamera_->set_yaw(Math::deg_to_rad(0.f));
 			mainCamera_->set_pitch(Math::deg_to_rad(-90.f));
+			mainCamera_->set_yaw(Math::deg_to_rad(0.f));
 			break;
 		}
 		
@@ -356,6 +363,10 @@ void GraphicSystem::render_copy(float dt)
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, environmentTextures_[i], 0);
 	}
 	
+	mainCamera_->position = camPos;
+	mainCamera_->set_pitch(camPitch);
+	mainCamera_->set_yaw(camYaw);
+
 	glClearColor(backgroundColor.x, 
 		backgroundColor.y, 
 		backgroundColor.z, 
