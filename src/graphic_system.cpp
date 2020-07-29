@@ -122,6 +122,8 @@ Camera* GraphicSystem::get_camera()
 
 void GraphicSystem::initialize() {
 
+	initialize_fbo();
+
 	// set main camera
 	if (!mainCamera_ && !(cameras_.empty()))
 		mainCamera_ = *cameras_.begin();
@@ -136,7 +138,6 @@ void GraphicSystem::initialize() {
 		skybox.textures[4] = AssetManager::get_texture("skybox_top");
 		skybox.textures[5] = AssetManager::get_texture("skybox_bottom");
 	}
-
 
 	//for (auto& model : models_)
 	//	model->initialize();
@@ -173,7 +174,7 @@ void GraphicSystem::update(float dt) {
 		static_cast<GLsizei>(width_), static_cast<GLsizei>(height_));
 
 	// copy all the renderers
-	// render_copy(dt);
+	render_copy(dt);
 
 	// render skybox
 	render_skybox();
@@ -209,6 +210,8 @@ void GraphicSystem::close() {
 		// environmentTextures_[i] = 0;
 		skybox.textures[i] = 0;
 	}
+
+	close_fbo();
 }
 
 void GraphicSystem::render_grid()
@@ -544,6 +547,61 @@ void GraphicSystem::update_lights(float dt)
 	}
 }
 
+void GraphicSystem::initialize_fbo()
+{
+	/**************************** FRAME BUFFER ******************************/
+
+	glGenFramebuffers(1, &fbo_);
+	glBindFramebuffer(GL_FRAMEBUFFER, fbo_);
+
+	// Bind the newly created textures
+	glGenTextures(6, environmentTextures_);
+
+	for (int i = 0; i < 6; i++) {
+		glBindTexture(GL_TEXTURE_2D, environmentTextures_[i]);
+
+		// Give an empty image to OpenGL ( the last "0" means "empty" )
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 512, 512, 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
+		glGenerateMipmap(GL_TEXTURE_2D);
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+		//// Poor filtering
+		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	}
+
+	// Set the list of draw buffers.
+	GLenum DrawBuffers[6];
+	glDrawBuffers(1, DrawBuffers); // "1" is the size of DrawBuffers
+	glDrawBuffer(GL_COLOR_ATTACHMENT0);
+
+	// The depth buffer
+	GLuint depthrenderbuffer;
+	glGenRenderbuffers(1, &depthrenderbuffer);
+	glBindRenderbuffer(GL_RENDERBUFFER, depthrenderbuffer);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, 512, 512);
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthrenderbuffer);
+
+	//// Always check that our framebuffer is ok
+	//if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+	//	jeDebugPrint("Framebuffer set not properly.\n");
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+void GraphicSystem::close_fbo()
+{
+	glDeleteFramebuffers(1, &fbo_);
+	glDeleteTextures(6, environmentTextures_);
+}
+
 void GraphicSystem::initialize_shaders()
 {
 	// init shaders
@@ -661,53 +719,6 @@ void GraphicSystem::initialize_graphics()
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
-
-	/**************************** FRAME BUFFER ******************************/
-
-	glGenFramebuffers(1, &fbo_);
-	glBindFramebuffer(GL_FRAMEBUFFER, fbo_);
-
-	// Bind the newly created textures
-	glGenTextures(6, environmentTextures_);
-
-	for (int i = 0; i < 6; i++) {
-		glBindTexture(GL_TEXTURE_2D, environmentTextures_[i]);
-
-		// Give an empty image to OpenGL ( the last "0" means "empty" )
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 512, 512, 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
-
-		//glGenerateMipmap(GL_TEXTURE_2D);
-
-		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-		// Poor filtering
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	}
-
-	// Set the list of draw buffers.
-	GLenum DrawBuffers[6];
-	glDrawBuffers(1, DrawBuffers); // "1" is the size of DrawBuffers
-	glDrawBuffer(GL_COLOR_ATTACHMENT0);
-
-	// The depth buffer
-	GLuint depthrenderbuffer;
-	glGenRenderbuffers(1, &depthrenderbuffer);
-	glBindRenderbuffer(GL_RENDERBUFFER, depthrenderbuffer);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, 512, 512);
-	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthrenderbuffer);
-
-	//// Always check that our framebuffer is ok
-	//if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-	//	jeDebugPrint("Framebuffer set not properly.\n");
-
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void GraphicSystem::close_graphics()

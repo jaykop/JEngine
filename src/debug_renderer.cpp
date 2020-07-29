@@ -102,6 +102,8 @@ void DebugRenderer::draw(float /*dt*/)
 		shader->set_matrix("m4_parentRotate", pTransform->orientation.to_mat4());
 	}
 
+	glEnable(GL_DEPTH_TEST);
+
 	if (!vertices_.empty()) {
 
 		glBindVertexArray(GraphicSystem::drVao_);
@@ -133,6 +135,8 @@ void DebugRenderer::draw(float /*dt*/)
 
 		glPolygonMode(GL_FRONT_AND_BACK, polygon_mode[0]);
 	}
+
+	glDisable(GL_DEPTH_TEST);
 }
 
 void DebugRenderer::add_line(const vec3& start, const vec3& end, const vec3& color)

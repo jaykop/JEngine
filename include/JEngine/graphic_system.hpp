@@ -79,6 +79,9 @@ public:
 
 private:
 
+	static void initialize_fbo();
+	static void close_fbo();
+
 	static void initialize_shaders();
 	static void close_shaders();
 
