@@ -49,7 +49,6 @@ void Mesh::draw(Shader* shader, bool envr)
 
     if (envr)
     {
-        glEnable(GL_TEXTURE_2D);
         for (int i = 0; i < 6; i++) {
             glActiveTexture(GL_TEXTURE0 + i);
             glBindTexture(GL_TEXTURE_2D, GraphicSystem::environmentTextures_[i]);
@@ -92,6 +91,7 @@ void Mesh::draw(Shader* shader, bool envr)
     // draw mesh
     glBindVertexArray(vao_);
     glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(indices_.size()), GL_UNSIGNED_INT, 0);
+    glActiveTexture(GL_TEXTURE0);
     glBindVertexArray(0);
 }
 

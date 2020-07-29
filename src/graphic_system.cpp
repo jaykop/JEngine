@@ -173,7 +173,7 @@ void GraphicSystem::update(float dt) {
 		static_cast<GLsizei>(width_), static_cast<GLsizei>(height_));
 
 	// copy all the renderers
-	render_copy(dt);
+	// render_copy(dt);
 
 	// render skybox
 	render_skybox();
@@ -204,8 +204,11 @@ void GraphicSystem::close() {
 	renderers_.shrink_to_fit();
 
 	mainCamera_ = nullptr;
-	for (auto& t : skybox.textures)
-		t = 0;
+	for (int i = 0; i < 6 ; ++i)
+	{
+		// environmentTextures_[i] = 0;
+		skybox.textures[i] = 0;
+	}
 }
 
 void GraphicSystem::render_grid()
@@ -352,6 +355,11 @@ void GraphicSystem::render_copy(float dt)
 			break;
 		}
 		
+		mainCamera_->update(dt);
+
+		// render skybox
+		render_skybox();
+
 		// update lights
 		update_lights(dt);
 
@@ -365,6 +373,7 @@ void GraphicSystem::render_copy(float dt)
 	mainCamera_->position = camPos;
 	mainCamera_->pitch_ = camPitch;
 	mainCamera_->yaw_ = camYaw;
+	mainCamera_->update(dt);
 
 	glClearColor(backgroundColor.x, 
 		backgroundColor.y, 
@@ -667,6 +676,13 @@ void GraphicSystem::initialize_graphics()
 		// Give an empty image to OpenGL ( the last "0" means "empty" )
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 512, 512, 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
 
+		//glGenerateMipmap(GL_TEXTURE_2D);
+
+		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
 		// Poor filtering
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
@@ -674,9 +690,10 @@ void GraphicSystem::initialize_graphics()
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	}
 
-	//// Set the list of draw buffers.
-	//glDrawBuffers(1, DrawBuffers); // "1" is the size of DrawBuffers
-	//glDrawBuffer(GL_COLOR_ATTACHMENT0);
+	// Set the list of draw buffers.
+	GLenum DrawBuffers[6];
+	glDrawBuffers(1, DrawBuffers); // "1" is the size of DrawBuffers
+	glDrawBuffer(GL_COLOR_ATTACHMENT0);
 
 	// The depth buffer
 	GLuint depthrenderbuffer;
@@ -687,7 +704,7 @@ void GraphicSystem::initialize_graphics()
 
 	//// Always check that our framebuffer is ok
 	//if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-	//	return false;
+	//	jeDebugPrint("Framebuffer set not properly.\n");
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glBindTexture(GL_TEXTURE_2D, 0);

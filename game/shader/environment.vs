@@ -29,6 +29,6 @@ void main()
 	gl_Position = mvp * v4_position;
 	
     v3_outFragmentPosition = vec3(transpose(model) * v4_position);
-	// v3_outNormal = normal;
-	v3_outNormal = mat3(inverse(model)) * normal;
+	v3_outNormal = normal;
+	//v3_outNormal = mat3(transpose(inverse(transpose(model)))) * normal;
 }

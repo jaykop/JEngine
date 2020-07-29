@@ -135,6 +135,7 @@ void Text::draw(float /*dt*/)
 		}
 
 		glEnable(GL_BLEND);
+		glBlendFunc(sfactor_, dfactor_);
 		glEnable(GL_DEPTH_TEST);
 
 		const vec3 scale = transform_->scale;
