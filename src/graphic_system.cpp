@@ -83,7 +83,7 @@ std::vector<float> cubeVertices =
 	-1.0f, -1.0f,  1.0f,
 	1.0f, -1.0f,  1.0f
 };
-const int cubeVerticesSize = 36;
+const int cubeVerticesSize = 108;
 
 const std::string type("].mode"), position("].position"),
 innerAngle("].innerAngle"), outerAngle("].outerAngle"), fallOff("].fallOff"),
@@ -98,7 +98,8 @@ int GraphicSystem::widthStart_ = 0, GraphicSystem::heightStart_ = 0;
 float GraphicSystem::width_ = 0.f, GraphicSystem::height_ = 0.f;
 unsigned GraphicSystem::quadVao_ = 0, GraphicSystem::quadVbo_ = 0, GraphicSystem::quadEbo_ = 0,
 GraphicSystem::drVao_ = 0, GraphicSystem::drVbo_ = 0, GraphicSystem::fbo_ = 0,
-GraphicSystem::skyboxVao_ = 0, GraphicSystem::skyboxVbo_ = 0, GraphicSystem::quadIndicesSize_ = 6,
+GraphicSystem::skyboxVao_ = 0, GraphicSystem::skyboxVbo_ = 0, 
+GraphicSystem::quadIndicesSize_ = 6,
 GraphicSystem::environmentTextures_[] = {0};
 
 std::stack<GraphicSystem::Graphic> GraphicSystem::graphicStack_;
@@ -129,15 +130,18 @@ void GraphicSystem::initialize() {
 		mainCamera_ = *cameras_.begin();
 
 	// set skybox
-	if (!skybox.textures[0])
-	{
-		skybox.textures[0] = AssetManager::get_texture("skybox_front");
-		skybox.textures[1] = AssetManager::get_texture("skybox_back");
-		skybox.textures[2] = AssetManager::get_texture("skybox_right");
-		skybox.textures[3] = AssetManager::get_texture("skybox_left");
-		skybox.textures[4] = AssetManager::get_texture("skybox_top");
-		skybox.textures[5] = AssetManager::get_texture("skybox_bottom");
-	}
+	if (!skybox.texture)
+		skybox.texture = AssetManager::get_texture("skybox");
+
+	//if (!skybox.textures[0])
+	//{
+	//	skybox.textures[0] = AssetManager::get_texture("skybox_front");
+	//	skybox.textures[1] = AssetManager::get_texture("skybox_back");
+	//	skybox.textures[2] = AssetManager::get_texture("skybox_right");
+	//	skybox.textures[3] = AssetManager::get_texture("skybox_left");
+	//	skybox.textures[4] = AssetManager::get_texture("skybox_top");
+	//	skybox.textures[5] = AssetManager::get_texture("skybox_bottom");
+	//}
 
 	//for (auto& model : models_)
 	//	model->initialize();
@@ -174,7 +178,7 @@ void GraphicSystem::update(float dt) {
 		static_cast<GLsizei>(width_), static_cast<GLsizei>(height_));
 
 	// copy all the renderers
-	render_copy(dt);
+	// render_copy(dt);
 
 	// render skybox
 	render_skybox();
@@ -210,7 +214,7 @@ void GraphicSystem::close() {
 		// environmentTextures_[i] = 0;
 		skybox.textures[i] = 0;
 	}
-
+	skybox.texture = 0;
 	close_fbo();
 }
 
@@ -273,9 +277,6 @@ void GraphicSystem::render_skybox()
 	Shader* shader = shader_[SKYBOX];
 	shader->use();
 
-	shader->set_matrix("m4_translate", mat4::translate(mainCamera_->position));
-	shader->set_matrix("m4_scale", mat4::scale(vec3::one));
-	shader->set_matrix("m4_rotate", mat4::identity);
 	shader->set_vec3("v3_color", skybox.color);
 	shader->set_vec3("v3_cameraPosition", mainCamera_->position);
 	shader->set_float("f_scale", skybox.scale);
@@ -288,6 +289,7 @@ void GraphicSystem::render_skybox()
 
 	// Send camera info to shader
 	mat4 viewport = mat4::look_at(mainCamera_->position, mainCamera_->position + mainCamera_->front_, mainCamera_->up_);
+	viewport.m[0][3] = viewport.m[1][3] = viewport.m[2][3] = 0.f;
 	shader->set_matrix("m4_viewport", viewport);
 
 	glDisable(GL_DEPTH_TEST);
@@ -295,14 +297,8 @@ void GraphicSystem::render_skybox()
 	glCullFace(GL_BACK);
 	glBindVertexArray(skyboxVao_);
 	
-	for (int i = 0; i < 6; i++) {
-		glActiveTexture(GL_TEXTURE0 + i);
-		glBindTexture(GL_TEXTURE_2D, skybox.textures[i]);
-		shader->set_int(std::string("sampler[" + std::to_string(i) + "]").c_str(), i);
-	}
-	
-	glDrawArrays(GL_TRIANGLES, 0, cubeVerticesSize); 
-	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, skybox.texture);
+	glDrawArrays(GL_TRIANGLES, 0, cubeVerticesSize);
 	glBindVertexArray(0);
 	glEnable(GL_DEPTH_TEST);
 	glDepthMask(GL_TRUE);
@@ -332,27 +328,27 @@ void GraphicSystem::render_copy(float dt)
 		switch (i) {
 
 		default:
-		case 0:
+		case 0: // right
 			mainCamera_->set_pitch(0.f);
 			mainCamera_->set_yaw(0.f);
 			break;
-		case 1:
+		case 1: // back
 			mainCamera_->set_pitch(0.f);
 			mainCamera_->set_yaw(90.f);
 			break;
-		case 2:
+		case 2: // front
 			mainCamera_->set_pitch(0.f);
 			mainCamera_->set_yaw(180.f);
 			break;
-		case 3:
+		case 3: // left
 			mainCamera_->set_pitch(0.f);
 			mainCamera_->set_yaw(270.f);
 			break;
-		case 4:
+		case 4: // up
 			mainCamera_->set_pitch(90.f);
 			mainCamera_->set_yaw(0.f);
 			break;
-		case 5:
+		case 5: // down
 			mainCamera_->set_pitch(-90.f);
 			mainCamera_->set_yaw(0.f);
 			break;
@@ -562,18 +558,18 @@ void GraphicSystem::initialize_fbo()
 
 		// Give an empty image to OpenGL ( the last "0" means "empty" )
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 512, 512, 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
-		glGenerateMipmap(GL_TEXTURE_2D);
+		//glGenerateMipmap(GL_TEXTURE_2D);
 
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-		//// Poor filtering
 		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+		// Poor filtering
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	}
 
 	// Set the list of draw buffers.
@@ -686,10 +682,15 @@ void GraphicSystem::initialize_graphics()
 
 	glGenBuffers(1, &skyboxVbo_);
 	glBindBuffer(GL_ARRAY_BUFFER, skyboxVbo_);
-	glBufferData(GL_ARRAY_BUFFER, cubeVertices.size() * sizeof(float), &cubeVertices[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, cubeVerticesSize * sizeof(float), &cubeVertices[0], GL_STATIC_DRAW);
 
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
+
+	//// generate index buffer
+	//glGenBuffers(1, &skyboxEbo_);
+	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, skyboxEbo_);
+	//glBufferData(GL_ELEMENT_ARRAY_BUFFER, cubeIndicesSize * sizeof(unsigned), &cubeIndices[0], GL_STATIC_DRAW);
 
 	// unbind buffer
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);

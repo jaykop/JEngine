@@ -14,12 +14,13 @@ void Level6::initialize()
 	// base init
 	Scene::initialize();
 
-	GraphicSystem::skybox.textures[0] = AssetManager::get_texture("badomen_front");
-	GraphicSystem::skybox.textures[1] = AssetManager::get_texture("badomen_back");
-	GraphicSystem::skybox.textures[2] = AssetManager::get_texture("badomen_right");
-	GraphicSystem::skybox.textures[3] = AssetManager::get_texture("badomen_left");
-	GraphicSystem::skybox.textures[4] = AssetManager::get_texture("badomen_top");
-	GraphicSystem::skybox.textures[5] = AssetManager::get_texture("badomen_bottom");
+	GraphicSystem::skybox.texture = AssetManager::get_texture("badomen");
+	//GraphicSystem::skybox.textures[0] = AssetManager::get_texture("badomen_front");
+	//GraphicSystem::skybox.textures[1] = AssetManager::get_texture("badomen_back");
+	//GraphicSystem::skybox.textures[2] = AssetManager::get_texture("badomen_right");
+	//GraphicSystem::skybox.textures[3] = AssetManager::get_texture("badomen_left");
+	//GraphicSystem::skybox.textures[4] = AssetManager::get_texture("badomen_top");
+	//GraphicSystem::skybox.textures[5] = AssetManager::get_texture("badomen_bottom");
 }
 
 void Level6::update(float dt)
@@ -53,11 +54,11 @@ void Level6::init_basic()
 
 void Level6::init_models()
 {
-	auto* sphere = ObjectManager::create_object("sphere");
+	auto* sphere = ObjectManager::create_object("cube");
 	sphere->add_component<Model>();
 	auto* md4 = sphere->get_component<Model>();
 	auto* trans4 = sphere->get_component<Transform>();
-	md4->set_meshes(AssetManager::get_meshes("sphere"));
+	md4->set_meshes(AssetManager::get_meshes("cube"));
 	md4->status |= Renderer::IS_REFRACTED;
 	md4->color.set(0, 0, 1, 1);
 	trans4->scale.set(1.f, 1.f, 1.f);

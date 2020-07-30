@@ -258,7 +258,7 @@ vec3 ReflectPlanarUV(vec3 vInput)
 	
 	else if (isZPositive == 1 && mag.z >= mag.y && mag.z >= mag.x) {
 		
-		index = 2;
+		index = 0;
 		
 		uc = uv.x;
 		vc = uv.y;
@@ -269,7 +269,7 @@ vec3 ReflectPlanarUV(vec3 vInput)
 	
 	else if (isZPositive == 0 && mag.z >= mag.y && mag.z >= mag.x) {
 	
-		index = 0;
+		index = 2;
 		
 		uc = -uv.x;
 		vc = uv.y;

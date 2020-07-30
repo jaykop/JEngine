@@ -13,6 +13,8 @@ void Level4::initialize()
 
 	// base init
 	Scene::initialize();
+
+	GraphicSystem::skybox.scale = 100.f;
 }
 
 void Level4::update(float dt)
@@ -78,7 +80,7 @@ void Level4::init_models()
 	sphere->add_component<Model>();
 	auto* md4 = sphere->get_component<Model>();
 	auto* trans4 = sphere->get_component<Transform>();
-	md4->set_meshes(AssetManager::get_meshes("sphere"));
+	md4->set_meshes(AssetManager::get_meshes("cube"));
 	md4->status |= Renderer::IS_REFLECTED;
 	//md4->status |= Renderer::IS_REFRACTED;
 	md4->color.set(0, 0, 1, 1);
