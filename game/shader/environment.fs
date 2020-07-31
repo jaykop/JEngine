@@ -24,12 +24,20 @@ in vec3 v3_outFragmentPosition;
 
 vec3 ReflectPlanarUV(vec3 vInput);
 vec3 RefractPlanarUV(vec3 vInput);
+vec2 GetEnvUV(vec3 _entity);
+
+uniform vec3 p_max;
+uniform vec3 p_min;
+vec3 p_max_c;
+vec3 p_min_c;
+int textureIndex = 0;
 
 ////////////////////////////
 // entry point
 ////////////////////////////
 void main()
 {      
+
 	// uniforms
 	float tightness = 1.f;
 	float material = 1.45;
@@ -40,80 +48,9 @@ void main()
 	vec3 View = normalize(v3_cameraPosition - v3_outFragmentPosition);
 	float dot_NL = dot(Normal, View);
 	
-	float K = 1.0 / material;
-	float K_R = EtaR / material;
-	float K_G = EtaG / material;
-	float K_B = EtaB / material;
-	float F = ((1-K_G) * (1-K_G)) / ((1+K_G) * (1+K_G));
-	float ratio = F + (1.0 - F) * pow((1.0 - dot(View, Normal)), FresnelPower);
-	
-	float I_Refract = 0;
-	float lightIntensity = 0.3;
-		
-	if (boolean_reflected) {
-	
-		vec3 Reflect = 2*dot_NL*Normal - View;
-		finTex = ReflectPlanarUV(Reflect);
-	}
-	
-	else if (boolean_refracted) {
-		
-		vec3 refract;
-		
-		if (boolean_wavedLength) {
-		
-			vec3 Refract_R = (K_R*dot_NL - sqrt(1 - K_R*K_R*(1-dot_NL*dot_NL)))*Normal-K_R*View;
-			vec3 Refract_G = (K_G*dot_NL - sqrt(1 - K_G*K_G*(1-dot_NL*dot_NL)))*Normal-K_G*View;
-			vec3 Refract_B = (K_B*dot_NL - sqrt(1 - K_B*K_B*(1-dot_NL*dot_NL)))*Normal-K_B*View;
-		
-			refract.r = RefractPlanarUV(Refract_R).r;
-			refract.g = RefractPlanarUV(Refract_G).g;
-			refract.b = RefractPlanarUV(Refract_B).b;
-		}	
-
-		else {
-
-			vec3 Refract = (K*dot_NL - sqrt(1 - K*K*(1-dot_NL*dot_NL)))*Normal-K*View;
-			refract = RefractPlanarUV(Refract);
-		}	
-		
-		I_Refract = K * pow(max(dot(View, refract), 0), tightness);
-		
-		finTex = refract;
-	}
-	
-	else {
-		
-		vec3 Reflect = 2*dot_NL*Normal - View;
-		
-		vec3 refract;
-		
-		if (boolean_wavedLength) {
-		
-			vec3 Refract_R = (K_R*dot_NL - sqrt(1 - K_R*K_R*(1-dot_NL*dot_NL)))*Normal-K_R*View;
-			vec3 Refract_G = (K_G*dot_NL - sqrt(1 - K_G*K_G*(1-dot_NL*dot_NL)))*Normal-K_G*View;
-			vec3 Refract_B = (K_B*dot_NL - sqrt(1 - K_B*K_B*(1-dot_NL*dot_NL)))*Normal-K_B*View;
-		
-			refract.r = RefractPlanarUV(Refract_R).r;
-			refract.g = RefractPlanarUV(Refract_G).g;
-			refract.b = RefractPlanarUV(Refract_B).b;
-		}	
-
-		else {
-
-			vec3 Refract = (K*dot_NL - sqrt(1 - K*K*(1-dot_NL*dot_NL)))*Normal-K*View;
-			refract = RefractPlanarUV(Refract);
-		}	
-		
-		I_Refract = K * pow(max(dot(View, refract), 0), tightness);
-		
-		finTex = mix(refract, 
-			ReflectPlanarUV(Reflect), 
-			ratio);
-		finTex = mix(finTex, v3_color, ratio);
-	}
-	
-	v4_fragColor = vec4(finTex, 1.0);
+	vec3 entity = 2.f * Normal * dot_NL - View;
+	v4_fragColor.rgb = vec3(texture(renderSampler[textureIndex], GetEnvUV(entity)));
+	v4_fragColor.w = 1.f;
 }
 
 vec3 RefractPlanarUV(vec3 vInput)
@@ -280,4 +217,83 @@ vec3 ReflectPlanarUV(vec3 vInput)
 	}
 	
 	return vec3(texture(renderSampler[index], new_uv));
+}
+
+vec3 CentroidCalculation(vec3 _fragPos)
+{
+  vec3 c = (p_min + p_max) / 2.f;
+  p_min_c = p_min - c;
+  p_max_c = -p_min_c;
+
+  return _fragPos - c;
+}
+
+vec2 GetEnvUV(vec3 _entity)
+{
+  vec3 p_c = CentroidCalculation(_entity);
+  vec3 absVec = abs(p_c);
+  vec2 uv = vec2(0.f);
+
+  if (absVec.x >= absVec.y && absVec.x >= absVec.z)
+  {
+    //              +X  right             -X left
+    if(p_c.x > 0.f)
+    {
+      uv.x = -p_c.z;
+      uv.y = p_c.y;
+      textureIndex = 1;
+    }
+    else
+    {
+      uv.x = p_c.z;
+      uv.y = p_c.y;
+      textureIndex = 0;
+    }
+
+    uv /= absVec.x;
+  }
+  else if (absVec.y >= absVec.x && absVec.y >= absVec.z)
+  {
+    //              +Y  top             -Y bottom
+    if(p_c.y > 0.f)
+    {
+      uv.x = p_c.x;
+      uv.y = -p_c.z;
+      textureIndex = 3;
+    }
+    else
+    {
+      uv.x = p_c.x;
+      uv.y = p_c.z;
+      textureIndex = 2;
+    }
+
+    uv.x *= -1.f; // flipping
+    uv.y *= -1.f; // flipping
+
+    uv /= absVec.y;
+  }
+  else if (absVec.z >= absVec.x && absVec.z >= absVec.y)
+  {
+    //              +Z front              -Z back
+    if(p_c.z > 0.f)
+    {
+      uv.x = p_c.x;
+      uv.y = p_c.y;
+      textureIndex = 5;
+    }
+    else
+    {
+      uv.x = -p_c.x;
+      uv.y = p_c.y;
+      textureIndex = 4;
+    }
+
+    uv /= absVec.z;
+  }
+
+  uv.x *= -1.f; // flipping
+  uv = (uv + vec2(1.f)) * 0.5f;
+
+  return uv;
 }

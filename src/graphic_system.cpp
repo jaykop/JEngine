@@ -178,7 +178,7 @@ void GraphicSystem::update(float dt) {
 		static_cast<GLsizei>(width_), static_cast<GLsizei>(height_));
 
 	// copy all the renderers
-	// render_copy(dt);
+	render_copy(dt);
 
 	// render skybox
 	render_skybox();
@@ -321,6 +321,11 @@ void GraphicSystem::render_copy(float dt)
 
 	vec3 camPos = mainCamera_->position;
 	float camYaw = mainCamera_->yaw_, camPitch = mainCamera_->pitch_;
+	float aspect = mainCamera_->aspect_;
+	float fovy = mainCamera_->fovy_;
+
+	mainCamera_->aspect_ = 1.f;
+	mainCamera_->fovy_ = 90.f;
 
 	for (int i = 0; i < 6; ++i) {
 
@@ -328,29 +333,29 @@ void GraphicSystem::render_copy(float dt)
 		switch (i) {
 
 		default:
-		case 0: // right
-			mainCamera_->set_pitch(0.f);
-			mainCamera_->set_yaw(0.f);
-			break;
-		case 1: // back
+		case 0: // back
 			mainCamera_->set_pitch(0.f);
 			mainCamera_->set_yaw(90.f);
 			break;
-		case 2: // front
+		case 1: // left
 			mainCamera_->set_pitch(0.f);
 			mainCamera_->set_yaw(180.f);
 			break;
-		case 3: // left
+		case 2: // right
+			mainCamera_->set_pitch(0.f);
+			mainCamera_->set_yaw(0.f);
+			break;
+		case 3: // bottom
+			mainCamera_->set_pitch(-90.f);
+			mainCamera_->set_yaw(90.f);
+			break;
+		case 4: // top
+			mainCamera_->set_pitch(90.f);
+			mainCamera_->set_yaw(90.f);
+			break;
+		case 5:	// front
 			mainCamera_->set_pitch(0.f);
 			mainCamera_->set_yaw(270.f);
-			break;
-		case 4: // up
-			mainCamera_->set_pitch(90.f);
-			mainCamera_->set_yaw(0.f);
-			break;
-		case 5: // down
-			mainCamera_->set_pitch(-90.f);
-			mainCamera_->set_yaw(0.f);
 			break;
 		}
 		
@@ -369,6 +374,8 @@ void GraphicSystem::render_copy(float dt)
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, environmentTextures_[i], 0);
 	}
 	
+	mainCamera_->aspect_ = aspect;
+	mainCamera_->fovy_ = fovy;
 	mainCamera_->position = camPos;
 	mainCamera_->pitch_ = camPitch;
 	mainCamera_->yaw_ = camYaw;

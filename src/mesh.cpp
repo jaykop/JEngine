@@ -49,6 +49,9 @@ void Mesh::draw(Shader* shader, bool envr)
 
     if (envr)
     {
+        shader->set_vec3("p_min", minPosition_);
+        shader->set_vec3("p_max", maxPosition_);
+
         for (int i = 0; i < 6; i++) {
             glActiveTexture(GL_TEXTURE0 + i);
             glBindTexture(GL_TEXTURE_2D, GraphicSystem::environmentTextures_[i]);

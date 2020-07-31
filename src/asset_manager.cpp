@@ -730,7 +730,12 @@ Mesh* AssetManager::process_mesh(aiMesh* mesh, const aiScene* scene)
 	//textures.insert(textures.end(), normalMaps.begin(), normalMaps.end());
 	
 	// return a mesh object created from the extracted mesh data
-	return new Mesh(vertices, indices, textures);
+
+	Mesh* newMesh = new Mesh(vertices, indices, textures);
+	newMesh->minPosition_ = minPoint;
+	newMesh->maxPosition_ = maxPoint;
+
+	return newMesh;
 }
 
 // checks all material textures of a given type and loads the textures if they're not loaded yet.

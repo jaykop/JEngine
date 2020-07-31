@@ -9,6 +9,7 @@ class Mesh {
 
     friend class Light;
     friend class Model;
+    friend class AssetManager;
     friend class DebugRenderer;
     friend class GraphicSystem;
 
@@ -30,6 +31,8 @@ private:
     std::vector<Texture> textures_;
 
     unsigned int vao_, vbo_, ebo_, defaultTexture_;
+
+    vec3 minPosition_, maxPosition_;
 
     void setup_mesh();
 };
