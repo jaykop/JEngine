@@ -33,7 +33,7 @@ void main()
 	//v3_outNormal = mat3(transpose(inverse(transpose(model)))) * normal;
 
 	mat4 model = m4_scale * m4_rotate * m4_translate;
-	v3_outNormal = normal;
+	v3_outNormal = mat3(transpose(inverse(transpose(model)))) * normal;
 	v3_outFragmentPosition = mat3(transpose(model)) * position;
 	
 	vec4 v4_position = vec4(position, 1);

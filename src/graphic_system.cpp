@@ -130,9 +130,6 @@ void GraphicSystem::initialize() {
 		mainCamera_ = *cameras_.begin();
 
 	// set skybox
-	//if (!skybox.texture)
-	//	skybox.texture = AssetManager::get_texture("skybox");
-
 	if (!skybox.textures[0])
 	{
 		skybox.textures[0] = AssetManager::get_texture("skybox_front");
@@ -214,7 +211,6 @@ void GraphicSystem::close() {
 		// environmentTextures_[i] = 0;
 		skybox.textures[i] = 0;
 	}
-	skybox.texture = 0;
 	close_fbo();
 }
 
@@ -575,12 +571,6 @@ void GraphicSystem::initialize_fbo()
 
 		// Give an empty image to OpenGL ( the last "0" means "empty" )
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 512, 512, 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
-		//glGenerateMipmap(GL_TEXTURE_2D);
-
-		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 		// Poor filtering
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
