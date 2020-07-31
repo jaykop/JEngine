@@ -339,6 +339,7 @@ bool AssetManager::load_obj(const std::string& path, const char* meshKey, MeshMa
 {
 	// read file via ASSIMP
 	Assimp::Importer importer;
+
 	const aiScene* scene = importer.ReadFile(path,
 		aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenSmoothNormals | aiProcess_CalcTangentSpace);
 

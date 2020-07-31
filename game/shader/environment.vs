@@ -1,7 +1,7 @@
 #version 450 core
 
 layout (location = 0) in vec3 position;
-layout (location = 2) in vec3 normal;
+layout (location = 1) in vec3 normal;
 
 ////////////////////////////
 // uniform variables
@@ -33,9 +33,9 @@ void main()
 	//v3_outNormal = mat3(transpose(inverse(transpose(model)))) * normal;
 
 	mat4 model = m4_scale * m4_rotate * m4_translate;
-	v3_outNormal = mat3(transpose(inverse(model))) * position;
+	v3_outNormal = normal;
 	v3_outFragmentPosition = mat3(transpose(model)) * position;
 	
 	vec4 v4_position = vec4(position, 1);
-	gl_Position = transpose(m4_projection) * transpose(m4_viewport)* v4_position;
+	gl_Position = transpose(m4_projection) * transpose(m4_viewport)* transpose(model) * v4_position;
 }

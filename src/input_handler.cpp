@@ -18,6 +18,7 @@ Contains the methods of InputHandler class
 #include <application.hpp>
 #include <graphic_system.hpp>
 #include <mat4.hpp>
+#include <math_util.hpp>
 
 jeBegin
 
@@ -293,7 +294,7 @@ vec3 InputHandler::get_ray_direction()
 	Camera* camera = GraphicSystem::get_camera();
 	mat4 viewport = mat4::look_at(camera->position, camera->position + camera->front_, camera->up_);
 	mat4 perspective = mat4::perspective(
-		camera->fovy_ + camera->zoom, camera->aspect_,
+		Math::deg_to_rad(camera->fovy_ + camera->zoom), camera->aspect_,
 		camera->near_, camera->far_);
 
 	vec4 ray_eye = perspective.inverted() * ray_clip;

@@ -14,7 +14,7 @@ void Level4::initialize()
 	// base init
 	Scene::initialize();
 
-	GraphicSystem::skybox.scale = 100.f;
+	GraphicSystem::skybox.scale = 10.f;
 }
 
 void Level4::update(float dt)

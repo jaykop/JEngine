@@ -33,10 +33,10 @@ Camera::Camera(Object* owner)
 
 void Camera::update(float /*dt*/)
 {
-	aspect_ = GraphicSystem::width_ / GraphicSystem::height_;
-	width_ = 2 * tanf(.5f * fovy_);
-	height_ = width_ / aspect_;
-	viewgeometry_.set(width_, height_, distance_);
+	//aspect_ = GraphicSystem::width_ / GraphicSystem::height_;
+	//width_ = 2 * tanf(.5f * fovy_);
+	//height_ = width_ / aspect_;
+	//viewgeometry_.set(width_, height_, distance_);
 
 	front_.x = cosf(yaw_) * cosf(pitch_);
 	front_.y = sinf(pitch_);

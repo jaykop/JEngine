@@ -235,7 +235,7 @@ void GraphicSystem::render_grid()
 	case Renderer::ProjectType::PERSPECTIVE:
 	{
 		mat4 perspective = mat4::perspective(
-			mainCamera_->fovy_ + mainCamera_->zoom, mainCamera_->aspect_,
+			Math::deg_to_rad(mainCamera_->fovy_ + mainCamera_->zoom), mainCamera_->aspect_,
 			mainCamera_->near_, mainCamera_->far_);
 
  		shader->set_matrix("m4_projection", perspective);
@@ -285,7 +285,7 @@ void GraphicSystem::render_skybox()
 	shader->set_float("f_scale", skybox.scale);
 
 	mat4 perspective = mat4::perspective(
-		mainCamera_->fovy_ + mainCamera_->zoom, mainCamera_->aspect_,
+		Math::deg_to_rad(mainCamera_->fovy_ + mainCamera_->zoom), mainCamera_->aspect_,
 		mainCamera_->near_, mainCamera_->far_);
 
 	shader->set_matrix("m4_projection", perspective);
@@ -343,29 +343,29 @@ void GraphicSystem::render_copy(float dt)
 		switch (i) {
 
 		default:
-		case 0: // back
+		case 0:// front
+			mainCamera_->set_pitch(0.f);
+			mainCamera_->set_yaw(270.f);
+			break;
+		case 1: // back
 			mainCamera_->set_pitch(0.f);
 			mainCamera_->set_yaw(90.f);
-			break;
-		case 1: // left
-			mainCamera_->set_pitch(0.f);
-			mainCamera_->set_yaw(180.f);
 			break;
 		case 2: // right
 			mainCamera_->set_pitch(0.f);
 			mainCamera_->set_yaw(0.f);
 			break;
-		case 3: // bottom
-			mainCamera_->set_pitch(-90.f);
-			mainCamera_->set_yaw(90.f);
+		case 3:  // left
+			mainCamera_->set_pitch(0.f);
+			mainCamera_->set_yaw(180.f);
 			break;
 		case 4: // top
 			mainCamera_->set_pitch(90.f);
-			mainCamera_->set_yaw(90.f);
+			mainCamera_->set_yaw(0.f);
 			break;
-		case 5:	// front
-			mainCamera_->set_pitch(0.f);
-			mainCamera_->set_yaw(270.f);
+		case 5:	// bottom
+			mainCamera_->set_pitch(-90.f);
+			mainCamera_->set_yaw(0.f);
 			break;
 		}
 		

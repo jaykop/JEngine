@@ -60,7 +60,7 @@ class GraphicSystem {
 	{
 		unsigned texture = 0;
 		unsigned textures[6] = { 0 };
-		float scale = 10.f;
+		float scale = 1.f;
 		vec3 color = vec3::one;
 	};
 

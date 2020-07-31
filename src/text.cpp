@@ -4,7 +4,7 @@
 #include <shader.hpp>
 #include <camera.hpp>
 #include <asset_manager.hpp>
-
+#include <math_util.hpp>
 jeBegin
 
 jeDefineComponentBuilder(Text);
@@ -92,7 +92,7 @@ void Text::draw(float /*dt*/)
 		{
 
 			mat4 perspective = mat4::perspective(
-				camera->fovy_ + camera->zoom, camera->aspect_,
+				Math::deg_to_rad(camera->fovy_ + camera->zoom), camera->aspect_,
 				camera->near_, camera->far_);
 
 			shader->set_matrix("m4_projection", perspective);
