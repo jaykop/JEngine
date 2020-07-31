@@ -37,7 +37,6 @@ int textureIndex = 0;
 ////////////////////////////
 void main()
 {      
-
 	// uniforms
 	float tightness = 1.f;
 	float material = 1.45;
