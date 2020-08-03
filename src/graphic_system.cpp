@@ -110,6 +110,7 @@ GraphicSystem::Lights GraphicSystem::lights_;
 vec4 GraphicSystem::backgroundColor = vec4::zero, GraphicSystem::screenColor = vec4::zero;
 GraphicSystem::Grid GraphicSystem::grid;
 GraphicSystem::Skybox GraphicSystem::skybox;
+int GraphicSystem::copyIndex_ = -1;
 
 void GraphicSystem::set_camera(Camera* camera)
 {
@@ -123,7 +124,37 @@ Camera* GraphicSystem::get_camera()
 
 void GraphicSystem::initialize() {
 
-	initialize_fbo();
+	// Bind the newly created textures
+	glBindFramebuffer(GL_FRAMEBUFFER, fbo_);
+	glGenTextures(6, environmentTextures_);
+
+	for (int i = 0; i < 6; i++) {
+		glBindTexture(GL_TEXTURE_2D, environmentTextures_[i]);
+
+		// Give an empty image to OpenGL ( the last "0" means "empty" )
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 512, 512, 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
+
+		// Poor filtering
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	}
+
+	// Set the list of draw buffers.
+	GLenum DrawBuffers[6];
+	glDrawBuffers(1, DrawBuffers); // "1" is the size of DrawBuffers
+	glDrawBuffer(GL_COLOR_ATTACHMENT0);
+
+	// The depth buffer
+	GLuint depthrenderbuffer;
+	glGenRenderbuffers(1, &depthrenderbuffer);
+	glBindRenderbuffer(GL_RENDERBUFFER, depthrenderbuffer);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, 512, 512);
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthrenderbuffer);
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glBindTexture(GL_TEXTURE_2D, 0);
 
 	// set main camera
 	if (!mainCamera_ && !(cameras_.empty()))
@@ -206,12 +237,12 @@ void GraphicSystem::close() {
 	renderers_.shrink_to_fit();
 
 	mainCamera_ = nullptr;
+	glDeleteTextures(6, environmentTextures_);
 	for (int i = 0; i < 6 ; ++i)
 	{
-		// environmentTextures_[i] = 0;
+		environmentTextures_[i] = 0;
 		skybox.textures[i] = 0;
 	}
-	close_fbo();
 }
 
 void GraphicSystem::render_grid()
@@ -292,8 +323,7 @@ void GraphicSystem::render_skybox()
 	shader->set_matrix("m4_viewport", viewport);
 
 	glDisable(GL_DEPTH_TEST);
-	glDepthMask(GL_FALSE);
-	glCullFace(GL_BACK);
+	//glCullFace(GL_FRONT);
 	glBindVertexArray(skyboxVao_);
 	
 	for (int i = 0; i < 6; i++) {
@@ -306,8 +336,8 @@ void GraphicSystem::render_skybox()
 	glDrawArrays(GL_TRIANGLES, 0, cubeVerticesSize);
 	glActiveTexture(GL_TEXTURE0);
 	glBindVertexArray(0);
+	//glCullFace(GL_BACK);
 	glEnable(GL_DEPTH_TEST);
-	glDepthMask(GL_TRUE);
 }
 
 void GraphicSystem::render_copy(float dt)
@@ -319,11 +349,7 @@ void GraphicSystem::render_copy(float dt)
 		backgroundColor.w);
 	glBindFramebuffer(GL_FRAMEBUFFER, fbo_);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glViewport(/*static_cast<GLsizei>(widthStart_), 
-		static_cast<GLsizei>(heightStart_),
-		static_cast<GLsizei>(width_),
-		static_cast<GLsizei>(height_)*/
-	0,0,512,512);
+	glViewport(0, 0, 512, 512);
 
 	vec3 camPos = mainCamera_->position;
 	float camYaw = mainCamera_->yaw_, camPitch = mainCamera_->pitch_;
@@ -332,11 +358,11 @@ void GraphicSystem::render_copy(float dt)
 
 	mainCamera_->aspect_ = 1.f;
 	mainCamera_->fovy_ = 90.f;
+	mainCamera_->position.set_zero();
 
-	for (int i = 0; i < 6; ++i) {
+	for (copyIndex_ = 0; copyIndex_ < 6; ++copyIndex_) {
 
-		mainCamera_->position.set_zero();
-		switch (i) {
+		switch (copyIndex_) {
 
 		default:
 		case 0:// front
@@ -377,9 +403,10 @@ void GraphicSystem::render_copy(float dt)
 		for (auto& r : renderers_)
 			r->draw(dt);
 
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, environmentTextures_[i], 0);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, environmentTextures_[copyIndex_], 0);
 	}
-	
+
+	copyIndex_ = -1;
 	mainCamera_->aspect_ = aspect;
 	mainCamera_->fovy_ = fovy;
 	mainCamera_->position = camPos;
@@ -556,55 +583,6 @@ void GraphicSystem::update_lights(float dt)
 	}
 }
 
-void GraphicSystem::initialize_fbo()
-{
-	/**************************** FRAME BUFFER ******************************/
-
-	glGenFramebuffers(1, &fbo_);
-	glBindFramebuffer(GL_FRAMEBUFFER, fbo_);
-
-	// Bind the newly created textures
-	glGenTextures(6, environmentTextures_);
-
-	for (int i = 0; i < 6; i++) {
-		glBindTexture(GL_TEXTURE_2D, environmentTextures_[i]);
-
-		// Give an empty image to OpenGL ( the last "0" means "empty" )
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 512, 512, 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
-
-		// Poor filtering
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	}
-
-	// Set the list of draw buffers.
-	GLenum DrawBuffers[6];
-	glDrawBuffers(1, DrawBuffers); // "1" is the size of DrawBuffers
-	glDrawBuffer(GL_COLOR_ATTACHMENT0);
-
-	// The depth buffer
-	GLuint depthrenderbuffer;
-	glGenRenderbuffers(1, &depthrenderbuffer);
-	glBindRenderbuffer(GL_RENDERBUFFER, depthrenderbuffer);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, 512, 512);
-	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthrenderbuffer);
-
-	//// Always check that our framebuffer is ok
-	//if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-	//	jeDebugPrint("Framebuffer set not properly.\n");
-
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	glBindTexture(GL_TEXTURE_2D, 0);
-}
-
-void GraphicSystem::close_fbo()
-{
-	glDeleteFramebuffers(1, &fbo_);
-	glDeleteTextures(6, environmentTextures_);
-}
-
 void GraphicSystem::initialize_shaders()
 {
 	// init shaders
@@ -694,11 +672,6 @@ void GraphicSystem::initialize_graphics()
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
 
-	//// generate index buffer
-	//glGenBuffers(1, &skyboxEbo_);
-	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, skyboxEbo_);
-	//glBufferData(GL_ELEMENT_ARRAY_BUFFER, cubeIndicesSize * sizeof(unsigned), &cubeIndices[0], GL_STATIC_DRAW);
-
 	// unbind buffer
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -727,6 +700,12 @@ void GraphicSystem::initialize_graphics()
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
+
+	/**************************** FRAME BUFFER ******************************/
+
+	glGenFramebuffers(1, &fbo_);
+	glBindFramebuffer(GL_FRAMEBUFFER, fbo_);
+	glBindBuffer(GL_FRAMEBUFFER, 0);
 }
 
 void GraphicSystem::close_graphics()
@@ -740,6 +719,8 @@ void GraphicSystem::close_graphics()
 
 	glDeleteVertexArrays(1, &drVao_);
 	glDeleteBuffers(1, &drVbo_);
+
+	glDeleteFramebuffers(1, &fbo_);
 
 	close_shaders();
 }

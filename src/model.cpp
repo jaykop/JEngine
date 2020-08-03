@@ -53,6 +53,11 @@ void Model::draw(float /*dt*/)
     
     if (reflected || refracted)
     {
+        // if this model takes environment mapping,
+        // not draw when copying the scene
+        if (GraphicSystem::copyIndex_ >= 0)
+            return;
+
         shader = GraphicSystem::shader_[GraphicSystem::ENVIRONMENT];
         shader->use();
         shader->set_bool("boolean_reflected", reflected);

@@ -79,9 +79,6 @@ public:
 
 private:
 
-	static void initialize_fbo();
-	static void close_fbo();
-
 	static void initialize_shaders();
 	static void close_shaders();
 
@@ -112,6 +109,7 @@ private:
 	static vec3 resScaler_;
 	static Camera* mainCamera_;
 
+	static int copyIndex_;
 	static float width_, height_;
 	static int widthStart_, heightStart_;
 	static unsigned quadVao_, quadVbo_, quadEbo_,

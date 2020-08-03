@@ -438,8 +438,10 @@ void AssetManager::generate_screenshot(const char* directory)
 
 	// Get the total size of image
 	unsigned width = 0, height = 0;
-	width = isFullscreen ? unsigned(Application::get_appdata().displayWidth) : unsigned(Application::get_appdata().width);
-	height = isFullscreen ? unsigned(Application::get_appdata().displayHeight) : unsigned(Application::get_appdata().height);
+	width = isFullscreen ? static_cast<unsigned>(Application::get_appdata().displayWidth) 
+		: static_cast<unsigned>(Application::get_appdata().width);
+	height = isFullscreen ? static_cast<unsigned>(Application::get_appdata().displayHeight)
+		: static_cast<unsigned>(Application::get_appdata().height);
 	unsigned size = width * height * 4;
 
 	// Send the pixel info to the image vector
