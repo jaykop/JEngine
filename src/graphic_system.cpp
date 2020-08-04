@@ -326,7 +326,7 @@ void GraphicSystem::render_skybox()
 	//glCullFace(GL_FRONT);
 	glBindVertexArray(skyboxVao_);
 	
-	for (int i = 0; i < 6; i++) {
+	for (int i = 0; i < 6; ++i) {
 		glActiveTexture(GL_TEXTURE0 + i);
 		glBindTexture(GL_TEXTURE_2D, skybox.textures[i]);
 		shader->set_int(std::string("sampler[" + std::to_string(i) + "]").c_str(), i);

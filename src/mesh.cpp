@@ -47,9 +47,11 @@ void Mesh::draw(Shader* shader, bool envr)
     unsigned int normalNr = 0;
     unsigned int heightNr = 0;
 
+    glBindVertexArray(vao_);
+
     if (envr)
     {
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < 6; ++i) {
             glActiveTexture(GL_TEXTURE0 + i);
             glBindTexture(GL_TEXTURE_2D, GraphicSystem::environmentTextures_[i]);
             shader->set_int(std::string("renderSampler[" + std::to_string(i) + "]").c_str(), i);
@@ -89,7 +91,6 @@ void Mesh::draw(Shader* shader, bool envr)
     }
     
     // draw mesh
-    glBindVertexArray(vao_);
     glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(indices_.size()), GL_UNSIGNED_INT, 0);
     glBindTexture(GL_TEXTURE_2D, 0);
     glActiveTexture(GL_TEXTURE0);
