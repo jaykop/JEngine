@@ -81,8 +81,8 @@ void Level4::init_models()
 	auto* md4 = sphere->get_component<Model>();
 	auto* trans4 = sphere->get_component<Transform>();
 	md4->set_meshes(AssetManager::get_meshes("cube"));
-	// md4->status |= Renderer::IS_REFLECTED;
-	md4->status |= Renderer::IS_REFRACTED;
+	md4->status |= Renderer::IS_REFLECTED;
+	// md4->status |= Renderer::IS_REFRACTED;
 	md4->color.set(0, 0, 1, 1);
 	trans4->position.set(0.f, 0.f, 0.f);
 	trans4->scale.set(1.f, 1.f, 1.f);
