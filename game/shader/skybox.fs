@@ -7,7 +7,6 @@ in vec3 v3_fragPosition;
 uniform sampler2D sampler[6];
 uniform vec3 v3_cameraPosition;
 uniform vec3 v3_color;
-// uniform samplerCube skybox;
 
 vec3 PlanarUV(vec3 vInput, vec3 viewPos)
 {
@@ -57,7 +56,4 @@ void main()
 	vec3 finTex = vec3(0.5, 0.5, 0.5);
 	finTex = PlanarUV(v3_fragPosition, v3_cameraPosition);	
 	FragColor = vec4(finTex * v3_color, 1.f);
-
-	//FragColor.rgb = texture(skybox, v3_fragPosition).rgb * v3_color;
-	//FragColor.w = 1.f;
 }

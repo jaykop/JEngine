@@ -178,8 +178,8 @@ vec3 environmentMapping(vec3 vInput)
 		uc = -uv.z;
 		vc = -uv.x;
 		
-		new_uv.x = 0.5f * (uc / mag.y + 1.0f);
-		new_uv.y = 0.5f * (vc / mag.y + 1.0f);
+		new_uv.x = 1-0.5f * (uc / mag.y + 1.0f);
+		new_uv.y = 1-0.5f * (vc / mag.y + 1.0f);
 	}
 	
 	else if (isZPositive == 1 && mag.z >= mag.y && mag.z >= mag.x) {

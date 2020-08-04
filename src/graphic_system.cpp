@@ -132,13 +132,16 @@ void GraphicSystem::initialize() {
 		glBindTexture(GL_TEXTURE_2D, environmentTextures_[i]);
 
 		// Give an empty image to OpenGL ( the last "0" means "empty" )
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 512, 512, 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 512, 512, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
 
-		// Poor filtering
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+		//// Poor filtering
+		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	}
 
 	// Set the list of draw buffers.
@@ -177,36 +180,34 @@ void GraphicSystem::initialize() {
 
 void GraphicSystem::update(float dt) {
 
-	// update main camera
-	mainCamera_->update(dt);
-
 	// get current scene color
 	backgroundColor = SceneManager::get_current_scene()->background;
 
 	// scissor out the letterbox area
 	glEnable(GL_SCISSOR_TEST);
-	glScissor(widthStart_, heightStart_,
-		static_cast<GLsizei>(width_), static_cast<GLsizei>(height_));
+	glScissor(static_cast<GLsizei>(widthStart_),
+		static_cast<GLsizei>(heightStart_),
+		static_cast<GLsizei>(width_),
+		static_cast<GLsizei>(height_));
 
 	// cull out invisible face
 	glEnable(GL_CULL_FACE);
-	//glCullFace(GL_BACK);
-	//glFrontFace(GL_CCW);
-
-	// clear buffers
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glClearColor(
-		backgroundColor.r,
-		backgroundColor.g,
-		backgroundColor.b,
-		backgroundColor.a);
-
-	// update the viewport
-	glViewport(widthStart_, heightStart_,
-		static_cast<GLsizei>(width_), static_cast<GLsizei>(height_));
 
 	// copy all the renderers
 	render_copy(dt);
+
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClearColor(backgroundColor.r,
+		backgroundColor.g,
+		backgroundColor.b,
+		backgroundColor.a);
+	glViewport(static_cast<GLsizei>(widthStart_),
+		static_cast<GLsizei>(heightStart_),
+		static_cast<GLsizei>(width_),
+		static_cast<GLsizei>(height_));
+
+	// update main camera
+	mainCamera_->update(dt);
 
 	// render skybox
 	render_skybox();
@@ -343,11 +344,11 @@ void GraphicSystem::render_skybox()
 void GraphicSystem::render_copy(float dt)
 {
 	// Start copy
+	glBindFramebuffer(GL_FRAMEBUFFER, fbo_);
 	glClearColor(backgroundColor.x,
 		backgroundColor.y,
 		backgroundColor.z,
 		backgroundColor.w);
-	glBindFramebuffer(GL_FRAMEBUFFER, fbo_);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glViewport(0, 0, 512, 512);
 
@@ -386,7 +387,7 @@ void GraphicSystem::render_copy(float dt)
 			mainCamera_->set_yaw(0.f);
 			break;
 		case 5:	// bottom
-			mainCamera_->set_pitch(-90.f);
+			mainCamera_->set_pitch(270.f);
 			mainCamera_->set_yaw(0.f);
 			break;
 		}
@@ -412,18 +413,8 @@ void GraphicSystem::render_copy(float dt)
 	mainCamera_->position = camPos;
 	mainCamera_->pitch_ = camPitch;
 	mainCamera_->yaw_ = camYaw;
-	mainCamera_->update(dt);
 
-	glClearColor(backgroundColor.x, 
-		backgroundColor.y, 
-		backgroundColor.z, 
-		backgroundColor.w);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glViewport(static_cast<GLsizei>(widthStart_),
-		static_cast<GLsizei>(heightStart_),
-		static_cast<GLsizei>(width_),
-		static_cast<GLsizei>(height_));
 }
 
 void GraphicSystem::add_renderer(Renderer* model) 

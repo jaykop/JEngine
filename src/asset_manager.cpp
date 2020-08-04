@@ -387,36 +387,6 @@ void AssetManager::load_skybox(const char* path, const char* textureKey, Texture
 				std::string(textureKey + underbar + faces[i]).c_str(), image.handle));
 		}
 	}
-
-	//Image image;
-
-	//glGenTextures(1, &image.handle);
-	//glBindTexture(GL_TEXTURE_CUBE_MAP, image.handle);
-
-	//for (unsigned int i = 0; i < faces.size(); ++i)
-	//{
-	//	image.pixels.clear();
-	//	unsigned error = lodepng::decode(image.pixels, image.width, image.height, std::string(path + faces[i]).c_str(), LCT_RGB);
-
-	//	if (error)
-	//		jeDebugPrint("!AssetManager - Decoder error %d / %s.\n", error, lodepng_error_text(error));
-
-	//	else
-	//	{
-	//		// Enable the texture for OpenGL.
-	//		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, image.width, image.height, 0,
-	//			GL_RGB, GL_UNSIGNED_BYTE, &image.pixels[0]);
-	//	}
-	//}
-
-	//glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	//glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	//glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	//glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	//glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-
-	//tMap->insert(TextureMap::value_type(
-	//	textureKey, image.handle));
 }
 
 void AssetManager::load_audio(const char* /*path*/, const char* /*_audioKey*/, AudioMap* /*aMap*/)
@@ -449,7 +419,7 @@ void AssetManager::generate_screenshot(const char* directory)
 
 	// Read pixel from window screen
 	glReadPixels(0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, &pixelChunk[0]);
-
+	
 	// Invert the image vertucally
 	for (unsigned y = 0; y < height / 2; y++)
 		for (unsigned x = 0; x < width; x++)
