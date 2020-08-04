@@ -136,12 +136,6 @@ void GraphicSystem::initialize() {
 
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-
-		//// Poor filtering
-		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	}
 
 	// Set the list of draw buffers.
@@ -167,11 +161,11 @@ void GraphicSystem::initialize() {
 	if (!skybox.textures[0])
 	{
 		skybox.textures[0] = AssetManager::get_texture("skybox_front");
-		skybox.textures[1] = AssetManager::get_texture("skybox_back");
-		skybox.textures[2] = AssetManager::get_texture("skybox_right");
-		skybox.textures[3] = AssetManager::get_texture("skybox_left");
-		skybox.textures[4] = AssetManager::get_texture("skybox_top");
-		skybox.textures[5] = AssetManager::get_texture("skybox_bottom");
+		//skybox.textures[1] = AssetManager::get_texture("skybox_back");
+		//skybox.textures[2] = AssetManager::get_texture("skybox_right");
+		//skybox.textures[3] = AssetManager::get_texture("skybox_left");
+		//skybox.textures[4] = AssetManager::get_texture("skybox_top");
+		//skybox.textures[5] = AssetManager::get_texture("skybox_bottom");
 	}
 
 	//for (auto& model : models_)
