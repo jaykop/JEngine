@@ -153,7 +153,6 @@ void Emitter::draw(float dt)
 			t.join();
 
 		glBindVertexArray(GraphicSystem::quadVao_);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, GraphicSystem::quadEbo_);
 		glBindTexture(GL_TEXTURE_2D, texture_);
 
 		for (auto& particle : particles_) {
@@ -174,8 +173,6 @@ void Emitter::draw(float dt)
 		}
 
 		glBindTexture(GL_TEXTURE_2D, 0);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 		glBindVertexArray(0);
 
 		glDisable(GL_DEPTH_TEST);

@@ -135,7 +135,7 @@ vec3 environmentMapping(vec3 vInput)
 	int isZPositive = vInput.z > 0 ? 1 : 0;
 	
 	float uc, vc;
-	int index = -1;
+	int index = 5;
 	vec2 new_uv;
 	
 	if (isXPositive == 1 && mag.x >= mag.y && mag.x >= mag.z) {
@@ -193,8 +193,8 @@ vec3 environmentMapping(vec3 vInput)
 		new_uv.y = 0.5f * (vc / mag.z + 1.0f);
 	}
 	
-	else if (isZPositive == 0 && mag.z >= mag.y && mag.z >= mag.x) {
-	
+	else // if (isZPositive == 0 && mag.z >= mag.y && mag.z >= mag.x) {
+	{
 		index = 5;
 		
 		uc = -uv.x;
