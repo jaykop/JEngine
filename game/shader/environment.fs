@@ -127,83 +127,69 @@ void main()
 
 vec3 environmentMapping(vec3 vInput)
 {
-	vec3 uv = vInput;
 	vec3 mag = abs(vInput);
+	float m = max(max(mag.x, mag.y), mag.z);
 	
-	int isXPositive = vInput.x > 0 ? 1 : 0;
-	int isYPositive = vInput.y > 0 ? 1 : 0;
-	int isZPositive = vInput.z > 0 ? 1 : 0;
+	int index;
+	vec2 uv;
 	
-	float uc, vc;
-	int index = 5;
-	vec2 new_uv;
-	
-	if (isXPositive == 1 && mag.x >= mag.y && mag.x >= mag.z) {
-		
-		index = 1;
-		
-		uc = -uv.z;
-		vc = uv.y;
-
-		new_uv.x = 1-0.5f * (uc / mag.x + 1.0f);
-		new_uv.y = 0.5f * (vc / mag.x + 1.0f);
-	}
-	
-	else if (isXPositive == 0 && mag.x >= mag.y && mag.x >= mag.z) {
-
-		index = 2;
-		
-		uc = uv.z;
-		vc = uv.y;
-		
-		new_uv.x = 1-0.5 * (uc / mag.x + 1.0);
-		new_uv.y = 0.5 * (vc / mag.x + 1.0);
-	}
-	
-	else if (isYPositive == 1 && mag.y >= mag.x && mag.y >= mag.z) {
-		
-		index = 3;
-		
-		uc = -uv.z;
-		vc = -uv.x;
-		
-		new_uv.x = 0.5f * (uc / mag.y + 1.0f);
-		new_uv.y = 1-0.5f * (vc / mag.y + 1.0f);
-	}
-	
-	else if (isYPositive == 0 && mag.y >= mag.x && mag.y >= mag.z) {
-		
-		index = 4;
-		
-		uc = -uv.z;
-		vc = -uv.x;
-		
-		new_uv.x = 1-0.5f * (uc / mag.y + 1.f);
-		new_uv.y = 1-0.5f * (vc / mag.y + 1.f);
-	}
-	
-	else if (isZPositive == 1 && mag.z >= mag.y && mag.z >= mag.x) {
-		
-		index = 0;
-		
-		uc = uv.x;
-		vc = uv.y;
-		
-		new_uv.x = 1-0.5f * (uc / mag.z + 1.0f);
-		new_uv.y = 0.5f * (vc / mag.z + 1.0f);
-	}
-	
-	else // if (isZPositive == 0 && mag.z >= mag.y && mag.z >= mag.x) {
+	if (m == mag.x) 
 	{
-		index = 5;
+		if (vInput.x >= 0)
+		{
+			index = 1;
+
+			uv.x = 1-0.5f * (-vInput.z / m + 1.0f);
+			uv.y = 0.5f * (vInput.y / m + 1.0f);
+		}
 		
-		uc = -uv.x;
-		vc = uv.y;
-		
-		new_uv.x = 1-0.5f * (uc / mag.z + 1.0f);
-		new_uv.y = 0.5f * (vc / mag.z + 1.0f);
-		
+		else
+		{
+			index = 2;
+			
+			uv.x = 1-0.5 * (vInput.z / m + 1.0);
+			uv.y = 0.5 * (vInput.y / m + 1.0);
+		}
 	}
+
+	else if (m == mag.y) 
+	{
+		if (vInput.y >= 0)
+		{
+			index = 3;
+			
+			uv.x = 0.5f * (-vInput.z / m + 1.0f);
+			uv.y = 1-0.5f * (-vInput.x / m + 1.0f);
+		}
+		
+		else
+		{
+			index = 4;
+			
+			uv.x = 1-0.5f * (-vInput.z / m + 1.f);
+			uv.y = 1-0.5f * (-vInput.x / m + 1.f);
+		}
 	
-	return vec3(texture(renderSampler[index], new_uv));
+	}
+
+	else // if (m == mag.z) 
+	{
+		if (vInput.z >= 0)
+		{
+			index = 0;
+			
+			uv.x = 1-0.5f * (vInput.x / m + 1.0f);
+			uv.y = 0.5f * (vInput.y / m + 1.0f);
+		}
+		
+		else
+		{
+			index = 5;
+			
+			uv.x = 1-0.5f * (-vInput.x / mag.z + 1.0f);
+			uv.y = 0.5f * (vInput.y / mag.z + 1.0f);
+		}
+	}	
+	
+	return vec3(texture(renderSampler[index], uv));
 }

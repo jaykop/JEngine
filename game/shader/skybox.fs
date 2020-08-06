@@ -10,8 +10,11 @@ uniform vec3 v3_color;
 
 vec3 PlanarUV(vec3 vInput, vec3 viewPos)
 {
-	vec3 uv = vec3(0.5) + 0.5 * (vInput - viewPos);
 	vec3 mag = abs(vInput - viewPos);
+	vec3 numerator = vInput - viewPos;
+	float denominator = max(max(mag.x,mag.y),mag.z);
+	
+	vec3 uv = vec3(0.5) + 0.5 * numerator/denominator;
 			
 	if (mag.x > mag.y && mag.x > mag.z) {
 	
@@ -53,7 +56,5 @@ vec3 PlanarUV(vec3 vInput, vec3 viewPos)
 
 void main()
 {    
-	vec3 finTex = vec3(0.5, 0.5, 0.5);
-	finTex = PlanarUV(v3_fragPosition, v3_cameraPosition);	
-	FragColor = vec4(finTex * v3_color, 1.f);
+	FragColor = vec4(PlanarUV(v3_fragPosition, v3_cameraPosition) * v3_color, 1.f);
 }

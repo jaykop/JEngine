@@ -41,6 +41,7 @@ void Camera::update(float /*dt*/)
 	front_.x = cosf(yaw_) * cosf(pitch_);
 	front_.y = sinf(pitch_);
 	front_.z = sinf(yaw_) * cosf(pitch_);
+	front_.normalize();
 
 	right_ = (front_.cross(worldUp_)).normalized();
 	up_ = (right_.cross(front_)).normalized();

@@ -16,8 +16,8 @@ void Level4::initialize()
 	// base init
 	Scene::initialize();
 
-	GraphicSystem::skybox.scale = 1.f;
-	// GraphicSystem::skybox.render = true;
+	GraphicSystem::skybox.scale = 10.f;
+	GraphicSystem::skybox.render = true;
 }
 
 void Level4::update(float dt)
@@ -51,21 +51,21 @@ void Level4::init_basic()
 
 void Level4::init_models()
 {
-	// testing 2d renderer 
-	auto* renderer_2d = ObjectManager::create_object("renderer_2d");
-	renderer_2d->add_component<Sprite>();
-	renderer_2d->add_component<Animation2D>();
-	auto* renderer = renderer_2d->get_component<Sprite>();
-	auto* trans = renderer_2d->get_component<Transform>();
-	auto* animation = renderer_2d->get_component<Animation2D>();
-	animation->activate(true);
-	animation->set_frame(8);
-	animation->set_speed(10.f);
-	renderer->set_texture(AssetManager::get_texture("testAnimation"));
-	renderer->prjType = Renderer::ProjectType::PERSPECTIVE;
-	trans->scale.set(25, 40, 0.f);
-	trans->position.set(0, 0, -10.f);
-	register_object(renderer_2d);
+	//// testing 2d renderer 
+	//auto* renderer_2d = ObjectManager::create_object("renderer_2d");
+	//renderer_2d->add_component<Sprite>();
+	//renderer_2d->add_component<Animation2D>();
+	//auto* renderer = renderer_2d->get_component<Sprite>();
+	//auto* trans = renderer_2d->get_component<Transform>();
+	//auto* animation = renderer_2d->get_component<Animation2D>();
+	//animation->activate(true);
+	//animation->set_frame(8);
+	//animation->set_speed(10.f);
+	//renderer->set_texture(AssetManager::get_texture("testAnimation"));
+	//renderer->prjType = Renderer::ProjectType::PERSPECTIVE;
+	//trans->scale.set(25, 40, 0.f);
+	//trans->position.set(0, 0, -10.f);
+	//register_object(renderer_2d);
 
 	/*auto* earth = ObjectManager::create_object("earth");
 	earth->add_component<Model>();
