@@ -16,7 +16,7 @@ void Level4::initialize()
 	// base init
 	Scene::initialize();
 
-	GraphicSystem::skybox.scale = 10.f;
+	GraphicSystem::skybox.scale = 1.f;
 	GraphicSystem::skybox.render = true;
 }
 
@@ -100,10 +100,10 @@ void Level4::init_models()
 	auto* md4 = sphere->get_component<Model>();
 	auto* trans4 = sphere->get_component<Transform>();
 	md4->set_meshes(AssetManager::get_meshes("cube"));
-	md4->status |= Renderer::IS_REFLECTED;
-	// md4->status |= Renderer::IS_REFRACTED;
+	// md4->status |= Renderer::IS_REFLECTED;
+	md4->status |= Renderer::IS_REFRACTED;
 	md4->color.set(0, 0, 1, 1);
-	trans4->position.set(0.f, 0.f, 0.f);
+	trans4->position.set(4.f, 0.f, 0.f);
 	trans4->scale.set(1.f, 1.f, 1.f);
 	register_object(sphere);
 }

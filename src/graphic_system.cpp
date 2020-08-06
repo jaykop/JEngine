@@ -200,6 +200,16 @@ void GraphicSystem::update(float dt) {
 	// copy all the renderers
 	render_copy(dt);
 
+	glClearColor(backgroundColor.x,
+		backgroundColor.y,
+		backgroundColor.z,
+		backgroundColor.w);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glViewport(static_cast<GLsizei>(widthStart_),
+		static_cast<GLsizei>(heightStart_),
+		static_cast<GLsizei>(width_),
+		static_cast<GLsizei>(height_));
+
 	// update main camera
 	mainCamera_->update(dt);
 
@@ -207,16 +217,16 @@ void GraphicSystem::update(float dt) {
 	if (skybox.render)
 		render_skybox();
 
-	//// update lights
-	//update_lights(dt);
+	// update lights
+	update_lights(dt);
 
 	// update renderers
 	for (auto& r : renderers_)
 		r->draw(dt);
 
-	//// render grid
-	//if (grid.render)
-	//	render_grid();
+	// render grid
+	if (grid.render)
+		render_grid();
 
 	glDisable(GL_SCISSOR_TEST);
 }
@@ -409,16 +419,7 @@ void GraphicSystem::render_copy(float dt)
 	mainCamera_->pitch_ = camPitch;
 	mainCamera_->yaw_ = camYaw;
 
-	glClearColor(backgroundColor.x,
-		backgroundColor.y,
-		backgroundColor.z,
-		backgroundColor.w);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glViewport(static_cast<GLsizei>(widthStart_),
-		static_cast<GLsizei>(heightStart_),
-		static_cast<GLsizei>(width_),
-		static_cast<GLsizei>(height_));
 }
 
 void GraphicSystem::add_renderer(Renderer* model) 
