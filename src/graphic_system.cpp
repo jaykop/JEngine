@@ -318,8 +318,8 @@ void GraphicSystem::render_skybox()
 	shader->set_float("f_scale", skybox.scale);
 
 	mat4 perspective = mat4::perspective(
-		Math::deg_to_rad(mainCamera_->fovy_ + mainCamera_->zoom), mainCamera_->aspect_,
-		mainCamera_->near_, mainCamera_->far_);
+		Math::deg_to_rad(mainCamera_->fovy_ + mainCamera_->zoom), 
+		mainCamera_->aspect_, mainCamera_->near_, mainCamera_->far_);
 
 	shader->set_matrix("m4_projection", perspective);
 
