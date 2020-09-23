@@ -51,11 +51,13 @@ void Mesh::draw(Shader* shader, bool envr)
 
     if (envr)
     {
+        glEnable(GL_TEXTURE_2D);
         for (int i = 0; i < 6; ++i) {
             glActiveTexture(GL_TEXTURE0 + i);
             glBindTexture(GL_TEXTURE_2D, GraphicSystem::environmentTextures_[i]);
             shader->set_int(std::string("renderSampler[" + std::to_string(i) + "]").c_str(), i);
         }
+        glDisable(GL_TEXTURE_2D);
     }
 
     else if (defaultTexture_)

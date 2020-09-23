@@ -25,8 +25,7 @@ void main()
 {
 	mat4 model = m4_scale *m4_rotate * m4_translate;
 	v3_outNormal = normal;//mat3(transpose(inverse(transpose(model)))) * normal;
-	v3_outFragmentPosition = position;//vec3(transpose(model)*vec4(position, 1.0));
-	
 	vec4 v4_position = vec4(position, 1);
+	v3_outFragmentPosition = vec3(transpose(model) * v4_position);;//position;//vec3(transpose(model)*vec4(position, 1.0));
 	gl_Position = transpose(m4_projection) * transpose(m4_viewport)* transpose(model) * v4_position;
 }

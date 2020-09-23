@@ -197,13 +197,14 @@ void GraphicSystem::update(float dt) {
 	// cull out invisible face
 	glEnable(GL_CULL_FACE);
 
-	// copy all the renderers
-	render_copy(dt);
+	//// copy all the renderers
+	//render_copy(dt);
 
 	glClearColor(backgroundColor.x,
 		backgroundColor.y,
 		backgroundColor.z,
 		backgroundColor.w);
+	// glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glViewport(static_cast<GLsizei>(widthStart_),
 		static_cast<GLsizei>(heightStart_),
@@ -213,9 +214,9 @@ void GraphicSystem::update(float dt) {
 	// update main camera
 	mainCamera_->update(dt);
 
-	// render skybox
-	if (skybox.render)
-		render_skybox();
+	//// render skybox
+	//if (skybox.render)
+	//	render_skybox();
 
 	// update lights
 	update_lights(dt);
