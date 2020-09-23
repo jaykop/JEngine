@@ -13,8 +13,8 @@ out vec3 v3_fragPosition;
 	
 void main()
 {
-	mat4 scaled = f_scale * m4_scale;
-	scaled[3][3] /= f_scale;
+	mat4 scaled =  m4_scale;
+	// scaled[3][3] /= f_scale;
 	mat4 model = scaled * m4_rotate * m4_translate;
 	gl_Position = transpose(m4_projection) * transpose(m4_viewport) * transpose(model) * vec4(position, 1.0);	
 	v3_fragPosition = vec3(transpose(m4_scale* m4_rotate * m4_translate) *vec4(position, 1.0));

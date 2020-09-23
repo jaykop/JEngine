@@ -48,8 +48,8 @@ bool SceneManager::initialize(SDL_Window* window)
 
 void SceneManager::update(SDL_Event* event)
 {
-	static float timeStack, elapsedTime, currentTime;
-	timeStack = elapsedTime = currentTime = 0.f;
+	static float timeStack/*, elapsedTime, currentTime*/;
+	timeStack /*= elapsedTime = currentTime*/ = 0.f;
 
 	timer_.start();
 	change_scene();
@@ -62,8 +62,9 @@ void SceneManager::update(SDL_Event* event)
 			Application::event_update();
 		}
 
-		elapsedTime = timer_.get_elapsed_time(); // get elapsed time
-		frameTime_ = elapsedTime - currentTime; // get frame time
+		//elapsedTime = timer_.get_elapsed_time(); // get elapsed time
+		//frameTime_ = elapsedTime - currentTime; // get frame time
+		frameTime_ = timer_.get_elapsed_time(); // get elapsed time
 
 		// Manually block the rfame skipping
 		if (frameTime_ > MAX_FRAME_TIME)
@@ -75,7 +76,7 @@ void SceneManager::update(SDL_Event* event)
 		// Update the scene and systems
 		if (timeStack >= SECOND) {
 
-			currentTime = elapsedTime; // refresh the current time
+			//currentTime = elapsedTime; // refresh the current time
 			currentScene_->update(frameTime_); // update the current scene
 			SDL_GL_SwapWindow(window_);
 
@@ -83,6 +84,7 @@ void SceneManager::update(SDL_Event* event)
 
 			frames_ = 0;
 			timeStack = 0.f;
+			timer_.start();
 		}
 
 		InputHandler::lock_triggered_keys();
