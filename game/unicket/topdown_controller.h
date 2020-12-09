@@ -19,6 +19,8 @@ public:
 	void close() override;
 
 	float speed = 50.f;
+	vec3 currentPos, dist, nextPos;
+	bool moving = false;
 
 protected:
 

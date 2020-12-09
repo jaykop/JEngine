@@ -75,6 +75,7 @@ private:
 	static Mesh* process_mesh(aiMesh* mesh, const aiScene* scene);
 	static std::vector<Texture> load_material_textures(aiMaterial* mat, aiTextureType type, const std::string& typeName);
 	
+	static bool load3dAssets_;
 	static MeshMap meshMap_;
 	static FontMap fontMap_;
 	static AudioMap	audioMap_;

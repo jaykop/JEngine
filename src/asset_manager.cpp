@@ -54,6 +54,7 @@ unsigned int TextureFromFile(const char* path, const std::string& directory);
 
 std::string	AssetManager::initDirectory_, 
 AssetManager::stateDirectory_, AssetManager::archeDirectory_;
+bool AssetManager::load3dAssets_ = false;
 
 MeshMap AssetManager::meshMap_; 
 FontMap	AssetManager::fontMap_;
@@ -126,17 +127,20 @@ void AssetManager::load_assets()
 		jeDebugPrint("*AssetManager - Loaded image: %s.\n", textures[i]["Directory"].GetString());
 	}
 
-	const rapidjson::Value& skybox = JsonParser::get_document()["Skybox"];
-	for (rapidjson::SizeType i = 0; i < skybox.Size(); ++i) {
-		load_skybox(skybox[i]["Directory"].GetString(), skybox[i]["Key"].GetString());
-		jeDebugPrint("*AssetManager - Loaded skybox: %s.\n", skybox[i]["Directory"].GetString());
-	}
+	if (load3dAssets_)
+	{
+		const rapidjson::Value& skybox = JsonParser::get_document()["Skybox"];
+		for (rapidjson::SizeType i = 0; i < skybox.Size(); ++i) {
+			load_skybox(skybox[i]["Directory"].GetString(), skybox[i]["Key"].GetString());
+			jeDebugPrint("*AssetManager - Loaded skybox: %s.\n", skybox[i]["Directory"].GetString());
+		}
 
-	// Load obj 
-	const rapidjson::Value& models = JsonParser::get_document()["Model"];
-	for (rapidjson::SizeType i = 0; i < models.Size(); ++i) {
-		load_obj(models[i]["Directory"].GetString(), models[i]["Key"].GetString());
-		jeDebugPrint("*AssetManager - Loaded obj: %s.\n", models[i]["Directory"].GetString());
+		// Load obj 
+		const rapidjson::Value& models = JsonParser::get_document()["Model"];
+		for (rapidjson::SizeType i = 0; i < models.Size(); ++i) {
+			load_obj(models[i]["Directory"].GetString(), models[i]["Key"].GetString());
+			jeDebugPrint("*AssetManager - Loaded obj: %s.\n", models[i]["Directory"].GetString());
+		}
 	}
 
 	// Load font

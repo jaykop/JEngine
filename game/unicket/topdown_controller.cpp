@@ -11,7 +11,10 @@ TopDownController::~TopDownController()
 	remove_from_system();
 }
 
-void TopDownController::init() { }
+void TopDownController::init() 
+{ 
+	moving = false;
+}
 
 void TopDownController::update(float dt)
 {
@@ -20,26 +23,49 @@ void TopDownController::update(float dt)
 
 	float offset = dt * speed;
 
-	if (InputHandler::key_pressed(KEY::LEFT))
+	if (!moving)
 	{
-		vec3 dis = vec3(-1.f, 0.f, 0.f) * offset;
-		trans->position += dis;
+		if (InputHandler::key_pressed(KEY::LEFT))
+		{
+			moving = true;
+			dist = vec3(-1.f, 0.f, 0.f) * offset;
+			nextPos.x = currentPos.x - 10.f;
+		}
+		if (InputHandler::key_pressed(KEY::RIGHT))
+		{
+			moving = true;
+			dist = vec3(1.f, 0.f, 0.f) * offset;
+			nextPos.x = currentPos.x + 10.f;
+		}
+		if (InputHandler::key_pressed(KEY::UP))
+		{
+			moving = true;
+			dist = vec3(0.f, 1.f, 0.f) * offset;
+			nextPos.y = currentPos.y + 10.f;
+		}
+		if (InputHandler::key_pressed(KEY::DOWN))
+		{
+			moving = true;
+			dist = vec3(0.f, -1.f, 0.f) * offset;
+			nextPos.y = currentPos.y - 10.f;
+		}
 	}
-	if (InputHandler::key_pressed(KEY::RIGHT))
+
+	else
 	{
-		vec3 dis = vec3(1.f, 0.f, 0.f) * offset;
-		trans->position += dis;
+		trans->position += dist;
+
+		float d = vec3::distance(nextPos, trans->position);
+		if (d < .9f)
+		{
+			trans->position = currentPos = nextPos;
+			moving = false;
+		}
 	}
-	if (InputHandler::key_pressed(KEY::UP))
-	{
-		vec3 dis = vec3(0.f, 1.f, 0.f) * offset;
-		trans->position += dis;
-	}
-	if (InputHandler::key_pressed(KEY::DOWN))
-	{
-		vec3 dis = vec3(0.f, -1.f, 0.f) * offset;
-		trans->position += dis;
-	}
+
+	Camera* camera = GraphicSystem::get_camera();
+	camera->position = trans->position;
+	camera->position.z = 100.f;
 }
 
 void TopDownController::close() { }

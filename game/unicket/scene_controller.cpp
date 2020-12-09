@@ -19,6 +19,9 @@ void SceneController::init()
 	// set grid attributes
 	GraphicSystem::grid.color = Color::white;
 	GraphicSystem::grid.prjType = Renderer::ProjectType::PERSPECTIVE;
+	GraphicSystem::grid.divisions = 99;
+	GraphicSystem::grid.scale = 990;
+	GraphicSystem::grid.thickness = 0.05f;
 }
 
 void SceneController::update(float /*dt*/)
@@ -37,7 +40,7 @@ void SceneController::update(float /*dt*/)
 			SceneManager::set_next_scene<Level1>();
 	}
 
-	if (InputHandler::key_triggered(KEY::NUM_2))
+	/*if (InputHandler::key_triggered(KEY::NUM_2))
 	{
 		if (SceneManager::is_paused())
 			SceneManager::resume_and_next<Level2>();
@@ -67,7 +70,7 @@ void SceneController::update(float /*dt*/)
 			SceneManager::resume_and_next<Level5>();
 		else
 			SceneManager::set_next_scene<Level5>();
-	}
+	}*/
 
 	if (InputHandler::key_triggered(KEY::BACK))
 	{
