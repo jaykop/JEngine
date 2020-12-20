@@ -137,21 +137,6 @@ void Emitter::draw(float dt)
 		glBlendFunc(sfactor_, dfactor_);
 		glPointSize(pointSize_);
 
-		/*std::vector< std::thread> threads;
-		
-		unsigned blockSize = size_ / NUM_THREADS;
-		for (unsigned i = 0; i < NUM_THREADS; ++i) {
-			if (i != NUM_THREADS - 1)
-				threads.emplace_back(std::thread(&Emitter::update_particle, this, 
-					std::ref(particles_), dt, i * blockSize, (i + 1) * blockSize));
-			else
-				threads.emplace_back(std::thread(&Emitter::update_particle, this, 
-					std::ref(particles_), dt, i * blockSize, size_));
-		}
-
-		for (auto& t : threads)
-			t.join();*/
-
 		for (auto& particle : particles_) {
 
 			if (particle->done) continue;
