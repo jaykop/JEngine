@@ -22,7 +22,7 @@ void PlayerController::update(float dt)
 	Transform* trans =
 		get_owner()->get_component<Transform>();
 
-	float offset = dt * speed;
+	static float offset = 0.f;
 
 	// direction vector3
 	static const vec3 LEFT(-1.f, 0.f, 0.f);
@@ -78,6 +78,26 @@ void PlayerController::update(float dt)
 
 	else
 	{
+		// sliding motion
+		if (InputHandler::key_triggered(KEY::SPACE))
+		{
+			sliding_ = true;
+			offset = offset * 3.f;
+		}
+
+		if (sliding_)
+		{
+			offset -= dt;
+
+			if (offset < 0.f)
+			{
+				sliding_ = false;
+			}
+		}
+		else
+			offset = dt * speed;
+
+		// movement
 		if (InputHandler::key_pressed(KEY::A))
 		{
 			trans->position += LEFT * offset;

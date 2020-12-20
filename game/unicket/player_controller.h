@@ -19,6 +19,7 @@ public:
 	void close() override;
 
 	float speed = 50.f;
+	float slidingTime = 3.f;
 
 protected:
 
@@ -28,6 +29,8 @@ private:
 
 	vec3 currentPos_, nextPos_, dist_;
 	bool moveByGrid_ = false, moving_ = false;
+	bool sliding_ = false;
+
 	PlayerController& operator=(const PlayerController& rhs);
 	PlayerController() = delete;
 

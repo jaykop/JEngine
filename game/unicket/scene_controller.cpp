@@ -22,6 +22,7 @@ void SceneController::init()
 	GraphicSystem::grid.divisions = 99;
 	GraphicSystem::grid.scale = 990;
 	GraphicSystem::grid.thickness = 0.05f;
+	GraphicSystem::grid.render = true;
 }
 
 void SceneController::update(float /*dt*/)
@@ -86,8 +87,8 @@ void SceneController::update(float /*dt*/)
 	if (InputHandler::key_triggered(KEY::F12))
 		AssetManager::generate_screenshot("resource/screenshot/");
 
-	if (InputHandler::key_triggered(KEY::SPACE))
-		GraphicSystem::grid.render = !GraphicSystem::grid.render;
+	//if (InputHandler::key_triggered(KEY::SPACE))
+	//	GraphicSystem::grid.render = !GraphicSystem::grid.render;
 	
 	if (InputHandler::key_triggered(KEY::ESC))
 		Application::quit();
