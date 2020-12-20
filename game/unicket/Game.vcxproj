@@ -216,8 +216,9 @@ xcopy /y /s /i "$(ProjectDir)..\default" "$(TargetDir)..\default"</Command>
     <ClCompile Include="license.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="pause.cpp" />
+    <ClCompile Include="player_attack.cpp" />
     <ClCompile Include="scene_controller.cpp" />
-    <ClCompile Include="topdown_controller.cpp" />
+    <ClCompile Include="player_controller.cpp" />
     <ClCompile Include="particle_conrtoller.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -228,8 +229,9 @@ xcopy /y /s /i "$(ProjectDir)..\default" "$(TargetDir)..\default"</Command>
     <ClInclude Include="license.h" />
     <ClInclude Include="pause.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="player_attack.h" />
     <ClInclude Include="scene_controller.h" />
-    <ClInclude Include="topdown_controller.h" />
+    <ClInclude Include="player_controller.h" />
     <ClInclude Include="particle_conrtoller.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

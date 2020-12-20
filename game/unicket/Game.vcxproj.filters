@@ -27,9 +27,6 @@
     <ClInclude Include="scene_controller.h">
       <Filter>game_logics</Filter>
     </ClInclude>
-    <ClInclude Include="topdown_controller.h">
-      <Filter>game_logics</Filter>
-    </ClInclude>
     <ClInclude Include="particle_conrtoller.h">
       <Filter>game_logics</Filter>
     </ClInclude>
@@ -42,6 +39,12 @@
     <ClInclude Include="pause.h">
       <Filter>game_scene</Filter>
     </ClInclude>
+    <ClInclude Include="player_attack.h">
+      <Filter>game_logics</Filter>
+    </ClInclude>
+    <ClInclude Include="player_controller.h">
+      <Filter>game_logics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -51,9 +54,6 @@
       <Filter>provided</Filter>
     </ClCompile>
     <ClCompile Include="scene_controller.cpp">
-      <Filter>game_logics</Filter>
-    </ClCompile>
-    <ClCompile Include="topdown_controller.cpp">
       <Filter>game_logics</Filter>
     </ClCompile>
     <ClCompile Include="particle_conrtoller.cpp">
@@ -67,6 +67,12 @@
     </ClCompile>
     <ClCompile Include="pause.cpp">
       <Filter>game_scene</Filter>
+    </ClCompile>
+    <ClCompile Include="player_attack.cpp">
+      <Filter>game_logics</Filter>
+    </ClCompile>
+    <ClCompile Include="player_controller.cpp">
+      <Filter>game_logics</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

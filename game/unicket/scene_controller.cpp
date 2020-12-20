@@ -79,14 +79,6 @@ void SceneController::update(float /*dt*/)
 		else 
 			SceneManager::pause<Pause>();
 	}
-
-	if (InputHandler::key_triggered(KEY::MOUSE_LEFT))
-	{
-		static bool hide = false;
-		Application::hide_cursor(hide = !hide);
-		auto pos = InputHandler::get_position();
-		std::cout << pos.x << " " << pos.y << " " << pos.z << "\n";
-	}
 	
 	if (InputHandler::key_triggered(KEY::F1))
 		GraphicSystem::recompile_shaders();

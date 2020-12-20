@@ -6,12 +6,12 @@
 	"Texture": [
 
 		{
-			"Key": "testAnimation",
-			"Directory": "resource/texture/testAnimation.png"
-		},
-		{
 			"Key": "crosshair",
 			"Directory": "resource/texture/crosshair.png"
+		},
+		{
+			"Key": "arrow",
+			"Directory": "resource/texture/arrow.png"
 		}
 	],
 	

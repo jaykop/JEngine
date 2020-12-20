@@ -1,6 +1,7 @@
 #include "level1.h"
 #include "scene_controller.h"
-#include "topdown_controller.h"
+#include "player_controller.h"
+#include "player_attack.h"
 #include "pch.h"
 #include "sprite.hpp"
 #include "animation_2d.hpp"
@@ -65,18 +66,20 @@ void Level1::init_sprite()
 	renderer_2d = ObjectManager::create_object("renderer_2d");
 	renderer_2d->add_component<Sprite>();
 	renderer_2d->add_component<DebugRenderer>();
-	renderer_2d->add_component<TopDownController>();
+	renderer_2d->add_component<PlayerController>();
+	renderer_2d->add_component<PlayerAttack>();
 
 	auto* renderer = renderer_2d->get_component<Sprite>();
 	auto* animation = renderer_2d->get_component<Animation2D>();
 	auto* trans = renderer_2d->get_component<Transform>();
-	renderer->set_texture(AssetManager::get_texture("testAnimation"));
+	renderer->set_texture(AssetManager::get_texture("arrow"));
 	renderer->prjType = Renderer::ProjectType::PERSPECTIVE;
+	
 	// renderer->status |= Renderer::IS_BILBOARD;
 
-	animation->activate(true);
+	/*animation->activate(true);
 	animation->set_frame(8);
-	animation->set_speed(10.f);
+	animation->set_speed(10.f);*/
 
 	// animation->fix_frame(0);
 	trans->scale.set(10, 10, 0.f);

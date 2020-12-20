@@ -10,9 +10,14 @@ using namespace JE;
 void JEngine::register_builders()
 {
 	// add game logic builders here
+
+	// basic game logics
 	jeRegisterComponent(SceneController);
-	jeRegisterComponent(TopDownController);
 	jeRegisterComponent(ExplodingParticleController);
+
+	// player game logics
+	jeRegisterComponent(PlayerController);
+	jeRegisterComponent(PlayerAttack);
 }
 
 void JEngine::register_scenes()
