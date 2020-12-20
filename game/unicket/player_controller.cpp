@@ -82,13 +82,16 @@ void PlayerController::update(float dt)
 		if (InputHandler::key_triggered(KEY::SPACE))
 		{
 			sliding_ = true;
-			offset = offset * 3.f;
+			offset = offset * 3.f; // boost speed
 		}
 
+		// while sliding on
 		if (sliding_)
 		{
+			// decrease the speed
 			offset -= dt;
 
+			// once speed gets zero, off sliding motion
 			if (offset < 0.f)
 			{
 				sliding_ = false;

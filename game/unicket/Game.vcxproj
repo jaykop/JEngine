@@ -211,6 +211,7 @@ xcopy /y /s /i "$(ProjectDir)..\default" "$(TargetDir)..\default"</Command>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="bullet_logic.cpp" />
     <ClCompile Include="JEngine.cpp" />
     <ClCompile Include="level1.cpp" />
     <ClCompile Include="license.cpp" />
@@ -222,6 +223,7 @@ xcopy /y /s /i "$(ProjectDir)..\default" "$(TargetDir)..\default"</Command>
     <ClCompile Include="particle_conrtoller.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="bullet_logic.h" />
     <ClInclude Include="game_logics.h" />
     <ClInclude Include="game_scenes.h" />
     <ClInclude Include="JEngine.h" />

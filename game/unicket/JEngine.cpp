@@ -18,6 +18,7 @@ void JEngine::register_builders()
 	// player game logics
 	jeRegisterComponent(PlayerController);
 	jeRegisterComponent(PlayerAttack);
+	jeRegisterComponent(BulletLogic);
 }
 
 void JEngine::register_scenes()

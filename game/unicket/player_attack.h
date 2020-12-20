@@ -19,6 +19,7 @@ public:
 	void close() override;
 
 	float speed = 50.f;
+	int ammo_ = 10;
 
 protected:
 
@@ -26,8 +27,6 @@ protected:
 
 private:
 
-	vec3 currentPos_, nextPos_, dist_;
-	bool moveByGrid_ = false, moving_ = false;
 	PlayerAttack& operator=(const PlayerAttack& rhs);
 	PlayerAttack() = delete;
 
