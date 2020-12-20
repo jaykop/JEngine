@@ -135,7 +135,7 @@ void Emitter::draw(float dt)
 		glEnable(GL_BLEND);
 		glEnable(GL_DEPTH_TEST);
 		glBlendFunc(sfactor_, dfactor_);
-		glPointSize(pointSize_);
+		//glPointSize(pointSize_);
 
 		for (auto& particle : particles_) {
 
@@ -169,9 +169,10 @@ void Emitter::draw(float dt)
 			vec3 viewDirection = (camera->position - particle->position).normalized();
 
 			// Send transform info to shader
-			// particle->position.z = transform_->position.z;
+			particle->position.z = transform_->position.z;
 			shader->set_matrix("m4_translate", mat4::translate(particle->position));
 			shader->set_matrix("m4_rotate", mat4::rotate(Math::deg_to_rad(particle->rotation), viewDirection));
+			shader->set_matrix("m4_scale", mat4::scale(transform_->scale));
 
 			// Send color info to shader
 			shader->set_vec4("v4_color", vec4(particle->color, particle->life));

@@ -18,8 +18,8 @@ public:
 	void update(float dt) override;
 	void close() override;
 
-	float speed = 50.f;
-	int ammo_ = 10;
+	float speed = 300.f;
+	int ammo_ = 1000;
 
 protected:
 

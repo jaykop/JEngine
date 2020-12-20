@@ -65,9 +65,9 @@ void Transforming(vec4 _position, mat4 _model) {
 	mat4 modelview = transpose(m4_viewport) * newModel;
 
 	if (boolean_bilboard) {
-		modelview[0][0]
-			= modelview[1][1]
-			= modelview[2][2] = 1;
+		//modelview[0][0]
+		//	= modelview[1][1]
+		//	= modelview[2][2] = 1;
 
 		modelview[0][1]
 			= modelview[0][2]

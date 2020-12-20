@@ -122,7 +122,7 @@ void PlayerController::update(float dt)
 	// set obj's rotation
 	vec3 v3_deg = InputHandler::get_position().normalized();
 	static const vec3 v3_horizon(1.f, 0.f, 0.f), z_axis(0, 0, 1.f);
-
+	// std::cout << v3_deg.x << " " << v3_deg.y << "\n";
 	float dot = v3_horizon.x * v3_deg.x + v3_horizon.y * v3_deg.y; // dot product
 	float det = v3_horizon.x * v3_deg.y - v3_horizon.y * v3_deg.x; // determinant
 	float rad = atan2(det, dot);

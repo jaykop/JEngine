@@ -4,6 +4,8 @@
 #include "emitter.hpp"
 #include "debug_renderer.hpp"
 
+#include <iostream>
+
 jeBegin
 
 jeDefineUserComponentBuilder(PlayerAttack);
@@ -25,30 +27,24 @@ void PlayerAttack::update(float dt)
 		bullet->add_component<Emitter>();
 		bullet->add_component<BulletLogic>();
 		Transform* bulletTrans = bullet->get_component<Transform>();
-		bulletTrans->position = get_owner()->get_component<Transform>()->position;
+		bullet->get_component<BulletLogic>()->startPos 
+			= bulletTrans->position 
+			= get_owner()->get_component<Transform>()->position;
 
 		// set velocity
-		vec3 vel = InputHandler::get_position() - bulletTrans->position;
-		vel.normalize();
-		bullet->get_component<BulletLogic>()->vel = vel;
+		bullet->get_component<BulletLogic>()->vel = InputHandler::get_position().normalized();
 		bullet->get_component<BulletLogic>()->speed = speed;
 
 		// set emitter
 		Emitter* emi = bullet->get_component<Emitter>();
-		//emi->life = 100.f;
-		//emi->set_colors(Color::yellow, Color::red);
-		//emi->set_size(50);
-		//emi->velocity = vel * speed;
-		//emi->set_texture(AssetManager::get_texture("particle"));
-
-		bullet->get_component<Transform>()->scale.set(1.f, 1.f, 0.f);
+		bulletTrans->scale.set(3.f, 3.f, 0.f);
 		emi->set_texture(AssetManager::get_texture("rect"));
-		emi->set_colors(Color::yellow, Color::red);
+		emi->set_colors(Color::red, Color::red);
 		emi->active = true;
-		emi->life = 1.f;
+		emi->life = .5f;
 		emi->colorSpeed = 3.f;
-		emi->velocity.set(15.f, 15.f, 0.f);
-		emi->angle.set(0.f, 180.f);
+		//emi->velocity.set(15.f, 15.f, 0.f);
+		//emi->angle.set(0.f, 180.f);
 		emi->set_size(50);
 
 		// decrease the num of ammo
@@ -57,6 +53,9 @@ void PlayerAttack::update(float dt)
 		// register the bullet
 		SceneManager::get_current_scene()->register_object(bullet);
 	}
+
+	if (ammo_ <= 0)
+		std::cout << "Out of ammo\n";
 }
 
 void PlayerAttack::close() { }

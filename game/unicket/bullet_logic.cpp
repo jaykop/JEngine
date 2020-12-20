@@ -12,17 +12,17 @@ BulletLogic::~BulletLogic()
 
 void BulletLogic::init() 
 { 
-	startPos = get_owner()->get_component<Transform>()->position;
 }
 
 void BulletLogic::update(float dt)
 {
-	//vec3 currentPos = get_owner()->get_component<Transform>()->position;
-	//if (vec3::distance_sq(startPos, currentPos) > 100.f)
-	//{
-	//	// remove this object
-	//	ObjectManager::remove_object(get_owner());
-	//}
+	Transform* trans = get_owner()->get_component<Transform>();
+	trans->position += vel * dt * speed;
+	if (vec3::distance_sq(startPos, trans->position) > 15000.f)
+	{
+		// remove this object
+		ObjectManager::remove_object(get_owner());
+	}
 }
 
 void BulletLogic::close() { }
