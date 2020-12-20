@@ -21,24 +21,35 @@ void PlayerAttack::update(float dt)
 	{
 		static unsigned bulletCount = 0;
 		// shoot a bullet
-		auto bullet = ObjectManager::create_object((std::string("bullet") + std::to_string(bulletCount)).c_str());
+		Object* bullet = ObjectManager::create_object(std::string("bullet_" + std::to_string(bulletCount++)).c_str());
 		bullet->add_component<Emitter>();
-		bullet->add_component<DebugRenderer>();
 		bullet->add_component<BulletLogic>();
-				
+		Transform* bulletTrans = bullet->get_component<Transform>();
+		bulletTrans->position = get_owner()->get_component<Transform>()->position;
+
 		// set velocity
-		vec3 vel 
-			= InputHandler::get_position() - get_owner()->get_component<Transform>()->position;
+		vec3 vel = InputHandler::get_position() - bulletTrans->position;
 		vel.normalize();
 		bullet->get_component<BulletLogic>()->vel = vel;
 		bullet->get_component<BulletLogic>()->speed = speed;
 
 		// set emitter
 		Emitter* emi = bullet->get_component<Emitter>();
-		emi->life = 100.f;
+		//emi->life = 100.f;
+		//emi->set_colors(Color::yellow, Color::red);
+		//emi->set_size(50);
+		//emi->velocity = vel * speed;
+		//emi->set_texture(AssetManager::get_texture("particle"));
+
+		bullet->get_component<Transform>()->scale.set(1.f, 1.f, 0.f);
+		emi->set_texture(AssetManager::get_texture("rect"));
 		emi->set_colors(Color::yellow, Color::red);
+		emi->active = true;
+		emi->life = 1.f;
+		emi->colorSpeed = 3.f;
+		emi->velocity.set(15.f, 15.f, 0.f);
+		emi->angle.set(0.f, 180.f);
 		emi->set_size(50);
-		emi->velocity = vel * speed;
 
 		// decrease the num of ammo
 		--ammo_;

@@ -50,7 +50,7 @@ protected:
 	void pause();
 
 	Scene* prevScene_ = nullptr;
-	const char* name_, * directory_;
+	std::string name_, directory_;
 
 	// obj container
 	ObjectMap objects_;

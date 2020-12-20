@@ -137,7 +137,7 @@ void Emitter::draw(float dt)
 		glBlendFunc(sfactor_, dfactor_);
 		glPointSize(pointSize_);
 
-		std::vector< std::thread> threads;
+		/*std::vector< std::thread> threads;
 		
 		unsigned blockSize = size_ / NUM_THREADS;
 		for (unsigned i = 0; i < NUM_THREADS; ++i) {
@@ -150,7 +150,30 @@ void Emitter::draw(float dt)
 		}
 
 		for (auto& t : threads)
-			t.join();
+			t.join();*/
+
+		for (auto& particle : particles_) {
+
+			if (particle->done) continue;
+
+			if (particle->life < 0.f)
+				refresh_particle(particle);
+
+			else
+			{
+				particle->life -= dt;
+				particle->position += particle->direction * dt * velocity;
+
+				if (rotationSpeed)
+					particle->rotation += particle->rotationSpeed * dt;
+
+				if (colorDiff_ != vec3::zero)
+					particle->color += colorDiff_ * dt * colorSpeed;
+
+			}
+
+			particle->done = !particle->done ? true : false;
+		}
 
 		glBindVertexArray(GraphicSystem::quadVao_);
 		glBindTexture(GL_TEXTURE_2D, texture_);

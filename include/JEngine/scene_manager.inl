@@ -17,7 +17,7 @@ void SceneManager::set_next_scene()
 	DEBUG_ASSERT(found != scenes_.end(), "No such name of scene!\n");
 
 	// current state is the state
-	if (!strcmp(currentScene_->name_, found->first))
+	if (!strcmp(currentScene_->name_.c_str(), found->first))
 	{
 		jeDebugPrint("Cannot set the current scene as the next scene\n");
 		return;
@@ -57,7 +57,7 @@ void SceneManager::pause()
 	auto found = scenes_.find(typeid(SceneType).name());
 	DEBUG_ASSERT(found != scenes_.end(), "No such name of scene!\n");
 	// current state is the state
-	if (!strcmp(currentScene_->name_, found->first))
+	if (!strcmp(currentScene_->name_.c_str(), found->first))
 	{
 		jeDebugPrint("Cannot set the current scene as the next scene\n");
 		return;

@@ -30,7 +30,7 @@ jeBegin
 void Scene::load()
 {
 	// Read asset info
-	JsonParser::read_file(directory_);
+	JsonParser::read_file(directory_.c_str());
 	
 	const rapidjson::Value& backgroundColor = JsonParser::get_document()["Background"];
 	if (!backgroundColor.Empty())
@@ -184,7 +184,7 @@ void Scene::pause()
 
 const char* Scene::get_name() const
 {
-	return name_;
+	return name_.c_str();
 }
 
 void Scene::register_object(Object* obj) {

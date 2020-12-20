@@ -241,7 +241,7 @@ void SceneManager::set_first_scene(const char* stateName)
 void SceneManager::set_next_scene(const char* nextState)
 {
 	// current state is the state
-	if (!strcmp(currentScene_->name_, nextState))
+	if (!strcmp(currentScene_->name_.c_str(), nextState))
 	{
 		jeDebugPrint("Cannot set the current scene as the next scene\n");
 		return;
@@ -267,7 +267,7 @@ void SceneManager::set_next_scene(const char* nextState)
 void SceneManager::pause(const char* nextState)
 {
 	// current state is the state
-	if (!strcmp(currentScene_->name_, nextState))
+	if (!strcmp(currentScene_->name_.c_str(), nextState))
 	{
 		jeDebugPrint("Cannot set the current scene as the next scene\n");
 		return;

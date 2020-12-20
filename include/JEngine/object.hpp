@@ -30,7 +30,7 @@ public:
 	int get_id() const { return id_; }
 	void register_components();
 
-	const char* get_name();
+	const char* get_name() const;
 
 	Object* get_parent() { return parent_; }
 	bool has_parent() { return parent_ != nullptr; }
@@ -63,7 +63,7 @@ private:
 	int id_ = -1;
 	bool active_ = true;
 	Object* parent_ = nullptr;
-	const char* name_;
+	std::string name_;
 	Children children_;
 	Components components_;
 
