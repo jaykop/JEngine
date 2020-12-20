@@ -59,9 +59,9 @@ void Transform::set_euler_deg(const vec3& deg)
 
 void Transform::set_euler_deg(float deg_x, float deg_y, float deg_z)
 {
-	orientation.set_euler(deg_x * radian_to_degree, 
-		deg_y * radian_to_degree, 
-		deg_z * radian_to_degree);
+	orientation.set_euler(deg_x * radian,
+		deg_y * radian,
+		deg_z * radian);
 }
 
 mat4 Transform::model_to_world(void) const

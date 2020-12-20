@@ -33,6 +33,7 @@ struct vec3
 	// ctor / dtor
 	vec3(void);
 	vec3(float x, float y, float z);
+	vec3(float f);
 	vec3(const vec3& v3);
 
 	// public methods
@@ -48,7 +49,6 @@ struct vec3
 
 	float dot(const vec3& rhs) const;
 	vec3 cross(const vec3& rhs) const;
-
 	bool inside(const vec3& v1, const vec3& v2, const vec3& v3) const;
 
 	// operators

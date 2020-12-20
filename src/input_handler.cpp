@@ -280,7 +280,11 @@ bool InputHandler::get_mouse_wheel_status(KEY key)
 
 vec3 InputHandler::get_position()
 {
-	return position_;
+	float w = GraphicSystem::get_width() * .5f, h = GraphicSystem::get_height() * .5f;
+	vec3 pos;
+	pos.x = position_.x - w;
+	pos.y = h - position_.y;
+	return pos;
 }
 
 vec3 InputHandler::get_ray_direction()

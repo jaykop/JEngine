@@ -17,6 +17,11 @@ vec3::vec3(float _x, float _y, float _z)
 	, z(_z)
 {}
 
+vec3::vec3(float f)
+	: x(f), y(f), z(f)
+{
+}
+
 vec3::vec3(const vec3& v3)
 	: x(v3.x)
 	, y(v3.y)

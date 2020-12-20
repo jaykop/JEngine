@@ -10,10 +10,15 @@ using namespace JE;
 void JEngine::register_builders()
 {
 	// add game logic builders here
+
+	// basic game logics
 	jeRegisterComponent(SceneController);
-	jeRegisterComponent(TopDownController);
 	jeRegisterComponent(ExplodingParticleController);
-	jeRegisterComponent(CameraController);
+
+	// player game logics
+	jeRegisterComponent(PlayerController);
+	jeRegisterComponent(PlayerAttack);
+	jeRegisterComponent(BulletLogic);
 }
 
 void JEngine::register_scenes()
@@ -22,14 +27,9 @@ void JEngine::register_scenes()
 	SceneManager::register_scene<License>("resource/scene/license.json");
 	SceneManager::register_scene<Pause>("resource/scene/pause.json");
 	SceneManager::register_scene<Level1>("resource/scene/level1.json");
-	SceneManager::register_scene<Level2>("resource/scene/level2.json");
-	SceneManager::register_scene<Level3>("resource/scene/level3.json");
-	SceneManager::register_scene<Level4>("resource/scene/level4.json");
-	SceneManager::register_scene<Level5>("resource/scene/level5.json");
-	SceneManager::register_scene<Level6>("resource/scene/level6.json");
 
 	// set the first scene
-	SceneManager::set_first_scene<Level4>();
+	SceneManager::set_first_scene<Level1>();
 }
 
 bool JEngine::register_assets()

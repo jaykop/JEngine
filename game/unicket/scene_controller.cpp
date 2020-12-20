@@ -19,6 +19,10 @@ void SceneController::init()
 	// set grid attributes
 	GraphicSystem::grid.color = Color::white;
 	GraphicSystem::grid.prjType = Renderer::ProjectType::PERSPECTIVE;
+	GraphicSystem::grid.divisions = 99;
+	GraphicSystem::grid.scale = 990;
+	GraphicSystem::grid.thickness = 0.05f;
+	GraphicSystem::grid.render = true;
 }
 
 void SceneController::update(float /*dt*/)
@@ -37,7 +41,7 @@ void SceneController::update(float /*dt*/)
 			SceneManager::set_next_scene<Level1>();
 	}
 
-	if (InputHandler::key_triggered(KEY::NUM_2))
+	/*if (InputHandler::key_triggered(KEY::NUM_2))
 	{
 		if (SceneManager::is_paused())
 			SceneManager::resume_and_next<Level2>();
@@ -67,7 +71,7 @@ void SceneController::update(float /*dt*/)
 			SceneManager::resume_and_next<Level5>();
 		else
 			SceneManager::set_next_scene<Level5>();
-	}
+	}*/
 
 	if (InputHandler::key_triggered(KEY::BACK))
 	{
@@ -76,14 +80,6 @@ void SceneController::update(float /*dt*/)
 		else 
 			SceneManager::pause<Pause>();
 	}
-
-	if (InputHandler::key_triggered(KEY::MOUSE_LEFT))
-	{
-		static bool hide = false;
-		Application::hide_cursor(hide = !hide);
-		auto pos = InputHandler::get_position();
-		std::cout << pos.x << " " << pos.y << " " << pos.z << "\n";
-	}
 	
 	if (InputHandler::key_triggered(KEY::F1))
 		GraphicSystem::recompile_shaders();
@@ -91,8 +87,8 @@ void SceneController::update(float /*dt*/)
 	if (InputHandler::key_triggered(KEY::F12))
 		AssetManager::generate_screenshot("resource/screenshot/");
 
-	if (InputHandler::key_triggered(KEY::SPACE))
-		GraphicSystem::grid.render = !GraphicSystem::grid.render;
+	//if (InputHandler::key_triggered(KEY::SPACE))
+	//	GraphicSystem::grid.render = !GraphicSystem::grid.render;
 	
 	if (InputHandler::key_triggered(KEY::ESC))
 		Application::quit();

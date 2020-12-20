@@ -1,6 +1,5 @@
 #include "pause.h"
 #include "scene_controller.h"
-#include "camera_controller.h"
 #include "pch.h"
 #include "text.hpp"
 
@@ -32,7 +31,6 @@ void Pause::init_basic()
 	// add camera
 	Object* camera = ObjectManager::create_object("main_camera");
 	camera->add_component<Camera>();
-	camera->add_component<CameraController>();
 	camera->get_component<Camera>()->position = vec3(0.f, 0.f, 100.f);
 	register_object(camera);
 

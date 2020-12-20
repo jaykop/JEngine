@@ -23,12 +23,8 @@ private:
 
 	void init_basic();
 	void init_sprite();
-	void init_ui();
 
 	Object* renderer_2d = nullptr;
-
-	std::vector<int> spherePos;
-	std::vector<Object*> lights;
 
 };
 

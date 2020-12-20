@@ -38,9 +38,9 @@ void Object::register_components()
 		component.second->add_to_system();
 }
 
-const char* Object::get_name()
+const char* Object::get_name() const
 {
-	return name_;
+	return name_.c_str();
 }
 
 void Object::add_component(const char* componentName)
