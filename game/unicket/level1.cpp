@@ -72,7 +72,7 @@ void Level1::init_sprite()
 	player->add_component<PlayerController>();
 	player->add_component<Collider2D>();
 	player->add_component<RigidBody>();
-	// player->add_component<PlayerAttack>();
+	player->add_component<PlayerAttack>();
 
 	auto* renderer = player->get_component<Sprite>();
 	auto* animation = player->get_component<Animation2D>();

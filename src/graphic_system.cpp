@@ -29,6 +29,13 @@ Contains the methods of GraphicSystem class
 jeBegin
 
 
+static std::vector<float> particleVertices = {
+	-0.5f, -0.5f, 0.0f,
+	0.5f, -0.5f, 0.0f,
+	-0.5f,  0.5f, 0.0f,
+	0.5f,  0.5f, 0.0f,
+};
+
 const std::vector<float> quadVertices =
 {
 	-.5f, .5f, 0.0f, 0.f, 0.f, 1.f, 0.0f, 0.0f ,
@@ -93,6 +100,7 @@ std::vector<float> cubeVertices =
 	 .5f, .5f, .5f
 };
 const unsigned cubeVerticesSize = 108;
+
 const std::vector<unsigned> cubeIndices =
 {
 	/*0, 6, 4,
@@ -139,7 +147,10 @@ GraphicSystem::drVao_ = 0, GraphicSystem::drVbo_ = 0, GraphicSystem::fbo_[] = { 
 GraphicSystem::skyboxVao_ = 0, GraphicSystem::skyboxVbo_ = 0, GraphicSystem::skyboxEbo_ = 0,
 GraphicSystem::quadIndicesSize_ = 6,
 GraphicSystem::environmentTextures_[] = {0},
-GraphicSystem::depthrenderbuffer_[] = { 0 };
+GraphicSystem::depthrenderbuffer_[] = { 0 },
+GraphicSystem::billboardVerticeBuf_ = 0, 
+GraphicSystem::particlesPosBuf_ = 0, 
+GraphicSystem::particlesColorBuf_;
 
 std::stack<GraphicSystem::Graphic> GraphicSystem::graphicStack_;
 Camera* GraphicSystem::mainCamera_ = nullptr;
@@ -150,6 +161,7 @@ vec4 GraphicSystem::backgroundColor = vec4::zero, GraphicSystem::screenColor = v
 GraphicSystem::Grid GraphicSystem::grid;
 GraphicSystem::Skybox GraphicSystem::skybox;
 int GraphicSystem::copyIndex_ = -1;
+const int GraphicSystem::ParticleMaxSize = 100000;
 
 void GraphicSystem::set_camera(Camera* camera)
 {
@@ -655,6 +667,24 @@ void GraphicSystem::initialize_graphics()
 	// unbind buffer
 	glBindVertexArray(0);
 
+	/**************************** PARTICLE BUFFER ******************************/
+
+	glGenBuffers(1, &billboardVerticeBuf_);
+	glBindBuffer(GL_ARRAY_BUFFER, billboardVerticeBuf_);
+	glBufferData(GL_ARRAY_BUFFER, particleVertices.size() * sizeof(float), &particleVertices[0], GL_STATIC_DRAW);
+
+	// The VBO containing the positions and sizes of the particles
+	glGenBuffers(1, &particlesPosBuf_);
+	glBindBuffer(GL_ARRAY_BUFFER, particlesPosBuf_);
+	// Initialize with empty (NULL) buffer : it will be updated later, each frame.
+	glBufferData(GL_ARRAY_BUFFER, ParticleMaxSize * 4 * sizeof(GLfloat), NULL, GL_STREAM_DRAW);
+
+	// The VBO containing the colors of the particles
+	glGenBuffers(1, &particlesColorBuf_);
+	glBindBuffer(GL_ARRAY_BUFFER, particlesColorBuf_);
+	// Initialize with empty (NULL) buffer : it will be updated later, each frame.
+	glBufferData(GL_ARRAY_BUFFER, ParticleMaxSize * 4 * sizeof(GLubyte), NULL, GL_STREAM_DRAW);
+
 	/**************************** SKYBOX BUFFER ******************************/
 
 	glGenVertexArrays(1, &skyboxVao_);
@@ -775,6 +805,10 @@ void GraphicSystem::close_graphics()
 	glDeleteBuffers(1, &drVbo_);
 
 	glDeleteFramebuffers(6, fbo_);
+
+	glDeleteBuffers(1, &billboardVerticeBuf_);
+	glDeleteBuffers(1, &particlesPosBuf_);
+	glDeleteBuffers(1, &particlesColorBuf_);
 
 	close_shaders();
 }

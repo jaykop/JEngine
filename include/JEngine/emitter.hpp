@@ -6,8 +6,6 @@
 #include <vec3.hpp>
 #include <vec2.hpp>
 
-#include <mutex>
-
 jeBegin
 
 struct Particle {
@@ -74,7 +72,9 @@ private:
 	unsigned deadCount_, size_, drawMode_;
 	float pointSize_;
 	unsigned texture_;
-	std::mutex mutex_;
+
+	std::vector<float> g_particule_position_size_data, 
+		g_particule_color_data;
 };
 
 jeDeclareComponentBuilder(Emitter);

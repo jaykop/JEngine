@@ -9,8 +9,6 @@
 #include <math_util.hpp>
 #include <mat4.hpp>
 
-#include <thread>
-
 jeBegin
 
 jeDefineComponentBuilder(Emitter);
@@ -31,6 +29,9 @@ Emitter::Emitter(Object* owner)
 Emitter::~Emitter()
 {
 	remove_from_system();
+
+	g_particule_position_size_data.clear();
+	g_particule_color_data.clear();
 
 	for (auto& p : particles_)
 	{
@@ -137,101 +138,116 @@ void Emitter::draw(float dt)
 		glBlendFunc(sfactor_, dfactor_);
 		glPointSize(pointSize_);
 
-		/*std::vector< std::thread> threads;
-		
-		unsigned blockSize = size_ / NUM_THREADS;
-		for (unsigned i = 0; i < NUM_THREADS; ++i) {
-			if (i != NUM_THREADS - 1)
-				threads.emplace_back(std::thread(&Emitter::update_particle, this, 
-					std::ref(particles_), dt, i * blockSize, (i + 1) * blockSize));
-			else
-				threads.emplace_back(std::thread(&Emitter::update_particle, this, 
-					std::ref(particles_), dt, i * blockSize, size_));
-		}
+		glBindVertexArray(GraphicSystem::quadVao_);
+		glBindTexture(GL_TEXTURE_2D, texture_);
+		int particleSize = static_cast<int>(particles_.size());
 
-		for (auto& t : threads)
-			t.join();*/
+		for (int i = 0; i < particleSize; ++i) {
 
-		for (auto& particle : particles_) {
+			if (particles_[i]->done) 
+				continue;
 
-			if (particle->done) continue;
-
-			if (particle->life < 0.f)
-				refresh_particle(particle);
+			if (particles_[i]->life < 0.f)
+				refresh_particle(particles_[i]);
 
 			else
 			{
-				particle->life -= dt;
-				particle->position += particle->direction * dt * velocity;
+				// particles_[i]->done = false;
+
+				particles_[i]->life -= dt;
+				particles_[i]->position += particles_[i]->direction * dt * velocity;
 
 				if (rotationSpeed)
-					particle->rotation += particle->rotationSpeed * dt;
+					particles_[i]->rotation += particles_[i]->rotationSpeed * dt;
 
 				if (colorDiff_ != vec3::zero)
-					particle->color += colorDiff_ * dt * colorSpeed;
+					particles_[i]->color += colorDiff_ * dt * colorSpeed;
 
+				vec3 viewDirection = (camera->position - particles_[i]->position).normalized();
+
+				// Send transform info to shader
+				// particle->position.z = transform_->position.z;
+				shader->set_matrix("m4_translate", mat4::translate(particles_[i]->position));
+				shader->set_matrix("m4_rotate", mat4::rotate(Math::deg_to_rad(particles_[i]->rotation), viewDirection));
+
+				// Send color info to shader
+				shader->set_vec4("v4_color", vec4(particles_[i]->color, particles_[i]->life));
+				shader->set_bool("boolean_hide", particles_[i]->hidden);
+
+				// Fill the GPU buffer
+				g_particule_position_size_data[4 * i + 0] = particles_[i]->position.x;
+				g_particule_position_size_data[4 * i + 1] = particles_[i]->position.y;
+				g_particule_position_size_data[4 * i + 2] = particles_[i]->position.z;
+
+				g_particule_position_size_data[4 * i + 3] = 1.f;//particles_[i]->;
+
+				g_particule_color_data[4 * i + 0] = particles_[i]->color.r;
+				g_particule_color_data[4 * i + 1] = particles_[i]->color.g;
+				g_particule_color_data[4 * i + 2] = particles_[i]->color.b;
+				g_particule_color_data[4 * i + 3] = particles_[i]->life;
+
+				//glDrawElements(drawMode_, GraphicSystem::quadIndicesSize_, GL_UNSIGNED_INT, nullptr);
 			}
 
-			particle->done = !particle->done ? true : false;
-		}
-
-		glBindVertexArray(GraphicSystem::quadVao_);
-		glBindTexture(GL_TEXTURE_2D, texture_);
-
-		for (auto& particle : particles_) {
-
-			particle->done = false;
-			vec3 viewDirection = (camera->position - particle->position).normalized();
-
-			// Send transform info to shader
-			// particle->position.z = transform_->position.z;
-			shader->set_matrix("m4_translate", mat4::translate(particle->position));
-			shader->set_matrix("m4_rotate", mat4::rotate(Math::deg_to_rad(particle->rotation), viewDirection));
-
-			// Send color info to shader
-			shader->set_vec4("v4_color", vec4(particle->color, particle->life));
-			shader->set_bool("boolean_hide", particle->hidden);
-
-			glDrawElements(drawMode_, GraphicSystem::quadIndicesSize_, GL_UNSIGNED_INT, nullptr);
+			// particles_[i]->done = !particles_[i]->done ? true : false;
 		}
 
 		glBindTexture(GL_TEXTURE_2D, 0);
 		glBindVertexArray(0);
 
+		glBindBuffer(GL_ARRAY_BUFFER, GraphicSystem::particlesPosBuf_);
+		glBufferData(GL_ARRAY_BUFFER, GraphicSystem::ParticleMaxSize * 4 * sizeof(GLfloat), NULL, GL_STREAM_DRAW); // Buffer orphaning, a common way to improve streaming perf. See above link for details.
+		glBufferSubData(GL_ARRAY_BUFFER, 0, particleSize * sizeof(GLfloat) * 4, &g_particule_position_size_data[0]);
+
+		glBindBuffer(GL_ARRAY_BUFFER, GraphicSystem::particlesColorBuf_);
+		glBufferData(GL_ARRAY_BUFFER, GraphicSystem::ParticleMaxSize * 4 * sizeof(GLubyte), NULL, GL_STREAM_DRAW); // Buffer orphaning, a common way to improve streaming perf. See above link for details.
+		glBufferSubData(GL_ARRAY_BUFFER, 0, particleSize * sizeof(GLubyte) * 4, &g_particule_color_data[0]);
+
+		// 1rst attribute buffer : vertices
+		glEnableVertexAttribArray(0);
+		glBindBuffer(GL_ARRAY_BUFFER, GraphicSystem::billboardVerticeBuf_);
+		glVertexAttribPointer(
+			0,                  // attribute. No particular reason for 0, but must match the layout in the shader.
+			3,                  // size
+			GL_FLOAT,           // type
+			GL_FALSE,           // normalized?
+			0,                  // stride
+			(void*)0            // array buffer offset
+		);
+
+		// 2nd attribute buffer : positions of particles' centers
+		glEnableVertexAttribArray(1);
+		glBindBuffer(GL_ARRAY_BUFFER, GraphicSystem::particlesPosBuf_);
+		glVertexAttribPointer(
+			1,                                // attribute. No particular reason for 1, but must match the layout in the shader.
+			4,                                // size : x + y + z + size => 4
+			GL_FLOAT,                         // type
+			GL_FALSE,                         // normalized?
+			0,                                // stride
+			(void*)0                          // array buffer offset
+		);
+
+		// 3rd attribute buffer : particles' colors
+		glEnableVertexAttribArray(2);
+		glBindBuffer(GL_ARRAY_BUFFER, GraphicSystem::particlesColorBuf_);
+		glVertexAttribPointer(
+			2,                                // attribute. No particular reason for 1, but must match the layout in the shader.
+			4,                                // size : r + g + b + a => 4
+			GL_UNSIGNED_BYTE,                 // type
+			GL_TRUE,                          // normalized?    *** YES, this means that the unsigned char[4] will be accessible with a vec4 (floats) in the shader ***
+			0,                                // stride
+			(void*)0                          // array buffer offset
+		);
+
+		glVertexAttribDivisor(0, 0); // particles vertices : always reuse the same 4 vertices -> 0
+		glVertexAttribDivisor(1, 1); // positions : one per quad (its center)                 -> 1
+		glVertexAttribDivisor(2, 1); // color : one per quad                                  -> 1
+
+		glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, particleSize);
+
 		glDisable(GL_DEPTH_TEST);
 		glDepthMask(GL_TRUE);
 		glDisable(GL_BLEND);
-	}
-}
-
-void Emitter::update_particle(Particles& particles, float dt,
-	unsigned start, unsigned end)
-{
-	for (unsigned i = start; i < end; ++i)
-	{
-		std::unique_lock<std::mutex> lck(mutex_);
-		if (particles[i]->done) continue;
-		lck.unlock();
-
-		if (particles[i]->life < 0.f)
-			refresh_particle(particles[i]);
-
-		else
-		{
-			particles[i]->life -= dt;
-			particles[i]->position += particles[i]->direction * dt * velocity;
-
-			if (rotationSpeed)
-				particles[i]->rotation += particles[i]->rotationSpeed * dt;
-
-			if (colorDiff_ != vec3::zero)
-				particles[i]->color += colorDiff_ * dt * colorSpeed;
-
-		}
-
-		lck.lock();
-		particles[i]->done = !particles[i]->done ? true : false;
-		lck.unlock();
 	}
 }
 
@@ -260,6 +276,9 @@ Particle* Emitter::generate_particle()
 	}
 
 	newParticle->direction.normalize();
+	int totalSize = 4 * size_;
+	g_particule_position_size_data.resize(totalSize, 0.f);
+	g_particule_color_data.resize(totalSize, 0.f);
 
 	return newParticle;
 }
