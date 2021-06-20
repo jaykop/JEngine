@@ -9,3 +9,6 @@
 #include <debug_renderer.hpp>
 #include <emitter.hpp>
 #include <light.hpp>
+
+#include <collider_2d.hpp>
+#include <rigidbody.hpp>

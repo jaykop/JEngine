@@ -23,8 +23,10 @@ private:
 
 	void init_basic();
 	void init_sprite();
+	void init_block();
 
-	Object* renderer_2d = nullptr;
+	Object* player = nullptr;
+	Object* block = nullptr;
 
 };
 

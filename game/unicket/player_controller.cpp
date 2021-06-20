@@ -128,7 +128,7 @@ void PlayerController::update(float dt)
 	float rad = atan2(det, dot);
 	trans->set_euler_rad(z_axis * rad);
 
-	// camera follows the chracter
+	// camera follows the character
 	Camera* camera = GraphicSystem::get_camera();
 	camera->position = trans->position;
 	camera->position.z = 200.f;

@@ -74,6 +74,7 @@ struct vec3
 	static float distance_sq(const vec3& a, const vec3& b);
 	static vec3 cross(const vec3& lhs, const vec3& rhs) ;
 	static float sign(const vec3& p1, const vec3& p2, const vec3& p3);
+	static vec3 rotate(const vec3& p, const vec3& o, float rad);
 
 }; // struct vec3
 

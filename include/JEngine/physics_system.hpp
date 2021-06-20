@@ -12,6 +12,8 @@ Contains the definition of PhysicsSystem class
 
 #pragma once
 #include <macros.hpp>
+#include <vector>
+#include <vec3.hpp>
 
 jeBegin
 
@@ -24,17 +26,28 @@ class PhysicsSystem {
 	jePreventClone(PhysicsSystem)
 
 	friend class Scene;
+	friend class Collider2D;
+	friend class RigidBody;
+
+	using Bodies = std::vector<RigidBody*>;
+	using Colliders = std::vector<Collider2D*>;
 
 public:
 
-
+	static bool isCollided(Collider2D* a, Collider2D* b);
 
 private:
+
+	static void add_collider(Collider2D* collider);
 
 	static void initialize();
 	static void update(float dt);
 	static void close();
 
+	static bool IntervalIntersect(const std::vector<vec3>& A, const std::vector<vec3>& B, const vec3& xAxis, const vec3& xOffset);
+	static void GetInterval(const std::vector<vec3>& vertices, const vec3& xAxis, float& min, float& max);
+
+	static Colliders colliders_;
 };
 
 jeEnd

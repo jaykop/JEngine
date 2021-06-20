@@ -22,7 +22,7 @@ void SceneController::init()
 	GraphicSystem::grid.divisions = 99;
 	GraphicSystem::grid.scale = 990;
 	GraphicSystem::grid.thickness = 0.05f;
-	GraphicSystem::grid.render = true;
+	// GraphicSystem::grid.render = true;
 }
 
 void SceneController::update(float /*dt*/)

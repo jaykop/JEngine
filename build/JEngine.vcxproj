@@ -24,6 +24,7 @@
     <ClCompile Include="..\src\animation_2d.cpp" />
     <ClCompile Include="..\src\application.cpp" />
     <ClCompile Include="..\src\asset_manager.cpp" />
+    <ClCompile Include="..\src\collider_2d.cpp" />
     <ClCompile Include="..\src\mesh.cpp" />
     <ClCompile Include="..\src\model.cpp" />
     <ClCompile Include="..\src\audio.cpp" />
@@ -66,6 +67,7 @@
     <ClInclude Include="..\include\JEngine\application.hpp" />
     <ClInclude Include="..\include\JEngine\assets.hpp" />
     <ClInclude Include="..\include\JEngine\asset_manager.hpp" />
+    <ClInclude Include="..\include\JEngine\collider_2d.hpp" />
     <ClInclude Include="..\include\JEngine\mesh.hpp" />
     <ClInclude Include="..\include\JEngine\model.hpp" />
     <ClInclude Include="..\include\JEngine\audio.hpp" />

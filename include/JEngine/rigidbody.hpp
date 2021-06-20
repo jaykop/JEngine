@@ -4,16 +4,17 @@
 
 jeBegin
 
-class Object;
-jeDeclareComponentBuilder(RigidBody);
-
 class RigidBody : public Component {
 
 	jeBaseFriends(RigidBody);
+	friend class PhysicsSystem;
 
 public:
 
+	RigidBody(Object* owner);
+	virtual ~RigidBody();
 
+	bool isStatic = false;
 
 protected:
 
@@ -23,9 +24,8 @@ protected:
 
 private:
 
-	RigidBody(Object* owner);
-	virtual ~RigidBody() {};
-
 };
+
+jeDeclareComponentBuilder(RigidBody);
 
 jeEnd

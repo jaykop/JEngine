@@ -207,6 +207,14 @@ float vec3::sign(const vec3& p1, const vec3& p2, const vec3& p3)
 	return (p1.x - p3.x) * (p2.y - p3.y) - (p2.x - p3.x) * (p1.y - p3.y); 
 }
 
+vec3 vec3::rotate(const vec3& p, const vec3& o, float rad)
+{
+	float rx = cos(rad) * (p.x - o.x) - sin(rad) * (p.y-o.y) + o.x;
+	float ry = sin(rad) * (p.x - o.x) + cos(rad) * (p.y-o.y) + o.y;
+
+	return vec3(rx, ry, 0.f);
+}
+
 bool vec3::inside(const vec3& v1, const vec3& v2, const vec3& v3) const
 { 
 	bool b1, b2, b3;  
