@@ -677,13 +677,13 @@ void GraphicSystem::initialize_graphics()
 	glGenBuffers(1, &particlesPosBuf_);
 	glBindBuffer(GL_ARRAY_BUFFER, particlesPosBuf_);
 	// Initialize with empty (NULL) buffer : it will be updated later, each frame.
-	glBufferData(GL_ARRAY_BUFFER, ParticleMaxSize * 4 * sizeof(GLfloat), NULL, GL_STREAM_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, ParticleMaxSize * 3 * sizeof(GLfloat), NULL, GL_STREAM_DRAW);
 
 	// The VBO containing the colors of the particles
 	glGenBuffers(1, &particlesColorBuf_);
 	glBindBuffer(GL_ARRAY_BUFFER, particlesColorBuf_);
 	// Initialize with empty (NULL) buffer : it will be updated later, each frame.
-	glBufferData(GL_ARRAY_BUFFER, ParticleMaxSize * 4 * sizeof(GLubyte), NULL, GL_STREAM_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, ParticleMaxSize * 4 * sizeof(GLfloat), NULL, GL_STREAM_DRAW);
 
 	/**************************** SKYBOX BUFFER ******************************/
 

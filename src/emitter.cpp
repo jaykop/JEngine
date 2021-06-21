@@ -76,7 +76,7 @@ void Emitter::draw(float dt)
 		Shader* shader = GraphicSystem::shader_[GraphicSystem::PARTICLE];
 		shader->use();
 
-		//shader->set_matrix("m4_translate", mat4::translate(transform_->position));
+		shader->set_matrix("m4_translate", mat4::translate(transform_->position));
 		shader->set_matrix("m4_scale", mat4::scale(transform_->scale));
 		//shader->set_matrix("m4_rotate", transform_->orientation.to_mat4());
 		//shader->set_vec3("v3_cameraPosition", camera->position);
@@ -145,7 +145,7 @@ void Emitter::draw(float dt)
 		for (int i = 0; i < particleSize; ++i) {
 
 			// if (particles_[i]->done) 
-//				continue;
+			// continue;
 
 			if (particles_[i]->life < 0.f)
 				refresh_particle(particles_[i]);
@@ -167,7 +167,7 @@ void Emitter::draw(float dt)
 
 				// Send transform info to shader
 				// particle->position.z = transform_->position.z;
-				shader->set_matrix("m4_translate", mat4::translate(particles_[i]->position));
+				// shader->set_matrix("m4_translate", mat4::translate(particles_[i]->position));
 				shader->set_matrix("m4_rotate", mat4::rotate(Math::deg_to_rad(particles_[i]->rotation), viewDirection));
 
 				// Send color info to shader
@@ -179,6 +179,11 @@ void Emitter::draw(float dt)
 				g_particule_position_size_data[3 * i + 1] = particles_[i]->position.y;
 				g_particule_position_size_data[3 * i + 2] = particles_[i]->position.z;
 
+				g_particule_color_data[4 * i + 0] = particles_[i]->color.r;
+				g_particule_color_data[4 * i + 1] = particles_[i]->color.g;
+				g_particule_color_data[4 * i + 2] = particles_[i]->color.b;
+				g_particule_color_data[4 * i + 3] = particles_[i]->life;
+
 				// glDrawElements(drawMode_, GraphicSystem::quadIndicesSize_, GL_UNSIGNED_INT, nullptr);
 			}
 
@@ -186,8 +191,12 @@ void Emitter::draw(float dt)
 		}
 
 		glBindBuffer(GL_ARRAY_BUFFER, GraphicSystem::particlesPosBuf_);
-		glBufferData(GL_ARRAY_BUFFER, GraphicSystem::ParticleMaxSize * 4 * sizeof(GLfloat), NULL, GL_STREAM_DRAW); // Buffer orphaning, a common way to improve streaming perf. See above link for details.
-		glBufferSubData(GL_ARRAY_BUFFER, 0, particleSize * sizeof(GLfloat) * 4, &g_particule_position_size_data[0]);
+		glBufferData(GL_ARRAY_BUFFER, GraphicSystem::ParticleMaxSize * 3 * sizeof(GLfloat), NULL, GL_STREAM_DRAW); // Buffer orphaning, a common way to improve streaming perf. See above link for details.
+		glBufferSubData(GL_ARRAY_BUFFER, 0, particleSize * sizeof(GLfloat) * 3, &g_particule_position_size_data[0]);
+
+		glBindBuffer(GL_ARRAY_BUFFER, GraphicSystem::particlesColorBuf_);
+		glBufferData(GL_ARRAY_BUFFER, GraphicSystem::ParticleMaxSize* 4 * sizeof(GLfloat), NULL, GL_STREAM_DRAW); // Buffer orphaning, a common way to improve streaming perf. See above link for details.
+		glBufferSubData(GL_ARRAY_BUFFER, 0, particleSize * sizeof(GLfloat) * 4, &g_particule_color_data[0]);
 
 		// 1rst attribute buffer : vertices
 		glEnableVertexAttribArray(0);
@@ -213,13 +222,27 @@ void Emitter::draw(float dt)
 			(void*)0                          // array buffer offset
 		);
 
+		// 3rd attribute buffer : particles' colors
+		glEnableVertexAttribArray(2);
+		glBindBuffer(GL_ARRAY_BUFFER, GraphicSystem::particlesColorBuf_);
+		glVertexAttribPointer(
+			2,                                // attribute. No particular reason for 1, but must match the layout in the shader.
+			4,                                // size : r + g + b + a => 4
+			GL_FLOAT,						  // type
+			GL_FALSE,                         // normalized?    *** YES, this means that the unsigned char[4] will be accessible with a vec4 (floats) in the shader ***
+			0,                                // stride
+			(void*)0                          // array buffer offset
+		);
+
 		glVertexAttribDivisor(0, 0); // particles vertices : always reuse the same 4 vertices -> 0
 		glVertexAttribDivisor(1, 1); // positions : one per quad (its center)                 -> 1
+		glVertexAttribDivisor(2, 1); // positions : one per quad (its center)                 -> 1
 
 		glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, particleSize);
 
 		glDisableVertexAttribArray(0);
 		glDisableVertexAttribArray(1);
+		glDisableVertexAttribArray(2);
 
 		glBindTexture(GL_TEXTURE_2D, 0);
 		glBindVertexArray(0);

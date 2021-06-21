@@ -24,6 +24,7 @@ uniform mat4 m4_parentTranslate,
 // out variables
 ////////////////////////////
 out	vec2 v2_outTexCoord;
+out vec4 v4_outColor;
 
 ////////////////////////////
 // fucntion declarations
@@ -50,6 +51,7 @@ void main(){
 	}
 	
 	v2_outTexCoord = squareVertices.xy + vec2(0.5, 0.5);
+	v4_outColor = color;
 }
 
 ////////////////////////////

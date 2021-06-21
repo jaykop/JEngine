@@ -55,8 +55,8 @@ void Level1::update(float dt)
 		emi->life = 1.f;
 		emi->colorSpeed = 3.f;
 		emi->velocity.set(15.f, 15.f, 0.f);
-		emi->angle.set(0.f, 180.f);
-		emi->set_size(50);
+		emi->angle.set(0.f, 360.f);
+		emi->set_size(10000);
 
 		// register the bullet
 		SceneManager::get_current_scene()->register_object(bullet);
