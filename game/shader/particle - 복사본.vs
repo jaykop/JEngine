@@ -1,8 +1,8 @@
 #version 450 core
 
-layout(location = 0) in vec3 squareVertices;
-layout(location = 1) in vec3 xyz; // Position of the center of the particule and size of the square
-layout(location = 2) in vec4 color; // Position of the center of the particule and size of the square
+layout(location = 0) in vec3 position;
+layout(location = 1) in vec3 normal;
+layout(location = 2) in vec2 uvPosition;
 
 ////////////////////////////
 // uniform variables
@@ -42,14 +42,14 @@ void main(){
 
 	else {
 	
-		vec4 newPosition = vec4(squareVertices + xyz, 1);
+		vec4 newPosition = vec4(position, 1);
 		mat4 model = m4_scale * m4_rotate * m4_translate;
 		vec4 newTexCoord;
 
 		Transforming(newPosition, model);
 	}
 	
-	v2_outTexCoord = squareVertices.xy + vec2(0.5, 0.5);
+	v2_outTexCoord = uvPosition;
 }
 
 ////////////////////////////

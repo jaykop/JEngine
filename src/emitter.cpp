@@ -23,7 +23,7 @@ Emitter::Emitter(Object* owner)
 {
 	status |= IS_BILBOARD;
 	sfactor_ = GL_SRC_ALPHA;
-	dfactor_ = GL_ONE;
+	dfactor_ = GL_ONE_MINUS_SRC_ALPHA;
 }
 
 Emitter::~Emitter()
@@ -144,8 +144,8 @@ void Emitter::draw(float dt)
 
 		for (int i = 0; i < particleSize; ++i) {
 
-			if (particles_[i]->done) 
-				continue;
+			// if (particles_[i]->done) 
+//				continue;
 
 			if (particles_[i]->life < 0.f)
 				refresh_particle(particles_[i]);
@@ -175,33 +175,19 @@ void Emitter::draw(float dt)
 				shader->set_bool("boolean_hide", particles_[i]->hidden);
 
 				// Fill the GPU buffer
-				g_particule_position_size_data[4 * i + 0] = particles_[i]->position.x;
-				g_particule_position_size_data[4 * i + 1] = particles_[i]->position.y;
-				g_particule_position_size_data[4 * i + 2] = particles_[i]->position.z;
+				g_particule_position_size_data[3 * i + 0] = particles_[i]->position.x;
+				g_particule_position_size_data[3 * i + 1] = particles_[i]->position.y;
+				g_particule_position_size_data[3 * i + 2] = particles_[i]->position.z;
 
-				g_particule_position_size_data[4 * i + 3] = 1.f;//particles_[i]->;
-
-				g_particule_color_data[4 * i + 0] = particles_[i]->color.r;
-				g_particule_color_data[4 * i + 1] = particles_[i]->color.g;
-				g_particule_color_data[4 * i + 2] = particles_[i]->color.b;
-				g_particule_color_data[4 * i + 3] = particles_[i]->life;
-
-				//glDrawElements(drawMode_, GraphicSystem::quadIndicesSize_, GL_UNSIGNED_INT, nullptr);
+				// glDrawElements(drawMode_, GraphicSystem::quadIndicesSize_, GL_UNSIGNED_INT, nullptr);
 			}
 
 			// particles_[i]->done = !particles_[i]->done ? true : false;
 		}
 
-		glBindTexture(GL_TEXTURE_2D, 0);
-		glBindVertexArray(0);
-
 		glBindBuffer(GL_ARRAY_BUFFER, GraphicSystem::particlesPosBuf_);
 		glBufferData(GL_ARRAY_BUFFER, GraphicSystem::ParticleMaxSize * 4 * sizeof(GLfloat), NULL, GL_STREAM_DRAW); // Buffer orphaning, a common way to improve streaming perf. See above link for details.
 		glBufferSubData(GL_ARRAY_BUFFER, 0, particleSize * sizeof(GLfloat) * 4, &g_particule_position_size_data[0]);
-
-		glBindBuffer(GL_ARRAY_BUFFER, GraphicSystem::particlesColorBuf_);
-		glBufferData(GL_ARRAY_BUFFER, GraphicSystem::ParticleMaxSize * 4 * sizeof(GLubyte), NULL, GL_STREAM_DRAW); // Buffer orphaning, a common way to improve streaming perf. See above link for details.
-		glBufferSubData(GL_ARRAY_BUFFER, 0, particleSize * sizeof(GLubyte) * 4, &g_particule_color_data[0]);
 
 		// 1rst attribute buffer : vertices
 		glEnableVertexAttribArray(0);
@@ -220,30 +206,23 @@ void Emitter::draw(float dt)
 		glBindBuffer(GL_ARRAY_BUFFER, GraphicSystem::particlesPosBuf_);
 		glVertexAttribPointer(
 			1,                                // attribute. No particular reason for 1, but must match the layout in the shader.
-			4,                                // size : x + y + z + size => 4
+			3,                                // size : x + y + z + size => 4
 			GL_FLOAT,                         // type
 			GL_FALSE,                         // normalized?
 			0,                                // stride
 			(void*)0                          // array buffer offset
 		);
 
-		// 3rd attribute buffer : particles' colors
-		glEnableVertexAttribArray(2);
-		glBindBuffer(GL_ARRAY_BUFFER, GraphicSystem::particlesColorBuf_);
-		glVertexAttribPointer(
-			2,                                // attribute. No particular reason for 1, but must match the layout in the shader.
-			4,                                // size : r + g + b + a => 4
-			GL_UNSIGNED_BYTE,                 // type
-			GL_TRUE,                          // normalized?    *** YES, this means that the unsigned char[4] will be accessible with a vec4 (floats) in the shader ***
-			0,                                // stride
-			(void*)0                          // array buffer offset
-		);
-
 		glVertexAttribDivisor(0, 0); // particles vertices : always reuse the same 4 vertices -> 0
 		glVertexAttribDivisor(1, 1); // positions : one per quad (its center)                 -> 1
-		glVertexAttribDivisor(2, 1); // color : one per quad                                  -> 1
 
 		glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, particleSize);
+
+		glDisableVertexAttribArray(0);
+		glDisableVertexAttribArray(1);
+
+		glBindTexture(GL_TEXTURE_2D, 0);
+		glBindVertexArray(0);
 
 		glDisable(GL_DEPTH_TEST);
 		glDepthMask(GL_TRUE);
@@ -276,9 +255,9 @@ Particle* Emitter::generate_particle()
 	}
 
 	newParticle->direction.normalize();
-	int totalSize = 4 * size_;
-	g_particule_position_size_data.resize(totalSize, 0.f);
-	g_particule_color_data.resize(totalSize, 0.f);
+	// int totalSize = 4 * size_;
+	g_particule_position_size_data.resize(GraphicSystem::ParticleMaxSize, 0.f);
+	g_particule_color_data.resize(GraphicSystem::ParticleMaxSize, 0.f);
 
 	return newParticle;
 }

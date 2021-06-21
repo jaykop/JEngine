@@ -8,6 +8,8 @@
 #include "debug_renderer.hpp"
 #include "collider_2d.hpp"
 #include "rigidbody.hpp"
+#include "emitter.hpp"
+#include "colors.hpp"
 
 #include <iostream>
 
@@ -16,8 +18,8 @@ jeBegin
 void Level1::initialize()
 {
 	init_basic();
-	init_sprite();
-	init_block();
+	//init_sprite();
+	//init_block();
 
 	// base init
 	Scene::initialize();
@@ -35,6 +37,29 @@ void Level1::update(float dt)
 			else
 				std::cout << "out\n";
 		}
+	}
+
+	if (InputHandler::key_triggered(KEY::MOUSE_LEFT))
+	{
+		static unsigned bulletCount = 0;
+		// shoot a bullet
+		Object* bullet = ObjectManager::create_object(std::string("bullet_" + std::to_string(bulletCount++)).c_str());
+		bullet->add_component<Emitter>();
+
+		// set emitter
+		Emitter* emi = bullet->get_component<Emitter>();
+
+		emi->set_texture(AssetManager::get_texture("rect"));
+		emi->set_colors(Color::yellow, Color::red);
+		emi->active = true;
+		emi->life = 1.f;
+		emi->colorSpeed = 3.f;
+		emi->velocity.set(15.f, 15.f, 0.f);
+		emi->angle.set(0.f, 180.f);
+		emi->set_size(50);
+
+		// register the bullet
+		SceneManager::get_current_scene()->register_object(bullet);
 	}
 
 	// base update

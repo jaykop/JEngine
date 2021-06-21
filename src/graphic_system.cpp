@@ -150,7 +150,7 @@ GraphicSystem::environmentTextures_[] = {0},
 GraphicSystem::depthrenderbuffer_[] = { 0 },
 GraphicSystem::billboardVerticeBuf_ = 0, 
 GraphicSystem::particlesPosBuf_ = 0, 
-GraphicSystem::particlesColorBuf_;
+GraphicSystem::particlesColorBuf_ = 0;
 
 std::stack<GraphicSystem::Graphic> GraphicSystem::graphicStack_;
 Camera* GraphicSystem::mainCamera_ = nullptr;
