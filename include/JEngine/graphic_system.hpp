@@ -119,7 +119,7 @@ private:
 		drVao_, drVbo_,	quadIndicesSize_,
 		skyboxVao_, skyboxVbo_, skyboxEbo_,
 		fbo_[6], environmentTextures_[6], depthrenderbuffer_[6],
-		billboardVerticeBuf_, particlesPosBuf_, particlesColorBuf_;
+		particleVao_, billboardVerticeBuf_, particlesPosBuf_, particlesColorBuf_;
 
 	static Lights lights_;
 	static Shaders shader_;

@@ -35,11 +35,11 @@ void PlayerAttack::update(float dt)
 
 		// set emitter
 		Emitter* emi = bullet->get_component<Emitter>();
-		//emi->life = 100.f;
-		//emi->set_colors(Color::yellow, Color::red);
-		//emi->set_size(50);
-		//emi->velocity = vel * speed;
-		//emi->set_texture(AssetManager::get_texture("particle"));
+		emi->life = 100.f;
+		emi->set_colors(Color::yellow, Color::red);
+		emi->set_size(50);
+		emi->velocity = vel * speed;
+		emi->set_texture(AssetManager::get_texture("particle"));
 
 		bullet->get_component<Transform>()->scale.set(1.f, 1.f, 0.f);
 		emi->set_texture(AssetManager::get_texture("rect"));

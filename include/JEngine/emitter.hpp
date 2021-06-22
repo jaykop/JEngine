@@ -73,8 +73,7 @@ private:
 	float pointSize_;
 	unsigned texture_;
 
-	std::vector<float> g_particule_position_size_data, 
-		g_particule_color_data;
+	std::vector<float> particlePosData_, particleColorData_;
 };
 
 jeDeclareComponentBuilder(Emitter);

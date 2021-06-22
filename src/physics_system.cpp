@@ -50,7 +50,7 @@ void PhysicsSystem::update(float /*dt*/)
 void PhysicsSystem::close()
 {
 	colliders_.clear();
-	colliders_.shrink_to_fit();
+	//colliders_.shrink_to_fit();
 }
 
 bool PhysicsSystem::isCollided(Collider2D* a, Collider2D* b)
