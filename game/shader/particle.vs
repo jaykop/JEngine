@@ -45,8 +45,7 @@ void main(){
 	
 		vec4 newPosition = vec4(squareVertices + xyz, 1);
 		mat4 model = m4_scale * m4_rotate * m4_translate;
-		vec4 newTexCoord;
-
+		
 		Transforming(newPosition, model);
 	}
 	

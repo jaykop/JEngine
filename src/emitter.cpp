@@ -78,13 +78,10 @@ void Emitter::draw(float dt)
 		Shader* shader = GraphicSystem::shader_[GraphicSystem::PARTICLE];
 		shader->use();
 
-		shader->set_matrix("m4_translate", mat4::translate(transform_->position));
+		shader->set_matrix("m4_translate", mat4::identity);
 		shader->set_matrix("m4_scale", mat4::scale(transform_->scale));
-		//shader->set_matrix("m4_rotate", transform_->orientation.to_mat4());
-		//shader->set_vec3("v3_cameraPosition", camera->position);
-		shader->set_bool("boolean_bilboard", false/*(status & IS_BILBOARD) == IS_BILBOARD*/);
+		shader->set_bool("boolean_bilboard", (status & IS_BILBOARD) == IS_BILBOARD);
 		shader->set_bool("boolean_flip", (status & IS_FLIPPED) == IS_FLIPPED);
-		//shader->set_vec4("v4_color", color);
 
 		switch (prjType)
 		{
@@ -119,7 +116,6 @@ void Emitter::draw(float dt)
 		if (!fixed)
 		{
 			// Send camera info to shader
-			// mat4 viewport = mat4::look_at(camera->position, camera->right_, camera->up_, camera->back_);
 			mat4 viewport = mat4::look_at(camera->position, camera->position + camera->front_, camera->up_);
 			shader->set_matrix("m4_viewport", viewport);
 		}
@@ -163,15 +159,12 @@ void Emitter::draw(float dt)
 				if (colorDiff_ != vec3::zero)
 					particles_[i]->color += colorDiff_ * dt * colorSpeed;
 
-				// particles_[i]->position.z = transform_->position.z;
 				vec3 viewDirection = (camera->position - particles_[i]->position).normalized();
 
 				// Send transform info to shader
-				// shader->set_matrix("m4_translate", mat4::translate(transform_->position));
 				shader->set_matrix("m4_rotate", mat4::rotate(Math::deg_to_rad(particles_[i]->rotation), viewDirection));
 
 				// Send color info to shader
-				// shader->set_vec4("v4_color", vec4(particles_[i]->color, particles_[i]->life));
 				shader->set_bool("boolean_hide", particles_[i]->hidden);
 
 				// Fill the GPU buffer
