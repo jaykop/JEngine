@@ -44,8 +44,10 @@ private:
 	static void update(float dt);
 	static void close();
 
-	static bool IntervalIntersect(const std::vector<vec3>& A, const std::vector<vec3>& B, const vec3& xAxis, const vec3& xOffset);
+	static bool IntervalIntersect(const std::vector<vec3>& A, const std::vector<vec3>& B, const vec3& xAxis, 
+		const vec3& xOffset, float& tAxis);
 	static void GetInterval(const std::vector<vec3>& vertices, const vec3& xAxis, float& min, float& max);
+	static bool FindMTD(vec3* xAxis, float* taxis, int iAxes, vec3& N, float& t);
 
 	static Colliders colliders_;
 };

@@ -91,7 +91,7 @@ void Level1::init_sprite()
 
 	// animation->fix_frame(0);
 	trans->scale.set(10, 10, 0.f);
-	trans->position.z = 0.f;
+	trans->position.set(-10, 10, 0);
 	register_object(player);
 }
 
