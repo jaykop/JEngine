@@ -39,6 +39,7 @@ public:
 private:
 
 	static void add_collider(Collider2D* collider);
+	static void add_rigidbody(RigidBody* rigidbody);
 
 	static void initialize();
 	static void update(float dt);
@@ -50,6 +51,7 @@ private:
 	static bool FindMTD(vec3* xAxis, float* taxis, int iAxes, vec3& N, float& t);
 
 	static Colliders colliders_;
+	static Bodies bodies_;
 };
 
 jeEnd

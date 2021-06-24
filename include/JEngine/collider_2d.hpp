@@ -6,6 +6,7 @@
 
 jeBegin
 
+class Transform;
 class Collider2D : public Component {
 
 	jeBaseFriends(Collider2D);
@@ -23,6 +24,7 @@ public:
 	};
 
 	ColliderType  coliisionType_ = ColliderType::NONE;
+	Transform* transform;
 
 	void init_vertices();
 

@@ -9,22 +9,24 @@ jeDefineComponentBuilder(Collider2D);
 
 Collider2D::Collider2D(Object* owner) : Component(owner) {}
 
-Collider2D::~Collider2D() 
-{
-	vertices_.clear();
-}
+Collider2D::~Collider2D() {}
 
 void Collider2D::add_to_system()
 {
-	PhysicsSystem::add_collider(this);
+	transform = get_owner()->get_component<Transform>();
 	init_vertices();
+	PhysicsSystem::add_collider(this);
+}
+
+void Collider2D::remove_from_system()
+{
+	vertices_.clear();
 }
 
 void Collider2D::init_vertices()
 {
 	vertices_.clear();
 
-	Transform* transform = get_owner()->get_component<Transform>();
 	vec3 scale = transform->scale;
 	vec3 pos = transform->position;
 	float rad = transform->rotation_euler_rad().z;

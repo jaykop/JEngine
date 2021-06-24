@@ -28,6 +28,11 @@ void PhysicsSystem::add_collider(Collider2D* collider)
 	colliders_.emplace_back(collider);
 }
 
+void PhysicsSystem::add_rigidbody(RigidBody* rigidbody)
+{
+	bodies_.emplace_back(rigidbody);
+}
+
 void PhysicsSystem::initialize()
 {
 }
@@ -46,12 +51,26 @@ void PhysicsSystem::update(float /*dt*/)
 				std::cout << "not collided\n";
 		}
 	}
+
+	for (const auto& b : bodies_)
+	{
+		if (!b->isStatic)
+		{
+			b->displacement_.set_zero();
+			continue;
+		}
+		
+		b->transform += b->displacement_;
+	}
 }
 
 void PhysicsSystem::close()
 {
 	colliders_.clear();
 	//colliders_.shrink_to_fit();
+
+	bodies_.clear();
+	//bodies_.shrink_to_fit();
 }
 
 bool PhysicsSystem::isCollided(Collider2D* a, Collider2D* b)
