@@ -34,7 +34,8 @@ class PhysicsSystem {
 
 public:
 
-	static bool isCollided(Collider2D* a, Collider2D* b);
+	static bool is_collided(Collider2D* aCollider, Collider2D* bCollider,
+		RigidBody* aBody, RigidBody* bBody, vec3& N, float& t);
 
 private:
 
@@ -45,10 +46,10 @@ private:
 	static void update(float dt);
 	static void close();
 
-	static bool IntervalIntersect(const std::vector<vec3>& A, const std::vector<vec3>& B, const vec3& xAxis, 
-		const vec3& xOffset, float& tAxis);
-	static void GetInterval(const std::vector<vec3>& vertices, const vec3& xAxis, float& min, float& max);
-	static bool FindMTD(vec3* xAxis, float* taxis, int iAxes, vec3& N, float& t);
+	static bool interval_intersect(const std::vector<vec3>& A, const std::vector<vec3>& B, const vec3& xAxis, 
+		const vec3& xOffset, const vec3& xVel, float& tAxis, const float tMax);
+	static void get_interval(const std::vector<vec3>& vertices, const vec3& xAxis, float& min, float& max);
+	static bool find_MTD(vec3* xAxis, float* taxis, int iAxes, vec3& N, float& t);
 
 	static Colliders colliders_;
 	static Bodies bodies_;

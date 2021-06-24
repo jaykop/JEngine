@@ -17,9 +17,14 @@ public:
 	virtual ~RigidBody();
 
 	void add_impulse(const vec3& force, float dt);
+	float get_invMass() const;
 
 	bool isStatic = false;
 	Transform* transform;
+
+	float friction;
+	float restitution;
+	float glue;
 
 protected:
 
@@ -29,8 +34,11 @@ protected:
 
 private:
 
-	vec3 displacement_;
+	void process_collision(RigidBody* other, const vec3& N, float t);
+	void process_overlap(RigidBody* other, const vec3& xMTD);
+
 	float mass_;
+	vec3 displacement_;
 
 };
 

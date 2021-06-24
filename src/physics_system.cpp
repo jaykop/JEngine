@@ -21,6 +21,7 @@ Contains the methods of PhysicsSystem class
 jeBegin
 
 PhysicsSystem::Colliders PhysicsSystem::colliders_;
+PhysicsSystem::Bodies PhysicsSystem::bodies_;
 const int MAX_VERTICES = 64;
 
 void PhysicsSystem::add_collider(Collider2D* collider)
@@ -37,30 +38,38 @@ void PhysicsSystem::initialize()
 {
 }
 
-void PhysicsSystem::update(float /*dt*/)
+void PhysicsSystem::update(float dt)
 {
 	int size = static_cast<int>(colliders_.size());
 	for (int i = 0; i < size - 1; ++i)
 	{
 		for (int j = 0; j < size - i - 1; ++j)
 		{
-			bool a = isCollided(colliders_[j], colliders_[j + 1]);
-			if (a)
-				std::cout << "collided\n";
-			else
-				std::cout << "not collided\n";
+			vec3 N;
+			float t = 1.0f;
+
+			RigidBody* aBody = colliders_[j]->get_owner()->get_component<RigidBody>();
+			RigidBody* bBody = colliders_[j + 1]->get_owner()->get_component<RigidBody>();
+
+			if (is_collided(colliders_[j], colliders_[j + 1], aBody, bBody, N, t))
+			{
+				if (t < 0.f)
+					aBody->process_overlap(bBody, N * -t);
+				else
+					aBody->process_collision(bBody, N, t);
+			}
 		}
 	}
 
 	for (const auto& b : bodies_)
 	{
-		if (!b->isStatic)
+		if (b->isStatic)
 		{
 			b->displacement_.set_zero();
 			continue;
 		}
 		
-		b->transform += b->displacement_;
+		b->transform->position += b->displacement_;
 	}
 }
 
@@ -73,15 +82,12 @@ void PhysicsSystem::close()
 	//bodies_.shrink_to_fit();
 }
 
-bool PhysicsSystem::isCollided(Collider2D* a, Collider2D* b)
+bool PhysicsSystem::is_collided(Collider2D* a, Collider2D* b, RigidBody* aBody, RigidBody* bBody, vec3& N, float& t)
 {
-	Object* aOnwer = a->get_owner();
-	Object* bOnwer = b->get_owner();
-
-	if (!aOnwer->get_component<RigidBody>()->isStatic)
+	if (!aBody->isStatic)
 		a->init_vertices();
 
-	if (!bOnwer->get_component<RigidBody>()->isStatic)
+	if (!bBody->isStatic)
 		b->init_vertices();
 
 	const std::vector<vec3>& aVertices = a->vertices_;
@@ -92,15 +98,23 @@ bool PhysicsSystem::isCollided(Collider2D* a, Collider2D* b)
 
 	if (!aSize || !bSize) return false;
 
-	vec3& aPos = aOnwer->get_component<Transform>()->position;
-	vec3& bPos = bOnwer->get_component<Transform>()->position;
-
-	vec3 dist = aPos - bPos;
+	vec3 relPos = a->transform->position - b->transform->position;
+	vec3 relDis = aBody->displacement_ - bBody->displacement_;
 
 	// All the separation axes
 	vec3 xAxis[MAX_VERTICES]; // note : a maximum of 32 vertices per poly is supported
 	float tAxis[MAX_VERTICES];
 	int iAxes = 0;
+	float fVel2 = relDis.dot(relDis);
+
+	if (fVel2 > 0.000001f)
+	{
+		if (!interval_intersect(aVertices, bVertices, xAxis[iAxes], relPos, relDis, tAxis[iAxes], t))
+		{
+			return false;
+		}
+		iAxes++;
+	}
 
 	// test separation axes of A
 	for (int j = aSize - 1, i = 0; i < aSize; j = i, i++)
@@ -110,7 +124,7 @@ bool PhysicsSystem::isCollided(Collider2D* a, Collider2D* b)
 		vec3 E = E1 - E0;
 		xAxis[iAxes] = vec3(-E.y, E.x, 0.f);
 
-		if (!IntervalIntersect(aVertices, bVertices, xAxis[iAxes], dist, tAxis[iAxes]))
+		if (!interval_intersect(aVertices, bVertices, xAxis[iAxes], relPos, relDis, tAxis[iAxes], t))
 			return false;
 
 		iAxes++;
@@ -124,35 +138,57 @@ bool PhysicsSystem::isCollided(Collider2D* a, Collider2D* b)
 		vec3 E = E1 - E0;
 		xAxis[iAxes] = vec3(-E.y, E.x, 0.f);
 
-		if (!IntervalIntersect(aVertices, bVertices, xAxis[iAxes], dist, tAxis[iAxes]))
+		if (!interval_intersect(aVertices, bVertices, xAxis[iAxes], relPos, relDis, tAxis[iAxes], t))
 			return false;
 
 		iAxes++;
 	}
 
-	vec3 N;
-	float t;
+	// special case for segments
+	if (bSize == 2)
+	{
+		vec3 E = bVertices[1] - bVertices[0];
+		xAxis[iAxes] = E;
 
-	if (!FindMTD(xAxis, tAxis, iAxes, N, t))
+		if (!interval_intersect(aVertices, bVertices, xAxis[iAxes], relPos, relDis, tAxis[iAxes], t))
+		{
+			return false;
+		}
+
+		iAxes++;
+	}
+
+	// special case for segments
+	if (aSize == 2)
+	{
+		vec3 E = aVertices[1] - aVertices[0];
+		xAxis[iAxes] = E;
+
+		if (!interval_intersect(aVertices, bVertices, xAxis[iAxes], relPos, relDis, tAxis[iAxes], t))
+		{
+			return false;
+		}
+
+		iAxes++;
+	}
+
+	if (!find_MTD(xAxis, tAxis, iAxes, N, t))
 		return false;
 
 	// make sure the polygons gets pushed away from each other.
-	if (N.dot(dist) < 0.0f)
+	if (N.dot(relPos) < 0.0f)
 		N = -N;
-
-	aPos -= N * (t * 1.01f);
-	bPos += N * (t * 1.01f);
 	
 	return true;
 }
 
-bool PhysicsSystem::IntervalIntersect(const std::vector<vec3>& A, const std::vector<vec3>& B,
-	const vec3& xAxis, const vec3& xOffset, float& tAxis)
+bool PhysicsSystem::interval_intersect(const std::vector<vec3>& A, const std::vector<vec3>& B,
+	const vec3& xAxis, const vec3& xOffset, const vec3& xVel, float& tAxis, const float tMax)
 {
 	float min0, max0;
 	float min1, max1;
-	GetInterval(A, xAxis, min0, max0);
-	GetInterval(B, xAxis, min1, max1);
+	get_interval(A, xAxis, min0, max0);
+	get_interval(B, xAxis, min1, max1);
 
 	float h = xOffset.dot(xAxis);
 	min0 += h;
@@ -163,7 +199,22 @@ bool PhysicsSystem::IntervalIntersect(const std::vector<vec3>& A, const std::vec
 
 	if (d0 > 0.0f || d1 > 0.0f)
 	{
-		return false;
+		float v = xVel.dot(xAxis);
+
+		// small velocity, so only the overlap test will be relevant. 
+		if (fabs(v) < 0.0000001f)
+			return false;
+
+		float t0 = -d0 / v; // time of impact to d0 reaches 0
+		float t1 = d1 / v; // time of impact to d0 reaches 1
+
+		if (t0 > t1) { float temp = t0; t0 = t1; t1 = temp; }
+		tAxis = (t0 > 0.0f) ? t0 : t1;
+
+		if (tAxis < 0.0f || tAxis > tMax)
+			return false;
+
+		return true;
 	}
 	else
 	{
@@ -173,7 +224,7 @@ bool PhysicsSystem::IntervalIntersect(const std::vector<vec3>& A, const std::vec
 	}
 }
 
-void PhysicsSystem::GetInterval(const std::vector<vec3>& vertices, const vec3& xAxis, float& min, float& max)
+void PhysicsSystem::get_interval(const std::vector<vec3>& vertices, const vec3& xAxis, float& min, float& max)
 {
 	int size = static_cast<int>(vertices.size());
 	min = max = vertices[0].dot(xAxis);
@@ -189,14 +240,32 @@ void PhysicsSystem::GetInterval(const std::vector<vec3>& vertices, const vec3& x
 	}
 }
 
-bool PhysicsSystem::FindMTD(vec3* xAxis, float* taxis, int iAxes, vec3& N, float& t)
+bool PhysicsSystem::find_MTD(vec3* xAxis, float* taxis, int iAxes, vec3& N, float& t)
 {
 	// nope, find overlaps
 	int mini = -1;
 
 	t = 0.0f;
-	N.set_zero();
+	for (int i = 0; i < iAxes; i++)
+	{
+		if (taxis[i] > 0)
+		{
+			if (taxis[i] > t)
+			{
+				mini = i;
+				t = taxis[i];
+				N = xAxis[i];
+				N.normalize();
+			}
+		}
+	}
 
+	// found one
+	if (mini != -1)
+		return true;
+
+	// nope, find overlaps
+	mini = -1;
 	for (int i = 0; i < iAxes; i++)
 	{
 		float n = xAxis[i].length();
