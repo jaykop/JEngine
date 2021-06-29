@@ -82,7 +82,7 @@ void Level1::init_sprite()
 	auto* rb = player->get_component<RigidBody>();
 	renderer->set_texture(AssetManager::get_texture("arrow"));
 	renderer->prjType = Renderer::ProjectType::PERSPECTIVE;
-	rb->isStatic = false;
+	// rb->isStatic = false;
 	// renderer->status |= Renderer::IS_BILBOARD;
 
 	/*animation->activate(true);
@@ -106,8 +106,10 @@ void Level1::init_block()
 	auto* renderer = block->get_component<Sprite>();
 	auto* animation = block->get_component<Animation2D>();
 	auto* trans = block->get_component<Transform>();
+	auto* rb = block->get_component<RigidBody>();
 	renderer->set_texture(AssetManager::get_texture("rect"));
 	renderer->prjType = Renderer::ProjectType::PERSPECTIVE;
+	rb->isStatic = true;
 
 	trans->position.set(5, 5, 0.f);
 	trans->scale.set(10, 10, 0.f);

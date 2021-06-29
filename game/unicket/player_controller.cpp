@@ -2,6 +2,7 @@
 #include "transform.hpp"
 #include "application.hpp"
 #include "player_controller.h"
+#include "rigidbody.hpp"
 
 jeBegin
 
@@ -15,6 +16,7 @@ PlayerController::~PlayerController()
 void PlayerController::init() 
 { 
 	moving_ = false;
+	body_ = get_owner()->get_component<RigidBody>();
 }
 
 void PlayerController::update(float dt)
@@ -103,18 +105,22 @@ void PlayerController::update(float dt)
 		// movement
 		if (InputHandler::key_pressed(KEY::A))
 		{
+			//body_->add_impulse(LEFT, dt);
 			trans->position += LEFT * offset;
 		}
 		if (InputHandler::key_pressed(KEY::D))
 		{
+			//body_->add_impulse(RIGHT, dt);
 			trans->position += RIGHT * offset;
 		}
 		if (InputHandler::key_pressed(KEY::W))
 		{
+			//body_->add_impulse(UP, dt);
 			trans->position += UP * offset;
 		}
 		if (InputHandler::key_pressed(KEY::S))
 		{
+			//body_->add_impulse(DOWN, dt);
 			trans->position += DOWN * offset;
 		}
 	}

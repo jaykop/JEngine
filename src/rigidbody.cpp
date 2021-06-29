@@ -68,15 +68,15 @@ void RigidBody::process_collision(RigidBody* other, const vec3& N, float t)
 // two objects overlapped. push them away from each other
 void RigidBody::process_overlap(RigidBody* other, const vec3& xMTD)
 {
-	if (!isStatic)
+	if (isStatic && !other->isStatic)
 	{
 		other->transform->position -= xMTD;
 	}
-	else if (!other->isStatic)
+	else if (!isStatic && other->isStatic)
 	{
 		transform->position += xMTD;
 	}
-	else
+	else if (!isStatic && !other->isStatic)
 	{
 		transform->position += xMTD * 0.5f;
 		other->transform->position -= xMTD * 0.5f;

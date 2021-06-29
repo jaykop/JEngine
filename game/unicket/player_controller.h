@@ -4,6 +4,7 @@
 jeBegin
 
 class Object;
+class RigidBody;
 
 jeDeclareUserComponentBuilder(PlayerController);
 
@@ -27,6 +28,7 @@ protected:
 
 private:
 
+	RigidBody* body_ = nullptr;
 	vec3 currentPos_, nextPos_, dist_;
 	bool moveByGrid_ = false, moving_ = false;
 	bool sliding_ = false;
