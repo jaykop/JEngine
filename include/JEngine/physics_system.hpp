@@ -13,7 +13,9 @@ Contains the definition of PhysicsSystem class
 #pragma once
 #include <macros.hpp>
 #include <vector>
-#include <vec3.hpp>
+
+struct vec3;
+struct mat3;
 
 jeBegin
 
@@ -47,7 +49,7 @@ private:
 	static void close();
 
 	static bool interval_intersect(const std::vector<vec3>& A, const std::vector<vec3>& B, const vec3& xAxis, 
-		const vec3& xOffset, const vec3& xVel, float& tAxis, const float tMax);
+		const vec3& xOffset, const vec3& xVel, const mat3& xOri, float& tAxis, const float tMax);
 	static void get_interval(const std::vector<vec3>& vertices, const vec3& xAxis, float& min, float& max);
 	static bool find_MTD(vec3* xAxis, float* taxis, int iAxes, vec3& N, float& t);
 

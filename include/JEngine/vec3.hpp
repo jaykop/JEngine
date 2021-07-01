@@ -4,6 +4,7 @@
 #pragma warning(disable : 4201)
 
 /* 3 dimensional vector of floats */
+struct mat3;
 struct vec3
 {
 	// static members

@@ -15,6 +15,7 @@ Contains the methods of PhysicsSystem class
 #include <rigidbody.hpp>
 #include <object.hpp>
 #include <transform.hpp>
+#include <vec3.hpp>
 
 #include <iostream>
 
@@ -104,9 +105,12 @@ bool PhysicsSystem::is_collided(Collider2D* a, Collider2D* b, RigidBody* aBody, 
 	const vec3& bDis = bBody->displacement_;
 	mat3 aOrientation = a->transform->orientation.to_mat3(), bOrientation = b->transform->orientation.to_mat3();
 
-	vec3 relPos = (aPos - bPos) * bOrientation;
-	vec3 relDis = (aDis - bDis) * bOrientation;
-	mat3 relOrient = aOrientation * bOrientation;
+	mat3 aTransposed = aOrientation.transposed();
+	mat3 bTransposed = bOrientation.transposed();
+
+	vec3 relPos = bTransposed * (aPos - bPos);
+	vec3 relDis = bTransposed * (aDis - bDis);
+	mat3 relOrient = bTransposed * aTransposed;
 
 	// All the separation axes
 	vec3 xAxis[MAX_VERTICES]; // note : a maximum of 32 vertices per poly is supported
@@ -129,7 +133,7 @@ bool PhysicsSystem::is_collided(Collider2D* a, Collider2D* b, RigidBody* aBody, 
 		vec3 E0 = aVertices[j];
 		vec3 E1 = aVertices[i];
 		vec3 E = E1 - E0;
-		xAxis[iAxes] = vec3(-E.y, E.x, 0.f) * relOrient;
+		xAxis[iAxes] = relOrient * vec3(-E.y, E.x, 0.f);
 
 		if (!interval_intersect(aVertices, bVertices, xAxis[iAxes], relPos, relDis, relOrient, tAxis[iAxes], t))
 			return false;
@@ -169,7 +173,7 @@ bool PhysicsSystem::is_collided(Collider2D* a, Collider2D* b, RigidBody* aBody, 
 	if (aSize == 2)
 	{
 		vec3 E = aVertices[1] - aVertices[0];
-		xAxis[iAxes] = E * relOrient;
+		xAxis[iAxes] = relOrient * E;
 
 		if (!interval_intersect(aVertices, bVertices, xAxis[iAxes], relPos, relDis, relOrient, tAxis[iAxes], t))
 		{
@@ -186,7 +190,7 @@ bool PhysicsSystem::is_collided(Collider2D* a, Collider2D* b, RigidBody* aBody, 
 	if (N.dot(relPos) < 0.0f)
 		N = -N;
 	
-	N *= relOrient;
+	N = relOrient * N;
 
 	return true;
 }
@@ -197,7 +201,7 @@ bool PhysicsSystem::interval_intersect(const std::vector<vec3>& A, const std::ve
 {
 	float min0, max0;
 	float min1, max1;
-	get_interval(A, xAxis * xOrient, min0, max0);
+	get_interval(A, xOrient.transposed() * xAxis, min0, max0);
 	get_interval(B, xAxis, min1, max1);
 
 	float h = xOffset.dot(xAxis);
