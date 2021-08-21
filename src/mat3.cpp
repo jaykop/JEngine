@@ -83,8 +83,8 @@ mat3& mat3::transpose(void)
 mat3 mat3::transposed(void) const
 {
 	return mat3(m00, m10, m20,
-		m01, m11, m21,
-		m02, m12, m22);
+				m01, m11, m21,
+				m02, m12, m22);
 }
 
 mat3& mat3::covariance(const std::vector<vec3>& vertices)

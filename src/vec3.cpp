@@ -1,6 +1,7 @@
 #include <cmath>
 #include <vec3.hpp>
 #include <math_util.hpp>
+#include <mat3.hpp>
 
 using namespace Math;
 
@@ -64,7 +65,7 @@ float vec3::length(void) const
 
 float vec3::length_sq(void) const
 {
-	return (dot(*this));
+	return (x * x + y * y + z * z);
 }
 
 vec3& vec3::normalize(void)
@@ -173,6 +174,22 @@ bool vec3::operator==(const vec3& rhs) const
 bool vec3::operator!=(const vec3& rhs) const
 {
 	return !(*this == rhs);
+}
+
+vec3 vec3::operator*(const mat3& rhs) const
+{
+	return vec3(x*rhs.m00 + y*rhs.m10 + z*rhs.m20,
+		x * rhs.m01 + y * rhs.m11 + z * rhs.m21,
+		x * rhs.m02 + y * rhs.m12 + z * rhs.m22);
+}
+
+vec3& vec3::operator*=(const mat3& rhs)
+{
+	float vx = x, vy = y, vz = z;
+	x = vx * rhs.m00 + vy * rhs.m10 + vz * rhs.m20;
+	y = vx * rhs.m01 + vy * rhs.m11 + vz * rhs.m21;
+	z = vx * rhs.m02 + vy * rhs.m12 + vz * rhs.m22;
+	return *this;
 }
 
 vec3 vec3::abs(const vec3& v)

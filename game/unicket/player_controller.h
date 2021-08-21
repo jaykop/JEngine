@@ -19,7 +19,7 @@ public:
 	void update(float dt) override;
 	void close() override;
 
-	float speed = 50.f;
+	float speed = 100.f;
 	float slidingTime = 3.f;
 
 protected:

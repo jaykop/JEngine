@@ -103,14 +103,15 @@ bool PhysicsSystem::is_collided(Collider2D* a, Collider2D* b, RigidBody* aBody, 
 	const vec3& bPos = b->transform->position;
 	const vec3& aDis = aBody->displacement_;
 	const vec3& bDis = bBody->displacement_;
-	mat3 aOrientation = a->transform->orientation.to_mat3(), bOrientation = b->transform->orientation.to_mat3();
+	mat3 aOrientation = mat3::identity,//a->transform->orientation.to_mat3(), 
+		bOrientation = mat3::identity;//b->transform->orientation.to_mat3();
 
 	mat3 aTransposed = aOrientation.transposed();
 	mat3 bTransposed = bOrientation.transposed();
 
-	vec3 relPos = bTransposed * (aPos - bPos);
-	vec3 relDis = bTransposed * (aDis - bDis);
-	mat3 relOrient = bTransposed * aTransposed;
+	vec3 relPos = (aPos - bPos) * bOrientation;
+	vec3 relDis = (aDis - bDis) * bOrientation;
+	mat3 relOrient = aOrientation * bTransposed;
 
 	// All the separation axes
 	vec3 xAxis[MAX_VERTICES]; // note : a maximum of 32 vertices per poly is supported
@@ -120,6 +121,8 @@ bool PhysicsSystem::is_collided(Collider2D* a, Collider2D* b, RigidBody* aBody, 
 
 	if (fVel2 > 0.000001f)
 	{
+		xAxis[iAxes] = vec3(-relDis.y, relDis.x, 0.f);
+
 		if (!interval_intersect(aVertices, bVertices, xAxis[iAxes], relPos, relDis, relOrient, tAxis[iAxes], t))
 		{
 			return false;
@@ -201,7 +204,7 @@ bool PhysicsSystem::interval_intersect(const std::vector<vec3>& A, const std::ve
 {
 	float min0, max0;
 	float min1, max1;
-	get_interval(A, xOrient.transposed() * xAxis, min0, max0);
+	get_interval(A, xOrient * xAxis, min0, max0);
 	get_interval(B, xAxis, min1, max1);
 
 	float h = xOffset.dot(xAxis);
@@ -264,15 +267,12 @@ bool PhysicsSystem::find_MTD(vec3* xAxis, float* taxis, int iAxes, vec3& N, floa
 	t = 0.0f;
 	for (int i = 0; i < iAxes; i++)
 	{
-		if (taxis[i] > 0)
+		if (taxis[i] > 0 && taxis[i] > t)
 		{
-			if (taxis[i] > t)
-			{
-				mini = i;
-				t = taxis[i];
-				N = xAxis[i];
-				N.normalize();
-			}
+			mini = i;
+			t = taxis[i];
+			N = xAxis[i];
+			N.normalize();
 		}
 	}
 

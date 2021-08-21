@@ -24,7 +24,7 @@ void PlayerController::update(float dt)
 	Transform* trans =
 		get_owner()->get_component<Transform>();
 
-	static float offset = 0.f;
+	static float offset = 100.f;
 
 	// direction vector3
 	static const vec3 LEFT(-1.f, 0.f, 0.f);
@@ -80,48 +80,48 @@ void PlayerController::update(float dt)
 
 	else
 	{
-		// sliding motion
-		if (InputHandler::key_triggered(KEY::SPACE))
-		{
-			sliding_ = true;
-			offset = offset * 3.f; // boost speed
-		}
+		//// sliding motion
+		//if (InputHandler::key_triggered(KEY::SPACE))
+		//{
+		//	sliding_ = true;
+		//	offset = offset * 3.f; // boost speed
+		//}
 
-		// while sliding on
-		if (sliding_)
-		{
-			// decrease the speed
-			offset -= dt;
+		//// while sliding on
+		//if (sliding_)
+		//{
+		//	// decrease the speed
+		//	offset -= dt;
 
-			// once speed gets zero, off sliding motion
-			if (offset < 0.f)
-			{
-				sliding_ = false;
-			}
-		}
-		else
-			offset = dt * speed;
+		//	// once speed gets zero, off sliding motion
+		//	if (offset < 0.f)
+		//	{
+		//		sliding_ = false;
+		//	}
+		//}
+		//else
+		//	offset = dt * speed;
 
 		// movement
 		if (InputHandler::key_pressed(KEY::A))
 		{
-			//body_->add_impulse(LEFT, dt);
-			trans->position += LEFT * offset;
+			body_->add_impulse(LEFT * offset, dt);
+			//trans->position += LEFT * offset;
 		}
 		if (InputHandler::key_pressed(KEY::D))
 		{
-			//body_->add_impulse(RIGHT, dt);
-			trans->position += RIGHT * offset;
+			body_->add_impulse(RIGHT * offset, dt);
+			//trans->position += RIGHT * offset;
 		}
 		if (InputHandler::key_pressed(KEY::W))
 		{
-			//body_->add_impulse(UP, dt);
-			trans->position += UP * offset;
+			body_->add_impulse(UP * offset, dt);
+			//trans->position += UP * offset;
 		}
 		if (InputHandler::key_pressed(KEY::S))
 		{
-			//body_->add_impulse(DOWN, dt);
-			trans->position += DOWN * offset;
+			body_->add_impulse(DOWN * offset, dt);
+			//trans->position += DOWN * offset;
 		}
 	}
 

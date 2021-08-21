@@ -69,6 +69,9 @@ struct vec3
 	bool operator==(const vec3& rhs) const;
 	bool operator!=(const vec3& rhs) const;
 
+	vec3 operator* (const mat3& rhs) const;
+	vec3& operator*=(const mat3& rhs);
+
 	// static methods
 	static vec3 abs(const vec3& v);
 	static float distance(const vec3& a, const vec3& b);
