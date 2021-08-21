@@ -17,17 +17,19 @@ Contains the inline methods of Object class
 jeBegin
 
 template <class ComponentType>
-void Object::add_component() {
+ComponentType* Object::add_component() {
 
 	const char* typeName = typeid(ComponentType).name();
 	auto found = components_.find(typeName);
 	if (found != components_.end()) {
 		jeDebugPrint("Trying to add an existing component!");
-		return;
+		return nullptr;
 	}
 
 	Component* newComponent = ComponentManager::create_component(typeName, this);
 	components_.insert(Components::value_type(typeName, newComponent));
+
+	return reinterpret_cast<ComponentType*>(newComponent);
 }
 
 template <class ComponentType>

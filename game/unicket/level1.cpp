@@ -2,6 +2,7 @@
 #include "scene_controller.h"
 #include "player_controller.h"
 #include "player_attack.h"
+#include "script_controller.h"
 #include "pch.h"
 #include "sprite.hpp"
 #include "animation_2d.hpp"
@@ -63,6 +64,13 @@ void Level1::init_basic()
 	Object* controller = ObjectManager::create_object("scene_controller");
 	controller->add_component<SceneController>();
 	register_object(controller);
+
+	// script controller
+	Object* scriptController = ObjectManager::create_object("script_controller");
+	scriptController->add_component<ScriptController>();
+	scriptController->add_component<Text>();
+	scriptController->add_component<Sprite>();
+	register_object(scriptController);
 }
 
 void Level1::init_sprite()

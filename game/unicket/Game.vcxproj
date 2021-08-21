@@ -221,6 +221,7 @@ xcopy /y /s /i "$(ProjectDir)..\default" "$(TargetDir)..\default"</Command>
     <ClCompile Include="scene_controller.cpp" />
     <ClCompile Include="player_controller.cpp" />
     <ClCompile Include="particle_conrtoller.cpp" />
+    <ClCompile Include="script_controller.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bullet_logic.h" />
@@ -235,6 +236,7 @@ xcopy /y /s /i "$(ProjectDir)..\default" "$(TargetDir)..\default"</Command>
     <ClInclude Include="scene_controller.h" />
     <ClInclude Include="player_controller.h" />
     <ClInclude Include="particle_conrtoller.h" />
+    <ClInclude Include="script_controller.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

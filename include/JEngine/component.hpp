@@ -32,9 +32,10 @@ protected:
 	Component(Object* owner) : owner_(owner) {}
 	virtual ~Component() {}
 
+	Object* owner_ = nullptr;
+
 private:
 
-	Object* owner_ = nullptr;
 	bool bulitIn_ = false;
 
 	// No default constructor

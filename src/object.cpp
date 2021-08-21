@@ -43,7 +43,7 @@ const char* Object::get_name() const
 	return name_.c_str();
 }
 
-void Object::add_component(const char* componentName)
+Component* Object::add_component(const char* componentName)
 {
 	const char* typeName = ComponentManager::key_to_type(componentName);
 	const auto& found = components_.find(typeName);
@@ -52,6 +52,8 @@ void Object::add_component(const char* componentName)
 
 	Component* newComponent = ComponentManager::create_component(typeName, this);
 	components_.insert(Components::value_type(typeName, newComponent));
+
+	return newComponent;
 }
 
 Component* Object::get_component(const char* componentName)

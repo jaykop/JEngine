@@ -14,6 +14,7 @@ void JEngine::register_builders()
 	// basic game logics
 	jeRegisterComponent(SceneController);
 	jeRegisterComponent(ExplodingParticleController);
+	jeRegisterComponent(ScriptController);
 
 	// player game logics
 	jeRegisterComponent(PlayerController);

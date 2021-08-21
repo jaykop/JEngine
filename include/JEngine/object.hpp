@@ -35,12 +35,12 @@ public:
 	Object* get_parent() { return parent_; }
 	bool has_parent() { return parent_ != nullptr; }
 
-	template <class ComponentType>	void add_component();
+	template <class ComponentType>	ComponentType* add_component();
 	template <class ComponentType>	ComponentType* get_component();
 	template <class ComponentType>	bool has_component();
 	template <class ComponentType>	void remove_component();
 
-	void add_component(const char* componentName);
+	Component* add_component(const char* componentName);
 	Component* get_component(const char* componentName);
 	bool has_component(const char* componentName);
 	void remove_component(const char* componentName);

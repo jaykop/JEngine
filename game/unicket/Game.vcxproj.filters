@@ -48,6 +48,9 @@
     <ClInclude Include="bullet_logic.h">
       <Filter>game_logics</Filter>
     </ClInclude>
+    <ClInclude Include="script_controller.h">
+      <Filter>game_logics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -78,6 +81,9 @@
       <Filter>game_logics</Filter>
     </ClCompile>
     <ClCompile Include="bullet_logic.cpp">
+      <Filter>game_logics</Filter>
+    </ClCompile>
+    <ClCompile Include="script_controller.cpp">
       <Filter>game_logics</Filter>
     </ClCompile>
   </ItemGroup>
