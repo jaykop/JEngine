@@ -58,29 +58,29 @@ void Sprite::draw(float /*dt*/)
 
 	switch (prjType)
 	{
-	case ProjectType::PERSPECTIVE:
-	{
+		case ProjectType::PERSPECTIVE:
+		{
 
-		mat4 perspective = mat4::perspective(
-			Math::deg_to_rad(camera->fovy_ + camera->zoom), camera->aspect_,
-			camera->near_, camera->far_);
+			mat4 perspective = mat4::perspective(
+				Math::deg_to_rad(camera->fovy_ + camera->zoom), camera->aspect_,
+				camera->near_, camera->far_);
 
-		shader->set_matrix("m4_projection", perspective);
-		break;
-	}
+			shader->set_matrix("m4_projection", perspective);
+			break;
+		}
 
-	case ProjectType::ORTHOGONAL:
-	default:
-	{
-	float right_ = GraphicSystem::width_ * GraphicSystem::resScaler_.x;
-	float left_ = -right_;
-	float top_ = GraphicSystem::height_ * GraphicSystem::resScaler_.y;
-	float bottom_ = -top_;
+		case ProjectType::ORTHOGONAL:
+		default:
+		{
+			float right_ = GraphicSystem::width_ * GraphicSystem::resScaler_.x;
+			float left_ = -right_;
+			float top_ = GraphicSystem::height_ * GraphicSystem::resScaler_.y;
+			float bottom_ = -top_;
 
-	mat4 orthogonal = mat4::orthogonal(left_, right_, bottom_, top_, camera->near_, camera->far_);
-	shader->set_matrix("m4_projection", orthogonal);
-	break;
-	}
+			mat4 orthogonal = mat4::orthogonal(left_, right_, bottom_, top_, camera->near_, camera->far_);
+			shader->set_matrix("m4_projection", orthogonal);
+			break;
+		}
 	}
 
 	bool fixed = (status & IS_FIXED) == IS_FIXED;

@@ -20,7 +20,7 @@ void Level1::initialize()
 {
 	init_basic();
 	init_sprite();
-	init_block();
+	//init_block();
 
 	// base init
 	Scene::initialize();
@@ -38,6 +38,17 @@ void Level1::update(float dt)
 			else
 				std::cout << "out\n";
 		}
+	}
+
+	if (scriptController)
+	{
+		Transform* transform = scriptController->get_component<Transform>();
+		vec3 pos = GraphicSystem::get_camera()->position;
+		pos.y = -GraphicSystem::get_height() * .35f;
+		pos.z = 10.f;
+		vec3 scale(GraphicSystem::get_width(), GraphicSystem::get_height() * .25f, 0);
+		transform->position.set(pos);
+		transform->scale.set(scale);
 	}
 
 	// base update
@@ -66,10 +77,16 @@ void Level1::init_basic()
 	register_object(controller);
 
 	// script controller
-	Object* scriptController = ObjectManager::create_object("script_controller");
+	scriptController = ObjectManager::create_object("script_controller");
 	scriptController->add_component<ScriptController>();
-	scriptController->add_component<Text>();
-	scriptController->add_component<Sprite>();
+	//scriptController->add_component<Text>();
+	auto* sprite = scriptController->add_component<Sprite>();
+	auto* transform = scriptController->get_component<Transform>();
+	transform->scale.set(10, 10, 1);
+	// transform->scale.set_zero();
+	sprite->set_texture(AssetManager::get_texture("grid"));
+	sprite->prjType = Renderer::ProjectType::ORTHOGONAL;
+
 	register_object(scriptController);
 }
 

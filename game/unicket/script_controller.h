@@ -45,10 +45,14 @@ private:
 	ScriptController& operator=(const ScriptController& rhs);
 	ScriptController() = delete;
 
-	int current = 0;
+	void refresh_buffer();
+
+	int current = 0, index_ = 0;
 	Text* text_ = nullptr;
 	Sprite* sprite_ = nullptr;
+	Transform* transform_ = nullptr;
 
+	std::wstring txt_;
 	std::map<int, ScriptInfo> scripts_;
 };
 

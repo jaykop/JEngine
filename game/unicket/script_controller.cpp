@@ -15,8 +15,27 @@ ScriptController::~ScriptController()
 
 void ScriptController::init()
 {
-	// sprite_ = owner_->add_component<Sprite>();
-	text_ = owner_->add_component<Text>();
+	transform_ = owner_->get_component<Transform>();
+	transform_->scale.set(1,1,0);
+
+	Object* txtChild = ObjectManager::create_object("ScriptText");
+	Transform* childTransform = txtChild->get_component<Transform>();
+	childTransform->scale.set(.75f, .75f, 1.f);
+	childTransform->position.set(-0.45f * GraphicSystem::get_width(), -0.3f * GraphicSystem::get_height(), 1.f);
+	text_ = txtChild->add_component<Text>();
+	text_->set_font(AssetManager::get_font("default"));
+	text_->prjType = Renderer::ProjectType::ORTHOGONAL;
+
+	owner_->add_child(txtChild);
+	SceneManager::get_current_scene()->register_object(txtChild);
+
+	ScriptInfo a = { 0 , L"으아아아아아아", -1, {1} };
+	ScriptInfo b = { 1 , L"말도 안된다구!", -1, {2} };
+	ScriptInfo c = { 2 , L"쯔아아아아아아아", -1, {} };
+
+	scripts_.insert({ 0, a });
+	scripts_.insert({ 1, b });
+	scripts_.insert({ 2, c });
 }
 
 void ScriptController::update(float dt)
@@ -67,7 +86,10 @@ void ScriptController::update(float dt)
 		if (InputHandler::key_triggered(KEY::SPACE))
 		{
 			if (!scripts_[current].next.empty())
+			{
+				refresh_buffer();
 				current = scripts_[current].next[0];
+			}
 		}
 		break;
 
@@ -76,7 +98,10 @@ void ScriptController::update(float dt)
 			|| InputHandler::key_triggered(KEY::RIGHT))
 		{
 			if (!scripts_[current].next.empty())
+			{
+				refresh_buffer();
 				current = scripts_[current].next[0];
+			}
 		}
 
 		if (InputHandler::key_triggered(KEY::BACK)
@@ -84,7 +109,10 @@ void ScriptController::update(float dt)
 		{
 			int prev = scripts_[current].prev;
 			if (prev >= 0)
+			{
+				refresh_buffer();
 				current = prev;
+			}
 		}
 		break;
 	
@@ -95,7 +123,17 @@ void ScriptController::update(float dt)
 		break;
 	}
 
-	text_->set_text(scripts_[current].txt);
+	if (scripts_[current].txt[index_] != '\0')
+	{
+		txt_ += scripts_[current].txt[index_++];
+	}
+	text_->set_text(txt_.c_str());
+}
+
+void ScriptController::refresh_buffer()
+{
+	txt_.clear();
+	index_ = 0;
 }
 
 void ScriptController::close() { }

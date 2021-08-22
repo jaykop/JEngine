@@ -27,6 +27,7 @@ private:
 
 	Object* player = nullptr;
 	Object* block = nullptr;
+	Object* scriptController = nullptr;
 
 };
 
