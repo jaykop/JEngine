@@ -251,9 +251,9 @@ mat3 quat::to_mat3(void) const
 	float wy = 2 * w * y;
 	float wz = 2 * w * z;
 
-	return mat3(1.0f - (yy + zz), xy - wz, xz + wy,
-		xy + wz, 1.0f - (xx + zz), yz - wx,
-		xz - wy, yz + wx, 1.0f - (xx + yy));
+	return mat3(1.0f - (yy + zz),	xy - wz,			xz + wy,
+				xy + wz,			1.0f - (xx + zz),	yz - wx,
+				xz - wy,			yz + wx,			1.0f - (xx + yy));
 }
 
 void quat::to_matrix(mat4& out_matrix) const

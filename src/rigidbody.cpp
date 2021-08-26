@@ -2,6 +2,7 @@
 #include <rigidbody.hpp>
 #include <transform.hpp>
 #include <object.hpp>
+#include <math_util.hpp>
 
 jeBegin
 
@@ -9,7 +10,7 @@ jeDefineComponentBuilder(RigidBody);
 
 RigidBody::RigidBody(Object* owner) 
 	: Component(owner), friction(0.f), restitution(0.1f), glue(0.01f),
-mass_(1.f), displacement_(vec3(0.f, 0.f, 0.f)) 
+mass(1.f), gravity(0.f), displacement_(vec3::zero) 
 {}
 
 RigidBody::~RigidBody() {}
@@ -27,12 +28,12 @@ void RigidBody::add_impulse(const vec3& force, float dt)
 	if (isStatic) 
 		return;
 
-	displacement_ += force * (mass_ * dt * dt);
+	displacement_ += force * (get_invMass() * dt * dt);
 }
 
 float RigidBody::get_invMass() const
 {
-	return (1.f / mass_);
+	return (mass > Math::epsilon) ? (1.0f / mass) : 0.0f;
 }
 
 // two objects collided at time t. stop them at that time

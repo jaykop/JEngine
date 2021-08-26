@@ -24,7 +24,7 @@ void PlayerController::update(float dt)
 	Transform* trans =
 		get_owner()->get_component<Transform>();
 
-	static float offset = 100.f;
+	static float offset = 10000.f;
 
 	// direction vector3
 	static const vec3 LEFT(-1.f, 0.f, 0.f);
@@ -103,36 +103,49 @@ void PlayerController::update(float dt)
 		//	offset = dt * speed;
 
 		// movement
+		vec3 impulse;
 		if (InputHandler::key_pressed(KEY::A))
 		{
-			body_->add_impulse(LEFT * offset, dt);
-			//trans->position += LEFT * offset;
+			impulse = LEFT;
 		}
 		if (InputHandler::key_pressed(KEY::D))
 		{
-			body_->add_impulse(RIGHT * offset, dt);
-			//trans->position += RIGHT * offset;
+			impulse = RIGHT;
 		}
 		if (InputHandler::key_pressed(KEY::W))
 		{
-			body_->add_impulse(UP * offset, dt);
-			//trans->position += UP * offset;
+			impulse = UP;
 		}
 		if (InputHandler::key_pressed(KEY::S))
 		{
-			body_->add_impulse(DOWN * offset, dt);
-			//trans->position += DOWN * offset;
+			impulse = DOWN;
 		}
+		if (InputHandler::key_pressed(KEY::Q))
+		{
+			float z = trans->get_euler_deg().z + dt * offset;
+			if (z < 0.f) z += 360.f;
+			else if (z >= 360.f) z -= 360.f;
+			trans->set_euler_deg(0.f, 0.f, z);
+		}
+		if (InputHandler::key_pressed(KEY::E))
+		{
+			float z = trans->get_euler_deg().z - dt * offset;
+			if (z < 0.f) z += 360.f;
+			else if (z >= 360.f) z -= 360.f;
+			trans->set_euler_deg(0.f, 0.f, z);
+		}
+
+		body_->add_impulse(impulse * offset, dt);
 	}
 
-	// set obj's rotation
-	vec3 v3_deg = InputHandler::get_position().normalized();
-	static const vec3 v3_horizon(1.f, 0.f, 0.f), z_axis(0, 0, 1.f);
+	//// set obj's rotation
+	//vec3 v3_deg = InputHandler::get_position().normalized();
+	//static const vec3 v3_horizon(1.f, 0.f, 0.f), z_axis(0, 0, 1.f);
 
-	float dot = v3_horizon.x * v3_deg.x + v3_horizon.y * v3_deg.y; // dot product
-	float det = v3_horizon.x * v3_deg.y - v3_horizon.y * v3_deg.x; // determinant
-	float rad = atan2(det, dot);
-	trans->set_euler_rad(z_axis * rad);
+	//float dot = v3_horizon.x * v3_deg.x + v3_horizon.y * v3_deg.y; // dot product
+	//float det = v3_horizon.x * v3_deg.y - v3_horizon.y * v3_deg.x; // determinant
+	//float rad = atan2(det, dot);
+	//trans->set_euler_rad(z_axis * rad);
 
 	// camera follows the character
 	Camera* camera = GraphicSystem::get_camera();

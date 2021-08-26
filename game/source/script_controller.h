@@ -2,6 +2,8 @@
 #include "pch.h"
 #include <map>
 
+#include "timer.hpp"
+
 jeBegin
 
 class Object;
@@ -33,7 +35,7 @@ public:
 	SCRIPT_MODE scriptMode_ = SCRIPT_MODE::FLOW;
 	FADE_MODE fadeMode_ = FADE_MODE::NONE;
 
-	float timer_ = 1.f;
+	float scriptSpeed = 1.f, fadeSpeed = 10.f;
 	float alpha_ = 0.f;
 
 protected:
@@ -46,11 +48,14 @@ private:
 	ScriptController() = delete;
 
 	void refresh_buffer();
+	void script_renderer();
+	void set_invisible();
 
 	int current = 0, index_ = 0;
 	Text* text_ = nullptr;
 	Sprite* sprite_ = nullptr;
 	Transform* transform_ = nullptr;
+	Timer scriptTimer_, fadeTimer_;
 
 	std::wstring txt_;
 	std::map<int, ScriptInfo> scripts_;

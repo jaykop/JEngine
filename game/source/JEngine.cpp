@@ -28,6 +28,8 @@ void JEngine::register_scenes()
 	SceneManager::register_scene<License>("resource/scene/license.json");
 	SceneManager::register_scene<Pause>("resource/scene/pause.json");
 	SceneManager::register_scene<Level1>("resource/scene/level1.json");
+	SceneManager::register_scene<Level2>("resource/scene/level2.json");
+	SceneManager::register_scene<Level3>("resource/scene/level3.json");
 
 	// set the first scene
 	SceneManager::set_first_scene<Level1>();

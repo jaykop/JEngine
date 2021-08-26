@@ -1,4 +1,4 @@
-#include "level1.h"
+#include "level3.h"
 #include "scene_controller.h"
 #include "player_controller.h"
 #include "player_attack.h"
@@ -16,7 +16,7 @@
 
 jeBegin
 
-void Level1::initialize()
+void Level3::initialize()
 {
 	init_basic();
 	init_sprite();
@@ -26,7 +26,7 @@ void Level1::initialize()
 	Scene::initialize();
 }
 
-void Level1::update(float dt)
+void Level3::update(float dt)
 {
 	if (player)
 	{
@@ -55,13 +55,13 @@ void Level1::update(float dt)
 	Scene::update(dt);
 }
 
-void Level1::close()
+void Level3::close()
 {
 	// base close
 	Scene::close();
 }
 
-void Level1::init_basic()
+void Level3::init_basic()
 {
 	// add camera
 	Object* camera = ObjectManager::create_object("main_camera");
@@ -90,7 +90,7 @@ void Level1::init_basic()
 	register_object(scriptController);
 }
 
-void Level1::init_sprite()
+void Level3::init_sprite()
 {
 	// testing 2d renderer 
 	player = ObjectManager::create_object("player");
@@ -120,7 +120,7 @@ void Level1::init_sprite()
 	register_object(player);
 }
 
-void Level1::init_block()
+void Level3::init_block()
 {
 	// testing 2d renderer 
 	block = ObjectManager::create_object("block");

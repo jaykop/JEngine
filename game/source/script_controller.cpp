@@ -4,6 +4,8 @@
 #include "sprite.hpp"
 #include "text.hpp"
 
+#include <iostream>
+
 jeBegin
 
 jeDefineUserComponentBuilder(ScriptController);
@@ -18,6 +20,8 @@ void ScriptController::init()
 	transform_ = owner_->get_component<Transform>();
 	transform_->scale.set(1,1,0);
 
+	sprite_ = owner_->get_component<Sprite>();
+
 	Object* txtChild = ObjectManager::create_object("ScriptText");
 	Transform* childTransform = txtChild->get_component<Transform>();
 	childTransform->scale.set(.75f, .75f, 1.f);
@@ -30,17 +34,24 @@ void ScriptController::init()
 	SceneManager::get_current_scene()->register_object(txtChild);
 
 	ScriptInfo a = { 0 , L"으아아아아아아", -1, {1} };
-	ScriptInfo b = { 1 , L"말도 안된다구!", -1, {2} };
-	ScriptInfo c = { 2 , L"쯔아아아아아아아", -1, {} };
+	ScriptInfo b = { 1 , L"말도 안된다구!", 0, {2} };
+	ScriptInfo c = { 2 , L"쯔아아아아아아아", 1, {} };
 
 	scripts_.insert({ 0, a });
 	scripts_.insert({ 1, b });
 	scripts_.insert({ 2, c });
+
+	scriptMode_ = SCRIPT_MODE::AUTO_FLOW;
+
+	set_invisible();
+
+	scriptTimer_.start();
+	fadeTimer_.start();
 }
 
 void ScriptController::update(float dt)
 {
-	float manipulativeDt = dt / timer_;
+	float manipulativeDt = fadeTimer_.get_elapsed_time();
 	float& spriteAlpha = sprite_->color.a;
 	float& textAlpha = text_->color.a;
 
@@ -57,7 +68,10 @@ void ScriptController::update(float dt)
 			{
 				textAlpha += manipulativeDt;
 				if (textAlpha >= 1.f)
+				{
 					textAlpha = 1.f;
+					fadeMode_ = FADE_MODE::NONE;
+				}
 			}
 			return;
 
@@ -77,9 +91,20 @@ void ScriptController::update(float dt)
 			return;
 
 		case FADE_MODE::NONE:
+			script_renderer();
 			break;
 	}
 
+}
+
+void ScriptController::refresh_buffer()
+{
+	txt_.clear();
+	index_ = 0;
+}
+
+void ScriptController::script_renderer()
+{
 	switch (scriptMode_)
 	{
 	case SCRIPT_MODE::FLOW:
@@ -115,8 +140,18 @@ void ScriptController::update(float dt)
 			}
 		}
 		break;
-	
+
 	case SCRIPT_MODE::AUTO_FLOW:
+
+		if (!scripts_[current].next.empty()
+			&& scriptTimer_.get_elapsed_time() >= 1.f)
+		{
+			refresh_buffer();
+			current = scripts_[current].next[0];
+
+			scriptTimer_.start();
+		}
+
 		break;
 
 	case SCRIPT_MODE::LOCKED:
@@ -130,10 +165,12 @@ void ScriptController::update(float dt)
 	text_->set_text(txt_.c_str());
 }
 
-void ScriptController::refresh_buffer()
+void ScriptController::set_invisible()
 {
-	txt_.clear();
-	index_ = 0;
+	scriptMode_ = SCRIPT_MODE::LOCKED;
+	fadeMode_ = FADE_MODE::FADE_IN;
+	sprite_->color.a = 0.f;
+	text_->color.a = 0.f;
 }
 
 void ScriptController::close() { }

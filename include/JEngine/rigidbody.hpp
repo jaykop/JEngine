@@ -25,6 +25,8 @@ public:
 	float friction;
 	float restitution;
 	float glue;
+	float gravity;
+	float mass;
 
 protected:
 
@@ -37,7 +39,6 @@ private:
 	void process_collision(RigidBody* other, const vec3& N, float t);
 	void process_overlap(RigidBody* other, const vec3& xMTD);
 
-	float mass_;
 	vec3 displacement_;
 
 };

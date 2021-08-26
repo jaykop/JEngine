@@ -69,7 +69,14 @@ void PhysicsSystem::update(float dt)
 			b->displacement_.set_zero();
 			continue;
 		}
-		
+		else if (b->gravity != 0.f)
+		{
+			vec3 gravity;
+			gravity.y = -(b->gravity * b->mass);
+
+			b->add_impulse(gravity, dt);
+		}
+
 		b->transform->position += b->displacement_;
 	}
 }
@@ -285,6 +292,7 @@ bool PhysicsSystem::find_MTD(vec3* xAxis, float* taxis, int iAxes, vec3& N, floa
 	for (int i = 0; i < iAxes; i++)
 	{
 		float n = xAxis[i].length();
+		xAxis[i].normalize();
 		taxis[i] /= n;
 
 		if (taxis[i] > t || mini == -1)

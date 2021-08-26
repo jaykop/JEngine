@@ -21,8 +21,8 @@ public:
 	vec3 scale;
 
 	// getters
-	vec3 rotation_euler_rad(void) const;
-	vec3 rotation_euler_deg(void) const;
+	vec3 get_euler_rad(void) const;
+	vec3 get_euler_deg(void) const;
 
 	// orientation
 	vec3 right(void);

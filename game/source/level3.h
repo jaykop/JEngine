@@ -4,14 +4,14 @@
 jeBegin
 
 // Generic scene class
-class Level1 : public Scene
+class Level3 : public Scene
 {
 	friend class SceneManager;
 
 public:
 
-	Level1(const char* name, const char* dir) : Scene(name, dir) {};
-	virtual ~Level1() {};
+	Level3(const char* name, const char* dir) : Scene(name, dir) {};
+	virtual ~Level3() {};
 
 protected:
 

@@ -29,7 +29,7 @@ void Collider2D::init_vertices()
 
 	vec3 scale = transform->scale;
 	vec3 pos = transform->position;
-	float rad = transform->rotation_euler_rad().z;
+	float rad = transform->get_euler_rad().z;
 
 	vec3 lt(pos.x - scale.x, pos.y + scale.y, 0.f);
 	vec3 rt(pos.x + scale.x, pos.y + scale.y, 0.f);

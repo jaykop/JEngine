@@ -14,14 +14,14 @@ Transform::Transform(Object* owner)
 	, scale(1.0f, 1.0f, 1.0f) 
 {}
 
-vec3 Transform::rotation_euler_rad(void) const
+vec3 Transform::get_euler_rad(void) const
 {
 	return orientation.get_euler();
 }
 
-vec3 Transform::rotation_euler_deg(void) const
+vec3 Transform::get_euler_deg(void) const
 {
-	return rotation_euler_rad() * radian_to_degree;
+	return get_euler_rad() * radian_to_degree;
 }
 
 vec3 Transform::right(void)
