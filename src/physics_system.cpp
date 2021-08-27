@@ -44,15 +44,15 @@ void PhysicsSystem::update(float dt)
 	int size = static_cast<int>(colliders_.size());
 	for (int i = 0; i < size - 1; ++i)
 	{
-		for (int j = 0; j < size - i - 1; ++j)
+		for (int j = i + 1; j < size; ++j)
 		{
 			vec3 N;
 			float t = 1.0f;
 
-			RigidBody* aBody = colliders_[j]->get_owner()->get_component<RigidBody>();
-			RigidBody* bBody = colliders_[j + 1]->get_owner()->get_component<RigidBody>();
+			RigidBody* aBody = colliders_[i]->get_owner()->get_component<RigidBody>();
+			RigidBody* bBody = colliders_[j]->get_owner()->get_component<RigidBody>();
 
-			if (is_collided(colliders_[j], colliders_[j + 1], aBody, bBody, N, t))
+			if (is_collided(colliders_[i], colliders_[j], aBody, bBody, N, t))
 			{
 				if (t < 0.f)
 					aBody->process_overlap(bBody, N * -t);
@@ -92,11 +92,10 @@ void PhysicsSystem::close()
 
 bool PhysicsSystem::is_collided(Collider2D* a, Collider2D* b, RigidBody* aBody, RigidBody* bBody, vec3& N, float& t)
 {
-	if (!aBody->isStatic)
-		a->init_vertices();
+	if (aBody->isStatic && bBody->isStatic) return false;
 
-	if (!bBody->isStatic)
-		b->init_vertices();
+	a->init_vertices();
+	b->init_vertices();
 
 	const std::vector<vec3>& aVertices = a->vertices_;
 	const std::vector<vec3>& bVertices = b->vertices_;

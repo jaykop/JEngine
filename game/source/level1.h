@@ -22,7 +22,7 @@ protected:
 private:
 
 	void init_basic();
-	void init_sprite();
+	void init_player();
 	void init_block();
 
 	Object* player = nullptr;

@@ -11,6 +11,7 @@
 #include "rigidbody.hpp"
 #include "emitter.hpp"
 #include "colors.hpp"
+#include "environment_setter.h"
 
 #include <iostream>
 
@@ -19,8 +20,8 @@ jeBegin
 void Level1::initialize()
 {
 	init_basic();
-	init_sprite();
-	init_block();
+	init_player();
+	// init_block();
 
 	// base init
 	Scene::initialize();
@@ -64,9 +65,16 @@ void Level1::init_basic()
 	Object* controller = ObjectManager::create_object("scene_controller");
 	controller->add_component<SceneController>();
 	register_object(controller);
+
+	// environment setting
+	Object* walls = ObjectManager::create_object("walls");
+	walls->add_component<EnvironmentSetter>();
+	register_object(walls);
+
+	GraphicSystem::get_camera()->position.z = 200.f;
 }
 
-void Level1::init_sprite()
+void Level1::init_player()
 {
 	// testing 2d renderer 
 	player = ObjectManager::create_object("player");
@@ -75,7 +83,7 @@ void Level1::init_sprite()
 	player->add_component<PlayerController>();
 	player->add_component<Collider2D>();
 	player->add_component<RigidBody>();
-	player->add_component<PlayerAttack>();
+	// player->add_component<PlayerAttack>();
 
 	auto* renderer = player->get_component<Sprite>();
 	auto* animation = player->get_component<Animation2D>();
@@ -92,7 +100,7 @@ void Level1::init_sprite()
 
 	// animation->fix_frame(0);
 	trans->scale.set(10, 10, 0.f);
-	trans->position.set(-10, 10, 0);
+	trans->position.set(0, 0, 0);
 	register_object(player);
 }
 
