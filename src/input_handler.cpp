@@ -28,6 +28,7 @@ vec3 InputHandler::position_ = vec3::one;
 InputHandler::MouseWheel InputHandler::mouseWheel_ = MouseWheel::NONE;
 LockedKeys InputHandler::triggerLock_;
 KeyMap InputHandler::keyMap_, InputHandler::triggerMap_;
+InputHandler::MousePosition InputHandler::mousePositionType_ = InputHandler::MousePosition::SCREEN_CENTER;
 
 bool InputHandler::any_input_down()
 {
@@ -278,13 +279,22 @@ bool InputHandler::get_mouse_wheel_status(KEY key)
 	return false;
 }
 
-vec3 InputHandler::get_position()
+vec3 InputHandler::get_position(MousePosition type)
 {
 	float w = GraphicSystem::get_width() * .5f, h = GraphicSystem::get_height() * .5f;
 	vec3 pos;
 	pos.x = position_.x - w;
 	pos.y = h - position_.y;
-	return pos;
+
+	switch (type)
+	{
+		case MousePosition::SCREEN_LEFTTOP:
+			return position_;
+
+		case MousePosition::SCREEN_CENTER:
+		default:
+			return pos;
+	}
 }
 
 vec3 InputHandler::get_ray_direction()
@@ -311,11 +321,11 @@ vec3 InputHandler::get_ray_direction()
 	return ray_wor;
 }
 
-bool InputHandler::ray_intersects_triangle(const vec3& v0, const vec3& v1, const vec3& v2) {
+bool InputHandler::ray_intersects_triangle(const vec3& v0, const vec3& v1, const vec3& v2, vec3* hitPoint) {
 
 	Camera* camera = GraphicSystem::get_camera();
-	const vec3& d = get_ray_direction();
-	const vec3& p = camera->position;
+	const vec3& ray_direction = get_ray_direction();
+	const vec3& ray_origin = camera->position;
 
 	vec3 e1, e2, h, s, q;
 	float a, f, u, v;
@@ -323,21 +333,21 @@ bool InputHandler::ray_intersects_triangle(const vec3& v0, const vec3& v1, const
 	e1.set(v1.x - v0.x, v1.y - v0.y, v1.z - v0.z);
 	e2.set(v2.x - v0.x, v2.y - v0.y, v2.z - v0.z);
 
-	h = vec3::cross(d, e2);
+	h = vec3::cross(ray_direction, e2);
 	a = e1.dot(h);
 
 	if (a > -0.00001 && a < 0.00001)
 		return false;
 
 	f = 1 / a;
-	s.set(p.x - v0.x, p.y - v0.y, p.z - v0.z);
+	s.set(ray_origin.x - v0.x, ray_origin.y - v0.y, ray_origin.z - v0.z);
 	u = f * (s.dot(h));
 
 	if (u < 0.0 || u > 1.0)
 		return false;
 
 	q = vec3::cross(s, e1);
-	v = f * d.dot(q);
+	v = f * ray_direction.dot(q);
 
 	if (v < 0.0 || u + v > 1.0)
 		return false;
@@ -347,8 +357,12 @@ bool InputHandler::ray_intersects_triangle(const vec3& v0, const vec3& v1, const
 	float t = f * e2.dot(q);
 
 	if (t > 0.00001) // ray intersection
-		return true;
+	{
+		if (hitPoint) 
+			(*hitPoint) = ray_origin + ray_direction * t;
 
+		return true;
+	}
 	else // this means that there is a line intersection
 		 // but not a ray intersection
 		return false;

@@ -70,7 +70,7 @@ void Renderer::draw_lighting_effect(Light* /*pLight*/)
 
 }
 
-bool Renderer::picked() const
+bool Renderer::picked(vec3* hitPoint) const
 {
 	// todo: change function modifying mesh
 	vec3 center = transform_->position;
@@ -85,8 +85,8 @@ bool Renderer::picked() const
 	vec3 v3 = center + vec3(half_x, -half_y, center.z);
 	vec3 v4 = center + vec3(half_x, half_y, center.z);
 
-	bool in1 = InputHandler::ray_intersects_triangle(v1, v2, v3);
-	bool in2 = InputHandler::ray_intersects_triangle(v3, v4, v1);
+	bool in1 = InputHandler::ray_intersects_triangle(v1, v2, v3, hitPoint);
+	bool in2 = InputHandler::ray_intersects_triangle(v3, v4, v1, hitPoint);
 
 	return in1 || in2;
 }

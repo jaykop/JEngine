@@ -3,7 +3,9 @@
 // disable nameless struct/union warning
 #pragma warning(disable : 4201)
 
-  /* 2 dimensional vector of floats */
+#include <ostream>
+
+/* 2 dimensional vector of floats */
 struct vec2
 {
 	// static members
@@ -51,6 +53,8 @@ struct vec2
 
 	bool operator==(const vec2& rhs) const;
 	bool operator!=(const vec2& rhs) const;
+
+	friend std::ostream& operator << (std::ostream& os, const vec2& v);
 
 }; // struct vec2
 

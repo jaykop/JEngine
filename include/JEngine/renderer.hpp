@@ -40,7 +40,7 @@ public:
 	// public methods
 	static void draw_lighting_effect(Light* light);
 	
-	bool picked() const;
+	bool picked(vec3* hitPoint = nullptr) const;
 	Transform* get_transform() const { return transform_; }
 
 protected:

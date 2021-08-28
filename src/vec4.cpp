@@ -197,3 +197,9 @@ float vec4::distance_sq(const vec4& a, const vec4& b)
 	vec4 diff = b - a;
 	return (diff.length_sq());
 }
+
+std::ostream& operator << (std::ostream& os, const vec4& v)
+{
+	os << v.x << ", " << v.y << ", " << v.z << ", " << v.w;
+	return os;
+}

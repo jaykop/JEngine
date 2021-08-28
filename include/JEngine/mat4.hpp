@@ -85,6 +85,8 @@ struct mat4
 	static mat4 look_at(const vec3& pos, const vec3& right, const vec3& up, const vec3& back);
 	//static mat4 screen(float width, float height, const vec3& position);
 
+	friend std::ostream& operator << (std::ostream& os, const mat4& m);
+
 }; // struct mat4
 
 #pragma warning(pop)

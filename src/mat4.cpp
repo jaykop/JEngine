@@ -331,3 +331,13 @@ bool mat4::operator!=(const mat4& rhs) const
 {
 	return !(*this == rhs);
 }
+
+std::ostream& operator << (std::ostream& os, const mat4& m)
+{
+	os << m.data[0] << ", " << m.data[1] << ", " << m.data[2] << ", " << m.data[3] << "\n";
+	os << m.data[4] << ", " << m.data[5] << ", " << m.data[6] << ", " << m.data[7] << "\n";
+	os << m.data[8] << ", " << m.data[9] << ", " << m.data[10] << ", " << m.data[11] << "\n";
+	os << m.data[12] << ", " << m.data[13] << ", " << m.data[14] << ", " << m.data[15];
+
+	return os;
+}

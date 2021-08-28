@@ -36,6 +36,7 @@ class InputHandler {
 
 public:
 
+	enum class MousePosition { SCREEN_LEFTTOP, ORTHOGONAL, PERSPECTIVE, SCREEN_CENTER };
 	enum class MouseWheel { NONE, UP, DOWN } ;
 
 	static bool any_key_down(); // check both mouse or key
@@ -47,9 +48,11 @@ public:
 	static bool get_mouse_wheel_status(KEY key);
 
 	// mouse position
-	static vec3 get_position();
+	static vec3 get_position(MousePosition type = MousePosition::SCREEN_CENTER);
 	static vec3 get_ray_direction();
-	static bool ray_intersects_triangle(const vec3& v0, const vec3& v1, const vec3& v2);
+	static bool ray_intersects_triangle(const vec3& v0, const vec3& v1, const vec3& v2, vec3* hitPoint = nullptr);
+
+	static MousePosition mousePositionType_;
 
 private:
 

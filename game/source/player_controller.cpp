@@ -68,7 +68,7 @@ void PlayerController::close() { }
 void PlayerController::rotate_mousebase(float dt)
 {
 	// set obj's rotation
-	vec3 v3_deg = (InputHandler::get_position() - transform_->position).normalized();
+	vec3 v3_deg = (InputHandler::get_position(InputHandler::MousePosition::PERSPECTIVE) - transform_->position).normalized();
 	static const vec3 v3_horizon(1.f, 0.f, 0.f), z_axis(0, 0, 1.f);
 
 	float dot = v3_horizon.x * v3_deg.x + v3_horizon.y * v3_deg.y; // dot product

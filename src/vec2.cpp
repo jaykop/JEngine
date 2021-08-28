@@ -127,3 +127,8 @@ bool vec2::operator!=(const vec2& rhs) const
 {
 	return !(*this == rhs);
 }
+std::ostream& operator << (std::ostream& os, const vec2& v)
+{
+	os << v.x << ", " << v.y;
+	return os;
+}

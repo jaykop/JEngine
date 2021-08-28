@@ -5,6 +5,8 @@
 
 using namespace Math;
 
+const int SIZE = 9;
+
 const mat3 mat3::identity(1.0f, 0.0f, 0.0f,
 	0.0f, 1.0f, 0.0f,
 	0.0f, 0.0f, 1.0f);
@@ -254,4 +256,13 @@ bool mat3::operator==(const mat3& rhs) const
 bool mat3::operator!=(const mat3& rhs) const
 {
 	return !(*this == rhs);
+}
+
+std::ostream& operator << (std::ostream& os, const mat3& m)
+{
+	os << m.data[0] << ", " << m.data[1] << ", " << m.data[2] << "\n";
+	os << m.data[3] << ", " << m.data[4] << ", " << m.data[5] << "\n";
+	os << m.data[6] << ", " << m.data[7] << ", " << m.data[8];
+
+	return os;
 }

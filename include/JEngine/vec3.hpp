@@ -3,6 +3,8 @@
 // disable nameless struct/union warning
 #pragma warning(disable : 4201)
 
+#include <ostream>
+
 /* 3 dimensional vector of floats */
 struct mat3;
 struct vec3
@@ -79,6 +81,8 @@ struct vec3
 	static vec3 cross(const vec3& lhs, const vec3& rhs) ;
 	static float sign(const vec3& p1, const vec3& p2, const vec3& p3);
 	static vec3 rotate(const vec3& p, const vec3& o, float rad);
+
+	friend std::ostream& operator << (std::ostream& os, const vec3& v);
 
 }; // struct vec3
 

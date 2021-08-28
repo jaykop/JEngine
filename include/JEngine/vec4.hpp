@@ -74,6 +74,7 @@ struct vec4
 	static float distance(const vec4& a, const vec4& b);
 	static float distance_sq(const vec4& a, const vec4& b);
 
+	friend std::ostream& operator << (std::ostream& os, const vec4& v);
 }; // struct vec4
 
 #pragma warning(pop)

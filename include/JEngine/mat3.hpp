@@ -4,6 +4,7 @@
 #pragma warning(disable : 4201)
 
 #include <vector>
+#include <ostream>
 
 // forward declarations
 struct vec3;
@@ -68,6 +69,8 @@ struct mat3
 
 	bool operator==(const mat3& rhs) const;
 	bool operator!=(const mat3& rhs) const;
+
+	friend std::ostream& operator << (std::ostream& os, const mat3& m);
 
 }; // struct mat3
 

@@ -240,3 +240,9 @@ bool vec3::inside(const vec3& v1, const vec3& v2, const vec3& v3) const
 	b3 = sign(*this, v3, v1) < 0.0f;
 	return ((b1 == b2) && (b2 == b3)); 
 }
+
+std::ostream& operator << (std::ostream& os, const vec3& v)
+{
+	os << v.x << ", " << v.y << ", " << v.z;
+	return os;
+}

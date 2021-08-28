@@ -34,10 +34,12 @@ void Level1::update(float dt)
 		DebugRenderer* dr = player->get_component<DebugRenderer>();
 		if (InputHandler::key_triggered(MOUSE_LEFT))
 		{
-			if (dr->picked())
+			vec3 hitPoint;
+			if (dr->picked(&hitPoint))
 				std::cout << "in\n";
 			else
 				std::cout << "out\n";
+			std::cout << hitPoint << "\n";
 		}
 	}
 
