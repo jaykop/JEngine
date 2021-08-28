@@ -23,7 +23,7 @@ namespace FMOD
 jeBegin
 
 class Object;
-jeDeclareComponentBuilder(Transform);
+jeDeclareComponentBuilder(Audio);
 
 //! Audio class
 class Audio : public Component

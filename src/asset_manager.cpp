@@ -76,11 +76,15 @@ bool AssetManager::set_bulit_in_components()
 	jeRegisterComponent(Text);
 	jeRegisterComponent(Emitter);
 	jeRegisterComponent(Light);
-	//jeRegisterComponent(Material);
-
+	
 	// Physics components
 	jeRegisterComponent(Collider2D);
 	jeRegisterComponent(RigidBody);
+	jeRegisterComponent(Material);
+	jeRegisterComponent(Contact);
+
+	// Sounds components
+	jeRegisterComponent(Audio);
 
 	return false;
 }

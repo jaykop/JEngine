@@ -16,6 +16,8 @@ All codes are written by Jaykop Jeong...
 
 jeBegin
 
+jeDefineComponentBuilder(Audio);
+
 /******************************************************************************/
 /*!
 \brief - Audio Constructor

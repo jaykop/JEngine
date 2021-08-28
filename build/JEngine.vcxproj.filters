@@ -127,6 +127,12 @@
     <ClCompile Include="..\src\collider_2d.cpp">
       <Filter>system\physics</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\contact.cpp">
+      <Filter>system\physics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\material.cpp">
+      <Filter>system\physics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\JEngine\macros.hpp" />
@@ -290,6 +296,12 @@
       <Filter>system\graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\include\JEngine\collider_2d.hpp">
+      <Filter>system\physics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\JEngine\contact.hpp">
+      <Filter>system\physics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\JEngine\material.hpp">
       <Filter>system\physics</Filter>
     </ClInclude>
   </ItemGroup>
