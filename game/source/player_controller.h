@@ -3,6 +3,7 @@
 
 jeBegin
 
+class Sprite;
 class Object;
 class RigidBody;
 class Transform;
@@ -25,6 +26,8 @@ public:
 
 	float speed = 100.f;
 	float slidingTime = 3.f;
+
+	Sprite* hitPointPlane = nullptr;
 
 	ROTATION_MODE rotationMode_ = ROTATION_MODE::MOUSE;
 	MOVEMENT_MODE movementMode_ = MOVEMENT_MODE::WORLD;

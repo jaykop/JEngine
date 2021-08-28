@@ -4,9 +4,8 @@
 #include "player_attack.h"
 #include "script_controller.h"
 #include "pch.h"
-#include "sprite.hpp"
-#include "animation_2d.hpp"
 #include "debug_renderer.hpp"
+#include "sprite.hpp"
 #include "collider_2d.hpp"
 #include "rigidbody.hpp"
 #include "emitter.hpp"
@@ -29,20 +28,6 @@ void Level1::initialize()
 
 void Level1::update(float dt)
 {
-	if (player)
-	{
-		DebugRenderer* dr = player->get_component<DebugRenderer>();
-		if (InputHandler::key_triggered(MOUSE_LEFT))
-		{
-			vec3 hitPoint;
-			if (dr->picked(&hitPoint))
-				std::cout << "in\n";
-			else
-				std::cout << "out\n";
-			std::cout << hitPoint << "\n";
-		}
-	}
-
 	// base update
 	Scene::update(dt);
 }
@@ -82,28 +67,32 @@ void Level1::init_player()
 	player = ObjectManager::create_object("player");
 	player->add_component<Sprite>();
 	player->add_component<DebugRenderer>();
-	player->add_component<PlayerController>();
+	PlayerController* controller = player->add_component<PlayerController>();
 	player->add_component<Collider2D>();
 	player->add_component<RigidBody>();
 	// player->add_component<PlayerAttack>();
 
 	auto* renderer = player->get_component<Sprite>();
-	auto* animation = player->get_component<Animation2D>();
 	auto* trans = player->get_component<Transform>();
 	auto* rb = player->get_component<RigidBody>();
 	renderer->set_texture(AssetManager::get_texture("arrow"));
 	renderer->prjType = Renderer::ProjectType::PERSPECTIVE;
-	// rb->isStatic = false;
-	// renderer->status |= Renderer::IS_BILBOARD;
 
-	/*animation->activate(true);
-	animation->set_frame(8);
-	animation->set_speed(10.f);*/
-
-	// animation->fix_frame(0);
 	trans->scale.set(10, 10, 0.f);
 	trans->position.set(0, 0, 0);
 	register_object(player);
+
+	Object* hitPointPlane = ObjectManager::create_object("plane");
+	Sprite* plane = hitPointPlane->add_component<Sprite>();
+	plane->set_texture(AssetManager::get_texture("rect"));
+	plane->prjType = Renderer::ProjectType::PERSPECTIVE;
+	plane->color.a = 0.5f;
+	Transform* transform = hitPointPlane->get_component<Transform>();
+	transform->scale.set(GraphicSystem::get_width(), GraphicSystem::get_height(), 0.f);
+	transform->position.set(0,0,-1);
+	register_object(hitPointPlane);
+
+	controller->hitPointPlane = plane;
 }
 
 void Level1::init_block()
@@ -115,7 +104,6 @@ void Level1::init_block()
 	block->add_component<RigidBody>();
 
 	auto* renderer = block->get_component<Sprite>();
-	auto* animation = block->get_component<Animation2D>();
 	auto* trans = block->get_component<Transform>();
 	auto* rb = block->get_component<RigidBody>();
 	renderer->set_texture(AssetManager::get_texture("rect"));
