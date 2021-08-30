@@ -30,6 +30,8 @@ class PhysicsSystem {
 	friend class Scene;
 	friend class Collider2D;
 	friend class RigidBody;
+	friend class Material;
+	friend class Contact;
 
 	using Bodies = std::vector<RigidBody*>;
 	using Colliders = std::vector<Collider2D*>;
@@ -53,8 +55,12 @@ private:
 	static void get_interval(const std::vector<vec3>& vertices, const vec3& xAxis, float& min, float& max);
 	static bool find_MTD(vec3* xAxis, float* taxis, int iAxes, vec3& N, float& t);
 
+	static float calculate_mass(const std::vector<vec3>& vertices, float density);
+	static float calculate_inertia(const std::vector<vec3>& vertices, float mass);
+
 	static Colliders colliders_;
 	static Bodies bodies_;
+	static Material* contactMaterial_;
 };
 
 jeEnd

@@ -15,6 +15,11 @@ public:
 	Material(Object* owner);
 	virtual ~Material();
 
+	float friction = .2f;
+	float restitution = .3f;
+	float staticFriction = .4f;
+	float separation = .5f;
+
 protected:
 
 	virtual void add_to_system();

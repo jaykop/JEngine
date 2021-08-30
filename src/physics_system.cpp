@@ -16,6 +16,7 @@ Contains the methods of PhysicsSystem class
 #include <object.hpp>
 #include <transform.hpp>
 #include <vec3.hpp>
+#include <material.hpp>
 
 #include <iostream>
 
@@ -24,6 +25,9 @@ jeBegin
 PhysicsSystem::Colliders PhysicsSystem::colliders_;
 PhysicsSystem::Bodies PhysicsSystem::bodies_;
 const int MAX_VERTICES = 64;
+Material* PhysicsSystem::contactMaterial_ = nullptr;
+
+const float fCoS = 0.5f, fCoR = 0.7f, fCoF = 0.3f;
 
 void PhysicsSystem::add_collider(Collider2D* collider)
 {
@@ -37,6 +41,10 @@ void PhysicsSystem::add_rigidbody(RigidBody* rigidbody)
 
 void PhysicsSystem::initialize()
 {
+	contactMaterial_ = new Material(nullptr);
+	contactMaterial_->restitution = fCoR;
+	contactMaterial_->friction = fCoF;
+	contactMaterial_->staticFriction = fCoS; 
 }
 
 void PhysicsSystem::update(float dt)
@@ -306,6 +314,52 @@ bool PhysicsSystem::find_MTD(vec3* xAxis, float* taxis, int iAxes, vec3& N, floa
 		jeDebugPrint("Error\n");
 
 	return (mini != -1);
+}
+
+float PhysicsSystem::calculate_mass(const std::vector<vec3>& vertices, float density)
+{
+	int size = static_cast<int>(vertices.size());
+	if (size < 2)
+		return 5.0f * density;
+
+	float mass = 0.0f;
+
+	for (int j = size - 1, i = 0; i < size; j = i, i++)
+	{
+		vec3 P0 = vertices[j];
+		vec3 P1 = vertices[i];
+		mass += (float)fabs(P0 ^ P1);
+	}
+	if (size <= 2)
+		mass = 10.0f;
+
+	mass *= density * 0.5f;
+
+	return mass;
+}
+
+float PhysicsSystem::calculate_inertia(const std::vector<vec3>& vertices, float mass)
+{
+	int size = static_cast<int>(vertices.size());
+	if (size == 1)	return 0.0f;
+
+	float denom = 0.0f;
+	float numer = 0.0f;
+
+	for (int j = size - 1, i = 0; i < size; j = i, i++)
+	{
+		vec3 P0 = vertices[j];
+		vec3 P1 = vertices[i];
+
+		float a = (float)fabs(P0 ^ P1);
+		float b = (P1 * P1 + P1 * P0 + P0 * P0);
+
+		denom += (a * b);
+		numer += a;
+	}
+	float inertia = (mass / 6.0f) * (denom / numer);
+
+	return inertia;
 }
 
 jeEnd

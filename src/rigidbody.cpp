@@ -15,6 +15,11 @@ mass(1.f), gravity(0.f), displacement_(vec3::zero)
 
 RigidBody::~RigidBody() {}
 
+bool RigidBody::is_unmovable()
+{
+	return (mass < Math::epsilon);
+}
+
 void RigidBody::add_to_system()
 {
 	transform = get_owner()->get_component<Transform>();
@@ -33,7 +38,41 @@ void RigidBody::add_impulse(const vec3& force, float dt)
 
 float RigidBody::get_invMass() const
 {
-	return (mass > Math::epsilon) ? (1.0f / mass) : 0.0f;
+	return (mass > 0.0f) ? (1.0f / mass) : 0.0f;
+}
+
+void RigidBody::add_force(const vec3& f)
+{
+	if (is_unmovable())
+		return;
+
+	netForce += f;
+}
+
+void RigidBody::add_force(const vec3& f, const vec3& p)
+{
+	if (is_unmovable()) return;
+
+	netForce += f;
+	netTorque += (p - transform->position).cross(f);
+}
+
+void RigidBody::set_density(float density)
+{
+	density_ = density;	
+	mass = 0.0f;
+	inertia = 0.0f;
+
+	if (density_ > 0.0f && !vertices_.empty())
+	{
+		mass = PhysicsSystem::calculate_mass(vertices_, density);
+		inertia = PhysicsSystem::calculate_inertia(vertices_, mass);
+	}
+}
+
+void RigidBody::get_invInertia()
+{
+	return (inertia > 0.0f) ? 1.0f / inertia : 0.0f;
 }
 
 // two objects collided at time t. stop them at that time
