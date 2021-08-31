@@ -328,7 +328,7 @@ float PhysicsSystem::calculate_mass(const std::vector<vec3>& vertices, float den
 	{
 		vec3 P0 = vertices[j];
 		vec3 P1 = vertices[i];
-		mass += (float)fabs(P0 ^ P1);
+		mass += (P0.cross(P1)).length();
 	}
 	if (size <= 2)
 		mass = 10.0f;
@@ -351,8 +351,8 @@ float PhysicsSystem::calculate_inertia(const std::vector<vec3>& vertices, float 
 		vec3 P0 = vertices[j];
 		vec3 P1 = vertices[i];
 
-		float a = (float)fabs(P0 ^ P1);
-		float b = (P1 * P1 + P1 * P0 + P0 * P0);
+		float a = (P0.cross(P1)).length();
+		float b = (P1.dot(P1) + P1.dot(P0) + P0.dot(P0));
 
 		denom += (a * b);
 		numer += a;

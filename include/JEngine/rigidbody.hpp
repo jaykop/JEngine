@@ -2,6 +2,7 @@
 #include <component_builder.hpp>
 #include <component.hpp>
 #include <vec3.hpp>
+#include <mat4.hpp>
 
 jeBegin
 
@@ -12,6 +13,12 @@ class RigidBody : public Component {
 	friend class PhysicsSystem;
 
 public:
+	
+	enum class ColliderType {
+		NONE,
+		CIRCLE,
+		RECT,
+	};
 
 	RigidBody(Object* owner);
 	virtual ~RigidBody();
@@ -20,16 +27,18 @@ public:
 
 	void add_impulse(const vec3& force, float dt);
 	float get_invMass() const;
+	float get_invInertia();
 
 	void add_force(const vec3& f);
 	void add_force(const vec3& f, const vec3& p);
 
 	void set_density(float density);
-	void get_invInertia();
-	void set_orientation();
+	void set_orientation(float orientation);
 
 	bool isStatic = false;
 	Transform* transform;
+
+	ColliderType  coliisionType_ = ColliderType::NONE;
 
 	float friction;
 	float restitution;
@@ -38,7 +47,10 @@ public:
 	float mass;
 	float inertia;
 	float angVelocity;
+	float angOrientation;
+
 	vec3 velocity;
+	mat4 orientation;
 
 protected:
 
@@ -48,8 +60,13 @@ protected:
 
 private:
 
+	void initialize();
+	void update(float dt);
+
 	void process_collision(RigidBody* other, const vec3& N, float t);
 	void process_overlap(RigidBody* other, const vec3& xMTD);
+
+	void init_vertices();
 
 	float density_;
 	float netTorque;

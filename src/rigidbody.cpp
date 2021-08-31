@@ -10,7 +10,7 @@ jeDefineComponentBuilder(RigidBody);
 
 RigidBody::RigidBody(Object* owner) 
 	: Component(owner), friction(0.f), restitution(0.1f), glue(0.01f),
-mass(1.f), gravity(0.f), displacement_(vec3::zero) 
+mass(1.f), gravity(0.f), displacement_(vec3::zero) , angOrientation(0.f)
 {}
 
 RigidBody::~RigidBody() {}
@@ -23,10 +23,14 @@ bool RigidBody::is_unmovable()
 void RigidBody::add_to_system()
 {
 	transform = get_owner()->get_component<Transform>();
+	init_vertices();
 	PhysicsSystem::add_rigidbody(this);
 }
 
-void RigidBody::remove_from_system() {}
+void RigidBody::remove_from_system() 
+{
+	vertices_.clear();
+}
 
 void RigidBody::add_impulse(const vec3& force, float dt)
 {
@@ -54,7 +58,7 @@ void RigidBody::add_force(const vec3& f, const vec3& p)
 	if (is_unmovable()) return;
 
 	netForce += f;
-	netTorque += (p - transform->position).cross(f);
+	netTorque += ((p - transform->position).cross(f)).length();
 }
 
 void RigidBody::set_density(float density)
@@ -70,9 +74,46 @@ void RigidBody::set_density(float density)
 	}
 }
 
-void RigidBody::get_invInertia()
+void RigidBody::set_orientation(float angle)
+{
+	angOrientation = angle;
+	orientation = mat4::rotate_z(angOrientation);
+}
+
+float RigidBody::get_invInertia()
 {
 	return (inertia > 0.0f) ? 1.0f / inertia : 0.0f;
+}
+
+void RigidBody::update(float dt)
+{
+	if (is_unmovable())
+	{
+		velocity.set_zero();
+		angVelocity = 0.f;
+		return;
+	}
+
+	//-------------------------------------------------------
+	// Integrate position (verlet integration)
+	//-------------------------------------------------------
+	transform->position += velocity * dt;
+	angOrientation += angVelocity * dt;
+	if (angOrientation > Math::round) angOrientation -= Math::round;
+	else if (angOrientation < Math::zero) angOrientation += Math::round;
+	orientation = mat4::rotate_z(Math::deg_to_rad(angOrientation));
+
+	//-------------------------------------------------------
+	// Integrate velocity (implicit linear velocity)
+	//-------------------------------------------------------
+	velocity += netForce * (get_invMass() * dt);
+	angVelocity += netTorque * (get_invInertia() * dt);
+
+	//-------------------------------------------------------
+	// clear forces
+	//-------------------------------------------------------
+	netForce.set_zero();
+	netTorque = 0.0f;
 }
 
 // two objects collided at time t. stop them at that time
@@ -123,6 +164,41 @@ void RigidBody::process_overlap(RigidBody* other, const vec3& xMTD)
 	}
 
 	process_collision(other, xMTD.normalized(), 0.0f);
+}
+
+void RigidBody::initialize()
+{
+	vertices_.clear();
+
+	netForce.set_zero();
+	netTorque = 0.f;
+	velocity.set_zero();
+	
+	set_density(density_);
+
+	angVelocity = 0.f; //frand(3.0f) + 1.0f;
+	angOrientation = 0.f;
+
+	set_orientation(0.0f);
+}
+
+void RigidBody::init_vertices()
+{
+	vertices_.clear();
+
+	vec3 scale = transform->scale;
+	vec3 pos = transform->position;
+	float rad = transform->get_euler_rad().z;
+
+	vec3 lt(pos.x - scale.x, pos.y + scale.y, 0.f);
+	vec3 rt(pos.x + scale.x, pos.y + scale.y, 0.f);
+	vec3 rb(pos.x + scale.x, pos.y - scale.y, 0.f);
+	vec3 lb(pos.x - scale.x, pos.y - scale.y, 0.f);
+
+	vertices_.emplace_back(vec3::rotate(lt, pos, rad));
+	vertices_.emplace_back(vec3::rotate(rt, pos, rad));
+	vertices_.emplace_back(vec3::rotate(rb, pos, rad));
+	vertices_.emplace_back(vec3::rotate(lb, pos, rad));
 }
 
 jeEnd
