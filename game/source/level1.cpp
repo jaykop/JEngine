@@ -6,7 +6,6 @@
 #include "pch.h"
 #include "debug_renderer.hpp"
 #include "sprite.hpp"
-#include "collider_2d.hpp"
 #include "rigidbody.hpp"
 #include "emitter.hpp"
 #include "colors.hpp"
@@ -68,7 +67,6 @@ void Level1::init_player()
 	player->add_component<Sprite>();
 	player->add_component<DebugRenderer>();
 	PlayerController* controller = player->add_component<PlayerController>();
-	player->add_component<Collider2D>();
 	player->add_component<RigidBody>();
 	// player->add_component<PlayerAttack>();
 
@@ -100,7 +98,6 @@ void Level1::init_block()
 	// testing 2d renderer 
 	block = ObjectManager::create_object("block");
 	block->add_component<Sprite>();
-	block->add_component<Collider2D>();
 	block->add_component<RigidBody>();
 
 	auto* renderer = block->get_component<Sprite>();

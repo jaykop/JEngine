@@ -98,7 +98,7 @@ void PlayerController::rotate_mousebase(float dt)
 
 	if (InputHandler::key_triggered(KEY::MOUSE_LEFT))
 	{
-		body_->add_impulse(v3_deg * speed * 100, dt);
+		body_->add_force(v3_deg * speed * 100, dt);
 	}
 }
 
@@ -216,7 +216,7 @@ void PlayerController::move_impulsebase(float dt)
 		direction = D_DOWN * dtSpeed;
 	}
 
-	body_->add_impulse(direction * speed, dt);
+	body_->add_force(direction * speed, dt);
 }
 
 void PlayerController::fix_camera()

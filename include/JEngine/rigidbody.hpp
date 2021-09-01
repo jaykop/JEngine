@@ -16,6 +16,7 @@ public:
 	
 	enum class ColliderType {
 		NONE,
+		GHOST,
 		CIRCLE,
 		RECT,
 	};
@@ -23,9 +24,6 @@ public:
 	RigidBody(Object* owner);
 	virtual ~RigidBody();
 
-	bool is_unmovable();
-
-	void add_impulse(const vec3& force, float dt);
 	float get_invMass() const;
 	float get_invInertia();
 
@@ -38,7 +36,7 @@ public:
 	bool isStatic = false;
 	Transform* transform;
 
-	ColliderType  coliisionType_ = ColliderType::NONE;
+	ColliderType  collisionType_ = ColliderType::NONE;
 
 	float friction;
 	float restitution;
@@ -72,7 +70,6 @@ private:
 	float netTorque;
 
 	vec3 netForce;
-	vec3 displacement_;
 
 	std::vector<vec3> vertices_;
 };

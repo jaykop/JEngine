@@ -7,7 +7,6 @@
 #include "sprite.hpp"
 #include "animation_2d.hpp"
 #include "debug_renderer.hpp"
-#include "collider_2d.hpp"
 #include "rigidbody.hpp"
 #include "emitter.hpp"
 #include "colors.hpp"

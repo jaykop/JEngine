@@ -1,17 +1,28 @@
 #include <contact.hpp>
 #include <physics_system.hpp>
 #include <transform.hpp>
-#include <object.hpp>
 #include <rigidbody.hpp>
 #include <material.hpp>
 
 jeBegin
-
-jeDefineComponentBuilder(Contact);
-
 bool Contact::useFriction = false;
 
-Contact::Contact(Object* owner) : Component(owner) {}
+Contact::Contact() {}
+
+Contact::Contact(const std::vector<vec3>& va, const std::vector<vec3>& vb, int iCnum, const vec3& N, float t, RigidBody* ba, RigidBody* bb)
+{
+	iNumContacts = 0;
+	contacts.clear();
+	bodies[0] = ba;
+	bodies[1] = bb;
+	normal = N;
+	t_ = t;
+
+	for (int i = 0; i < iCnum; i++)
+	{
+		add_contact_pair(va[i], vb[i]);
+	}
+}
 
 Contact::~Contact() {}
 
@@ -31,7 +42,6 @@ void Contact::remove_from_system()
 {
 }
 
-
 void Contact::reset()
 {
 	bodies[0] = bodies[1] = nullptr;
@@ -40,7 +50,7 @@ void Contact::reset()
 
 void Contact::solve()
 {
-	if (t < 0.0f)
+	if (t_ < 0.0f)
 		resolve_overlap();
 
 	resolve_collision();
@@ -85,7 +95,7 @@ void Contact::resolve_collision(const vec3& a, const vec3& b)
 	float fCoR = PhysicsSystem::contactMaterial_->restitution;
 	float fCoF = PhysicsSystem::contactMaterial_->friction;
 
-	Contact::resolve_collision(-normal, t, fCoF, fCoR,
+	Contact::resolve_collision(-normal, t_, fCoF, fCoR,
 		b, P1, V1, w1, m1, i1,
 		a, P0, V0, w0, m0, i0);
 }
