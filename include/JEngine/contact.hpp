@@ -1,6 +1,5 @@
 #pragma once
-#include <component_builder.hpp>
-#include <component.hpp>
+#include <macros.hpp>
 #include <vector>
 #include <vec3.hpp>
 
@@ -30,10 +29,6 @@ public:
 
 protected:
 
-	virtual void add_to_system();
-	virtual void remove_from_system();
-	virtual void load(const rapidjson::Value& /*data*/) {};
-
 private:
 
 	Contact(const std::vector<vec3>& va, const std::vector<vec3>& vb, int iCnum, const vec3& N, float t, RigidBody* ba, RigidBody* bb);
@@ -51,7 +46,5 @@ private:
 	static void resolve_collision(const vec3& Ncoll, float t, float fCoF, float fCoR, const vec3& C0, const vec3& P0, vec3& V0, float& w0, float m0, float i0, const vec3& C1, const vec3& P1, vec3& V1, float& w1, float m1, float i1);
 
 };
-
-jeDeclareComponentBuilder(Contact);
 
 jeEnd

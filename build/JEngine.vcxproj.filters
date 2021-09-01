@@ -127,9 +127,6 @@
     <ClCompile Include="..\src\contact.cpp">
       <Filter>system\physics</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\material.cpp">
-      <Filter>system\physics</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\JEngine\macros.hpp" />

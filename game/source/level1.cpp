@@ -18,7 +18,7 @@ jeBegin
 void Level1::initialize()
 {
 	init_basic();
-	init_player();
+	// init_player();
 	// init_block();
 
 	// base init

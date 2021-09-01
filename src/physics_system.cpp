@@ -42,7 +42,7 @@ void PhysicsSystem::add_rigidbody(RigidBody* rigidbody)
 
 void PhysicsSystem::initialize()
 {
-	contactMaterial_ = new Material(nullptr);
+	contactMaterial_ = new Material;
 	contactMaterial_->restitution = fCoR;
 	contactMaterial_->friction = fCoF;
 	contactMaterial_->staticFriction = fCoS; 
@@ -102,6 +102,9 @@ void PhysicsSystem::update(float dt)
 
 void PhysicsSystem::close()
 {
+	delete contactMaterial_;
+	contactMaterial_ = nullptr;
+
 	//colliders_.clear();
 	//colliders_.shrink_to_fit();
 

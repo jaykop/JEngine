@@ -5,29 +5,10 @@
 #include <material.hpp>
 
 jeBegin
+
 bool Contact::useFriction = false;
 
-Contact::Contact() {}
-
-Contact::Contact(const std::vector<vec3>& va, const std::vector<vec3>& vb, int iCnum, const vec3& N, float t, RigidBody* ba, RigidBody* bb)
-{
-	iNumContacts = 0;
-	contacts.clear();
-	bodies[0] = ba;
-	bodies[1] = bb;
-	normal = N;
-	t_ = t;
-
-	for (int i = 0; i < iCnum; i++)
-	{
-		add_contact_pair(va[i], vb[i]);
-	}
-}
-
-Contact::~Contact() {}
-
-void Contact::add_to_system()
-{
+Contact::Contact() {
 
 	for (int i = 0; i < maxContacts; ++i)
 	{
@@ -38,9 +19,30 @@ void Contact::add_to_system()
 	}
 }
 
-void Contact::remove_from_system()
+Contact::Contact(const std::vector<vec3>& va, const std::vector<vec3>& vb, int iCnum, const vec3& N, float t, RigidBody* ba, RigidBody* bb)
 {
+	iNumContacts = 0;
+	contacts.clear();
+	bodies[0] = ba;
+	bodies[1] = bb;
+	normal = N;
+	t_ = t;
+
+	for (int i = 0; i < maxContacts; ++i)
+	{
+		std::vector<vec3> v;
+		v.emplace_back();
+		v.emplace_back();
+		contacts.emplace_back(v);
+	}
+
+	for (int i = 0; i < iCnum; i++)
+	{
+		add_contact_pair(va[i], vb[i]);
+	}
 }
+
+Contact::~Contact() {}
 
 void Contact::reset()
 {
