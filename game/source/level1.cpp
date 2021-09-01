@@ -18,8 +18,8 @@ jeBegin
 void Level1::initialize()
 {
 	init_basic();
-	// init_player();
-	// init_block();
+	init_player();
+	//init_block();
 
 	// base init
 	Scene::initialize();
@@ -64,15 +64,14 @@ void Level1::init_player()
 {
 	// testing 2d renderer 
 	player = ObjectManager::create_object("player");
-	player->add_component<Sprite>();
+	auto* renderer = player->add_component<Sprite>();
 	player->add_component<DebugRenderer>();
 	PlayerController* controller = player->add_component<PlayerController>();
-	player->add_component<RigidBody>();
+	auto* rb = player->add_component<RigidBody>();
+	rb->collisionType_ = RigidBody::ColliderType::RECT;
 	// player->add_component<PlayerAttack>();
 
-	auto* renderer = player->get_component<Sprite>();
 	auto* trans = player->get_component<Transform>();
-	auto* rb = player->get_component<RigidBody>();
 	renderer->set_texture(AssetManager::get_texture("arrow"));
 	renderer->prjType = Renderer::ProjectType::PERSPECTIVE;
 

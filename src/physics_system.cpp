@@ -95,7 +95,6 @@ void PhysicsSystem::update(float dt)
 			b->add_force(gravity, dt);
 		}
 
-		// b->transform->position += b->displacement_;
 		b->update(dt);
 	}
 }

@@ -26,6 +26,7 @@ void EnvironmentSetter::init()
 	transform->scale.set(THICK, LENGTH, 0);
 	RigidBody* rigidbody = left_->add_component<RigidBody>();
 	rigidbody->isStatic = true;
+	rigidbody->collisionType_ = RigidBody::ColliderType::RECT;
 	SceneManager::get_current_scene()->register_object(left_);
 
 	right_ = ObjectManager::create_object("rightWall");
@@ -37,6 +38,7 @@ void EnvironmentSetter::init()
 	transform->scale.set(THICK, LENGTH, 0);
 	rigidbody = right_->add_component<RigidBody>();
 	rigidbody->isStatic = true;
+	rigidbody->collisionType_ = RigidBody::ColliderType::RECT;
 	SceneManager::get_current_scene()->register_object(right_);
 
 	top_ = ObjectManager::create_object("topWall");
@@ -48,6 +50,7 @@ void EnvironmentSetter::init()
 	transform->scale.set(LENGTH, THICK, 0);
 	rigidbody = top_->add_component<RigidBody>();
 	rigidbody->isStatic = true;
+	rigidbody->collisionType_ = RigidBody::ColliderType::RECT;
 	SceneManager::get_current_scene()->register_object(top_);
 
 	bottom_ = ObjectManager::create_object("bottomWall");
@@ -59,6 +62,7 @@ void EnvironmentSetter::init()
 	transform->scale.set(LENGTH, THICK, 0);
 	rigidbody = bottom_->add_component<RigidBody>();
 	rigidbody->isStatic = true;
+	rigidbody->collisionType_ = RigidBody::ColliderType::RECT;
 	SceneManager::get_current_scene()->register_object(bottom_);
 
 	owner_->add_child(left_);

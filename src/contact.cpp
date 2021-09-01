@@ -116,12 +116,12 @@ void Contact::resolve_overlap(const vec3& a, const vec3& b)
 	D0.set_zero();
 	D1.set_zero();
 
-	if (m0 > 0.0f)
+	if (m0 > 0.0f && !bodies[0]->isStatic)
 	{
 		D0 = D * (m0 / m);
 		bodies[0]->transform->position += D0;
 	}
-	if (m1 > 0.0f)
+	if (m1 > 0.0f && !bodies[1]->isStatic)
 	{
 		D1 = D * -(m1 / m);
 		bodies[1]->transform->position += D1;
