@@ -480,7 +480,7 @@ bool PhysicsSystem::check_collision(RigidBody* aBody, RigidBody* bBody, vec3& N,
 	mat3 aOrientation = aBody->orientation,
 		bOrientation = bBody->orientation;
 
-	// mat3 aTransposed = aOrientation.transposed();
+	mat3 aTransposed = aOrientation.transposed();
 	mat3 bTransposed = bOrientation.transposed();
 
 	vec3 relPos = (aPos - bPos) * bOrientation;
@@ -501,7 +501,7 @@ bool PhysicsSystem::check_collision(RigidBody* aBody, RigidBody* bBody, vec3& N,
 		{
 			return false;
 		}
-		++iAxes;
+		iAxes++;
 	}
 
 	// test separation axes of A
