@@ -28,22 +28,18 @@ class PhysicsSystem {
 	jePreventClone(PhysicsSystem)
 
 	friend class Scene;
-	// friend class Collider2D;
 	friend class RigidBody;
 	friend class Material;
 	friend class Contact;
 
 	using Bodies = std::vector<RigidBody*>;
-	// using Colliders = std::vector<Collider2D*>;
 
 public:
 
-	static bool is_collided(/*Collider2D* aCollider, Collider2D* bCollider,*/
-		RigidBody* aBody, RigidBody* bBody, vec3& N, float& t);
+	static bool check_collision(RigidBody* aBody, RigidBody* bBody, vec3& N, float& t);
 
 private:
 
-	// static void add_collider(Collider2D* collider);
 	static void add_rigidbody(RigidBody* rigidbody);
 
 	static void initialize();
@@ -58,7 +54,6 @@ private:
 	static float calculate_mass(const std::vector<vec3>& vertices, float density);
 	static float calculate_inertia(const std::vector<vec3>& vertices, float mass);
 
-	// static Colliders colliders_;
 	static Bodies bodies_;
 	static Material* contactMaterial_;
 };

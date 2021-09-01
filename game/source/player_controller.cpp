@@ -95,6 +95,7 @@ void PlayerController::rotate_mousebase(float dt)
 	float det = v3_horizon.x * v3_deg.y - v3_horizon.y * v3_deg.x; // determinant
 	float rad = atan2(det, dot);
 	transform_->set_euler_rad(z_axis * rad);
+	owner_->get_component<RigidBody>()->angOrientation = Math::rad_to_deg(rad);
 
 	if (InputHandler::key_triggered(KEY::MOUSE_LEFT))
 	{

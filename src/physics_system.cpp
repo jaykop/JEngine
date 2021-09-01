@@ -11,7 +11,6 @@ Contains the methods of PhysicsSystem class
 /******************************************************************************/
 
 #include <physics_system.hpp>
-// #include <collider_2d.hpp>
 #include <rigidbody.hpp>
 #include <object.hpp>
 #include <transform.hpp>
@@ -23,17 +22,10 @@ Contains the methods of PhysicsSystem class
 
 jeBegin
 
-// PhysicsSystem::Colliders PhysicsSystem::colliders_;
-PhysicsSystem::Bodies PhysicsSystem::bodies_;
 const int MAX_VERTICES = 64;
-Material* PhysicsSystem::contactMaterial_ = nullptr;
-
 const float fCoS = 0.5f, fCoR = 0.7f, fCoF = 0.3f;
-
-//void PhysicsSystem::add_collider(Collider2D* collider)
-//{
-//	colliders_.emplace_back(collider);
-//}
+PhysicsSystem::Bodies PhysicsSystem::bodies_;
+Material* PhysicsSystem::contactMaterial_ = nullptr;
 
 void PhysicsSystem::add_rigidbody(RigidBody* rigidbody)
 {
@@ -67,16 +59,7 @@ void PhysicsSystem::update(float dt)
 			vec3 N;
 			float t = 1.0f;
 
-			// RigidBody* aBody = colliders_[i]->get_owner()->get_component<RigidBody>();
-			// RigidBody* bBody = colliders_[j]->get_owner()->get_component<RigidBody>();
-
-			if (is_collided(/*colliders_[i], colliders_[j], */bodies_[i], bodies_[j], N, t))
-			{
-				/*if (t < 0.f)
-					bodies_[i]->process_overlap(bodies_[j], N * -t);
-				else
-					bodies_[i]->process_collision(bodies_[j], N, t);*/
-			}
+			check_collision(bodies_[i], bodies_[j], N, t);
 		}
 	}
 
@@ -117,7 +100,7 @@ bool PhysicsSystem::interval_intersect(const std::vector<vec3>& A, const std::ve
 {
 	float min0, max0;
 	float min1, max1;
-	get_interval(A, xOrient * xAxis, min0, max0);
+	get_interval(A, xAxis * xOrient, min0, max0);
 	get_interval(B, xAxis, min1, max1);
 
 	float h = xOffset.dot(xAxis);
@@ -382,7 +365,7 @@ bool convert_support_points_to_contacts(const vec3& N,
 
 vec3 transform(const vec3& Vertex, const vec3& P, const vec3& V, const mat3& xOrient, float t)
 {
-	vec3 T = P + (Vertex * xOrient);
+	vec3 T = P + (xOrient * Vertex);
 
 	if (t > 0.0f)
 		T += V * t;
@@ -475,7 +458,7 @@ bool find_contacts(
 	return true;
 }
 
-bool PhysicsSystem::is_collided(/*Collider2D* a, Collider2D* b, */RigidBody* aBody, RigidBody* bBody, vec3& N, float& t)
+bool PhysicsSystem::check_collision(RigidBody* aBody, RigidBody* bBody, vec3& N, float& t)
 {
 	if (aBody->isStatic && bBody->isStatic) return false;
 
@@ -488,14 +471,14 @@ bool PhysicsSystem::is_collided(/*Collider2D* a, Collider2D* b, */RigidBody* aBo
 	int aSize = static_cast<int>(aVertices.size());
 	int bSize = static_cast<int>(bVertices.size());
 
-	if (!aSize || !bSize) return false;
+	if ((!aSize || !bSize) || (aSize < 1 && bSize < 1)) return false;
 
 	const vec3& aPos = aBody->transform->position;
 	const vec3& bPos = bBody->transform->position;
 	const vec3& aVel = aBody->velocity;
 	const vec3& bVel = bBody->velocity;
-	mat3 aOrientation = mat3::identity,//a->transform->orientation.to_mat3(), 
-		bOrientation = mat3::identity;//b->transform->orientation.to_mat3();
+	mat3 aOrientation = aBody->orientation,
+		bOrientation = bBody->orientation;
 
 	mat3 aTransposed = aOrientation.transposed();
 	mat3 bTransposed = bOrientation.transposed();
