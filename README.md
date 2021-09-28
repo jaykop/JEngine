@@ -1,16 +1,17 @@
 # JEngine
 
-=================================  
 Personal Game Engine Project
 
-Using;
-C++
-OpenGL
-FMOD
-Assimp
-Freetype
-SDL
-
+Using;  
+C++  
+OpenGL  
+FMOD  
+Assimp  
+Freetype  
+SDL  
+  
+=================================  
+  
 **Todo List** 
 *Re-work on reflection and refraction
 *Update order of glsl mat mul
