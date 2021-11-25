@@ -33,6 +33,8 @@ public:
 	void set_density(float density);
 	void set_orientation(float orientation);
 
+	void remove_force();
+
 	bool isStatic = false;
 	Transform* transform;
 
@@ -60,9 +62,6 @@ private:
 
 	void initialize();
 	void update(float dt);
-
-	void process_collision(RigidBody* other, const vec3& N, float t);
-	void process_overlap(RigidBody* other, const vec3& xMTD);
 
 	void init_vertices();
 

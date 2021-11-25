@@ -56,10 +56,7 @@ void PhysicsSystem::update(float dt)
 				|| (bodies_[i]->isStatic && bodies_[j]->isStatic))
 				continue;
 
-			vec3 N;
-			float t = 1.0f;
-
-			check_collision(bodies_[i], bodies_[j], N, t);
+			check_collision(bodies_[i], bodies_[j], dt);
 		}
 	}
 
@@ -458,7 +455,7 @@ bool find_contacts(
 	return true;
 }
 
-bool PhysicsSystem::check_collision(RigidBody* aBody, RigidBody* bBody, vec3& N, float& t)
+bool PhysicsSystem::check_collision(RigidBody* aBody, RigidBody* bBody, float t)
 {
 	if (aBody->isStatic && bBody->isStatic) return false;
 
@@ -471,7 +468,7 @@ bool PhysicsSystem::check_collision(RigidBody* aBody, RigidBody* bBody, vec3& N,
 	int aSize = static_cast<int>(aVertices.size());
 	int bSize = static_cast<int>(bVertices.size());
 
-	if ((!aSize || !bSize) || (aSize < 1 && bSize < 1)) return false;
+	if ((!aSize || !bSize) || (aSize < 2 && bSize < 2)) return false;
 
 	const vec3& aPos = aBody->transform->position;
 	const vec3& bPos = bBody->transform->position;
@@ -560,6 +557,8 @@ bool PhysicsSystem::check_collision(RigidBody* aBody, RigidBody* bBody, vec3& N,
 		++iAxes;
 	}
 
+	vec3 N;
+
 	if (!find_MTD(xAxis, tAxis, iAxes, N, t))
 		return false;
 
@@ -567,7 +566,7 @@ bool PhysicsSystem::check_collision(RigidBody* aBody, RigidBody* bBody, vec3& N,
 	if (N.dot(relPos) < 0.0f)
 		N = -N;
 
-	N = relOrient * N;
+	N = bOrientation * N;
 
 	std::vector<vec3> CA(4, 0);
 	std::vector<vec3> CB(4, 0);

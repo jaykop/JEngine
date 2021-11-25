@@ -29,7 +29,7 @@ void PlayerController::init()
 
 	movementMode_ = MOVEMENT_MODE::IMPULSE;
 	speed = 1000.f;
-	// rotationMode_ = ;
+	rotationMode_ = ROTATION_MODE::KEYBOARD;
 }
 
 void PlayerController::update(float dt)
@@ -215,6 +215,10 @@ void PlayerController::move_impulsebase(float dt)
 	if (InputHandler::key_pressed(KEY::S))
 	{
 		direction = D_DOWN * dtSpeed;
+	}
+	if (InputHandler::key_pressed(KEY::SPACE))
+	{
+		body_->remove_force();
 	}
 
 	body_->add_force(direction * speed, dt);

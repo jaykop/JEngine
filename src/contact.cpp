@@ -181,8 +181,10 @@ void Contact::resolve_collision(const vec3& Ncoll, float t, float fCoF, float fC
 	//------------------------------------------------------------------------------------------------------
 	vec3 J, Jt, Jn;
 
-	float t0 = (R0.cross(Ncoll)).length() * (R0.cross(Ncoll)).length() * i0;
-	float t1 = (R1.cross(Ncoll)).length() * (R1.cross(Ncoll)).length() * i1;
+	float r0_mul = R0.cross(Ncoll).z;
+	float r1_mul = R1.cross(Ncoll).z;
+	float t0 = r0_mul * r0_mul * i0;
+	float t1 = r1_mul * r1_mul * i1;
 	float m = m0 + m1;
 
 	float denom = m + t0 + t1;
@@ -204,8 +206,8 @@ void Contact::resolve_collision(const vec3& Ncoll, float t, float fCoF, float fC
 	vec3 dV0 = J * m0;
 	vec3 dV1 = -J * m1;
 
-	float dw0 = -(R0.cross(J)).length() * i0; // (SIGN IS WRONG)
-	float dw1 = (R1.cross(J)).length() * i1; // (SIGN IS WRONG)
+	float dw0 = -(R0.cross(J).z) * i0; // (SIGN IS WRONG)
+	float dw1 = (R1.cross(J).z) * i1; // (SIGN IS WRONG)
 
 	//------------------------------------------------------------------------------------------------------
 	// apply changes in momentum

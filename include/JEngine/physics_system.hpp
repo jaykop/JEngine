@@ -36,7 +36,7 @@ class PhysicsSystem {
 
 public:
 
-	static bool check_collision(RigidBody* aBody, RigidBody* bBody, vec3& N, float& t);
+	static bool check_collision(RigidBody* aBody, RigidBody* bBody, float t);
 
 private:
 

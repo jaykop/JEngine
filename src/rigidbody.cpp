@@ -124,19 +124,23 @@ void RigidBody::init_vertices()
 {
 	vertices_.clear();
 
-	vec3 scale = transform->scale;
-	vec3 pos = transform->position;
-	float rad = transform->get_euler_rad().z;
+	vec3 scale = transform->scale * 0.5f;
 
-	vec3 lt(pos.x - scale.x, pos.y + scale.y, 0.f);
-	vec3 rt(pos.x + scale.x, pos.y + scale.y, 0.f);
-	vec3 rb(pos.x + scale.x, pos.y - scale.y, 0.f);
-	vec3 lb(pos.x - scale.x, pos.y - scale.y, 0.f);
+	vec3 lt(- scale.x, scale.y, 0.f);
+	vec3 rt(scale.x, scale.y, 0.f);
+	vec3 rb(scale.x, - scale.y, 0.f);
+	vec3 lb(- scale.x, - scale.y, 0.f);
 
-	vertices_.emplace_back(vec3::rotate(lt, pos, rad));
-	vertices_.emplace_back(vec3::rotate(rt, pos, rad));
-	vertices_.emplace_back(vec3::rotate(rb, pos, rad));
-	vertices_.emplace_back(vec3::rotate(lb, pos, rad));
+	vertices_.emplace_back(lt);
+	vertices_.emplace_back(rt);
+	vertices_.emplace_back(rb);
+	vertices_.emplace_back(lb);
+}
+
+void RigidBody::remove_force()
+{
+	velocity.set_zero();
+	angVelocity = 0.f;
 }
 
 jeEnd
