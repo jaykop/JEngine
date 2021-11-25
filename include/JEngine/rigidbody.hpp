@@ -50,7 +50,6 @@ public:
 	float angOrientation;
 
 	vec3 velocity;
-	mat3 orientation;
 
 protected:
 

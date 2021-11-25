@@ -195,7 +195,7 @@ void Contact::resolve_collision(const vec3& Ncoll, float t, float fCoF, float fC
 
 	if (Contact::useFriction)
 	{
-		Jt = Vt.normalized() * (fCoF * jn);
+		Jt = Vt.normalize() * (fCoF * jn);
 	}
 
 	J = Jn + Jt;
@@ -227,7 +227,7 @@ void Contact::resolve_collision(const vec3& Ncoll, float t, float fCoF, float fC
 		if (cone < fCoF)
 		{
 			// treat static friciton as a collision at the contact point
-			vec3 Nfriction = -Vt.normalized();
+			vec3 Nfriction = -Vt.normalize();
 			float fCoS = PhysicsSystem::contactMaterial_->staticFriction;
 
 			resolve_collision(Nfriction, 0.0f, 0.0f, fCoS,

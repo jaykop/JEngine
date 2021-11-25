@@ -29,7 +29,7 @@ class PhysicsSystem {
 
 	friend class Scene;
 	friend class RigidBody;
-	friend class Material;
+	friend struct Material;
 	friend class Contact;
 
 	using Bodies = std::vector<RigidBody*>;

@@ -45,7 +45,7 @@ void RigidBody::add_force(const vec3& f, const vec3& p)
 	if (isStatic) return;
 
 	netForce += f;
-	netTorque += ((p - transform->position).cross(f)).length();
+	netTorque += ((p - transform->position).cross(f)).z;
 }
 
 void RigidBody::set_density(float density)
@@ -64,7 +64,7 @@ void RigidBody::set_density(float density)
 void RigidBody::set_orientation(float angle)
 {
 	angOrientation = angle;
-	orientation = mat4::rotate_z(angOrientation).to_mat3();
+	transform->orientation = mat4::rotate_z(Math::deg_to_rad(angOrientation)).to_mat3();
 }
 
 float RigidBody::get_invInertia()
@@ -85,10 +85,11 @@ void RigidBody::update(float dt)
 	// Integrate position (verlet integration)
 	//-------------------------------------------------------
 	transform->position += velocity * dt;
+	angOrientation = Math::rad_to_deg(transform->orientation.get_euler().z);
 	angOrientation += angVelocity * dt;
-	if (angOrientation > Math::round) angOrientation -= Math::round;
-	else if (angOrientation < Math::zero) angOrientation += Math::round;
-	orientation = mat4::rotate_z(Math::deg_to_rad(angOrientation)).to_mat3();
+	if (angOrientation >= Math::round || angOrientation < Math::zero) 
+		angOrientation = fmod(angOrientation, Math::round);
+	transform->orientation = mat4::rotate_z(Math::deg_to_rad(angOrientation));
 
 	//-------------------------------------------------------
 	// Integrate velocity (implicit linear velocity)

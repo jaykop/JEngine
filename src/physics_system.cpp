@@ -17,6 +17,7 @@ Contains the methods of PhysicsSystem class
 #include <vec3.hpp>
 #include <material.hpp>
 #include <contact.hpp>
+#include <math_util.hpp>
 
 #include <iostream>
 
@@ -112,7 +113,7 @@ bool PhysicsSystem::interval_intersect(const std::vector<vec3>& A, const std::ve
 		float v = xVel.dot(xAxis);
 
 		// small velocity, so only the overlap test will be relevant. 
-		if (fabs(v) < 0.0000001f)
+		if (fabs(v) < Math::epsilon)
 			return false;
 
 		float t0 = -d0 / v; // time of impact to d0 reaches 0
@@ -207,7 +208,7 @@ float PhysicsSystem::calculate_mass(const std::vector<vec3>& vertices, float den
 	{
 		vec3 P0 = vertices[j];
 		vec3 P1 = vertices[i];
-		mass += (P0.cross(P1)).length();
+		mass += fabs((P0.cross(P1)).z);
 	}
 	if (size <= 2)
 		mass = 10.0f;
@@ -230,7 +231,7 @@ float PhysicsSystem::calculate_inertia(const std::vector<vec3>& vertices, float 
 		vec3 P0 = vertices[j];
 		vec3 P1 = vertices[i];
 
-		float a = (P0.cross(P1)).length();
+		float a = fabs((P0.cross(P1)).z);
 		float b = (P1.dot(P1) + P1.dot(P0) + P0.dot(P0));
 
 		denom += (a * b);
@@ -247,7 +248,8 @@ bool project_point_on_segment(const vec3& V, const vec3& A, const vec3& B, vec3&
 	vec3 AB = B - A;
 	float t = (AV.dot(AB)) / (AB.dot(AB));
 
-	if (t < 0.0f) t = 0.0f; else if (t > 1.0f) t = 1.0f;
+	if (t < 0.0f) t = 0.0f; 
+	else if (t > 1.0f) t = 1.0f;
 
 	if (pt)	*pt = t;
 
@@ -474,8 +476,8 @@ bool PhysicsSystem::check_collision(RigidBody* aBody, RigidBody* bBody, float t)
 	const vec3& bPos = bBody->transform->position;
 	const vec3& aVel = aBody->velocity;
 	const vec3& bVel = bBody->velocity;
-	mat3 aOrientation = aBody->orientation,
-		bOrientation = bBody->orientation;
+	mat3 aOrientation = aBody->transform->orientation.to_mat3(),
+		bOrientation = bBody->transform->orientation.to_mat3();
 
 	// mat3 aTransposed = aOrientation.transposed();
 	mat3 bTransposed = bOrientation.transposed();
