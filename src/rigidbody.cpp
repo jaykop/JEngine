@@ -116,9 +116,7 @@ void RigidBody::initialize()
 	set_density(density_);
 
 	angVelocity = 0.f; //frand(3.0f) + 1.0f;
-	angOrientation = 0.f;
-
-	set_orientation(0.0f);
+	set_orientation(transform->orientation.get_euler().z);
 }
 
 void RigidBody::init_vertices()
