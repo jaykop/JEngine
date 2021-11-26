@@ -64,7 +64,7 @@ void RigidBody::set_density(float density)
 void RigidBody::set_orientation(float angle)
 {
 	angOrientation = angle;
-	transform->orientation = mat4::rotate_z(Math::deg_to_rad(angOrientation)).to_mat3();
+	transform->orientation = mat4::rotate_z(Math::deg_to_rad(angOrientation));
 }
 
 float RigidBody::get_invInertia()
@@ -124,7 +124,7 @@ void RigidBody::initialize()
 	set_density(density_);
 
 	angVelocity = 0.f; //frand(3.0f) + 1.0f;
-	set_orientation(transform->orientation.get_euler().z);
+	set_orientation(Math::rad_to_deg(transform->orientation.get_euler().z));
 }
 
 void RigidBody::init_vertices()
