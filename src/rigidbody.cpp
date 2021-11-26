@@ -81,6 +81,14 @@ void RigidBody::update(float dt)
 		return;
 	}
 
+	else if (gravity != 0.f)
+	{
+		vec3 g;
+		g.y = -(gravity * mass);
+
+		add_force(g, dt);
+	}
+
 	//-------------------------------------------------------
 	// Integrate position (verlet integration)
 	//-------------------------------------------------------
@@ -125,10 +133,10 @@ void RigidBody::init_vertices()
 
 	vec3 scale = transform->scale * 0.5f;
 
-	vec3 lt(- scale.x, scale.y, 0.f);
-	vec3 rt(scale.x, scale.y, 0.f);
+	vec3 lb(-scale.x, -scale.y, 0.f);
 	vec3 rb(scale.x, - scale.y, 0.f);
-	vec3 lb(- scale.x, - scale.y, 0.f);
+	vec3 rt(scale.x, scale.y, 0.f);
+	vec3 lt(-scale.x, scale.y, 0.f);
 
 	vertices_.emplace_back(lt);
 	vertices_.emplace_back(rt);

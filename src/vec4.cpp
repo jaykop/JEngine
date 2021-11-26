@@ -66,7 +66,7 @@ float vec4::length_sq(void) const
 vec4& vec4::normalize(void)
 {
 	float len = length();
-
+	if (len == 0) return *this;
 	*this /= len;
 	return (*this);
 }
@@ -74,7 +74,7 @@ vec4& vec4::normalize(void)
 vec4 vec4::normalized(void) const
 {
 	float len = length();
-
+	if (len == 0) return *this;
 	return (*this / len);
 }
 

@@ -8,6 +8,7 @@ const vec2 vec2::zero = vec2(0.0f, 0.0f);
 const vec2 vec2::one = vec2(1.0f, 1.0f);
 
 vec2::vec2(void)
+	: x(0.f), y(0.f)
 {
 }
 
@@ -51,6 +52,7 @@ float vec2::length_sq(void) const
 vec2& vec2::normalize(void)
 {
 	float len = length();
+	if (len == 0) return *this;
 	*this /= len;
 	return (*this);
 }
@@ -58,6 +60,7 @@ vec2& vec2::normalize(void)
 vec2 vec2::normalized(void) const
 {
 	float len = length();
+	if (len == 0) return *this;
 	return (*this / len);
 }
 

@@ -62,16 +62,16 @@ void PlayerController::update(float dt)
 		break;
 	}
 
-	DebugRenderer* dr = owner_->get_component<DebugRenderer>();
-	if (InputHandler::key_triggered(MOUSE_LEFT))
-	{
-		vec3 hitPoint;
-		if (dr->picked(&hitPoint))
-			std::cout << "in\n";
-		else
-			std::cout << "out\n";
-		std::cout << hitPoint << "\n";
-	}
+	//DebugRenderer* dr = owner_->get_component<DebugRenderer>();
+	//if (InputHandler::key_triggered(MOUSE_LEFT))
+	//{
+	//	vec3 hitPoint;
+	//	if (dr->picked(&hitPoint))
+	//		std::cout << "in\n";
+	//	else
+	//		std::cout << "out\n";
+	//	std::cout << hitPoint << "\n";
+	//}
 
 	// fix_camera();
 }
@@ -99,7 +99,7 @@ void PlayerController::rotate_mousebase(float dt)
 
 	if (InputHandler::key_triggered(KEY::MOUSE_LEFT))
 	{
-		body_->add_force(v3_deg * speed * 100, dt);
+		body_->add_force(v3_deg * speed * 100);
 	}
 }
 
@@ -221,7 +221,7 @@ void PlayerController::move_impulsebase(float dt)
 		body_->remove_force();
 	}
 
-	body_->add_force(direction * speed, dt);
+	body_->add_force(direction * speed);
 }
 
 void PlayerController::fix_camera()

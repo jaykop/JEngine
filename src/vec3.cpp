@@ -71,6 +71,7 @@ float vec3::length_sq(void) const
 vec3& vec3::normalize(void)
 {
 	float len = length();
+	if (len == 0) return *this;
 	*this /= len;
 	return (*this);
 }
@@ -78,6 +79,7 @@ vec3& vec3::normalize(void)
 vec3 vec3::normalized(void) const
 {
 	float len = length();
+	if (len == 0) return *this;
 	return (*this / len);
 }
 

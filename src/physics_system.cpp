@@ -61,19 +61,6 @@ void PhysicsSystem::update(float dt)
 
 	for (const auto& b : bodies_)
 	{
-		if (b->isStatic)
-		{
-			// b->displacement_.set_zero();
-			continue;
-		}
-		else if (b->gravity != 0.f)
-		{
-			vec3 gravity;
-			gravity.y = -(b->gravity * b->mass);
-
-			b->add_force(gravity, dt);
-		}
-
 		b->update(dt);
 	}
 }
@@ -189,7 +176,7 @@ bool PhysicsSystem::find_MTD(vec3* xAxis, float* taxis, int iAxes, vec3& N, floa
 	}
 
 	if (mini == -1)
-		jeDebugPrint("Error\n");
+		jeDebugPrint("[PhysicsSystem::find_MTD] Error\n");
 
 	return (mini != -1);
 }

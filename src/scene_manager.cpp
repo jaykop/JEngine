@@ -77,14 +77,13 @@ void SceneManager::update(SDL_Event* event)
 		// Update the scene and systems
 		if (timeStack >= UPDATE) {
 
-			currentScene_->update(frameTime_); // update the current scene
+			currentScene_->update(timeStack); // update the current scene
 			SDL_GL_SwapWindow(window_);
 
 			InputHandler::mouse_refresh(*event); // refresh mouse wheel status
 
 			frames_ = 0;
-			timeStack -= UPDATE;
-			if (timeStack < 0) timeStack = 0.f;
+			timeStack = 0.f;
 		}
 
 		InputHandler::lock_triggered_keys();
