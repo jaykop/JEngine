@@ -46,16 +46,37 @@ void PhysicsSystem::update(float dt)
 	int size = static_cast<int>(bodies_.size());
 	for (int i = 0; i < size; ++i)
 	{
-		if (bodies_[i]->collisionType_ == RigidBody::ColliderType::NONE)
+		RigidBody::ColliderType aType = bodies_[i]->collisionType_;
+		if (aType == RigidBody::ColliderType::NONE)
 			continue;
 
 		for (int j = i + 1; j < size; ++j)
 		{
-			if (bodies_[j]->collisionType_ == RigidBody::ColliderType::NONE
+			RigidBody::ColliderType bType = bodies_[j]->collisionType_;
+			if (bType == RigidBody::ColliderType::NONE
 				|| (bodies_[i]->isStatic && bodies_[j]->isStatic))
 				continue;
 
-			check_collision(bodies_[i], bodies_[j], dt);
+			if (aType == RigidBody::ColliderType::RECT
+				&& bType == RigidBody::ColliderType::RECT)
+			{
+				check_collision(bodies_[i], bodies_[j], dt);
+			}
+			else if (aType == RigidBody::ColliderType::	CIRCLE
+				&& bType == RigidBody::ColliderType::RECT)
+			{
+				check_collision(bodies_[i], bodies_[j], dt);
+			}
+			else if (aType == RigidBody::ColliderType::RECT
+				&& bType == RigidBody::ColliderType::CIRCLE)
+			{
+				check_collision(bodies_[i], bodies_[j], dt);
+			}
+			else if (aType == RigidBody::ColliderType::CIRCLE
+				&& bType == RigidBody::ColliderType::CIRCLE)
+			{
+				check_collision(bodies_[i], bodies_[j], dt);
+			}
 		}
 	}
 
