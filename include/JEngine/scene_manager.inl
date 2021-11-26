@@ -14,19 +14,19 @@ template <typename SceneType>
 void SceneManager::set_next_scene()
 {
 	auto found = scenes_.find(typeid(SceneType).name());
-	DEBUG_ASSERT(found != scenes_.end(), "No such name of scene!\n");
+	DEBUG_ASSERT(found != scenes_.end(), "[SceneManager::set_next_scene] No such name of scene!\n");
 
 	// current state is the state
 	if (!strcmp(currentScene_->name_.c_str(), found->first))
 	{
-		jeDebugPrint("Cannot set the current scene as the next scene\n");
+		jeDebugPrint("[SceneManager::set_next_scene] Cannot set the current scene as the next scene\n");
 		return;
 	}
 
 	// if current scene is paused from other scene
 	if (currentScene_->prevScene_)
 	{
-		jeDebugPrint("Cannot change on a pause scene. Use resume_and_next function\n");
+		jeDebugPrint("[SceneManager::set_next_scene] Cannot change on a pause scene. Use resume_and_next function\n");
 		return;
 	}
 
@@ -38,7 +38,7 @@ template <typename SceneType>
 void SceneManager::resume_and_next()
 {
 	auto found = scenes_.find(typeid(SceneType).name());
-	DEBUG_ASSERT(found != scenes_.end(), "No such name of scene!\n");
+	DEBUG_ASSERT(found != scenes_.end(), "[SceneManager::resume_and_next] No such name of scene!\n");
 	nextScene_ = new SceneType(found->first, found->second);
 	status_ = Status::RESUME_AND_CHANGE;
 }
@@ -47,7 +47,7 @@ template <typename SceneType>
 void SceneManager::set_first_scene()
 {
 	auto found = scenes_.find(typeid(SceneType).name());
-	DEBUG_ASSERT(found != scenes_.end(), "No such name of scene!\n");
+	DEBUG_ASSERT(found != scenes_.end(), "[SceneManager::set_first_scene] No such name of scene!\n");
 	nextScene_ = currentScene_ = new SceneType(found->first, found->second);
 }
 
@@ -55,11 +55,11 @@ template <typename SceneType>
 void SceneManager::pause()
 {
 	auto found = scenes_.find(typeid(SceneType).name());
-	DEBUG_ASSERT(found != scenes_.end(), "No such name of scene!\n");
+	DEBUG_ASSERT(found != scenes_.end(), "[SceneManager::pause] No such name of scene!\n");
 	// current state is the state
 	if (!strcmp(currentScene_->name_.c_str(), found->first))
 	{
-		jeDebugPrint("Cannot set the current scene as the next scene\n");
+		jeDebugPrint("[SceneManager::pause] Cannot set the current scene as the next scene\n");
 		return;
 	}
 
@@ -78,7 +78,7 @@ bool SceneManager::has_scene()
 			return true;
 	}
 
-	jeDebugPrint("No such name of scene\n");
+	jeDebugPrint("[SceneManager::has_scene] No such name of scene\n");
 	return false;
 }
 

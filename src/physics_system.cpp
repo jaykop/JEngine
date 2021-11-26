@@ -44,16 +44,14 @@ void PhysicsSystem::initialize()
 void PhysicsSystem::update(float dt)
 {
 	int size = static_cast<int>(bodies_.size());
-	for (int i = 0; i < size - 1; ++i)
+	for (int i = 0; i < size; ++i)
 	{
-		RigidBody::ColliderType type1 = bodies_[i]->collisionType_;
-		if (type1 == RigidBody::ColliderType::NONE)
+		if (bodies_[i]->collisionType_ == RigidBody::ColliderType::NONE)
 			continue;
 
 		for (int j = i + 1; j < size; ++j)
 		{
-			RigidBody::ColliderType type2 = bodies_[j]->collisionType_;
-			if (type2 == RigidBody::ColliderType::NONE
+			if (bodies_[j]->collisionType_ == RigidBody::ColliderType::NONE
 				|| (bodies_[i]->isStatic && bodies_[j]->isStatic))
 				continue;
 
@@ -459,8 +457,6 @@ bool find_contacts(
 
 bool PhysicsSystem::check_collision(RigidBody* aBody, RigidBody* bBody, float t)
 {
-	if (aBody->isStatic && bBody->isStatic) return false;
-
 	// aBody->init_vertices();
 	// bBody->init_vertices();
 

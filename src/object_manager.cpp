@@ -24,7 +24,7 @@ Object* ObjectManager::create_object(const char* name)
 {
 	auto found = objects_->find(name);
 	if (found != objects_->end()) {
-		jeDebugPrint("The object with same name is already in the map!");
+		jeDebugPrint("[ObjectManager::create_object] The object with same name is already in the map!\n");
 		return nullptr;
 	}
 
@@ -39,7 +39,7 @@ Object* ObjectManager::create_object(const char* name)
 void ObjectManager::remove_object(const char* name)
 {
 	auto toRemove = objects_->find(name);
-	DEBUG_ASSERT(toRemove != objects_->end(), "No such name of object!");
+	DEBUG_ASSERT(toRemove != objects_->end(), "[ObjectManager::remove_object] No such name of object!\n");
 
 	// delete the instance
 	delete toRemove->second;
@@ -57,7 +57,7 @@ void ObjectManager::remove_object(Object* object)
 Object* ObjectManager::get_object(const char* name)
 {
 	auto toReturn = objects_->find(name);
-	DEBUG_ASSERT(toReturn != objects_->end(), "No such name of object!");
+	DEBUG_ASSERT(toReturn != objects_->end(), "[ObjectManager::get_object] No such name of object!\n");
 	return toReturn->second;
 }
 

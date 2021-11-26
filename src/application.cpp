@@ -258,7 +258,7 @@ void Application::gl_initialize()
 
 	// before using shader, initialize glew.
 #if defined(_DEBUG)
-	DEBUG_ASSERT(glewInit() == GLEW_OK, "Failed to initialize GLEW");
+	DEBUG_ASSERT(glewInit() == GLEW_OK, "Failed to initialize GLEW\n");
 #else
 	glewInit();
 #endif

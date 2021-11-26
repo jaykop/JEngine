@@ -235,7 +235,7 @@ void SceneManager::set_first_scene(const char* stateName)
 		return;
 	}
 
-	jeDebugPrint("No such name of scene\n");
+	jeDebugPrint("[SceneManager::set_first_scene] No such name of scene\n");
 }
 
 void SceneManager::set_next_scene(const char* nextState)
@@ -243,14 +243,14 @@ void SceneManager::set_next_scene(const char* nextState)
 	// current state is the state
 	if (!strcmp(currentScene_->name_.c_str(), nextState))
 	{
-		jeDebugPrint("Cannot set the current scene as the next scene\n");
+		jeDebugPrint("[SceneManager::set_next_scene] Cannot set the current scene as the next scene\n");
 		return;
 	}
 
 	// if current scene is paused from other scene
 	if (currentScene_->prevScene_)
 	{
-		jeDebugPrint("Cannot change on a pause scene. Use resume_and_next function\n");
+		jeDebugPrint("[SceneManager::set_next_scene] Cannot change on a pause scene. Use resume_and_next function\n");
 		return;
 	}
 
@@ -261,7 +261,7 @@ void SceneManager::set_next_scene(const char* nextState)
 		status_ = Status::CHANGE;
 		return;
 	}
-	jeDebugPrint("No such name of scene\n");
+	jeDebugPrint("[SceneManager::set_next_scene] No such name of scene\n");
 }
 
 void SceneManager::pause(const char* nextState)
@@ -269,7 +269,7 @@ void SceneManager::pause(const char* nextState)
 	// current state is the state
 	if (!strcmp(currentScene_->name_.c_str(), nextState))
 	{
-		jeDebugPrint("Cannot set the current scene as the next scene\n");
+		jeDebugPrint("[SceneManager::pause] Cannot set the current scene as the next scene\n");
 		return;
 	}
 
@@ -281,7 +281,7 @@ void SceneManager::pause(const char* nextState)
 		status_ = Status::PAUSE;
 		return;
 	}
-	jeDebugPrint("No such name of scene\n");
+	jeDebugPrint("[SceneManager::pause] No such name of scene\n");
 }
 
 void SceneManager::resume()
@@ -293,7 +293,7 @@ void SceneManager::resume()
 		return;
 	}
 
-	jeDebugPrint("No state to resume\n");
+	jeDebugPrint("[SceneManager::resume] No state to resume\n");
 }
 
 void SceneManager::resume_and_next(const char* nextState)
@@ -317,7 +317,7 @@ bool SceneManager::has_scene(const char* stateName)
 	if (found != scenes_.end())
 		return true;
 
-	jeDebugPrint("No such name of scene\n");
+	jeDebugPrint("[SceneManager::has_scene] No such name of scene\n");
 	return false;
 }
 

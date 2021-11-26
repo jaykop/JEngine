@@ -22,7 +22,7 @@ ComponentType* Object::add_component() {
 	const char* typeName = typeid(ComponentType).name();
 	auto found = components_.find(typeName);
 	if (found != components_.end()) {
-		jeDebugPrint("Trying to add an existing component!");
+		jeDebugPrint("[Object::add_component] Trying to add an existing component!\n");
 		return nullptr;
 	}
 
@@ -39,7 +39,7 @@ ComponentType* Object::get_component() {
 	auto found = components_.find(typeName);
 
 	if (found == components_.end()) {
-		jeDebugPrint("No such name of component!");
+		jeDebugPrint("[Object::get_component] No such name of component!\n");
 		return nullptr;
 	}
 
@@ -61,7 +61,7 @@ void Object::remove_component() {
 	const char* typeName = ComponentManager::key_to_type(typeid(ComponentType).name());
 	auto found = components_.find(typeName);
 
-	DEBUG_ASSERT(found != components_.end(), "No such name of component!");
+	DEBUG_ASSERT(found != components_.end(), "[Object::remove_component] No such name of component!\n");
 
 	delete found->second;
 	found->second = nullptr;

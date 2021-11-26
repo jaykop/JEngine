@@ -22,7 +22,7 @@ void Random::seed()
 {
 	// default boolean
 	static bool planted = false;
-	DEBUG_ASSERT(!planted, "Random seed has been set already!");
+	DEBUG_ASSERT(!planted, "Random seed has been set already!\n");
 
 	// seed only once
 	if (!planted) {
@@ -36,7 +36,7 @@ void Random::seed()
 
 int Random::get_rand_int(int min_i, int max_i)
 {
-	DEBUG_ASSERT(min_i <= max_i, "Wrong min and max values");
+	DEBUG_ASSERT(min_i <= max_i, "Wrong min and max values\n");
 	std::uniform_int_distribution<int> 	intRand(min_i, max_i);
 	return intRand(randObj_);
 }
@@ -49,7 +49,7 @@ bool Random::get_rand_bool(float probabilityOfTrue)
 
 float Random::get_rand_float(float min_f, float max_f)
 {
-	DEBUG_ASSERT(min_f <= max_f, "Wrong min and max values");
+	DEBUG_ASSERT(min_f <= max_f, "Wrong min and max values\n");
 	std::uniform_real_distribution<float> floatRand(min_f, max_f);
 	return floatRand(randObj_);
 }

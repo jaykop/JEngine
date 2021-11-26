@@ -63,7 +63,7 @@ namespace DebugTools
 #define DEBUG_CALL_CHECK()			\
 	static int functionCounter = 0; \
 	++functionCounter;				\
-	DEBUG_ASSERT(functionCounter == 1, "This function should be called only once");
+	DEBUG_ASSERT(functionCounter == 1, "This function should be called only once\n");
 
 #else
 //Debug Macros do nothing in release mode

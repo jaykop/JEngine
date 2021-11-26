@@ -25,7 +25,7 @@ Component* ComponentManager::create_component(const char* componentName,
 	// find component builder
 	auto found = builderMap_.find(componentName);
 	if (found == builderMap_.end()) {
-		jeDebugPrint("No such name of component");
+		jeDebugPrint("[ComponentManager::create_component] No such name of component\n");
 		return nullptr;
 	}
 	
@@ -36,7 +36,7 @@ Component* ComponentManager::create_component(const char* componentName,
 const char* ComponentManager::key_to_type(const char* name)
 {
 	auto found = types_.find(name);
-	DEBUG_ASSERT(found == types_.end(), "No such name of conmponent");
+	DEBUG_ASSERT(found == types_.end(), "[ComponentManager::key_to_type] No such name of conmponent\n");
 	return found->second.data();
 
 }
@@ -45,7 +45,7 @@ const char* ComponentManager::type_to_key(const char* type)
 {
 	auto found = keys_.find(type);
 	if (found == keys_.end()) {
-		jeDebugPrint("No such name of conmponent");
+		jeDebugPrint("[ComponentManager::type_to_key] No such name of conmponent\n");
 		return nullptr;
 	}
 	return found->second.data();

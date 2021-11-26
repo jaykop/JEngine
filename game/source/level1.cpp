@@ -65,14 +65,14 @@ void Level1::init_player()
 	// testing 2d renderer 
 	player = ObjectManager::create_object("player");
 	auto* renderer = player->add_component<Sprite>();
-	player->add_component<DebugRenderer>();
+	// player->add_component<DebugRenderer>();
 	PlayerController* controller = player->add_component<PlayerController>();
 	auto* rb = player->add_component<RigidBody>();
 	rb->collisionType_ = RigidBody::ColliderType::RECT;
 	// player->add_component<PlayerAttack>();
 
 	auto* trans = player->get_component<Transform>();
-	renderer->set_texture(AssetManager::get_texture("arrow"));
+	renderer->set_texture(AssetManager::get_texture("rect"));
 	renderer->prjType = Renderer::ProjectType::PERSPECTIVE;
 
 	trans->scale.set(10, 10, 0.f);

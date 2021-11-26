@@ -48,7 +48,7 @@ Component* Object::add_component(const char* componentName)
 	const char* typeName = ComponentManager::key_to_type(componentName);
 	const auto& found = components_.find(typeName);
 
-	DEBUG_ASSERT(found == components_.end(), "Trying to add an existing component!");
+	DEBUG_ASSERT(found == components_.end(), "[Object::add_component] Trying to add an existing component!\n");
 
 	Component* newComponent = ComponentManager::create_component(typeName, this);
 	components_.insert(Components::value_type(typeName, newComponent));
@@ -61,7 +61,7 @@ Component* Object::get_component(const char* componentName)
 	const char* typeName = ComponentManager::key_to_type(componentName);
 	const auto& found = components_.find(typeName);
 
-	DEBUG_ASSERT(found != components_.end(), "No such name of component!");
+	DEBUG_ASSERT(found != components_.end(), "[Object::get_component] No such name of component!\n");
 
 	return found->second;
 }
@@ -79,7 +79,7 @@ void Object::remove_component(const char* componentName)
 	const char* typeName = ComponentManager::key_to_type(componentName);
 	const auto& found = components_.find(typeName);
 
-	DEBUG_ASSERT(found != components_.end(), "No such name of component!");
+	DEBUG_ASSERT(found != components_.end(), "[Object::remove_component] No such name of component!\n");
 
 	delete found->second;
 	found->second = nullptr;
@@ -88,7 +88,7 @@ void Object::remove_component(const char* componentName)
 void Object::add_child(Object* child)
 {
 	const auto& found = children_.find(child->get_name());
-	DEBUG_ASSERT(found == children_.end(), "Trying to add an existing object!");
+	DEBUG_ASSERT(found == children_.end(), "[Object::add_child] Trying to add an existing object!\n");
 	children_.insert(Children::value_type(child->get_name(), child));
 	child->set_parent(this);
 }
@@ -107,7 +107,7 @@ bool Object::has_child(const char* name)
 Object* Object::get_child(const char* name)
 {
 	const auto& found = children_.find(name);
-	DEBUG_ASSERT(found != children_.end(), "No such child object!");
+	DEBUG_ASSERT(found != children_.end(), "[Object::get_child] No such child object!\n");
 	return found->second;
 }
 
