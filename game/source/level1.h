@@ -24,9 +24,11 @@ private:
 	void init_basic();
 	void init_player();
 	void init_block();
+	void init_hitplane();
 
 	Object* player = nullptr;
 	Object* block = nullptr;
+	Object* hitplane = nullptr;
 
 };
 

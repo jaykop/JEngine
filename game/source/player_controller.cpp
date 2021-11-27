@@ -29,7 +29,7 @@ void PlayerController::init()
 
 	movementMode_ = MOVEMENT_MODE::IMPULSE;
 	speed = 1000.f;
-	rotationMode_ = ROTATION_MODE::KEYBOARD;
+	rotationMode_ = ROTATION_MODE::MOUSE;
 }
 
 void PlayerController::update(float dt)
@@ -88,18 +88,18 @@ void PlayerController::rotate_mousebase(float dt)
 		return;
 	hitPoint.z = 0;
 
-	vec3 v3_deg = (hitPoint - transform_->position).normalized();
-	static const vec3 v3_horizon(1.f, 0.f, 0.f), z_axis(0, 0, 1.f);
+	vec3 v3_deg = (hitPoint - transform_->position);
+	//static const vec3 v3_horizon(1.f, 0.f, 0.f), z_axis(0, 0, 1.f);
 
-	float dot = v3_horizon.x * v3_deg.x + v3_horizon.y * v3_deg.y; // dot product
-	float det = v3_horizon.x * v3_deg.y - v3_horizon.y * v3_deg.x; // determinant
-	float rad = atan2(det, dot);
-	transform_->set_euler_rad(z_axis * rad);
-	owner_->get_component<RigidBody>()->angOrientation = Math::rad_to_deg(rad);
+	//float dot = v3_horizon.x * v3_deg.x + v3_horizon.y * v3_deg.y; // dot product
+	//float det = v3_horizon.x * v3_deg.y - v3_horizon.y * v3_deg.x; // determinant
+	//float rad = atan2(det, dot);
+	//transform_->set_euler_rad(z_axis * rad);
+	//owner_->get_component<RigidBody>()->angOrientation = Math::rad_to_deg(rad);
 
 	if (InputHandler::key_triggered(KEY::MOUSE_LEFT))
 	{
-		body_->add_force(v3_deg * speed * 100);
+		body_->add_force(v3_deg * speed);
 	}
 }
 

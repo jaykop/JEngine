@@ -47,4 +47,9 @@ namespace Math
 		float diff = lhs - rhs;
 		return (diff < epsilon && -diff < epsilon);
 	}
+
+	inline float wrap_angle(float angle)
+	{
+		return angle - round * floor(angle / round);
+	}
 }

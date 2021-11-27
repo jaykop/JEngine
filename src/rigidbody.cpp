@@ -38,14 +38,17 @@ void RigidBody::add_force(const vec3& f)
 		return;
 
 	netForce += f;
+	netForce.z = 0.f;
 }
 
 void RigidBody::add_force(const vec3& f, const vec3& p)
 {
 	if (isStatic) return;
 
+	vec3 force = f;
+	force.z = 0.f;
 	netForce += f;
-	netTorque += ((p - transform->position).cross(f)).z;
+	netTorque += ((p - transform->position).cross(force)).z;
 }
 
 void RigidBody::set_density(float density)
@@ -86,7 +89,7 @@ void RigidBody::update(float dt)
 		vec3 g;
 		g.y = -(gravity * mass);
 
-		add_force(g, dt);
+		add_force(g);
 	}
 
 	//-------------------------------------------------------
@@ -95,8 +98,7 @@ void RigidBody::update(float dt)
 	transform->position += velocity * dt;
 	angOrientation = Math::rad_to_deg(transform->orientation.get_euler().z);
 	angOrientation += angVelocity * dt;
-	if (angOrientation >= Math::round || angOrientation < Math::zero) 
-		angOrientation = fmod(angOrientation, Math::round);
+	angOrientation = Math::wrap_angle(angOrientation);
 	transform->orientation = mat4::rotate_z(Math::deg_to_rad(angOrientation));
 
 	//-------------------------------------------------------
@@ -144,10 +146,41 @@ void RigidBody::init_vertices()
 	vertices_.emplace_back(lb);
 }
 
+void RigidBody::add_collided(RigidBody* body)
+{
+	collided_.push_back(body);
+}
+
 void RigidBody::remove_force()
 {
 	velocity.set_zero();
 	angVelocity = 0.f;
+}
+
+bool RigidBody::is_collided()
+{
+	return !collided_.empty();
+}
+
+bool RigidBody::is_collided_with(RigidBody* body)
+{
+	for (auto& b : collided_)
+	{
+		if (b == body)
+			return true;
+	}
+
+	return false;
+}
+
+std::vector<RigidBody*> RigidBody::get_collided() const
+{
+	return collided_;
+}
+
+void RigidBody::clear_collided()
+{
+	collided_.clear();
 }
 
 jeEnd

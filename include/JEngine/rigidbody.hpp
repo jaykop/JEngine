@@ -35,6 +35,10 @@ public:
 
 	void remove_force();
 
+	bool is_collided();
+	bool is_collided_with(RigidBody* body);
+	std::vector<RigidBody*> get_collided() const;
+
 	bool isStatic = false;
 	Transform* transform;
 
@@ -64,12 +68,16 @@ private:
 
 	void init_vertices();
 
+	void add_collided(RigidBody* body);
+	void clear_collided();
+
 	float density_;
 	float netTorque;
 
 	vec3 netForce;
 
 	std::vector<vec3> vertices_;
+	std::vector<RigidBody*> collided_;
 };
 
 jeDeclareComponentBuilder(RigidBody);

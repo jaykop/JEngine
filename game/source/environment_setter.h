@@ -28,6 +28,8 @@ private:
 	EnvironmentSetter() = delete;
 
 	Object *left_, *right_, *top_, *bottom_;
+	RigidBody *lb_, *rb_, *tb_, *bb_;
+	Sprite* ls_, * rs_, * ts_, * bs_;
 
 };
 

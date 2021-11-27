@@ -43,6 +43,11 @@ void PhysicsSystem::initialize()
 
 void PhysicsSystem::update(float dt)
 {
+	for (const auto& b : bodies_)
+	{
+		b->clear_collided();
+	}
+
 	int size = static_cast<int>(bodies_.size());
 	for (int i = 0; i < size; ++i)
 	{
@@ -585,6 +590,10 @@ bool PhysicsSystem::check_collision(RigidBody* aBody, RigidBody* bBody, float t)
 
 	Contact xContact(CA, CB, Cnum, N, t, aBody, bBody);
 	xContact.solve();
+	
+	aBody->add_collided(bBody);
+	bBody->add_collided(aBody);
+
 	return true;
 }
 
