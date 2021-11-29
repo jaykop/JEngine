@@ -104,7 +104,7 @@ void Contact::resolve_collision(const vec3& a, const vec3& b)
 
 void Contact::resolve_overlap(const vec3& a, const vec3& b)
 {
-	/*float m0 = bodies[0]->get_invMass();
+	float m0 = bodies[0]->get_invMass();
 	float m1 = bodies[1]->get_invMass();
 	float m = m0 + m1;
 
@@ -123,9 +123,9 @@ void Contact::resolve_overlap(const vec3& a, const vec3& b)
 	{
 		D1 = D * -(m1 / m);
 		bodies[1]->transform->position += D1;
-	}*/
+	}
 
-	vec3 Fspring;
+	/*vec3 Fspring;
 	float spring_value = 10000.0f;
 	float spring_damper = 100.0f;
 
@@ -142,7 +142,7 @@ void Contact::resolve_overlap(const vec3& a, const vec3& b)
 		Fspring);
 
 	bodies[0]->add_force(a, Fspring);
-	bodies[1]->add_force(b, -Fspring);
+	bodies[1]->add_force(b, -Fspring);*/
 }
 
 void Contact::add_contact_pair(const vec3& a, const vec3& b)
@@ -160,12 +160,8 @@ void Contact::resolve_overlap(const vec3& Ncoll, float depth, float spring_value
 	const vec3& C1, const vec3& P1, vec3& V1, float w1,
 	vec3& Fspring)
 {
-	float tcoll = (depth > 0.0f) ? depth : 0.0f;
-
-	vec3 Q0 = P0 + V0 * tcoll;
-	vec3 Q1 = P1 + V1 * tcoll;
-	vec3 R0 = C0 - Q0;
-	vec3 R1 = C1 - Q1;
+	vec3 R0 = C0 - P0;
+	vec3 R1 = C1 - P1;
 	vec3 T0(-R0.y, R0.x, 0.f);
 	vec3 T1(-R1.y, R1.x, 0.f);
 	vec3 VP0 = V0 - T0 * w0; // point velocity (SIGN IS WRONG)
