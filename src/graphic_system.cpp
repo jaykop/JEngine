@@ -184,8 +184,8 @@ void GraphicSystem::initialize() {
 	{
 		skybox.textures[0] = AssetManager::get_texture("skybox_front");
 		skybox.textures[1] = AssetManager::get_texture("skybox_back");
-		skybox.textures[2] = AssetManager::get_texture("skybox_right");
-		skybox.textures[3] = AssetManager::get_texture("skybox_left");
+		skybox.textures[2] = AssetManager::get_texture("skybox_left");
+		skybox.textures[3] = AssetManager::get_texture("skybox_right");
 		skybox.textures[4] = AssetManager::get_texture("skybox_top");
 		skybox.textures[5] = AssetManager::get_texture("skybox_bottom");
 	}
@@ -208,6 +208,7 @@ void GraphicSystem::update(float dt) {
 
 	// cull out invisible face
 	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
 
 	// copy all the renderers
 	render_copy(dt);
@@ -413,13 +414,22 @@ void GraphicSystem::render_copy(float dt)
 		// render skybox
 		if (skybox.render)
 			render_skybox();
-
+		
 		// update lights
 		update_lights(dt);
 
 		// update renderers
 		for (auto& r : renderers_)
-			r->draw(dt);
+		{
+			auto status = r->status;
+			bool reflected = (status & Renderer::IS_REFLECTED) == Renderer::IS_REFLECTED;
+			bool refracted = (status & Renderer::IS_REFRACTED) == Renderer::IS_REFRACTED;
+
+			if (!reflected && !refracted)
+			{
+				r->draw(dt);
+			}
+		}
 
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, 
 			environmentTextures_[copyIndex_], 0);

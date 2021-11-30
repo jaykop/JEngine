@@ -16,28 +16,28 @@ vec3 PlanarUV(vec3 vInput, vec3 viewPos)
 	
 	vec3 uv = vec3(0.5) + 0.5 * diff/m;
 			
-	if (m == mag.x) {
+	if (mag.x > mag.y && mag.x > mag.z) {
 	
 		vec2 leftUV = vec2(1-uv.z, 1-uv.y);
 		vec2 rightUV = vec2(uv.z, 1-uv.y);
 		
-		if (diff.x > 0) 
-			return vec3(texture(sampler[2], rightUV));
+		if (viewPos.x - vInput.x > 0) 
+			return vec3(texture(sampler[3], leftUV));
 		
 		else 
-			return vec3(texture(sampler[3], leftUV));
+			return vec3(texture(sampler[2], rightUV));
 	}
 	
-	else if (m == mag.y) {
+	else if (mag.y > mag.z) {
 		
-		vec2 downUV = vec2(uv.x, uv.z);
-		vec2 upUV = vec2(uv.x, 1-uv.z);
+		vec2 downUV = vec2(1-uv.z, uv.x);
+		vec2 upUV = vec2(1-uv.z, 1-uv.x);
 		
-		if (diff.y > 0)
-			return vec3(texture(sampler[4], upUV));
+		if (viewPos.y - vInput.y > 0)
+			return vec3(texture(sampler[5], downUV));
 		
 		else
-			return vec3(texture(sampler[5], downUV));
+			return vec3(texture(sampler[4], upUV));
 	}
  
 	else {
@@ -45,11 +45,11 @@ vec3 PlanarUV(vec3 vInput, vec3 viewPos)
 		vec2 frontUV = vec2(uv.x, 1-uv.y);
 		vec2 backUV = vec2(1-uv.x, 1-uv.y);
 		
-		if (diff.z > 0)
-			return vec3(texture(sampler[1], backUV));
+		if (viewPos.z - vInput.z > 0)
+			return vec3(texture(sampler[0], frontUV));
 		
 		else {
-			return vec3(texture(sampler[0], frontUV));
+			return vec3(texture(sampler[1], backUV));
 		}
 	}
 }
