@@ -583,16 +583,23 @@ bool PhysicsSystem::check_collision(RigidBody* aBody, RigidBody* bBody, float t)
 	std::vector<vec3> CB(4, 0);
 	int Cnum;
 
-	find_contacts(
+	bool foundContacts = find_contacts(
 		aVertices, aPos, aVel, aOrientation,
 		bVertices, bPos, bVel, bOrientation,
 		N, t, CA, CB, Cnum);
 
-	Contact xContact(CA, CB, Cnum, N, t, aBody, bBody);
-	xContact.solve();
-	
-	aBody->add_collided(bBody);
-	bBody->add_collided(aBody);
+	if (foundContacts)
+	{
+		if (aBody->collisionType_ != RigidBody::ColliderType::GHOST
+			&& bBody->collisionType_ != RigidBody::ColliderType::GHOST)
+		{
+			Contact xContact(CA, CB, Cnum, N, t, aBody, bBody);
+			xContact.solve();
+		}
+
+		aBody->add_collided(bBody);
+		bBody->add_collided(aBody);
+	}
 
 	return true;
 }
