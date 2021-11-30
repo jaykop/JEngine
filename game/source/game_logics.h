@@ -13,3 +13,5 @@
 #include "player_attack.h"
 #include "bullet_logic.h"
 #include "environment_setter.h"
+#include "topdown_controller.h"
+#include "camera_controller.h"

@@ -1,0 +1,31 @@
+{
+	"Font": [
+		{
+			"Key": "JKDot",
+			"Directory": "resource/font/JKDot.ttf",
+			"Size": 48
+		}
+	],
+
+	"Texture": [
+
+	],
+	
+	"Skybox" : [
+
+	],
+	
+	"Model": [
+	
+	
+	],
+
+	"Audio": [
+
+	],
+
+	"Background": [ 0.1, 0.1, 0.1, 1 ],
+	"Screen": [ 1.0, 1.0, 1.0, 1.0 ],
+	"Effect": { "Type": "None" },
+	"Object": [	]
+}

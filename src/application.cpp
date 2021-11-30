@@ -132,7 +132,7 @@ bool Application::initialize()
 	// initialize components and assets
 	AssetManager::load_shaders();
 	AssetManager::set_bulit_in_components();
-	AssetManager::load3dAssets_ = false; // not load default 3d assets
+	AssetManager::load3dAssets_ = true; // not load default 3d assets
 	AssetManager::load_assets();
 
 	// initialize key map

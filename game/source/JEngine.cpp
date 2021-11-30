@@ -21,6 +21,8 @@ void JEngine::register_builders()
 	jeRegisterComponent(PlayerController);
 	jeRegisterComponent(PlayerAttack);
 	jeRegisterComponent(BulletLogic);
+	jeRegisterComponent(CameraController);
+	jeRegisterComponent(TopDownController);
 }
 
 void JEngine::register_scenes()
@@ -31,9 +33,15 @@ void JEngine::register_scenes()
 	SceneManager::register_scene<Level1>("resource/scene/level1.json");
 	SceneManager::register_scene<Level2>("resource/scene/level2.json");
 	SceneManager::register_scene<Level3>("resource/scene/level3.json");
+	SceneManager::register_scene<Level4>("resource/scene/level4.json");
+	SceneManager::register_scene<Level5>("resource/scene/level5.json");
+	SceneManager::register_scene<Level6>("resource/scene/level6.json");
+	SceneManager::register_scene<Level7>("resource/scene/level7.json");
+	SceneManager::register_scene<Level8>("resource/scene/level8.json");
+	SceneManager::register_scene<Level9>("resource/scene/level9.json");
 
 	// set the first scene
-	SceneManager::set_first_scene<Level1>();
+	SceneManager::set_first_scene<Level6>();
 }
 
 bool JEngine::register_assets()

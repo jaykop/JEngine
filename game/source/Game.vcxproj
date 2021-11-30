@@ -212,11 +212,18 @@ xcopy /y /s /i "$(ProjectDir)..\default" "$(TargetDir)..\default"</Command>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="bullet_logic.cpp" />
+    <ClCompile Include="camera_controller.cpp" />
     <ClCompile Include="environment_setter.cpp" />
     <ClCompile Include="JEngine.cpp" />
     <ClCompile Include="level1.cpp" />
     <ClCompile Include="level2.cpp" />
     <ClCompile Include="level3.cpp" />
+    <ClCompile Include="level4.cpp" />
+    <ClCompile Include="level5.cpp" />
+    <ClCompile Include="level6.cpp" />
+    <ClCompile Include="level7.cpp" />
+    <ClCompile Include="level8.cpp" />
+    <ClCompile Include="level9.cpp" />
     <ClCompile Include="license.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="pause.cpp" />
@@ -225,9 +232,11 @@ xcopy /y /s /i "$(ProjectDir)..\default" "$(TargetDir)..\default"</Command>
     <ClCompile Include="player_controller.cpp" />
     <ClCompile Include="particle_conrtoller.cpp" />
     <ClCompile Include="script_controller.cpp" />
+    <ClCompile Include="topdown_controller.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bullet_logic.h" />
+    <ClInclude Include="camera_controller.h" />
     <ClInclude Include="environment_setter.h" />
     <ClInclude Include="game_logics.h" />
     <ClInclude Include="game_scenes.h" />
@@ -235,6 +244,12 @@ xcopy /y /s /i "$(ProjectDir)..\default" "$(TargetDir)..\default"</Command>
     <ClInclude Include="level1.h" />
     <ClInclude Include="level2.h" />
     <ClInclude Include="level3.h" />
+    <ClInclude Include="level4.h" />
+    <ClInclude Include="level5.h" />
+    <ClInclude Include="level6.h" />
+    <ClInclude Include="level7.h" />
+    <ClInclude Include="level8.h" />
+    <ClInclude Include="level9.h" />
     <ClInclude Include="license.h" />
     <ClInclude Include="pause.h" />
     <ClInclude Include="pch.h" />
@@ -243,6 +258,7 @@ xcopy /y /s /i "$(ProjectDir)..\default" "$(TargetDir)..\default"</Command>
     <ClInclude Include="player_controller.h" />
     <ClInclude Include="particle_conrtoller.h" />
     <ClInclude Include="script_controller.h" />
+    <ClInclude Include="topdown_controller.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
