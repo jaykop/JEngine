@@ -18,7 +18,7 @@ jeBegin
 void Level3::initialize()
 {
 	init_basic();
-	init_sprite();
+	//init_sprite();
 	//init_block();
 
 	// base init
@@ -87,35 +87,6 @@ void Level3::init_basic()
 	sprite->prjType = Renderer::ProjectType::ORTHOGONAL;
 
 	register_object(scriptController);
-}
-
-void Level3::init_sprite()
-{
-	// testing 2d renderer 
-	player = ObjectManager::create_object("player");
-	player->add_component<Sprite>();
-	player->add_component<DebugRenderer>();
-	player->add_component<PlayerController>();
-	player->add_component<RigidBody>();
-	player->add_component<PlayerAttack>();
-
-	auto* renderer = player->get_component<Sprite>();
-	auto* animation = player->get_component<Animation2D>();
-	auto* trans = player->get_component<Transform>();
-	auto* rb = player->get_component<RigidBody>();
-	renderer->set_texture(AssetManager::get_texture("arrow"));
-	renderer->prjType = Renderer::ProjectType::PERSPECTIVE;
-	// rb->isStatic = false;
-	// renderer->status |= Renderer::IS_BILBOARD;
-
-	/*animation->activate(true);
-	animation->set_frame(8);
-	animation->set_speed(10.f);*/
-
-	// animation->fix_frame(0);
-	trans->scale.set(10, 10, 0.f);
-	trans->position.set(-10, 10, 0);
-	register_object(player);
 }
 
 void Level3::init_block()

@@ -33,14 +33,14 @@ void SceneController::update(float /*dt*/)
 	if (InputHandler::key_triggered(KEY::NUM_0))
 		SceneManager::restart();
 
-	if (InputHandler::key_triggered(KEY::NUM_1) && 
-		SceneManager::get_current_scene()->get_name() != "Level1")
-	{
-		if (SceneManager::is_paused())
-			SceneManager::resume_and_next<Level1>();
-		else
-			SceneManager::set_next_scene<Level1>();
-	}
+	//if (InputHandler::key_triggered(KEY::NUM_1) && 
+	//	SceneManager::get_current_scene()->get_name() != "Level1")
+	//{
+	//	if (SceneManager::is_paused())
+	//		SceneManager::resume_and_next<Level1>();
+	//	else
+	//		SceneManager::set_next_scene<Level1>();
+	//}
 
 	if (InputHandler::key_triggered(KEY::NUM_2) &&
 		SceneManager::get_current_scene()->get_name() != "Level2")

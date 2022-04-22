@@ -27,26 +27,11 @@
     <ClInclude Include="scene_controller.h">
       <Filter>game_logics</Filter>
     </ClInclude>
-    <ClInclude Include="particle_conrtoller.h">
-      <Filter>game_logics</Filter>
-    </ClInclude>
-    <ClInclude Include="level1.h">
-      <Filter>game_scene</Filter>
-    </ClInclude>
     <ClInclude Include="license.h">
       <Filter>game_scene</Filter>
     </ClInclude>
     <ClInclude Include="pause.h">
       <Filter>game_scene</Filter>
-    </ClInclude>
-    <ClInclude Include="player_attack.h">
-      <Filter>game_logics</Filter>
-    </ClInclude>
-    <ClInclude Include="player_controller.h">
-      <Filter>game_logics</Filter>
-    </ClInclude>
-    <ClInclude Include="bullet_logic.h">
-      <Filter>game_logics</Filter>
     </ClInclude>
     <ClInclude Include="script_controller.h">
       <Filter>game_logics</Filter>
@@ -57,31 +42,13 @@
     <ClInclude Include="level3.h">
       <Filter>game_scene</Filter>
     </ClInclude>
-    <ClInclude Include="environment_setter.h">
-      <Filter>game_logics</Filter>
-    </ClInclude>
-    <ClInclude Include="level4.h">
-      <Filter>game_scene</Filter>
-    </ClInclude>
-    <ClInclude Include="level5.h">
-      <Filter>game_scene</Filter>
-    </ClInclude>
-    <ClInclude Include="level6.h">
-      <Filter>game_scene</Filter>
-    </ClInclude>
     <ClInclude Include="level7.h">
       <Filter>game_scene</Filter>
     </ClInclude>
     <ClInclude Include="level8.h">
       <Filter>game_scene</Filter>
     </ClInclude>
-    <ClInclude Include="level9.h">
-      <Filter>game_scene</Filter>
-    </ClInclude>
     <ClInclude Include="camera_controller.h">
-      <Filter>game_logics</Filter>
-    </ClInclude>
-    <ClInclude Include="topdown_controller.h">
       <Filter>game_logics</Filter>
     </ClInclude>
   </ItemGroup>
@@ -95,26 +62,11 @@
     <ClCompile Include="scene_controller.cpp">
       <Filter>game_logics</Filter>
     </ClCompile>
-    <ClCompile Include="particle_conrtoller.cpp">
-      <Filter>game_logics</Filter>
-    </ClCompile>
-    <ClCompile Include="level1.cpp">
-      <Filter>game_scene</Filter>
-    </ClCompile>
     <ClCompile Include="license.cpp">
       <Filter>game_scene</Filter>
     </ClCompile>
     <ClCompile Include="pause.cpp">
       <Filter>game_scene</Filter>
-    </ClCompile>
-    <ClCompile Include="player_attack.cpp">
-      <Filter>game_logics</Filter>
-    </ClCompile>
-    <ClCompile Include="player_controller.cpp">
-      <Filter>game_logics</Filter>
-    </ClCompile>
-    <ClCompile Include="bullet_logic.cpp">
-      <Filter>game_logics</Filter>
     </ClCompile>
     <ClCompile Include="script_controller.cpp">
       <Filter>game_logics</Filter>
@@ -125,31 +77,13 @@
     <ClCompile Include="level3.cpp">
       <Filter>game_scene</Filter>
     </ClCompile>
-    <ClCompile Include="environment_setter.cpp">
-      <Filter>game_logics</Filter>
-    </ClCompile>
-    <ClCompile Include="level4.cpp">
-      <Filter>game_scene</Filter>
-    </ClCompile>
-    <ClCompile Include="level5.cpp">
-      <Filter>game_scene</Filter>
-    </ClCompile>
-    <ClCompile Include="level6.cpp">
-      <Filter>game_scene</Filter>
-    </ClCompile>
     <ClCompile Include="level7.cpp">
       <Filter>game_scene</Filter>
     </ClCompile>
     <ClCompile Include="level8.cpp">
       <Filter>game_scene</Filter>
     </ClCompile>
-    <ClCompile Include="level9.cpp">
-      <Filter>game_scene</Filter>
-    </ClCompile>
     <ClCompile Include="camera_controller.cpp">
-      <Filter>game_logics</Filter>
-    </ClCompile>
-    <ClCompile Include="topdown_controller.cpp">
       <Filter>game_logics</Filter>
     </ClCompile>
   </ItemGroup>

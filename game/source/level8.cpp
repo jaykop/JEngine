@@ -32,7 +32,6 @@ void Level8::init_basic()
 	// add camera
 	Object* camera = ObjectManager::create_object("main_camera");
 	camera->add_component<Camera>();
-	camera->add_component<CameraController>();
 	camera->get_component<Camera>()->position = vec3(0.f, 0.f, 100.f);
 	register_object(camera);
 
