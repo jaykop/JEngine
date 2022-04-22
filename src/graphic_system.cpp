@@ -30,18 +30,18 @@ jeBegin
 
 
 static std::vector<float> particleVertices = {
-	-0.5f, -0.5f, 0.0f,
-	0.5f, -0.5f, 0.0f,
-	-0.5f,  0.5f, 0.0f,
-	0.5f,  0.5f, 0.0f,
+	-01.f, -01.f, 0.0f,
+	01.f, -01.f, 0.0f,
+	-01.f,  01.f, 0.0f,
+	01.f,  01.f, 0.0f,
 };
 
 const std::vector<float> quadVertices =
 {
-	-.5f, .5f, 0.0f, 0.f, 0.f, 1.f, 0.0f, 0.0f ,
-	-.5f, -.5f, 0.0f, 0.f, 0.f, 1.f, 0.0f, 1.0f,
-	.5f, -.5f, 0.0f, 0.f, 0.f, 1.f, 1.0f, 1.0f,
-	.5f,  .5f, 0.0f, 0.f, 0.f, 1.f, 1.0f, 0.0f
+	-1.f, 1.f, 0.0f, 0.f, 0.f, 1.f, 0.0f, 0.0f ,
+	-1.f, -1.f, 0.0f, 0.f, 0.f, 1.f, 0.0f, 1.0f,
+	1.f, -1.f, 0.0f, 0.f, 0.f, 1.f, 1.0f, 1.0f,
+	1.f,  1.f, 0.0f, 0.f, 0.f, 1.f, 1.0f, 0.0f
 };
 const std::vector<unsigned> quadIndices = { 2, 0, 1, 2, 3, 0 };
 
@@ -90,14 +90,23 @@ std::vector<float> cubeVertices =
 	-1.0f, -1.0f,  1.0f,
 	1.0f, -1.0f,  1.0f*/
 
-	 -.5f, -.5f, -.5f,
-	 -.5f, -.5f, .5f,
-	 -.5f, .5f, -.5f,
-	 -.5f, .5f, .5f,
-	 .5f, -.5f, -.5f,
-	 .5f, -.5f, .5f,
-	 .5f, .5f, -.5f,
-	 .5f, .5f, .5f
+	 //-1.f, -1.f, -1.f,
+	 //-1.f, -1.f, 1.f,
+	 //-1.f, 1.f, -1.f,
+	 //-1.f, 1.f, 1.f,
+	 //1.f, -1.f, -1.f,
+	 //1.f, -1.f, 1.f,
+	 //1.f, 1.f, -1.f,
+	 //1.f, 1.f, 1.f
+
+	- 1.f, -1.f, -1.f,
+	 -1.f, -1.f, 1.f,
+	 -1.f, 1.f, -1.f,
+	 -1.f, 1.f, 1.f,
+	 1.f, -1.f, -1.f,
+	 1.f, -1.f, 1.f,
+	 1.f, 1.f, -1.f,
+	 1.f, 1.f, 1.f
 };
 const unsigned cubeVerticesSize = 108;
 
@@ -537,7 +546,7 @@ void GraphicSystem::update_lights(float dt)
 			float lightLinear = lights_[i]->linear;
 			float lightQuadratic = lights_[i]->quadratic;
 			//float lightRadius = (-lightLinear + std::sqrtf(lightLinear * lightLinear
-			//	- 4 * lightQuadratic * (lightConstant - (256.f / 5.f) * lightMax))) * 0.5f * lightQuadratic;
+			//	- 4 * lightQuadratic * (lightConstant - (256.f / 5.f) * lightMax))) * 01.f * lightQuadratic;
 
 			// Update light direction
 			shader->set_int((str + type).c_str(), static_cast<int>(lights_[i]->type));
@@ -578,7 +587,7 @@ void GraphicSystem::update_lights(float dt)
 			float lightLinear = lights_[i]->linear;
 			float lightQuadratic = lights_[i]->quadratic;
 			//float lightRadius = (-lightLinear + std::sqrtf(lightLinear * lightLinear
-			//	- 4 * lightQuadratic * (lightConstant - (256.f / 5.f) * lightMax))) * 0.5f * lightQuadratic;
+			//	- 4 * lightQuadratic * (lightConstant - (256.f / 5.f) * lightMax))) * 01.f * lightQuadratic;
 
 			// Update light direction
 			shader->set_int((str + type).c_str(), static_cast<int>(lights_[i]->type));

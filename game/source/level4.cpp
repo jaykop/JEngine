@@ -16,7 +16,7 @@ void Level4::initialize()
 	// base init
 	Scene::initialize();
 
-	GraphicSystem::skybox.scale = 1.f;
+	GraphicSystem::skybox.scale = 2.f;
 	GraphicSystem::skybox.render = true;
 }
 

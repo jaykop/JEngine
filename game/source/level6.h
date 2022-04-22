@@ -24,6 +24,7 @@ private:
 	void init_basic();
 	void init_models();
 
+	Object* camera_, * Obj_;
 };
 
 jeEnd
