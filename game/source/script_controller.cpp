@@ -18,14 +18,18 @@ ScriptController::~ScriptController()
 void ScriptController::init()
 {
 	transform_ = owner_->get_component<Transform>();
-	transform_->scale.set(1,1,0);
+	transform_->position.y = -GraphicSystem::get_height() * 0.25;
+	transform_->scale.set(
+		GraphicSystem::get_width() * 0.2f, 
+		GraphicSystem::get_height() * 0.125f, 
+		0);
 
 	sprite_ = owner_->get_component<Sprite>();
 
 	Object* txtChild = ObjectManager::create_object("ScriptText");
 	Transform* childTransform = txtChild->get_component<Transform>();
-	childTransform->scale.set(.75f, .75f, 1.f);
-	childTransform->position.set(-0.45f * GraphicSystem::get_width(), -0.3f * GraphicSystem::get_height(), 1.f);
+	childTransform->scale.set(0.01f, 0.01f, 1.f);
+	childTransform->position.set(0, 0, 1.f);
 	text_ = txtChild->add_component<Text>();
 	text_->set_font(AssetManager::get_font("default"));
 	text_->prjType = Renderer::ProjectType::ORTHOGONAL;
@@ -41,9 +45,9 @@ void ScriptController::init()
 	scripts_.insert({ 1, b });
 	scripts_.insert({ 2, c });
 
-	scriptMode_ = SCRIPT_MODE::AUTO_FLOW;
+	scriptMode_ = SCRIPT_MODE::CONTROL;
 
-	set_invisible();
+	// set_invisible();
 
 	scriptTimer_.start();
 	fadeTimer_.start();

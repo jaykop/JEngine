@@ -14,6 +14,10 @@ uniform mat4 m4_viewport;
 uniform mat4 m4_projection;
 uniform bool boolean_bilboard;
 
+uniform bool boolean_herited;
+uniform mat4 m4_parentTranslate,
+	m4_parentScale, m4_parentRotate;
+
 ////////////////////////////
 // out variables
 ////////////////////////////
@@ -26,9 +30,13 @@ void main(){
 
 	vec4 newPosition = vec4(position, 1);
 	mat4 model =  m4_scale * m4_rotate * m4_translate;
+	
+	mat4 newModel = transpose(model);
+	if (boolean_herited) 
+		newModel = transpose(m4_parentScale * m4_parentRotate * m4_parentTranslate) * newModel;
 
 	// Calculate mvp transform matrix
-	mat4 modelview = transpose(m4_viewport) * transpose(model);
+	mat4 modelview = transpose(m4_viewport) * newModel;
 	
 		if (boolean_bilboard) {
 			modelview[0][0] 
