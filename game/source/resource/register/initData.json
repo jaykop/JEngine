@@ -1,6 +1,6 @@
 {
-	"Title" : "unicket",
-	"Fullscreen" : false,
+	"Title" : "ROKA",
+	"Fullscreen" : true,
 	"Width" : 1366,
 	"Height" : 768,
 	"Icon" : "resource/ico/main.png"

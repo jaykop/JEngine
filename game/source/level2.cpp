@@ -25,17 +25,6 @@ void Level2::initialize()
 
 void Level2::update(float dt)
 {
-	if (scriptController)
-	{
-		Transform* transform = scriptController->get_component<Transform>();
-		vec3 pos = GraphicSystem::get_camera()->position;
-		pos.y = -GraphicSystem::get_height() * .35f;
-		pos.z = 10.f;
-		vec3 scale(GraphicSystem::get_width(), GraphicSystem::get_height() * .25f, 0);
-		transform->position.set(pos);
-		transform->scale.set(scale);
-	}
-
 	// base update
 	Scene::update(dt);
 }
@@ -67,7 +56,7 @@ void Level2::init_basic()
 	//scriptController->add_component<Text>();
 	auto* sprite = scriptController->add_component<Sprite>();
 	auto* transform = scriptController->get_component<Transform>();
-	transform->scale.set(10, 10, 1);
+	transform->scale.set(0.5, 0.5, 1);
 	// transform->scale.set_zero();
 	sprite->set_texture(AssetManager::get_texture("grid"));
 	sprite->prjType = Renderer::ProjectType::ORTHOGONAL;
