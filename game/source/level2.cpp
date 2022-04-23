@@ -52,14 +52,16 @@ void Level2::init_basic()
 
 	// script controller
 	scriptController = ObjectManager::create_object("script_controller");
-	scriptController->add_component<ScriptController>();
-	//scriptController->add_component<Text>();
+	auto* ctrl = scriptController->add_component<ScriptController>();
 	auto* sprite = scriptController->add_component<Sprite>();
 	auto* transform = scriptController->get_component<Transform>();
+	
 	transform->scale.set(0.5, 0.5, 1);
-	// transform->scale.set_zero();
+	
 	sprite->set_texture(AssetManager::get_texture("grid"));
 	sprite->prjType = Renderer::ProjectType::ORTHOGONAL;
+
+	ctrl->set_script_speed(10);
 
 	register_object(scriptController);
 }

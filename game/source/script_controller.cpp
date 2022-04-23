@@ -17,51 +17,27 @@ ScriptController::~ScriptController()
 
 void ScriptController::init()
 {
-	transform_ = owner_->get_component<Transform>();
-	transform_->position.y = -GraphicSystem::get_height() * 0.25;
-	transform_->scale.set(
-		GraphicSystem::get_width() * 0.2f, 
-		GraphicSystem::get_height() * 0.125f, 
-		0);
+	init_textbox();
 
-	sprite_ = owner_->get_component<Sprite>();
-
-	Object* txtChild = ObjectManager::create_object("ScriptText");
-	Transform* childTransform = txtChild->get_component<Transform>();
-	childTransform->scale.set(0.01f, 0.01f, 1.f);
-	childTransform->position.set(0, 0, 1.f);
-	text_ = txtChild->add_component<Text>();
-	text_->set_font(AssetManager::get_font("default"));
-	text_->prjType = Renderer::ProjectType::ORTHOGONAL;
-
-	owner_->add_child(txtChild);
-	SceneManager::get_current_scene()->register_object(txtChild);
-
-	ScriptInfo a = { 0 , L"으아아아아아아", -1, {1} };
-	ScriptInfo b = { 1 , L"말도 안된다구!", 0, {2} };
-	ScriptInfo c = { 2 , L"쯔아아아아아아아", 1, {} };
-
-	scripts_.insert({ 0, a });
-	scripts_.insert({ 1, b });
-	scripts_.insert({ 2, c });
-
-	scriptMode_ = SCRIPT_MODE::CONTROL;
+	//ScriptInfo a = { L"으아아아아아아" };
+	//ScriptInfo b = { L"말도 안된다구!" };
+	//ScriptInfo c = { L"쯔아아아아아아아" };
 
 	// set_invisible();
 
-	scriptTimer_.start();
-	fadeTimer_.start();
+	scriptTimer.start();
+	fadeTimer.start();
 }
 
 void ScriptController::update(float dt)
 {
-	float manipulativeDt = fadeTimer_.get_elapsed_time();
-	float& spriteAlpha = sprite_->color.a;
-	float& textAlpha = text_->color.a;
+	float manipulativeDt = fadeTimer.get_elapsed_time();
+	float& spriteAlpha = sprite->color.a;
+	float& textAlpha = text->color.a;
 
-	switch (fadeMode_)
+	switch (fadeMode)
 	{
-		case FADE_MODE::FADE_IN:
+		case ScriptInfo::FADE_MODE::FADE_IN:
 			if (spriteAlpha < 1.f)
 			{
 				spriteAlpha += manipulativeDt;
@@ -74,12 +50,12 @@ void ScriptController::update(float dt)
 				if (textAlpha >= 1.f)
 				{
 					textAlpha = 1.f;
-					fadeMode_ = FADE_MODE::NONE;
+					fadeMode = ScriptInfo::FADE_MODE::NONE;
 				}
 			}
 			return;
 
-		case FADE_MODE::FADE_OUT:
+		case ScriptInfo::FADE_MODE::FADE_OUT:
 			if (spriteAlpha > 0.f)
 			{
 				spriteAlpha -= manipulativeDt;
@@ -94,89 +70,92 @@ void ScriptController::update(float dt)
 			}
 			return;
 
-		case FADE_MODE::NONE:
+		case ScriptInfo::FADE_MODE::NONE:
 			script_renderer();
 			break;
 	}
-
 }
+
+void ScriptController::close() { }
 
 void ScriptController::refresh_buffer()
 {
-	txt_.clear();
-	index_ = 0;
+	txt.clear();
+	index = 0;
 }
 
 void ScriptController::script_renderer()
 {
-	switch (scriptMode_)
+	float scriptRenderDt = scriptTimer.get_elapsed_time();
+	if (scriptRenderDt >= scriptSpeed)
 	{
-	case SCRIPT_MODE::FLOW:
-		if (InputHandler::key_triggered(KEY::SPACE))
+		if (currentText[index] != L'\0')
 		{
-			if (!scripts_[current].next.empty())
-			{
-				refresh_buffer();
-				current = scripts_[current].next[0];
-			}
+			txt += currentText[index++];
 		}
-		break;
-
-	case SCRIPT_MODE::CONTROL:
-		if (InputHandler::key_triggered(KEY::SPACE)
-			|| InputHandler::key_triggered(KEY::RIGHT))
-		{
-			if (!scripts_[current].next.empty())
-			{
-				refresh_buffer();
-				current = scripts_[current].next[0];
-			}
-		}
-
-		if (InputHandler::key_triggered(KEY::BACK)
-			|| InputHandler::key_triggered(KEY::LEFT))
-		{
-			int prev = scripts_[current].prev;
-			if (prev >= 0)
-			{
-				refresh_buffer();
-				current = prev;
-			}
-		}
-		break;
-
-	case SCRIPT_MODE::AUTO_FLOW:
-
-		if (!scripts_[current].next.empty()
-			&& scriptTimer_.get_elapsed_time() >= 1.f)
-		{
-			refresh_buffer();
-			current = scripts_[current].next[0];
-
-			scriptTimer_.start();
-		}
-
-		break;
-
-	case SCRIPT_MODE::LOCKED:
-		break;
+		scriptTimer.start();
 	}
 
-	if (scripts_[current].txt[index_] != '\0')
-	{
-		txt_ += scripts_[current].txt[index_++];
-	}
-	text_->set_text(txt_.c_str());
+	text->set_text(txt.c_str());
 }
 
 void ScriptController::set_invisible()
 {
-	scriptMode_ = SCRIPT_MODE::LOCKED;
-	fadeMode_ = FADE_MODE::FADE_IN;
-	sprite_->color.a = 0.f;
-	text_->color.a = 0.f;
+	scriptMode = ScriptInfo::SCRIPT_MODE::LOCKED;
+	fadeMode = ScriptInfo::FADE_MODE::FADE_IN;
+	sprite->color.a = 0.f;
+	text->color.a = 0.f;
 }
 
-void ScriptController::close() { }
+void ScriptController::init_textbox()
+{
+	transform = owner_->get_component<Transform>();
+	transform->position.y = -GraphicSystem::get_height() * 0.25;
+	transform->scale.set(
+		GraphicSystem::get_width() * 0.2f,
+		GraphicSystem::get_height() * 0.1f,
+		0);
+
+	sprite = owner_->get_component<Sprite>();
+
+	Object* txtChild = ObjectManager::create_object("ScriptText");
+	Transform* childTransform = txtChild->get_component<Transform>();
+	childTransform->scale.set(0.0015f, 0.005f, 1.f);
+	childTransform->position.set(0, 0, 1.f);
+	text = txtChild->add_component<Text>();
+	text->set_font(AssetManager::get_font("default"));
+	text->prjType = Renderer::ProjectType::ORTHOGONAL;
+
+	owner_->add_child(txtChild);
+	SceneManager::get_current_scene()->register_object(txtChild);
+}
+
+void ScriptController::set_current_script(ScriptInfo* scriptInfo)
+{
+	refresh_buffer();
+
+	currentScript = scriptInfo;
+	color = currentScript->color;
+	scriptMode = currentScript->scriptMode;
+	scriptSpeed = currentScript->scriptSpeed;
+	fadeSpeed = currentScript->fadeSpeed;
+	fadeMode = currentScript->fadeMode;
+
+	currentText = currentScript->script;
+}
+
+void ScriptController::set_script_speed(float speed)
+{
+	if (speed <= 0) scriptSpeed = 0;
+	else
+	{
+		scriptSpeed = 1.f / speed;
+	}
+}
+
+float ScriptController::get_script_speed() const
+{
+	return scriptSpeed > 0 ? 1.f / scriptSpeed : 0;
+}
 
 jeEnd

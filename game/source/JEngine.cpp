@@ -11,11 +11,9 @@ void JEngine::register_builders()
 {
 	// add game logic builders here
 
-	// basic game logics
 	jeRegisterComponent(SceneController);
 	jeRegisterComponent(ScriptController);
-
-	// player game logics
+	jeRegisterComponent(EventController);
 }
 
 void JEngine::register_scenes()

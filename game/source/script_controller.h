@@ -1,8 +1,8 @@
 #pragma once
 #include "pch.h"
-#include <map>
 
 #include "timer.hpp"
+#include "script_info.h"
 
 jeBegin
 
@@ -14,17 +14,6 @@ class ScriptController : public Behavior {
 
 public:
 
-	struct ScriptInfo
-	{
-		int id = -1;
-		const wchar_t* txt = nullptr;
-		int prev = -1;
-		std::vector<int> next;
-	};
-
-	enum class SCRIPT_MODE {FLOW, CONTROL, AUTO_FLOW, LOCKED};
-	enum class FADE_MODE {NONE, FADE_IN, FADE_OUT};
-
 	ScriptController(Object* owner) : Behavior(owner) {};
 	virtual ~ScriptController();
 
@@ -32,11 +21,19 @@ public:
 	void update(float dt) override;
 	void close() override;
 
-	SCRIPT_MODE scriptMode_ = SCRIPT_MODE::FLOW;
-	FADE_MODE fadeMode_ = FADE_MODE::NONE;
+	void set_current_script(ScriptInfo* scriptInfo);
+
+	void set_script_speed(float speed);
+
+	float get_script_speed() const;
+
+	ScriptInfo::SCRIPT_MODE scriptMode = ScriptInfo::SCRIPT_MODE::FLOW;
+	ScriptInfo::FADE_MODE fadeMode = ScriptInfo::FADE_MODE::NONE;
+
+	vec3 color = Color::white;
 
 	float scriptSpeed = 1.f, fadeSpeed = 10.f;
-	float alpha_ = 0.f;
+	float alpha = 0.f;
 
 protected:
 
@@ -47,18 +44,22 @@ private:
 	ScriptController& operator=(const ScriptController& rhs);
 	ScriptController() = delete;
 
+	void init_textbox();
+
 	void refresh_buffer();
 	void script_renderer();
 	void set_invisible();
 
-	int current = 0, index_ = 0;
-	Text* text_ = nullptr;
-	Sprite* sprite_ = nullptr;
-	Transform* transform_ = nullptr;
-	Timer scriptTimer_, fadeTimer_;
+	int current = 0, index = 0;
+	Text* text = nullptr;
+	Sprite* sprite = nullptr;
+	Transform* transform = nullptr;
+	Timer scriptTimer, fadeTimer;
 
-	std::wstring txt_;
-	std::map<int, ScriptInfo> scripts_;
+	const wchar_t* currentText = nullptr;
+
+	ScriptInfo* currentScript = nullptr;
+	std::wstring txt;
 };
 
 jeEnd
